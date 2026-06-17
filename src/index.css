@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Noto+Serif+Armenian:wght@300;400;500;600;700&family=Noto+Sans+Armenian:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans-family: "Noto Sans Armenian", system-ui, sans-serif;
+  --font-heading-family: "Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif;
+  --font-mono-family: "JetBrains Mono", monospace;
+}
+
+/* Multilingual Typography Auto-switching System */
+html[lang="hy"], :root[lang="hy"] {
+  --font-sans-family: "Noto Sans Armenian", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading-family: "Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif;
+  --font-mono-family: "JetBrains Mono", monospace;
+}
+
+html[lang="en"], :root[lang="en"] {
+  --font-sans-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono-family: "JetBrains Mono", monospace;
+}
+
+html[lang="ru"], :root[lang="ru"] {
+  --font-sans-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono-family: "JetBrains Mono", monospace;
+}
+
+html[lang="ar"], :root[lang="ar"] {
+  --font-sans-family: system-ui, -apple-system, sans-serif;
+  --font-heading-family: system-ui, -apple-system, serif;
+  --font-mono-family: "JetBrains Mono", monospace;
+}
+
+/* Explicit element-level and class-level typography overrides based on active language to bypass any framework/Tailwind preflight issues */
+html[lang="hy"] body, html[lang="hy"] input, html[lang="hy"] button, html[lang="hy"] select, html[lang="hy"] textarea, html[lang="hy"] .font-sans {
+  font-family: var(--font-sans-family) !important;
+}
+html[lang="hy"] .font-serif {
+  font-family: var(--font-heading-family) !important;
+}
+html[lang="hy"] .font-mono {
+  font-family: var(--font-mono-family) !important;
+}
+
+html[lang="en"] body, html[lang="en"] input, html[lang="en"] button, html[lang="en"] select, html[lang="en"] textarea, html[lang="en"] .font-sans {
+  font-family: var(--font-sans-family) !important;
+}
+html[lang="en"] .font-serif {
+  font-family: var(--font-heading-family) !important;
+}
+html[lang="en"] .font-mono {
+  font-family: var(--font-mono-family) !important;
+}
+
+html[lang="ru"] body, html[lang="ru"] input, html[lang="ru"] button, html[lang="ru"] select, html[lang="ru"] textarea, html[lang="ru"] .font-sans {
+  font-family: var(--font-sans-family) !important;
+}
+html[lang="ru"] .font-serif {
+  font-family: var(--font-heading-family) !important;
+}
+html[lang="ru"] .font-mono {
+  font-family: var(--font-mono-family) !important;
+}
+
+html[lang="ar"] body, html[lang="ar"] input, html[lang="ar"] button, html[lang="ar"] select, html[lang="ar"] textarea, html[lang="ar"] .font-sans {
+  font-family: var(--font-sans-family) !important;
+}
+html[lang="ar"] .font-serif {
+  font-family: var(--font-heading-family) !important;
+}
+html[lang="ar"] .font-mono {
+  font-family: var(--font-mono-family) !important;
+}
+
+@theme {
+  --font-sans: var(--font-sans-family);
+  --font-serif: var(--font-heading-family);
+  --font-mono: var(--font-mono-family);
+  --font-arial: "Arial", sans-serif;
+  
+  --color-capsule-bg: #F4F2EE;
+  --color-capsule-surf: #FAFAF8;
+  --color-capsule-surf2: #FAFAF8;
+  --color-capsule-border: #D5D0C8;
+  --color-capsule-dark: #3D271B;
+  --color-capsule-accent: #ff2300;
+  --color-capsule-accent-light: #ff3b1a;
+  --color-capsule-accent-active: #cc1c00;
+  --color-capsule-accent-dim: rgba(255, 35, 0, 0.08);
+  --color-capsule-text-secondary: #6B7280;
+  --color-capsule-text-muted: #9CA3AF;
+  --color-capsule-success: #166534;
+  --color-capsule-warning: #C2410C;
+
+  --animate-slide-left: slide-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in-quick: fade-in-quick 0.2s ease-out;
+  --animate-scale-in: scale-in 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  @keyframes slide-left {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes fade-in-quick {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { transform: scale(0.92) translateY(12px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+}
+
+body {
+  background: var(--color-capsule-bg);
+  color: var(--color-capsule-dark);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Global utility to disable ugly default browser tap highlight colors and focus outlines on all platforms */
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+button, a, input, select, textarea, [role="button"] {
+  outline: none !important;
+  font-family: inherit;
+}
+
+button:focus, button:active, button:focus-visible,
+a:focus, a:active,
+input:focus, select:focus, textarea:focus,
+[role="button"]:focus {
+  outline: none !important;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 35, 0, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(31, 42, 42, 0.04);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(31, 42, 42, 0.15);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(31, 42, 42, 0.25);
+}
+
+/* Print optimization styles */
+@media print {
+  /* Hide entire application shell and modal layers */
+  #root, .fixed, .modal, header, footer, button, nav, .bg-capsule-bg {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  body::before {
+    display: none !important;
+  }
+
+  /* Force only the printable portal to be rendered */
+  body > *:not(#printable-section) {
+    display: none !important;
+  }
+
+  #printable-section {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: black !important;
+    background: white !important;
+  }
+
+  #printable-section * {
+    visibility: visible !important;
+    color: black !important;
+  }
+}
+
+@media screen {
+  #printable-section {
+    display: none !important;
+  }
+}
+
+/* ── LUXURY INTERACTIVE ACCENTS & CUSTOM BUTTON STYLES ── */
+button, [role="button"], a, select, input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+}
+
+/* ─────────────────────────────────────────────────────────
+   💎 PREMIUM NEUMORPHIC SYSTEM FOR CAPSULE LAB AESTHETICS
+   ───────────────────────────────────────────────────────── */
+
+/* 1. Convex (Raised) Neumorphic Containers & Buttons */
+.neu-convex-bg {
+  background: var(--color-capsule-bg);
+  box-shadow: 4px 4px 10px #D5D0C8, -4px -4px 10px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  will-change: transform, box-shadow;
+}
+
+.neu-convex-surf {
+  background: var(--color-capsule-surf);
+  box-shadow: 4px 4px 10px #D5D0C8, -4px -4px 10px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  will-change: transform, box-shadow;
+}
+
+/* Hover effects for convex elements */
+.neu-convex-hover {
+  will-change: transform, box-shadow;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+.neu-convex-hover:hover {
+  transform: scale(1.04) !important;
+  box-shadow: 0 10px 20px -3px rgba(31, 42, 42, 0.08), 0 4px 10px -2px rgba(31, 42, 42, 0.04) !important;
+}
+.neu-convex-hover:active {
+  transform: scale(0.98) !important;
+  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+}
+
+/* 2. Inset (Sunken / Inner Shadow) for inputs and containers */
+.neu-inset-bg {
+  background: var(--color-capsule-bg);
+  box-shadow: inset 3px 3px 6px #D5D0C8, inset -3px -3px 6px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.neu-inset-surf {
+  background: var(--color-capsule-surf);
+  box-shadow: inset 3px 3px 6px #D5D0C8, inset -3px -3px 6px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Active Pressed state for buttons */
+.neu-pressed {
+  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.neu-pressed-surf {
+  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Active brand color (Dark Capsule Accent) with Neumorphic shadow overlay */
+.neu-brand-active {
+  background: var(--color-capsule-accent) !important;
+  color: white !important;
+  box-shadow: 4px 4px 10px rgba(255, 35, 0, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.2), inset -2px -2px 4px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-selected {
+  position: relative;
+  box-shadow: 0 6px 20px rgba(255, 35, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.02);
+}
+
+.glow-selected::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1.5px dashed rgba(255, 35, 0, 0.45);
+  border-radius: inherit;
+  pointer-events: none;
+  animation: elegant-pulse 2s infinite ease-in-out;
+}
+
+@keyframes elegant-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.03); opacity: 0.85; }
+}
+
+/* Premium card hover guidelines */
+.luxury-card-hover {
+  will-change: transform, box-shadow;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.luxury-card-hover:hover,
+.luxury-card-hover:hover * {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  --tw-shadow: none !important;
+  --tw-shadow-colored: none !important;
+  border-color: transparent !important;
+}
+
+.luxury-card-hover:hover {
+  transform: scale(1.04) !important;
+}
+
+.luxury-card-hover:active {
+  transform: scale(0.98) !important;
+}
+
+/* Hide default spinner arrows in number inputs across all modern browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+/* Custom utility to disable scrollbars while retaining full horizontal touch-swipe fluidity to keep desktop and mobile views looking perfectly clean */
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+}
+.scrollbar-none {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+
