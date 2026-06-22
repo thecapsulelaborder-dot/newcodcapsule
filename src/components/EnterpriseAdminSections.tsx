@@ -83,6 +83,7 @@ export default function EnterpriseAdminSections({
   const [ordersList, setOrdersList] = useState<any[]>([]);
   const [crmCustomersList, setCrmCustomersList] = useState<any[]>([]);
   const [whatsappLogsList, setWhatsappLogsList] = useState<any[]>([]);
+  const [enterpriseUsers, setEnterpriseUsers] = useState<any[]>([]);
   const [dbRefreshTrigger, setDbRefreshTrigger] = useState(0);
   const [managerMe, setManagerMe] = useState<any>(null);
 
@@ -163,6 +164,15 @@ export default function EnterpriseAdminSections({
         return r.json().catch(() => null);
       })
       .then(d => { if (d && d.success) setWhatsappLogsList(d.logs); })
+      .catch(e => {});
+
+    // Fetch live users
+    fetch("/api/admin/users", { headers: { "Authorization": `Bearer ${adminToken}` } })
+      .then(async r => {
+        if (!r.ok) return null;
+        return r.json().catch(() => null);
+      })
+      .then(d => { if (d && d.success) setEnterpriseUsers(d.users || []); })
       .catch(e => {});
 
   }, [adminToken, dbRefreshTrigger]);
@@ -2759,6 +2769,50 @@ export default function EnterpriseAdminSections({
   };
 
   const renderPageBuilder = () => {
+    const samplePresets = [
+      "https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1576016770956-debb63d900bb?auto=format&fit=crop&q=80&w=800"
+    ];
+
+    const slideTitles = [
+      "Slide 1: Composite Setup / Beta Live",
+      "Slide 2: Luxury Paper Bags",
+      "Slide 3: Premium Rigid Boxes",
+      "Slide 4: Fine Satin Ribbons"
+    ];
+
+    const handleFileRead = (file: File, idx: number) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setEditSiteTexts((prev: Record<string, string>) => ({
+          ...prev,
+          [`slider_slide_${idx}_image`]: base64String
+        }));
+        setLayoutSuccess(`Slide ${idx + 1} product image converted and prepared. Remember to click "SAVE CONFIGURATION"!`);
+        setTimeout(() => setLayoutSuccess(null), 5000);
+      };
+      reader.readAsDataURL(file);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setEditSiteTexts((prev: Record<string, string>) => ({
+          ...prev,
+          [key]: base64String
+        }));
+        setLayoutSuccess(`Product photo converted and ready. Remember to click "SAVE CONFIGURATION"!`);
+        setTimeout(() => setLayoutSuccess(null), 5500);
+      };
+      reader.readAsDataURL(file);
+    };
+
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
         <div className="border-b border-capsule-accent/10 pb-4">
@@ -2773,6 +2827,151 @@ export default function EnterpriseAdminSections({
             <span>{layoutSuccess}</span>
           </div>
         )}
+
+        {/* PREMIUM HOMEPAGE SLIDER PRODUCT PHOTO MANAGER (Requested by User) */}
+        <div className="bg-[#FAFAF8] border border-[#E5E1D8]/65 rounded-3xl p-6 lg:p-8 space-y-6 shadow-sm">
+          <div className="border-b border-[#E5E1D8]/45 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-[9px] font-black uppercase text-[#ff2300] tracking-widest bg-red-50 border border-red-150 px-2.5 py-1 rounded-full">
+                🎠 SLIDER MANAGER
+              </span>
+              <h3 className="font-serif text-base font-bold text-[#3D271B] mt-2">Homepage Slider Product Photos</h3>
+              <p className="text-[11px] text-[#3D271B]/70 leading-normal mt-1">
+                Assign customized high-quality photography for each of the 4 interactive homepage slices. Upload local image files, paste external URLs, or restore original premium presets.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await handleSaveAll();
+                  setLayoutSuccess("Slider configurations have been synchronized successfully with the persistent server database!");
+                  setTimeout(() => setLayoutSuccess(null), 4000);
+                } catch (err) {
+                  alert("Failed to synchronize changes. Please check permissions.");
+                }
+              }}
+              className="bg-[#ff2300] hover:bg-[#e61f00] text-white text-[11px] font-black uppercase tracking-wider px-5 py-2.5 rounded-full shadow-md flex items-center gap-1.5 cursor-pointer select-none transition-all active:scale-95 shrink-0 self-start"
+            >
+              <Save size={14} />
+              <span>SAVE CONFIGURATION</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            {[0, 1, 2, 3].map((idx) => {
+              const customKey = `slider_slide_${idx}_image`;
+              const currentImgSrc = editSiteTexts[customKey] || samplePresets[idx];
+              return (
+                <div 
+                  key={idx} 
+                  className="bg-white border border-[#E5E1D8]/45 rounded-2xl p-4 flex flex-col justify-between space-y-4 hover:shadow-md transition-all duration-300"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase font-black tracking-widest text-[#3D271B]/50 font-mono">
+                        SLIDE 0{idx + 1}
+                      </span>
+                      <span className="text-[10px] font-bold text-[#ff2300] bg-red-50/60 px-2 py-0.5 rounded-md">
+                        {idx === 0 ? "Composite" : idx === 1 ? "Bags" : idx === 2 ? "Boxes" : "Ribbons"}
+                      </span>
+                    </div>
+
+                    <h4 className="text-[11.5px] font-serif font-bold text-[#3D271B] truncate">
+                      {slideTitles[idx]}
+                    </h4>
+
+                    {/* Image Thumbnail and Upload zone container */}
+                    <div className="relative group rounded-xl overflow-hidden aspect-video bg-gray-50 border border-gray-150 p-1 flex items-center justify-center">
+                      <img 
+                        src={currentImgSrc} 
+                        alt={`Slide ${idx}`} 
+                        className="w-full h-full object-cover rounded-lg"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-[#3D271B]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span className="text-[9.5px] uppercase font-bold tracking-wider text-white">
+                          Change Image
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Image URL text input */}
+                    <div className="space-y-1">
+                      <label className="block text-[8px] font-black uppercase text-gray-400 tracking-wider">
+                        Image Address / Custom URL
+                      </label>
+                      <input 
+                        type="text"
+                        value={editSiteTexts[customKey] || ""}
+                        onChange={(e) => {
+                          setEditSiteTexts((prev: Record<string, string>) => ({
+                            ...prev,
+                            [customKey]: e.target.value
+                          }));
+                        }}
+                        placeholder="Paste image link here"
+                        className="w-full border border-gray-200 rounded-lg p-1.5 text-[10.5px] text-[#3D271B] outline-none placeholder-gray-300"
+                      />
+                    </div>
+
+                    {/* Base64 Drag and Drop file uploader */}
+                    <div className="space-y-1">
+                      <label className="block text-[8px] font-black uppercase text-gray-400 tracking-wider">
+                        Upload Local File (Base64)
+                      </label>
+                      <div className="relative border border-dashed border-[#E5E1D8] hover:border-[#ff2300]/50 rounded-lg p-2.5 text-center transition-all cursor-pointer bg-gray-55/40 text-gray-55">
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onChange={(e) => handleFileChange(e, customKey)}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        <div className="flex flex-col items-center justify-center space-y-1">
+                          <Upload size={14} className="text-[#3D271B]/50" />
+                          <span className="text-[9.5px] font-bold text-[#3D271B]/60">
+                            Drag or click
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Preset Restore Control */}
+                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditSiteTexts((prev: Record<string, string>) => ({
+                          ...prev,
+                          [customKey]: samplePresets[idx]
+                        }));
+                      }}
+                      className="text-[9.5px] font-bold text-[#3D271B]/60 hover:text-[#ff2300] transition-colors"
+                    >
+                      Use Studio Preset
+                    </button>
+                    {editSiteTexts[customKey] && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditSiteTexts((prev: Record<string, string>) => {
+                            const updated = { ...prev };
+                            delete updated[customKey];
+                            return updated;
+                          });
+                        }}
+                        className="text-[9.5px] font-bold text-red-650 hover:text-red-800 transition-colors"
+                      >
+                        Wipe Custom
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Active outline tree with editors */}
@@ -2990,17 +3189,17 @@ export default function EnterpriseAdminSections({
   const renderCRM = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase font-extrabold flex items-center gap-1 font-bold">
+        <div className="border-b border-[#C59B6D]/20 pb-4">
+          <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase flex items-center gap-1">
             <Users size={11} className="text-[#C59B6D]" /> MULTI-CLIENT CRM PORTAL
           </span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Loyalty Tier & LTV Manager</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Manage customer statistics, track aggregate Lifetime Value (LTV), record manager remarks, and target VIP clients dynamically stored in PostgreSQL.</p>
+          <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Loyalty Tier & LTV Manager</h2>
+          <p className="text-xs text-capsule-text-secondary mt-0.5">Manage customer statistics, track aggregate Lifetime Value (LTV), record manager remarks, and target VIP clients dynamically stored in PostgreSQL.</p>
         </div>
 
         {crmSuccess && (
-          <div className="p-3 bg-teal-50 border border-teal-150 text-teal-800 font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
-            <Check size={14} className="text-teal-800" />
+          <div className="p-3 bg-[#1A3F25]/10 border border-[#1A3F25]/20 text-[#1A3F25] font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
+            <Check size={14} className="text-[#1A3F25]" />
             <span>{crmSuccess}</span>
           </div>
         )}
@@ -3019,7 +3218,7 @@ export default function EnterpriseAdminSections({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 font-sans text-xs">
           {/* Unified list */}
           <div className="lg:col-span-12 xl:col-span-7 bg-white border border-[#1A3F25]/10 p-4 rounded-3xl space-y-3">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest">
+            <h3 className="font-serif text-sm font-bold text-[#1A3F25] border-b border-gray-150 pb-1.5 uppercase tracking-widest">
               👥 Customer Directory ({clients.length})
             </h3>
             <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1">
@@ -3039,13 +3238,13 @@ export default function EnterpriseAdminSections({
                     }}
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between animate-fadeIn ${
                       selectedClient?.phone === c.phone 
-                        ? "bg-capsule-accent/5 border-[#1A3F25]/30 shadow-sm" 
+                        ? "bg-[#C59B6D]/15 border-[#1A3F25]/30 shadow-sm" 
                         : "bg-[#FAF9F6] border-transparent hover:bg-opacity-95 hover:border-[#1A3F25]/5"
                     }`}
                   >
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-capsule-accent text-xs block">{c.name || "Client"}</span>
+                        <span className="font-bold text-[#1A3F25] text-xs block">{c.name || "Client"}</span>
                         {c.isVip && (
                           <span className="bg-yellow-50 text-yellow-700 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">VIP</span>
                         )}
@@ -3054,7 +3253,7 @@ export default function EnterpriseAdminSections({
                     </div>
                     <div className="text-right">
                       <span className="block font-mono font-bold text-[11px] text-[#1A3F25]">{spending.toLocaleString()} ֏</span>
-                      <span className={`text-[8px] uppercase font-black rounded-full px-2 py-0.5 mt-1 inline-block ${c.isVip ? "bg-yellow-100 text-yellow-800" : "bg-teal-50 text-teal-800"}`}>
+                      <span className={`text-[8px] uppercase font-black rounded-full px-2 py-0.5 mt-1 inline-block ${c.isVip ? "bg-amber-100 text-amber-800" : "bg-teal-50 text-teal-800"}`}>
                         {loyaltyBadge}
                       </span>
                     </div>
@@ -3069,7 +3268,7 @@ export default function EnterpriseAdminSections({
 
           {/* Manager notes ledger info panel */}
           <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF9F6] border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+            <h3 className="font-serif text-sm font-bold text-[#1A3F25] border-b border-gray-150 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
               <Plus size={14} className="text-[#C59B6D]" /> Client Ledger Card
             </h3>
 
@@ -3081,16 +3280,16 @@ export default function EnterpriseAdminSections({
                   <span className="text-xs text-[#7C9082] block font-sans font-semibold">{selectedClient.phone}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="grid grid-cols-2 gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm col-span-1">
                   <div>
                     <span className="block text-[9px] font-bold uppercase text-capsule-text-muted">Orders & Avg ticket</span>
-                    <span className="text-xs font-mono font-bold text-capsule-accent mt-0.5 block">{selectedClient.ordersCount || 0} bills (avg {(Number(selectedClient.avgCheck) || 0).toLocaleString()} ֏)</span>
+                    <span className="text-xs font-mono font-bold text-[#1A3F25] mt-0.5 block">{selectedClient.ordersCount || 0} bills (avg {(Number(selectedClient.avgCheck) || 0).toLocaleString()} ֏)</span>
                   </div>
                   <div>
                     <span className="block text-[9px] font-bold uppercase text-capsule-text-muted">VIP COORDINATE</span>
                     <button
                       onClick={() => handleUpdateClientNote(!selectedClient.isVip)}
-                      className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase mt-1 block tracking-wider ${selectedClient.isVip ? "bg-yellow-500 text-white" : "bg-gray-200 text-gray-700"}`}
+                      className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase mt-1 block tracking-wider cursor-pointer ${selectedClient.isVip ? "bg-yellow-600 text-white" : "bg-gray-200 text-gray-750"}`}
                     >
                       {selectedClient.isVip ? "★ VIP ACTIVE" : "☆ ACTIVATE VIP"}
                     </button>
@@ -3098,7 +3297,7 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted">Corporate remarks / Manager Private Comments</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#7C9082]">Corporate remarks / Manager Private Comments</label>
                   <textarea 
                     value={clientComment}
                     onChange={(e) => setClientComment(e.target.value)}
@@ -3110,7 +3309,7 @@ export default function EnterpriseAdminSections({
 
                 <button 
                   onClick={() => handleUpdateClientNote()}
-                  className="w-full py-2 bg-[#ff2300] text-white font-bold rounded-xl shadow hover:bg-[#e61f00] transition-all cursor-pointer truncate"
+                  className="w-full py-2 bg-[#1A3F25] hover:bg-[#1A3F25]/90 text-white font-bold rounded-xl shadow transition-all cursor-pointer truncate uppercase tracking-wider text-[10px]"
                 >
                   Save Remark to client account
                 </button>
@@ -3194,13 +3393,43 @@ export default function EnterpriseAdminSections({
   };
 
   // --- COMPONENT 11: PERMISSIONS ---
-  const [adminUsersList] = useState([
-    { id: 1, user: "admin", role: "Super Admin", scope: "Universal access", active: true },
-    { id: 2, user: "Armand_Sales", role: "Sales & CRM Manager", scope: "Inquiries logs, CRM write only", active: true },
-    { id: 3, user: "Elena_Trans", role: "Translator CMS", scope: "Translation system only", active: true }
-  ]);
+  const handleUpdateUserRole = async (userUid: string, newRole: string) => {
+    try {
+      const res = await fetch(`/api/admin/users/${userUid}/role`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ role: newRole })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDbRefreshTrigger(prev => prev + 1);
+      } else {
+        alert("Failed to change user role: " + (data.error || "Unknown error"));
+      }
+    } catch (err: any) {
+      console.error("Error updating user role", err);
+    }
+  };
 
   const renderPermissions = () => {
+    const listToRender = enterpriseUsers.length > 0 ? enterpriseUsers.map(usr => ({
+      id: usr.id,
+      uid: usr.uid,
+      user: usr.email,
+      role: usr.role,
+      scope: usr.role === "Super Admin" ? "Universal access" : 
+             usr.role === "Manager" ? "Config & catalog workspace panel" :
+             usr.role === "Sales" ? "CRM & active order progression" :
+             usr.role === "Translator" ? "Translation keys only" : "Operational scope limited"
+    })) : [
+      { id: 1, uid: "mock_1", user: "admin", role: "Super Admin", scope: "Universal access" },
+      { id: 2, uid: "mock_2", user: "Armand_Sales", role: "Sales & CRM Manager", scope: "Inquiries logs, CRM write only" },
+      { id: 3, uid: "mock_3", user: "Elena_Trans", role: "Translator CMS", scope: "Translation system only" }
+    ];
+
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
         <div className="border-b border-capsule-accent/10 pb-4">
@@ -3220,10 +3449,24 @@ export default function EnterpriseAdminSections({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 font-sans text-xs">
-              {adminUsersList.map((usr) => (
+              {listToRender.map((usr) => (
                 <tr key={usr.id} className="hover:bg-gray-50/50">
                   <td className="py-3 px-4 font-mono font-bold text-capsule-accent">{usr.user}</td>
-                  <td className="py-3 px-4 font-semibold text-[#C59B6D]">{usr.role}</td>
+                  <td className="py-3 px-4 font-semibold text-[#C59B6D]">
+                    {usr.uid && !usr.uid.startsWith("mock_") ? (
+                      <select
+                        value={usr.role}
+                        onChange={(e) => handleUpdateUserRole(usr.uid, e.target.value)}
+                        className="bg-capsule-surf2 border border-capsule-accent/10 rounded py-1 px-2 font-bold select-none cursor-pointer text-xs"
+                      >
+                        {["Super Admin", "Manager", "Sales", "Production", "Translator"].map((r) => (
+                          <option key={r} value={r}>{r}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span>{usr.role}</span>
+                    )}
+                  </td>
                   <td className="py-3 px-4 text-xs font-semibold text-capsule-text-secondary">{usr.scope}</td>
                   <td className="py-3 px-4">
                     <span className="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1A3F25]/5 text-capsule-accent border border-capsule-accent/10 uppercase">
@@ -4390,26 +4633,26 @@ export default function EnterpriseAdminSections({
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
         {/* Title */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1A3F25]/10 pb-4 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#C59B6D]/20 pb-4 gap-4">
           <div>
-            <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase font-extrabold flex items-center gap-1 font-bold">
+            <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase flex items-center gap-1">
               💼 ENTERPRISE WORKSPACE
             </span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Order Solutions Center & Production Board</h2>
-            <p className="text-xs text-capsule-text-muted mt-0.5">Control pipeline routing, monitor 10 technical production stages live, create invoices, and dispatch WhatsApp metrics.</p>
+            <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Order Solutions Center & Production Board</h2>
+            <p className="text-xs text-capsule-text-secondary mt-0.5">Control pipeline routing, monitor 10 technical production stages live, create invoices, and dispatch WhatsApp metrics.</p>
           </div>
           
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setOrdersViewMode(ordersViewMode === "list" ? "kanban" : "list")}
-              className="px-4 py-2 bg-capsule-accent text-white font-bold rounded-xl flex items-center gap-1.5 shadow"
+              className="px-4 py-2 bg-[#1A3F25] hover:bg-[#1A3F25]/90 text-white font-bold rounded-xl flex items-center gap-1.5 shadow transition-all duration-300 cursor-pointer text-xs"
             >
               {ordersViewMode === "list" ? "📋 SWITCH TO KANBAN BOARD" : "📋 SWITCH TO DATA TABLE"}
             </button>
 
             <button
               onClick={() => setIsAddingOrder(true)}
-              className="px-4 py-2 bg-[#FAF9F6] border border-[#1A3F25]/20 text-[#1A3F25] font-bold rounded-xl flex items-center gap-1.5 shadow-sm"
+              className="px-4 py-2 bg-[#F5F2EB] border border-[#C59B6D]/30 text-[#1A3F25] font-bold rounded-xl flex items-center gap-1.5 shadow-sm transition-all duration-300 hover:bg-[#1A3F25] hover:text-white cursor-pointer text-xs"
             >
               + Register Custom Order
             </button>
@@ -4608,7 +4851,7 @@ export default function EnterpriseAdminSections({
                   {filteredOrders.map((o: any) => (
                     <tr 
                       key={o.id} 
-                      className={`hover:bg-capsule-accent/5 transition-all cursor-pointer ${selectedOrder?.id === o.id ? "bg-capsule-accent/5" : ""}`}
+                      className={`hover:bg-[#1A3F25]/5 transition-all cursor-pointer ${selectedOrder?.id === o.id ? "bg-[#C59B6D]/15" : ""}`}
                       onClick={() => setSelectedOrder(o)}
                     >
                       <td className="p-3">
@@ -4616,7 +4859,7 @@ export default function EnterpriseAdminSections({
                         <span className="text-[10px] text-capsule-text-muted mt-0.5 block">{new Date(o.ts || Date.now()).toLocaleDateString()}</span>
                       </td>
                       <td className="p-3">
-                        <span className="font-bold block text-capsule-accent">{o.customerName}</span>
+                        <span className="font-bold block text-[#1A3F25]">{o.customerName}</span>
                         <span className="text-[10px] text-[#7C9082] block mt-0.5">{o.customerPhone}</span>
                       </td>
                       <td className="p-3">
@@ -4699,9 +4942,9 @@ export default function EnterpriseAdminSections({
               const columnOrders = filteredOrders.filter((o: any) => (o.status || "Новый") === st);
 
               return (
-                <div key={st} className="bg-[#FAF9F6] border border-[#1A3F25]/15 p-2 rounded-2xl min-w-[150px] space-y-2 flex flex-col justify-start">
-                  <div className="font-serif font-black text-[10px] tracking-wider text-capsule-accent border-b border-gray-200 pb-1 uppercase text-center truncate">
-                    {st} ({columnOrders.length})
+                <div key={st} className="bg-[#FAF9F6] border border-[#1A3F25]/10 p-2 rounded-2xl min-w-[155px] space-y-2 flex flex-col justify-start">
+                  <div className="font-sans font-extrabold text-[9px] tracking-wider text-[#1A3F25] border-b border-[#C59B6D]/25 pb-1 uppercase text-center truncate">
+                    {st} <span className="text-[#C59B6D]">({columnOrders.length})</span>
                   </div>
 
                   <div className="space-y-2 flex-grow overflow-y-auto max-h-[400px]">
@@ -4709,15 +4952,15 @@ export default function EnterpriseAdminSections({
                       <div
                         key={co.id}
                         onClick={() => setSelectedOrder(co)}
-                        className={`bg-white border p-2.5 rounded-xl text-[10px] cursor-pointer hover:border-[#1A3F25]/40 hover:shadow-sm transition-all space-y-1.5 ${selectedOrder?.id === co.id ? "border-[#1A3F25] ring-1 ring-[#1A3F25]" : "border-gray-100"}`}
+                        className={`bg-white border p-2.5 rounded-xl text-[10px] cursor-pointer hover:border-[#C59B6D] hover:shadow-sm transition-all space-y-1.5 ${selectedOrder?.id === co.id ? "border-[#C59B6D] ring-1 ring-[#C59B6D]" : "border-gray-150"}`}
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-[#1A3F25]">#CAPS-{co.id}</span>
                           <span className="text-[8px] text-capsule-text-muted">{new Date(co.ts || Date.now()).toLocaleDateString()}</span>
                         </div>
-                        <div className="font-bold text-capsule-accent truncate">{co.customerName}</div>
+                        <div className="font-bold text-[#1A3F25] truncate">{co.customerName}</div>
                         <div className="text-[9px] text-[#7C9082] truncate">{co.customerPhone}</div>
-                        <div className="font-mono font-bold text-[#1A3F25]">{(Number(co.totalPrice) || 0).toLocaleString()} ֏</div>
+                        <div className="font-mono font-bold text-[#C59B6D]">{(Number(co.totalPrice) || 0).toLocaleString()} ֏</div>
 
                         {/* Delivery deadline indicator badge */}
                         {(() => {

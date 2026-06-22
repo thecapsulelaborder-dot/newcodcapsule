@@ -19,7 +19,22 @@ import {
   ChevronUp,
   ChevronDown,
   Sparkles,
-  Upload
+  Upload,
+  ShoppingBag,
+  Gift,
+  Box,
+  Bookmark,
+  Tag,
+  CreditCard,
+  Contact,
+  Layers,
+  QrCode,
+  Heart,
+  Palette,
+  Scissors,
+  Award,
+  Eye,
+  Sliders
 } from "lucide-react";
 import { 
   Category, 
@@ -33,8 +48,11 @@ import {
   ContactSettings, 
   DiscountCode,
   BagRibbonHandle,
-  AISettings
+  AISettings,
+  PaymentMethod,
+  FeaturedProduct
 } from "../types";
+import { useTranslation, LocaleType } from "../locales/i18n";
 
 export interface AdminPanelProps {
   isOpen: boolean;
@@ -56,7 +74,9 @@ export interface AdminPanelProps {
   decorativeBagsPricingRules: PricingRules | null;
   submissions: OrderSubmission[];
   bagRibbonHandles: BagRibbonHandle[];
+  featuredProducts?: FeaturedProduct[];
   aiSettings?: AISettings;
+  paymentMethods?: PaymentMethod[];
   
   onSaveConfig: (updatedConfig: any) => Promise<void>;
   onClearSubmissions: () => Promise<void>;
@@ -83,11 +103,49 @@ export default function AdminPanel({
   decorativeBagsPricingRules,
   submissions,
   bagRibbonHandles = [],
+  featuredProducts = [],
   aiSettings,
+  paymentMethods = [],
   onSaveConfig,
   onClearSubmissions,
   onReload
 }: AdminPanelProps) {
+  const { locale, setLocale, t } = useTranslation();
+
+  const generateSlugFromName = (name: string): string => {
+    const armToLat: Record<string, string> = {
+      'ա': 'a', 'բ': 'b', 'գ': 'g', 'դ': 'd', 'ե': 'e', 'զ': 'z', 'է': 'e', 'ը': 'y', 'թ': 't', 'ժ': 'zh',
+      'ի': 'i', 'լ': 'l', 'խ': 'kh', 'ծ': 'ts', 'կ': 'k', 'հ': 'h', 'ձ': 'dz', 'ղ': 'gh', 'ճ': 'ch', 'մ': 'm',
+      'յ': 'y', 'ն': 'n', 'շ': 'sh', 'ոչ': 'vo', 'չ': 'ch', 'պ': 'p', 'ջ': 'j', 'ռ': 'r', 'ս': 's', 'վ': 'v',
+      'տ': 't', 'ր': 'r', 'ց': 'ts', 'ու': 'u', 'փ': 'p', 'ք': 'q', 'օ': 'o', 'ֆ': 'f', 'և': 'ev',
+      'Ա': 'A', 'Բ': 'B', 'Գ': 'G', 'Դ': 'D', 'Ե': 'E', 'Զ': 'Z', 'Է': 'E', 'Ը': 'Y', 'Թ': 'T', 'Ժ': 'ZH',
+      'Ի': 'I', 'Լ': 'L', 'Խ': 'KH', 'Ծ': 'TS', 'Կ': 'K', 'Հ': 'H', 'Ձ': 'DZ', 'Ղ': 'GH', 'Ճ': 'CH', 'Մ': 'M',
+      'Յ': 'Y', 'Ն': 'N', 'Շ': 'SH', 'Ո': 'VO', 'Չ': 'CH', 'Պ': 'P', 'Ջ': 'J', 'Ռ': 'R', 'Ս': 'S', 'Վ': 'V',
+      'Տ': 'T', 'Ր': 'R', 'Ց': 'TS', 'ՈՒ': 'U', 'Փ': 'P', 'Ք': 'Q', 'Օ': 'O', 'Ֆ': 'F'
+    };
+    let result = "";
+    for (let i = 0; i < name.length; i++) {
+      const char = name[i];
+      result += armToLat[char] || char;
+    }
+    return result
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-_]/g, '')
+      .replace(/\s+/g, '_')
+      .substring(0, 30);
+  };
+
+  const getUniqueSlug = (name: string, list: { id: string }[], ignoreId?: string): string => {
+    const base = generateSlugFromName(name) || "category";
+    let slug = base;
+    let counter = 2;
+    while (list.some(item => item.id === slug && item.id !== ignoreId)) {
+      slug = `${base}_${counter}`;
+      counter++;
+    }
+    return slug;
+  };
+
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [pricingSubTab, setPricingSubTab] = useState<"standard" | "decorative" | "ribbons" | "stickers" | "giftcards" | "businesscards">("standard");
   const [usernameInput, setUsernameInput] = useState("");
@@ -97,6 +155,7 @@ export default function AdminPanel({
   // Edit states holding current modifications
   const [editCategories, setEditCategories] = useState<Category[]>(categories);
   const [editProducts, setEditProducts] = useState<Product[]>(products);
+  const [editFeaturedProducts, setEditFeaturedProducts] = useState<FeaturedProduct[]>(featuredProducts || []);
   const [editDimensions, setEditDimensions] = useState<Dimension[]>(dimensions);
   const [editFinishes, setEditFinishes] = useState<Finish[]>(finishes);
   const [editPapers, setEditPapers] = useState<PaperType[]>(papers);
@@ -116,9 +175,14 @@ export default function AdminPanel({
       enabled: true
     }
   );
+  const [editPaymentMethods, setEditPaymentMethods] = useState<PaymentMethod[]>(paymentMethods || []);
+  const [hasSynced, setHasSynced] = useState(false);
   
   // Auxiliary UI filter/search
   const [siteTextSearch, setSiteTextSearch] = useState("");
+  const [categorySubTab, setCategorySubTab] = useState<"portal" | "dashboard">("portal");
+  const [selectedDashboardCategory, setSelectedDashboardCategory] = useState<string>("all");
+  const [showLiveClientPreview, setShowLiveClientPreview] = useState(false);
 
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -209,8 +273,18 @@ export default function AdminPanel({
     reader.readAsText(file);
   };
 
+  // Reset sync flag when the modal is closed, so that when it is opened again it gets fresh sync
+  useEffect(() => {
+    if (!isOpen) {
+      setHasSynced(false);
+    }
+  }, [isOpen]);
+
   // Deep sync helper: Whenever database configs change/reload from server, sync them immediately to input fields
   useEffect(() => {
+    if (!isOpen) return;
+    if (hasSynced) return;
+
     console.group("Admin Debug");
     console.log("[AdminPanel Mount & Update] Props received from parent:", {
       categories,
@@ -226,6 +300,7 @@ export default function AdminPanel({
 
     setEditCategories(categories);
     setEditProducts(products);
+    setEditFeaturedProducts(featuredProducts || []);
     setEditDimensions(dimensions);
     setEditFinishes(finishes);
     setEditPapers(papers);
@@ -237,80 +312,45 @@ export default function AdminPanel({
     setEditDecPricingRules(decorativeBagsPricingRules);
     setEditPrintingMethods(printingMethods || []);
     setEditBagRibbonHandles(bagRibbonHandles || []);
+    setEditPaymentMethods(paymentMethods || []);
     if (aiSettings) {
       setEditAiSettings(aiSettings);
     }
-  }, [categories, products, dimensions, finishes, papers, tiers, discountCodes, siteTexts, contactSettings, pricingRules, decorativeBagsPricingRules, printingMethods, bagRibbonHandles, aiSettings]);
+    setHasSynced(true);
+  }, [isOpen, hasSynced, categories, products, featuredProducts, dimensions, finishes, papers, tiers, discountCodes, siteTexts, contactSettings, pricingRules, decorativeBagsPricingRules, printingMethods, bagRibbonHandles, aiSettings, paymentMethods]);
 
-  // Non-blocking admin authentication diagnostic tracking and investigation
+  // Non-blocking admin authentication check running asynchronously in the background to confirm server validity
   useEffect(() => {
-    console.group("Admin Debug - Token Validation Flow");
-    console.log("[Authentication Integrity Check] Initializing token validation control.");
-    if (!adminToken) {
-      console.log("[Authentication Integrity Check] Present Status: Unauthenticated. Safely displaying standard Secure Login Gate. This is expected and non-blocking for normal platform operators.");
-    } else {
-      console.log("[Authentication Integrity Check] Present Status: Token Detected (starts with: " + adminToken.substring(0, 10) + "...). Bypassing login screen and loading dashboard components with maximum priority.");
-      
-      // Verification call running completely asynchronously in the background to confirm server validity
-      fetch("/api/admin/me", {
-        headers: { "Authorization": `Bearer ${adminToken}` }
-      })
-      .then(async (res) => {
-        if (res.status === 401) {
-          console.log("[Authentication Integrity Check] Stale session identified (401 Unauthorized).");
-        } else {
-          try {
-            const body = await res.json().catch(() => null);
-            if (body && body.success) {
-              console.log("[Authentication Integrity Check] Background token validation succeeded:", body);
-            }
-          } catch (e) {
-            // Safe fallback
-          }
-        }
-      })
-      .catch((error) => {
-        console.log("[Authentication Integrity Check] Background token validation completed or bypassed gracefully.");
-      });
-    }
-    console.groupEnd();
-  }, [adminToken]);
-
-  // Diagnostic logs to check and monitor state variables for product categories and pricing rules
-  useEffect(() => {
-    console.group("Admin Debug - State Variables Check");
-    console.log("[Diagnostic Log] === AdminPanel Initialization Check ===");
-    console.log("[Diagnostic Log] Props received:", {
-      categoriesLength: categories?.length,
-      productsLength: products?.length,
-      pricingRulesValid: !!pricingRules,
-      decPricingRulesValid: !!decorativeBagsPricingRules,
-      hasContactSettings: !!contactSettings,
-    });
-    console.log("[Diagnostic Log] Current edit states in Admin Panel:", {
-      editCategoriesLength: editCategories?.length,
-      editProductsLength: editProducts?.length,
-      editPricingRulesValid: !!editPricingRules,
-      editDecPricingRulesValid: !!editDecPricingRules,
-    });
+    if (!isOpen || !adminToken) return;
     
-    if (!categories || categories.length === 0) {
-      console.warn("[Diagnostic Log] WARNING: Product categories are empty or undefined!");
-    } else {
-      console.log("[Diagnostic Log] Product Categories list:", categories.map(c => ({ id: c.id, name: c.name })));
-    }
+    fetch("/api/admin/me", {
+      headers: { "Authorization": `Bearer ${adminToken}` }
+    })
+    .then(async (res) => {
+      if (res.status === 401) {
+        // Session staled, handled gracefully
+      } else {
+        const body = await res.json().catch(() => null);
+        if (body && body.success) {
+          // Validation succeeded
+        }
+      }
+    })
+    .catch(() => {
+      // Safe fallback
+    });
+  }, [isOpen, adminToken]);
 
-    if (!pricingRules) {
-      console.warn("[Diagnostic Log] WARNING: Pricing rules are null or undefined!");
-    } else {
-      console.log("[Diagnostic Log] Pricing Rules keys:", Object.keys(pricingRules));
+  // Clean, noiseless state sync diagnostics
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    // Smooth check to ensure catalog contents are initialized
+    const isCatalogLoaded = categories?.length > 0 && products?.length > 0 && !!pricingRules;
+    if (isCatalogLoaded) {
+      console.log("[CMS Integrity Check] Live catalog database successfully synchronized.");
     }
-
-    if (!products || products.length === 0) {
-      console.warn("[Diagnostic Log] WARNING: Products list is empty or undefined!");
-    }
-    console.groupEnd();
-  }, [categories, products, pricingRules, decorativeBagsPricingRules, editCategories, editProducts, editPricingRules, editDecPricingRules]);
+  }, [isOpen, categories, products, pricingRules]);
 
   if (!isOpen) return null;
 
@@ -335,7 +375,7 @@ export default function AdminPanel({
     `).join("");
 
     printDiv.innerHTML = `
-      <div style="font-family: 'Noto Sans Armenian', 'Segoe UI', Helvetica, Arial, sans-serif; padding: 25px; color: #000; background: #fff;">
+      <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 25px; color: #000; background: #fff;">
         <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px;">
           <h1 style="font-size: 20pt; font-family: 'Cormorant Garamond', serif; letter-spacing: 2px; margin: 0 0 5px 0;">CAPSULE CONCEPT</h1>
           <h2 style="font-size: 12pt; font-weight: normal; margin: 0; text-transform: uppercase; letter-spacing: 1px;">ՍՏԱՑՎԱԾ ՊԱՏՎԵՐՆԵՐԻ ԱՄՓՈՓԱԳԻՐ</h2>
@@ -362,7 +402,7 @@ export default function AdminPanel({
     printDiv.id = "printable-section";
     
     printDiv.innerHTML = `
-      <div style="font-family: 'Noto Sans Armenian', 'Segoe UI', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px 20px; color: #000; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
+      <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px 20px; color: #000; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
         <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 15px;">
           <h1 style="font-size: 22pt; font-family: 'Cormorant Garamond', serif; letter-spacing: 2px; margin: 0 0 5px 0;">CAPSULE CONCEPT</h1>
           <div style="font-size: 10pt; text-transform: uppercase; letter-spacing: 1.5px; color: #333;">ՊԱՏՎԵՐԻ ՀԱՇԻՎ-ԱՊՐԱՆՔԱԳԻՐ</div>
@@ -435,6 +475,7 @@ export default function AdminPanel({
     const payload = {
       categories: editCategories,
       products: editProducts,
+      featuredProducts: editFeaturedProducts,
       dimensions: editDimensions,
       finishes: editFinishes,
       pricingRules: editPricingRules,
@@ -446,8 +487,10 @@ export default function AdminPanel({
       siteTexts: editSiteTexts,
       printingMethods: editPrintingMethods,
       bagRibbonHandles: editBagRibbonHandles,
-      aiSettings: editAiSettings
+      aiSettings: editAiSettings,
+      paymentMethods: editPaymentMethods
     };
+    setHasSynced(false);
     await onSaveConfig(payload);
   };
 
@@ -538,6 +581,7 @@ export default function AdminPanel({
     };
 
     try {
+      setHasSynced(false);
       await onSaveConfig(payload);
       alert(`Դինամիկ բաժինը և ապրանքը հաջողությամբ ստեղծվել և պահպանվել են բազայում / Dynamic Category "${cat.name}" created and saved successfully!`);
       setActiveTab("categories");
@@ -546,25 +590,296 @@ export default function AdminPanel({
     }
   };
 
+  const adminTranslations: Record<LocaleType, {
+    enterprisePlatform: string;
+    controlHub: string;
+    logout: string;
+    headerTitle: string;
+    groups: Record<string, string>;
+    tabs: Record<string, string>;
+  }> = {
+    hy: {
+      enterprisePlatform: "✨ ԿԱՌԱՎԱՐՄԱՆ ՊԼԱՏՖՈՐՄ",
+      controlHub: "Capsule կառավարման կենտրոն",
+      logout: "ԴՈՒՐՍ ԳԱԼ / LOG OUT",
+      headerTitle: "Ադմինիստրատորի Վահանակ",
+      groups: {
+        "📊 Core Metrics": "📊 Հիմնական Ցուցանիշներ",
+        "🛒 Catalog & Config": "🛒 Կատալոգ և Կարգավորումներ",
+        "⚙️ Pricing & Logic": "⚙️ Գնագոյացում և Տրամաբանություն",
+        "🌍 Content & UI": "🌍 Բովանդակություն և Դիզայն",
+        "🛡️ System Management": "🛡️ Համակարգի Կառավարում"
+      },
+      tabs: {
+        dashboard: "📊 Վահանակ",
+        analytics: "📈 Խորը Վերլուծություն",
+        crm: "👥 CRM Հաճախորդներ",
+        submissions: "📋 Պատվերների Կենտրոն",
+        whatsapp_logs: "💬 WhatsApp Լոգեր",
+        audit_log: "📜 Գործողությունների Գիրք",
+        product_builder: "🛍️ Ապրանքի Ստեղծող",
+        dynamic_category_builder: "✨ Կատեգորիաների Կառավարիչ",
+        products: "📦 Legacy Ապրանքներ",
+        categories: "🏷️ Տեսակներ և MOQ",
+        sizes: "📐 Չափսեր և Ձևաչափեր",
+        papers: "📄 Թղթի Գրադարան",
+        handles: "🎗️ Բռնակներ և Ժապավեններ",
+        finishes: "✨ Ֆոլգա և ՈՒՎ Լաք",
+        promo: "🎫 Պրոմո Կոդեր",
+        calculator_builder: "🔀 Հաշվիչի Կառուցող",
+        pricing_engine: "🔢 Գների Կանոններ",
+        pricing_standard: "🛍️ Տոպրակներ (Ստանդարտ)",
+        pricing_decorative: "✨ Տոպրակներ (Դեկորատիվ)",
+        pricing_ribbons: "🎗️ Ժապավեններ",
+        pricing_stickers: "🏷️ Պիտակներ",
+        pricing_giftcards: "🎁 Նվեր Քարտեր",
+        pricing_businesscards: "🪪 Այցեքարտեր",
+        box_pricing: "📦 Տուփեր",
+        tiers: "📊 Քանակական Խմբեր",
+        taxes: "⚖️ Մարժաներ / Գործակիցներ",
+        printing: "🖨️ Տպագրության Կարգավորումներ",
+        page_builder: "🎨 Էջի Կառուցող",
+        translation_manager: "🌐 Միասնական Թարգմանություններ",
+        sitetexts: "📝 Էջի Տեքստեր (Old)",
+        media_library: "🖼️ Մեդիա Գրադարան",
+        theme_manager: "🎨 Visual Թեմաներ",
+        contact: "📞 Կապի Կանալներ",
+        permissions: "👥 Թիմի Իրավունքներ",
+        api_manager: "🔗 Ինտեգրումներ և API",
+        ai_agent: "🤖 AI Գործակալ",
+        ai_admin: "🧠 AI Կարգավորումներ",
+        credentials: "🔒 Մուտքի Տվյալներ",
+        backups: "💾 Հին Սինք",
+        backup_center: "💽 Enterprise Վերականգնում",
+        database_manager: "🗄️ Հիմնական Տվյալների Բազա",
+        import_export: "💾 Excel և CSV Սինք"
+      }
+    },
+    en: {
+      enterprisePlatform: "✨ ENTERPRISE PLATFORM",
+      controlHub: "Capsule Control Hub",
+      logout: "LOG OUT",
+      headerTitle: "Administrator Portal",
+      groups: {
+        "📊 Core Metrics": "📊 Core Metrics",
+        "🛒 Catalog & Config": "🛒 Catalog & Config",
+        "⚙️ Pricing & Logic": "⚙️ Pricing & Logic",
+        "🌍 Content & UI": "🌍 Content & UI",
+        "🛡️ System Management": "🛡️ System Management"
+      },
+      tabs: {
+        dashboard: "📊 Dashboard",
+        analytics: "📈 Deep Analytics",
+        crm: "👥 CRM Client Deck",
+        submissions: "📋 Orders Center",
+        whatsapp_logs: "💬 WhatsApp Tracker",
+        audit_log: "📜 Audit Ledger",
+        product_builder: "🛍️ Product Builder",
+        dynamic_category_builder: "✨ Dynamic Category Builder",
+        products: "📦 Legacy Other Products",
+        categories: "🏷️ Kinds & MOQ",
+        sizes: "📐 Sizes & Formats",
+        papers: "📄 Paper Library",
+        handles: "🎗️ Handle Accessories",
+        finishes: "✨ Foil & UV Finishes",
+        promo: "🎫 Promo Coupons",
+        calculator_builder: "🔀 Calculator Builder",
+        pricing_engine: "🔢 Pricing Rules",
+        pricing_standard: "🛍️ Bags (Standard)",
+        pricing_decorative: "✨ Bags (Decorative)",
+        pricing_ribbons: "🎗️ Ribbon pricing",
+        pricing_stickers: "🏷️ Sticker pricing",
+        pricing_giftcards: "🎁 Gift Cards",
+        pricing_businesscards: "🪪 Business Cards",
+        box_pricing: "📦 Box pricing",
+        tiers: "📊 Tier Quantities",
+        taxes: "⚖️ Margins / Coeffs",
+        printing: "🖨️ Print Settings",
+        page_builder: "🎨 Page Web Builder",
+        translation_manager: "🌐 Unified Translations",
+        sitetexts: "📝 Old Site Texts",
+        media_library: "🖼️ Media Assets",
+        theme_manager: "🎨 Visual Themes",
+        contact: "📞 Channel Controls",
+        permissions: "👥 Team Permissions",
+        api_manager: "🔗 Integrations & API",
+        ai_agent: "🤖 AI Agent Admin",
+        ai_admin: "🧠 AI Settings Engine",
+        credentials: "🔒 Credentials Control",
+        backups: "💾 Legacy Sync",
+        backup_center: "💽 Enterprise Recovery",
+        database_manager: "🗄️ Core Database Manager",
+        import_export: "💾 Excel & CSV Sync"
+      }
+    },
+    ru: {
+      enterprisePlatform: "✨ УПРАВЛЯЮЩАЯ ПЛАТФОРМА",
+      controlHub: "Capsule Панель управления",
+      logout: "ВЫЙТИ / LOG OUT",
+      headerTitle: "Панель Администратора",
+      groups: {
+        "📊 Core Metrics": "📊 Основные метрики",
+        "🛒 Catalog & Config": "🛒 Каталог и конфигурация",
+        "⚙️ Pricing & Logic": "⚙️ Цены и логика",
+        "🌍 Content & UI": "🌍 Контент и дизайн",
+        "🛡️ System Management": "🛡️ Управление системой"
+      },
+      tabs: {
+        dashboard: "📊 Панель управления",
+        analytics: "📈 Глубокая аналитика",
+        crm: "👥 CRM Клиенты",
+        submissions: "📋 Центр заказов",
+        whatsapp_logs: "💬 WhatsApp логи",
+        audit_log: "📜 Журнал аудита",
+        product_builder: "🛍️ Конструктор товаров",
+        dynamic_category_builder: "✨ Конструктор категорий",
+        products: "📦 Другие товары (Legacy)",
+        categories: "🏷️ Виды и MOQ",
+        sizes: "📐 Размеры и форматы",
+        papers: "📄 Библиотека бумаги",
+        handles: "🎗️ Ручки и аксессуары",
+        finishes: "✨ Тиснение фольгой & УФ",
+        promo: "🎫 Промо-купоны",
+        calculator_builder: "🔀 Конструктор калькулятора",
+        pricing_engine: "🔢 Правила цен",
+        pricing_standard: "🛍️ Пакеты (Стандарт)",
+        pricing_decorative: "✨ Пакеты (Декоративные)",
+        pricing_ribbons: "🎗️ Расценки лент",
+        pricing_stickers: "🏷️ Расценки наклеек",
+        pricing_giftcards: "🎁 Подарочные карты",
+        pricing_businesscards: "🪪 Визитные карточки",
+        box_pricing: "📦 Коробки",
+        tiers: "📊 Тиражные группы",
+        taxes: "⚖️ Маржа и коэффициенты",
+        printing: "🖨️ Настройки печати",
+        page_builder: "🎨 Конструктор веб-страниц",
+        translation_manager: "🌐 Единая локализация",
+        sitetexts: "📝 Старые тексты сайта",
+        media_library: "🖼️ Медиабиблиотека",
+        theme_manager: "🎨 Визуальные темы",
+        contact: "📞 Каналы связи",
+        permissions: "👥 Права команды",
+        api_manager: "🔗 Интеграции и API",
+        ai_agent: "🤖 ИИ-Агент",
+        ai_admin: "🧠 Настройки ИИ",
+        credentials: "🔒 Управление доступом",
+        backups: "💾 Синхронизация данных",
+        backup_center: "💽 Восстановление данных",
+        database_manager: "🗄️ База данных ядра",
+        import_export: "💾 Синхронизация Excel/CSV"
+      }
+    },
+    ar: {
+      enterprisePlatform: "✨ منصة الإدارة والمتابعة",
+      controlHub: "مركز إدارة تابلت كابسول",
+      logout: "تسجيل الخروج",
+      headerTitle: "لوحة تحكم المدير العام",
+      groups: {
+        "📊 Core Metrics": "📊 المؤشرات والتحليلات",
+        "🛒 Catalog & Config": "🛒 المنتجات والتهيئة",
+        "⚙️ Pricing & Logic": "⚙️ قواعد وحساب الأسعار",
+        "🌍 Content & UI": "🌍 المحتوى والواجهة",
+        "🛡️ System Management": "🛡️ إدارة النظام والأمان"
+      },
+      tabs: {
+        dashboard: "📊 لوحة التحكم",
+        analytics: "📈 تحليلات عميقة",
+        crm: "👥 إدارة العملاء CRM",
+        submissions: "📋 مركز الطلبات",
+        whatsapp_logs: "💬 نظام تتبع واتساب",
+        audit_log: "📜 سجل التدقيق والمراقبة",
+        product_builder: "🛍️ منشئ المنتجات",
+        dynamic_category_builder: "✨ منشئ الفئات الديناميكي",
+        products: "📦 منتجات قديمة أخرى",
+        categories: "🏷️ أنواع المنتجات لـ MOQ",
+        sizes: "📐 الأحجام والمقاسات",
+        papers: "📄 مكتبة أنواع الورق",
+        handles: "🎗️ مقابض الحلقات والشرائط",
+        finishes: "✨ التشطيبات الفاخرة واللمعان",
+        promo: "🎫 الكوبونات والخصومات",
+        calculator_builder: "🔀 منشئ نظام الحساب المتقدم",
+        pricing_engine: "🔢 خوارزمية تسعير القواعد",
+        pricing_standard: "🛍️ الحقائب الورقية (القياسية)",
+        pricing_decorative: "📊 الحقائب الورقية (المزخرفة)",
+        pricing_ribbons: "🎗️ تسعير الأشرطة المطبوعة",
+        pricing_stickers: "🏷️ تسعير الملصقات اللاصقة",
+        pricing_giftcards: "🎁 تسعير بطاقات الهدايا",
+        pricing_businesscards: "🪪 تسعير كروت الأعمال",
+        box_pricing: "📦 تسعير كرتون التغليف",
+        tiers: "📊 فئات حدود الكميات",
+        taxes: "⚖️ معاملات ونسب الربح",
+        printing: "🖨️ إعدادات ماكينات الطباعة",
+        page_builder: "🎨 منشئ صفحات الويب",
+        translation_manager: "🌐 إدارة الترجمات الموحدة",
+        sitetexts: "📝 نصوص الموقع القديمة",
+        media_library: "🖼️ مكتبة الوسائط والصور",
+        theme_manager: "🎨 التحكم في القوالب والألوان",
+        contact: "📞 إدارة قنوات الاتصال",
+        permissions: "👥 صلاحيات فريق العمل",
+        api_manager: "🔗 الربط البرمجي والـ API",
+        ai_agent: "🤖 مدير عميل الذكاء الاصطناعي",
+        ai_admin: "🧠 خوارزمية الذكاء الاصطناعي",
+        credentials: "🔒 أمان لوحة التحكم",
+        backups: "💾 نقل ومزامنة البيانات",
+        backup_center: "💽 نظام استرداد الكوارث",
+        database_manager: "🗄️ نظام إدارة قاعدة البيانات",
+        import_export: "💾 تصدير واستيراد ملفات Excel/CSV"
+      }
+    }
+  };
+
+  const getEnterprisePlatformTr = () => adminTranslations[locale]?.enterprisePlatform || adminTranslations["en"].enterprisePlatform;
+  const getControlHubTr = () => adminTranslations[locale]?.controlHub || adminTranslations["en"].controlHub;
+  const getLogoutTr = () => adminTranslations[locale]?.logout || adminTranslations["en"].logout;
+  const getHeaderTitleTr = () => adminTranslations[locale]?.headerTitle || adminTranslations["en"].headerTitle;
+  const getGroupTr = (title: string) => adminTranslations[locale]?.groups[title] || adminTranslations["en"]?.groups[title] || title;
+  const getTabTr = (key: string, original: string) => adminTranslations[locale]?.tabs[key] || adminTranslations["en"]?.tabs[key] || original;
+
   return (
-    <div className="fixed inset-0 bg-capsule-dark/60 backdrop-blur-md z-[2000] flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-capsule-surf border border-capsule-accent/20 w-full max-w-5xl md:rounded-3xl flex flex-col shadow-2xl overflow-hidden min-h-[90vh] md:min-h-0 md:max-h-[92vh]">
+    <div className="fixed inset-0 bg-capsule-dark/70 backdrop-blur-md z-[2000] flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-capsule-surf border border-[#C59B6D]/30 w-full max-w-[96vw] xl:max-w-[1450px] h-[92vh] md:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
         
-        {/* Header bar */}
-        <div className="px-6 py-4 bg-capsule-accent text-capsule-surf flex items-center justify-between border-b border-capsule-accent/20 shrink-0">
+        {/* Header bar - Premium Dark Green & Delicate Bronze styling */}
+        <div className="px-6 py-4 bg-[#1A3F25] text-white flex items-center justify-between border-b border-[#C59B6D]/30 shrink-0">
           <div className="flex items-center gap-2.5">
-            <Settings size={20} className="text-capsule-surf animate-spin-slow" />
+            <Settings size={20} className="text-[#C59B6D] animate-spin-slow" />
             <div>
-              <h2 className="font-serif font-light text-xl tracking-wider uppercase">Ադմինիստրատորի Վահանակ</h2>
-              <p className="text-[9px] uppercase tracking-widest opacity-75 font-semibold">Capsule Concept CMS System</p>
+              <h2 className="font-serif font-light text-xl tracking-wider uppercase text-[#FAF9F6]">{getHeaderTitleTr()}</h2>
+              <p className="text-[9px] uppercase tracking-widest text-[#C59B6D] font-bold">Capsule Concept CMS Platform & Production Control</p>
             </div>
           </div>
-          <button 
-            onClick={onClose}
-            className="p-2 bg-capsule-surf/10 hover:bg-capsule-surf/20 text-capsule-surf hover:scale-105 transition-all text-xs border border-capsule-surf/20 rounded-full cursor-pointer"
-          >
-            <X size={15} />
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Embedded Multi-locale Switcher */}
+            <div className="flex items-center gap-1 bg-white/10 p-1 rounded-full border border-white/20 select-none">
+              {[
+                { code: "hy", flag: "🇦🇲", name: "AM" },
+                { code: "en", flag: "🇬🇧", name: "EN" },
+                { code: "ru", flag: "🇷🇺", name: "RU" },
+                { code: "ar", flag: "🇦🇪", name: "AR" }
+              ].map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setLocale(lang.code as LocaleType)}
+                  className={`px-2 py-0.5 text-[8px] font-black rounded-full cursor-pointer transition-all uppercase flex items-center gap-1 border border-transparent ${
+                    locale === lang.code 
+                      ? "bg-[#C59B6D] text-[#1A3F25] border-white/25 shadow-sm font-extrabold" 
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                  title={lang.name}
+                >
+                  <span>{lang.flag}</span>
+                  <span className="hidden sm:inline">{lang.name}</span>
+                </button>
+              ))}
+            </div>
+
+            <button 
+              onClick={onClose}
+              className="p-2 bg-white/10 hover:bg-[#C59B6D] hover:text-[#1A3F25] text-[#FAF9F6] hover:scale-105 transition-all text-xs border border-white/25 rounded-full cursor-pointer flex items-center justify-center h-8 w-8"
+            >
+              <X size={15} />
+            </button>
+          </div>
         </div>
 
         {/* Secure login gate */}
@@ -611,13 +926,13 @@ export default function AdminPanel({
             </form>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col md:flex-row h-full overflow-hidden">
+          <div className="flex-1 flex flex-col md:flex-row h-full overflow-hidden bg-[#FAFAF8]">
             
-            {/* Sidebar navigation tabs */}
-            <div className="w-full md:w-64 bg-[#FAF9F6] border-r border-capsule-accent/10 flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible md:overflow-y-auto shrink-0 divide-x md:divide-x-0 divide-capsule-accent/10 scrollbar-thin">
-              <div className="p-4 hidden md:block border-b border-capsule-accent/5 bg-[#1A3F25]/5">
-                <span className="text-[10px] tracking-widest font-extrabold uppercase text-[#1A3F25] block">ENTERPRISE PLATFORM</span>
-                <span className="text-[9px] text-[#7C9082] uppercase font-bold mt-0.5 block">Capsule Concept Hub</span>
+            {/* Sidebar navigation tabs - Luxurious layout */}
+            <div className="w-full md:w-64 bg-[#F5F2EB] border-r border-[#C59B6D]/20 flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible md:overflow-y-auto shrink-0 divide-x md:divide-x-0 divide-[#C59B6D]/15 scrollbar-thin">
+              <div className="p-4 hidden md:block border-b border-[#C59B6D]/15 bg-[#1A3F25]/5">
+                <span className="text-[10px] tracking-widest font-extrabold uppercase text-[#1A3F25] block">{getEnterprisePlatformTr()}</span>
+                <span className="text-[9px] text-[#C59B6D] uppercase font-bold mt-0.5 block">{getControlHubTr()}</span>
               </div>
               
               <div className="flex flex-row md:flex-col md:space-y-4 md:p-3 overflow-y-auto flex-1 h-full scrollbar-none">
@@ -637,12 +952,16 @@ export default function AdminPanel({
                     title: "🛒 Catalog & Config",
                     items: [
                       { key: "product_builder", lbl: "🛍️ Product Builder" },
+                      { key: "featured_products", lbl: "🌟 Featured / Home Page" },
                       { key: "dynamic_category_builder", lbl: "✨ Dynamic Category Builder" },
                       { key: "products", lbl: "📦 Legacy Other Products" },
                       { key: "categories", lbl: "🏷️ Kinds & MOQ" },
                       { key: "sizes", lbl: "📐 Sizes & Formats" },
                       { key: "papers", lbl: "📄 Paper Library" },
-                      { key: "handles", lbl: "🎗️ Handle Accessories" }
+                      { key: "handles", lbl: "🎗️ Handle Accessories" },
+                      { key: "finishes", lbl: "✨ Foil & UV Finishes" },
+                      { key: "promo", lbl: "🎫 Promo Coupons" },
+                      { key: "payment_methods", lbl: "💳 Payment Methods" }
                     ]
                   },
                   {
@@ -668,7 +987,9 @@ export default function AdminPanel({
                       { key: "page_builder", lbl: "🎨 Page Web Builder" },
                       { key: "translation_manager", lbl: "🌐 Unified Translations" },
                       { key: "sitetexts", lbl: "📝 Old Site Texts" },
-                      { key: "media_library", lbl: "🖼️ Media Assets" }
+                      { key: "media_library", lbl: "🖼️ Media Assets" },
+                      { key: "theme_manager", lbl: "🎨 Visual Themes" },
+                      { key: "contact", lbl: "📞 Channel Controls" }
                     ]
                   },
                   {
@@ -680,13 +1001,15 @@ export default function AdminPanel({
                       { key: "ai_admin", lbl: "🧠 AI Settings Engine" },
                       { key: "credentials", lbl: "🔒 Credentials Control" },
                       { key: "backups", lbl: "💾 Legacy Sync" },
-                      { key: "backup_center", lbl: "💽 Enterprise Recovery" }
+                      { key: "backup_center", lbl: "💽 Enterprise Recovery" },
+                      { key: "database_manager", lbl: "🗄️ Core Database Manager" },
+                      { key: "import_export", lbl: "💾 Excel & CSV Sync" }
                     ]
                   }
                 ].map((group) => (
                   <div key={group.title} className="flex flex-row md:flex-col shrink-0">
-                    <span className="hidden md:block text-[9px] font-black uppercase text-[#C59B6D] tracking-widest px-3 mb-1.5 mt-2">
-                      {group.title}
+                    <span className="hidden md:block text-[9px] font-black uppercase text-[#1A3F25]/80 tracking-widest px-3 mb-1.5 mt-2 border-l border-[#C59B6D] pl-2">
+                      {getGroupTr(group.title)}
                     </span>
                     <div className="flex flex-row md:flex-col shrink-0 md:space-y-0.5">
                       {group.items.map((adTab) => {
@@ -695,13 +1018,14 @@ export default function AdminPanel({
                           <button
                             key={adTab.key}
                             onClick={() => setActiveTab(adTab.key)}
-                            className={`py-2 px-3 text-[10px] font-bold uppercase tracking-wider text-left transition-all shrink-0 cursor-pointer rounded-lg border-b-2 md:border-b-0 md:border-l-2 ${
+                            className={`py-2 px-3 text-[10px] font-bold uppercase tracking-wider text-left transition-all shrink-0 cursor-pointer rounded-lg flex items-center justify-between border-b-2 md:border-b-0 ${
                               isAct 
-                                ? "bg-[#1A3F25] text-white border-[#C59B6D]" 
-                                : "text-capsule-text-muted hover:bg-[#1A3F25]/5 hover:text-[#1A3F25] border-transparent"
+                                ? "bg-[#1A3F25] text-white shadow-md border-l-4 border-[#C59B6D]" 
+                                : "text-[#3D271B]/80 hover:bg-[#1A3F25]/5 hover:text-[#1A3F25] border-l-4 border-transparent"
                             }`}
                           >
-                            {adTab.lbl}
+                            <span>{getTabTr(adTab.key, adTab.lbl)}</span>
+                            {isAct && <span className="w-1.5 h-1.5 rounded-full bg-[#C59B6D] animate-pulse shrink-0 ml-1" />}
                           </button>
                         );
                       })}
@@ -712,10 +1036,10 @@ export default function AdminPanel({
               
               <button
                 onClick={onLogout}
-                className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-red-700 hover:bg-red-50 hover:text-red-900 transition-all text-left shrink-0 border-t border-capsule-accent/10 cursor-pointer flex items-center gap-1.5"
+                className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-red-700 hover:bg-red-50 hover:text-red-900 transition-all text-left shrink-0 border-t border-[#C59B6D]/20 cursor-pointer flex items-center gap-1.5"
               >
                 <LogOut size={12} />
-                <span>ԴՈՒՐՍ ԳԱԼ / LOG OUT</span>
+                <span>{getLogoutTr()}</span>
               </button>
             </div>
 
@@ -1297,7 +1621,7 @@ export default function AdminPanel({
                   <div className="space-y-3">
                     {editPapers.map((paper, idx) => (
                       <div key={paper.id} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-3 rounded-xl flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center font-sans">
                           <input
                             type="text"
                             value={paper.name}
@@ -1379,101 +1703,156 @@ export default function AdminPanel({
 
               {/* TAB 4: CATEGORIES */}
               {activeTab === "categories" && (
-                <div className="space-y-6">
-                  {/* Part A: Main Homepage Hero Text Editor */}
-                  <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-4 md:p-5 space-y-4 shadow-sm">
-                    <div className="flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                      <Sparkles className="text-capsule-accent" size={16} />
-                      <h4 className="font-serif text-sm font-semibold text-capsule-accent">Գլխավոր էջի տեքստեր / Homepage Hero Texts</h4>
+                <div className="space-y-6 animate-fade-in" id="categories-and-storefront-manager">
+                  
+                  {/* Master Sub-Tabs Header */}
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-capsule-accent/15 pb-2">
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setCategorySubTab("portal")}
+                        className={`px-4 py-2 text-xs font-bold uppercase transition-all tracking-wider rounded-t-xl ${
+                          categorySubTab === "portal" 
+                            ? "bg-capsule-accent text-white shadow" 
+                            : "bg-capsule-surf border border-transparent hover:bg-capsule-accent/5 text-capsule-accent"
+                        }`}
+                      >
+                        🏷️ Բաժինների Կառավարում / Category Portal
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCategorySubTab("dashboard");
+                          // pre-set active category to first available
+                          if (editCategories.length > 0 && selectedDashboardCategory === "all") {
+                            setSelectedDashboardCategory(editCategories[0].id);
+                          }
+                        }}
+                        className={`px-4 py-2 text-xs font-bold uppercase transition-all tracking-wider rounded-t-xl ${
+                          categorySubTab === "dashboard" 
+                            ? "bg-capsule-accent text-white shadow" 
+                            : "bg-capsule-surf border border-transparent hover:bg-capsule-accent/5 text-capsule-accent"
+                        }`}
+                      >
+                        🛍️ Ցուցափեղկ և Դասավորություն / Product Sorting
+                      </button>
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                      <div>
-                        <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գովազդային Բեյջ (Hero Badge)</label>
-                        <input
-                          type="text"
-                          value={editSiteTexts.home_hero_badge || ""}
-                          onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_badge: e.target.value })}
-                          placeholder="Premium Customizer"
-                          className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Արտադրամասի Գլխագիր (Hero Title)</label>
-                        <input
-                          type="text"
-                          value={editSiteTexts.home_hero_title || ""}
-                          onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_title: e.target.value })}
-                          placeholder="The Capsule Lab"
-                          className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Հակիրճ Բացատրություն (Hero Description)</label>
-                        <textarea
-                          value={editSiteTexts.home_hero_desc || ""}
-                          onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_desc: e.target.value })}
-                          placeholder="Ընտրեք ցանկալի արտադրանքի տեսակը՝ հաշվարկը և 3D ֆիզիկական մոդելավորումը սկսելու համար։"
-                          className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent h-16 resize-none"
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գործողության հրահանգ (Action line)</label>
-                        <input
-                          type="text"
-                          value={editSiteTexts.home_hero_action || ""}
-                          onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_action: e.target.value })}
-                          placeholder="Խնդրում ենք ընտրել ստորև՝"
-                          className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
-                        />
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Part B: Category Header & Creator */}
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-capsule-accent/10 pb-3">
-                    <div>
-                      <h3 className="font-serif text-base text-capsule-accent font-semibold">Բաժինների կառավարում / Category Portal</h3>
-                      <p className="text-[11px] text-capsule-text-muted">Ավելացրեք, դասավորեք, ընտրեք ձևանմուշներ, փոփոխեք պատկերակներ ու տեքստեր</p>
-                    </div>
                     <button
                       type="button"
-                      onClick={() => {
-                        const newId = `category_${Date.now()}`;
-                        const newCat: Category = {
-                          id: newId,
-                          name: "Նոր բաժին / New division",
-                          active: true,
-                          minQty: 100,
-                          qtyPresets: [100, 300, 500, 1000],
-                          navLabel: "Նոր Բաժին",
-                          heroTitle: "Նոր արտադրատեսակ",
-                          heroBadge: "Custom Item",
-                          heroSmall: "Նոր / Brand New",
-                          ruleChips: "Բարձր Որակ | 3D visual",
-                          heroDesc: "Անհատական տպագրությամբ պատվերների առցանց հաշվարկ",
-                          template: "other_products",
-                          icon: "🎨"
-                        };
-                        setEditCategories([...editCategories, newCat]);
-                      }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-capsule-accent text-capsule-surf hover:bg-capsule-accent/90 text-xs font-bold transition-all shadow-sm cursor-pointer mr-2"
+                      onClick={() => setShowLiveClientPreview(true)}
+                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#554DDC] hover:bg-[#4339CA] text-white text-xs font-bold transition-all shadow-sm cursor-pointer hover:scale-[1.02] active:scale-95"
                     >
-                      <Plus size={14} className="stroke-[2.5]" />
-                      Ավելացնել Բաժին
-                    </button>
-                    
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("dynamic_category_builder")}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#D27E53] hover:bg-[#BE6C42] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
-                    >
-                      <Sparkles size={14} className="stroke-[2.5]" />
-                      Ավելացնել Դինամիկ Բաժին / Add Dynamic Category
+                      <Eye size={13} className="stroke-[2.5]" />
+                      <span>Տեսնել հաճախորդի աչքերով / Client View Preview</span>
                     </button>
                   </div>
 
-                  {/* Part C: Categories List Grid */}
+                  {/* ----------------- SUBTAB 1: PORTAL (Category Creator) ----------------- */}
+                  {categorySubTab === "portal" && (
+                    <div className="space-y-6">
+                      
+                      {/* Main Homepage Hero Text Editor */}
+                      <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-4 md:p-5 space-y-4 shadow-sm">
+                        <div className="flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
+                          <Sparkles className="text-capsule-accent" size={16} />
+                          <h4 className="font-serif text-sm font-semibold text-capsule-accent">Գլխավոր էջի տեքստեր / Homepage Hero Texts</h4>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                          <div>
+                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գովազդային Բեյջ (Hero Badge)</label>
+                            <input
+                              type="text"
+                              value={editSiteTexts.home_hero_badge || ""}
+                              onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_badge: e.target.value })}
+                              placeholder="Premium Customizer"
+                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Արտադրամասի Գլխագիր (Hero Title)</label>
+                            <input
+                              type="text"
+                              value={editSiteTexts.home_hero_title || ""}
+                              onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_title: e.target.value })}
+                              placeholder="The Capsule Lab"
+                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                            />
+                          </div>
+                          <div className="md:col-span-2">
+                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Հակիրճ Բացատրություն (Hero Description)</label>
+                            <textarea
+                              value={editSiteTexts.home_hero_desc || ""}
+                              onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_desc: e.target.value })}
+                              placeholder="Ընտրեք ցանկալի արտադրանքի տեսակը՝ հաշвարկը և 3D ֆիզիկական մոդելավորումը սկսելու համար։"
+                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent h-16 resize-none"
+                            />
+                          </div>
+                          <div className="md:col-span-2">
+                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գործողության հրահանգ (Action line)</label>
+                            <input
+                              type="text"
+                              value={editSiteTexts.home_hero_action || ""}
+                              onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_action: e.target.value })}
+                              placeholder="Խնդրում ենք ընտրել ստորև՝"
+                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Header bar */}
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-capsule-accent/10 pb-3">
+                        <div>
+                          <h3 className="font-serif text-base text-capsule-accent font-semibold">Բաժինների Կառավարման Պորտալ / Edit and Add Categories</h3>
+                          <p className="text-[11px] text-capsule-text-muted">Ավելացրեք նոր բաժիններ, սահմանեք լեզուներ (Հայերեն/Русский/English), պատկերակներ, սորտավորում և MOQ քանակներ։</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const sourceName = "Նոր բաժին";
+                              const computedId = getUniqueSlug(sourceName, editCategories);
+                              
+                              const newCat: Category = {
+                                id: computedId,
+                                name: sourceName,
+                                active: true,
+                                minQty: 100,
+                                qtyPresets: [100, 300, 500, 1000],
+                                navLabel: "Նոր բաժին",
+                                nameRu: "",
+                                nameEn: "",
+                                sortOrder: (editCategories.length + 1) * 10,
+                                heroTitle: "Նոր արտադրատեսակ",
+                                heroBadge: "Custom Item",
+                                heroSmall: "New / Brand New",
+                                ruleChips: "Premium quality | 3D dynamic preview",
+                                heroDesc: "Անհատանելի տպագրությամբ պատվերների առցանց հաշվարկ",
+                                template: "other_products",
+                                icon: "ShoppingBag"
+                              };
+                              setEditCategories([...editCategories, newCat]);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-capsule-accent text-capsule-surf hover:bg-capsule-accent/90 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                          >
+                            <Plus size={14} className="stroke-[2.5]" />
+                            Ավելացնել Բաժին
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setActiveTab("dynamic_category_builder")}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#D27E53] hover:bg-[#BE6C42] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
+                          >
+                            <Sparkles size={14} className="stroke-[2.5]" />
+                            Ավելացնել Դինամիկ Բաժին / Add Dynamic Category
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Part C: Categories List Grid */}
                   <div className="space-y-4">
                     {(editCategories || []).map((cat, idx) => (
                       <div key={cat.id} className="p-4 bg-capsule-surf border border-capsule-accent/10 hover:border-capsule-accent/25 rounded-2xl space-y-4 shadow-sm transition-all relative group/catcard">
@@ -1833,6 +2212,8 @@ export default function AdminPanel({
                   </div>
                 </div>
               )}
+            </div>
+          )}
 
               {/* TAB 6S: PROMO */}
               {activeTab === "promo" && (
@@ -1912,6 +2293,490 @@ export default function AdminPanel({
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {/* TAB: PAYMENT METHODS */}
+              {activeTab === "payment_methods" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-capsule-accent/10 pb-4">
+                    <div>
+                      <h3 className="font-serif text-lg text-capsule-accent font-bold">💳 Վճարման Մեթոդներ (Payment Methods)</h3>
+                      <p className="text-xs text-capsule-text-muted mt-1">Ավելացրեք, խմբագրեք կամ հեռացրեք կայքում ցուցադրվող վճարման համակարգերը։</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const presets = [
+                            {
+                              id: "visa",
+                              name: "visa",
+                              title: {
+                                hy: "Visa Քարտեր",
+                                en: "Visa Card",
+                                ru: "Карты Visa",
+                                ar: "بطاقة فيزا"
+                              },
+                              description: {
+                                hy: "Անվտանգ գործարքներ միջազգային Visa համակարգով",
+                                en: "Secure transactions via the international Visa network",
+                                ru: "Безопасные транзакции через международную систему Visa",
+                                ar: "معاملات آمنة عبر شبكة فيزا العالمية"
+                              },
+                              iconSvg: `<svg className="h-[12px] w-auto text-[#1434CB]" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M42.2 2.1l-6.3 27.8H26.3L32.6 2.1h9.6zm29.3 0c-4.4 0-8 2.4-9.8 6.5l-11.3 21.3h9.8s1.6-4.5 1.9-5.4h11c.2 1 1.1 5.4 1.1 5.4h8.7L78 2.1h-6.5zm-5.4 14.8c.6-1.7 4.1-11.4 4.1-11.4s.8 2.3 1.3 3.6c.5 1.3 3.1 7.8 3.1 7.8h-8.5zM22.2 2.1l-10 19L11 6.5C10.5 4.1 8 2.1 5.5 2.1H0l.2.8c3.1.8 6.7 2.3 8.9 3.5l7.8 23.5h10.4L42 2.1H22.2zm76.5 0h-7.6c-2.4 0-4.3 1.5-5.2 3.7l-15.5 24.1h10.2l2-5.6h12.5c.3 1.3 1.2 5.6 1.2 5.6h9L98.7 2.1z" /></svg>`,
+                              sortOrder: 1,
+                              active: true
+                            },
+                            {
+                              id: "mastercard",
+                              name: "mastercard",
+                              title: {
+                                hy: "Mastercard",
+                                en: "Mastercard",
+                                ru: "Mastercard",
+                                ar: "ماستركارد"
+                              },
+                              description: {
+                                hy: "Պաշտպանված վճարումներ Mastercard քարտերով",
+                                en: "Protected payments via Mastercard standards",
+                                ru: "Защищенные платежи по картам Mastercard",
+                                ar: "مدفوعات محمية ببطاقات ماستركارد"
+                              },
+                              iconSvg: `<svg className="h-[20px] w-auto" viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="15" r="11" fill="#EB001B" /><circle cx="26" cy="15" r="11" fill="#F79E1B" opacity="0.88" /><path d="M 20 6.5 C 17.5 8.7 16 11.7 16 15 C 16 18.3 17.5 21.3 20 23.5 C 22.5 21.3 24 18.3 24 15 C 24 11.7 22.5 8.7 20 6.5 Z" fill="#FF5F00" /></svg>`,
+                              sortOrder: 2,
+                              active: true
+                            },
+                            {
+                              id: "arca",
+                              name: "arca",
+                              title: {
+                                hy: "ArCa Քարտեր",
+                                en: "ArCa Armenian Card",
+                                ru: "Карты ArCa",
+                                ar: "بطاقة آركا المحلية"
+                              },
+                              description: {
+                                hy: "Անվտանգ ինտեգրված տեղական ArCa վճարային համակարգ",
+                                en: "Integrated Armenian Card local payment gateway",
+                                ru: "Интегрированная локальная платежная система ArCa",
+                                ar: "بوابة دفع متكاملة لبطاقات آركا المحلية الأرمنية"
+                              },
+                              iconSvg: `<svg className="h-[20px] w-auto max-w-[95%]" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg"><g fill="#0c54a3"><path d="M 12.5 45 C 10.5 45, 8.5 44, 8 42 C 7.5 40, 8.5 37.5, 10 33.5 L 22.5 7.5 C 24 4.5, 27 3, 31 3 L 41.5 3 C 44.5 3, 46.5 4.5, 47 6 L 56 34 L 59 34 C 61 34, 62 36, 62 38 C 62 40, 60.5 45, 53.5 45 L 35.5 45 L 36 40 L 38.5 40 C 40.5 40, 42 39, 42 37.5 L 40 28.5 L 23.5 28.5 L 18 39.5 C 17 41.5, 18 43, 20.5 43 L 23 43 L 21 45 Z" /><path d="M 28 28.5 L 31.75 12 L 35.5 28.5 L 33.75 28.5 L 33.75 37.5 L 29.75 37.5 L 29.75 28.5 Z" fill="#ffffff" /><path d="M 52.5 45 C 51.5 45, 50.5 44, 50.5 42 L 51 39.5 L 53.5 39.5 C 55 39.5, 56 38.5, 56.5 36.5 L 61.5 14.5 C 62 12, 63.5 10.5, 66 10.5 L 75 10.5 C 77 10.5, 78 12, 78 13.5 C 78 15, 76.5 16, 74.5 16 L 71 16 L 66 38 C 65.5 40, 66.5 41, 68.5 41 L 70.5 41 L 69.5 45 Z" /><path d="M 64.5 24 C 67.5 17.5, 71.5 12.5, 76 12.5 C 79.5 12.5, 81 14.5, 80.5 17 C 80 19, 78.5 21, 77 21 C 75.5 21, 74.8 20, 75.2 18 C 75.5 16.5, 74.5 15.5, 73 15.5 C 69.8 15.5, 66.8 20.5, 65.2 24 Z" stroke="#ffffff" strokeWidth="1" /><path d="M 111 10.5 C 104.5 4.5, 91.5 4.5, 84.5 12.5 C 77.5 20.5, 74.5 31.5, 78.5 39.5 C 82.5 47.5, 93.5 49.5, 100.5 49.5 C 107.5 49.5, 112.5 44.5, 114.5 38.5 L 108.5 38.5 C 106.5 42.5, 103.5 44.5, 99.5 44.5 C 94.5 44.5, 89.5 42.5, 86.5 36.5 C 82.5 30.5, 83.5 21.5, 87.5 14.5 C 91.5 8.5, 97.5 6.5, 101.5 6.5 C 104.5 6.5, 106.5 8.5, 107.5 10.5 Z" /><path d="M 136 19.5 C 130.5 19.5, 126.5 24, 125.5 29.5 C 124.5 35, 127.5 38.5, 132.5 38.5 C 138 38.5, 142 34, 143 28.5 C 144 23, 141 19.5, 136 19.5 Z M 134.5 23.5 C 137.5 23.5, 139.5 26, 139 29.5 C 138.5 33, 135 35, 132 35 C 129 35, 127.5 32.5, 128 29.5 C 128.5 26, 131.5 23.5, 134.5 23.5 Z" /><path d="M 134.5 41 C 133.5 41, 132.5 40, 132.5 38.5 C 132.5 37, 133.5 36, 135 36 L 137.5 36 L 140 24 C 140.5 21.5, 142 20.5, 144 20.5 L 146 20.5 L 145 25 C 140.5 35, 138 41, 138 42.5 C 138 44, 139 45, 140.5 45 L 142 45 L 140.5 49 L 131 49 C 130.5 49, 129.5 48, 129.5 46.5 C 129.5 45, 130.5 44, 132 44 L 134 44 Z" /></g></svg>`,
+                              sortOrder: 3,
+                              active: true
+                            }
+                          ];
+                          if (window.confirm("Վստա՞հ եք, որ ցանկանում եք վերականգնել Visa, Mastercard, ArCa ստանդարտ տվյալները։")) {
+                            setEditPaymentMethods(presets);
+                          }
+                        }}
+                        className="border border-[#C59B6D] text-[#C59B6D] hover:bg-[#C59B6D]/5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase cursor-pointer tracking-tight transition-colors"
+                      >
+                        ⚡ Վերականգնել Ստանդարտները (Restore Defaults)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newM: PaymentMethod = {
+                            id: "method_" + Date.now(),
+                            name: "new_method",
+                            title: { hy: "Նոր Մեթոդ", en: "New Method", ru: "Новый метод", ar: "طريقة دفع جديدة" },
+                            description: { hy: "Նոր վճարման համակարգ", en: "New payment method", ru: "Новый способ оплаты", ar: "طريقة دفع جديدة" },
+                            iconSvg: `<svg viewBox="0 0 100 100" className="h-8 w-auto text-gray-500" fill="currentColor"><rect width="100" height="70" rx="10" y="15" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="30" cy="50" r="10"/><circle cx="70" cy="50" r="10"/></svg>`,
+                            sortOrder: (editPaymentMethods.length + 1),
+                            active: true
+                          };
+                          setEditPaymentMethods([...editPaymentMethods, newM]);
+                        }}
+                        className="bg-capsule-accent hover:bg-capsule-accent-hover text-capsule-surf px-4 py-1.5 rounded-lg text-xs font-bold uppercase cursor-pointer tracking-tight flex items-center gap-1 transition-colors"
+                      >
+                        <Plus size={12} />
+                        <span>Ավելացնել (Add New)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 max-h-[62vh] overflow-y-auto pr-1">
+                    {editPaymentMethods.map((pm, idx) => (
+                      <div key={pm.id} className="bg-capsule-surf2/30 border border-capsule-accent/10 p-4 rounded-2xl space-y-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all">
+                        {/* Upper Row: Status, Order, ID, Delete */}
+                        <div className="flex flex-wrap justify-between items-center gap-3 border-b border-capsule-accent/5 pb-3">
+                          <div className="flex items-center gap-3">
+                            <span className="font-mono text-[10px] bg-capsule-accent/10 text-capsule-accent py-0.5 px-2 rounded-md font-bold">
+                              ID: {pm.id}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <label className="text-xs text-capsule-dark/80 cursor-pointer font-bold select-none">
+                                <input
+                                  type="checkbox"
+                                  checked={pm.active}
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, active: e.target.checked };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="mr-1.5 accent-capsule-accent"
+                                />
+                                Ակտիվ (Active)
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] text-capsule-text-muted font-bold uppercase">Հերթականություն:</span>
+                              <input
+                                type="number"
+                                value={pm.sortOrder}
+                                onChange={(e) => {
+                                  const updated = [...editPaymentMethods];
+                                  updated[idx] = { ...pm, sortOrder: parseInt(e.target.value, 10) || 0 };
+                                  setEditPaymentMethods(updated);
+                                }}
+                                className="bg-capsule-surf border border-capsule-accent/10 rounded py-0.5 px-2 w-14 text-center text-xs font-mono font-bold"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm(`Հեռացնե՞լ "${pm.title.hy || pm.name}" վճարման մեթոդը։`)) {
+                                  setEditPaymentMethods(editPaymentMethods.filter((_, i) => i !== idx));
+                                }
+                              }}
+                              className="p-1.5 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg cursor-pointer transition-colors"
+                              title="Delete method"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* General attributes */}
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                          {/* Machine name */}
+                          <div className="md:col-span-3">
+                            <label className="text-[9px] text-capsule-text-muted font-black uppercase tracking-wider block mb-1">Կոդային Անուն (Machine Name)</label>
+                            <input
+                              type="text"
+                              value={pm.name}
+                              placeholder="e.g. visa"
+                              onChange={(e) => {
+                                const updated = [...editPaymentMethods];
+                                updated[idx] = { ...pm, name: e.target.value.toLowerCase().replace(/\s+/g, "_") };
+                                setEditPaymentMethods(updated);
+                              }}
+                              className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-3 text-xs text-capsule-dark font-mono font-bold outline-none"
+                            />
+                          </div>
+
+                          {/* Live Preview Box */}
+                          <div className="md:col-span-9 flex flex-col items-start gap-1 pb-1">
+                            <span className="text-[9px] text-capsule-text-muted font-black uppercase tracking-wider block mb-1">Վիզուալ Տեսքի Նախադիտում (Visual Preview)</span>
+                            <div className="flex items-center gap-4">
+                              <div 
+                                className="bg-white border border-[#E8E7E9] rounded-xl px-4 h-11 w-28 flex items-center justify-center shadow-[0_1px_2px_rgba(0,0,0,0.01)] hover:scale-[1.03] hover:border-[#C59B6D]/35 hover:shadow-[0_4px_12px_rgba(197,155,109,0.06)] transition-all duration-300 ease-out cursor-pointer"
+                                title={`${pm.title[locale as keyof typeof pm.title] || pm.title.en} Preview`}
+                                dangerouslySetInnerHTML={{ __html: pm.iconSvg }}
+                              />
+                              <div className="text-[10px] text-capsule-text-muted leading-tight">
+                                <span className="text-capsule-accent font-bold block">112x44px badge-view</span>
+                                SVG-ն պետք է ունենա <code className="bg-capsule-surf2 px-1 rounded font-mono text-[9px]">h-[12px] h-[20px]</code> կամ <code className="bg-capsule-surf2 px-1 rounded font-mono text-[9px]">h-auto max-h-[22px]</code> դասեր:
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Language blocks: Titles & Descriptions */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/5 pb-4 p-3 rounded-xl border border-dashed border-capsule-accent/5">
+                          {/* Left: Titles in 4 Languages */}
+                          <div className="space-y-2">
+                            <span className="text-[10px] text-capsule-accent font-extrabold uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">🔤 Անվանումներ (Localized Titles)</span>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇦🇲 Armenian (hy)</span>
+                                <input
+                                  type="text"
+                                  value={pm.title.hy}
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, title: { ...pm.title, hy: e.target.value } };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                />
+                              </div>
+                              <div>
+                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇬🇧 English (en)</span>
+                                <input
+                                  type="text"
+                                  value={pm.title.en}
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, title: { ...pm.title, en: e.target.value } };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                />
+                              </div>
+                              <div>
+                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇷🇺 Russian (ru)</span>
+                                <input
+                                  type="text"
+                                  value={pm.title.ru}
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, title: { ...pm.title, ru: e.target.value } };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                />
+                              </div>
+                              <div>
+                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇦🇪 Arabic (ar)</span>
+                                <input
+                                  type="text"
+                                  value={pm.title.ar}
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, title: { ...pm.title, ar: e.target.value } };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right: Descriptions in 4 Languages */}
+                          <div className="space-y-2">
+                            <span className="text-[10px] text-[#C59B6D] font-extrabold uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">💬 Նկարագրություններ (Localized Descriptions)</span>
+                            <div className="space-y-2">
+                              <div>
+                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-0.5">Անգլերեն, Հայերեն, Ռուսերեն, Արաբերեն  (hy/en/ru/ar)</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  <input
+                                    type="text"
+                                    value={pm.description.hy}
+                                    placeholder="Նկարագրություն (Հայերեն)"
+                                    onChange={(e) => {
+                                      const updated = [...editPaymentMethods];
+                                      updated[idx] = { ...pm, description: { ...pm.description, hy: e.target.value } };
+                                      setEditPaymentMethods(updated);
+                                    }}
+                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={pm.description.en}
+                                    placeholder="Description (English)"
+                                    onChange={(e) => {
+                                      const updated = [...editPaymentMethods];
+                                      updated[idx] = { ...pm, description: { ...pm.description, en: e.target.value } };
+                                      setEditPaymentMethods(updated);
+                                    }}
+                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={pm.description.ru}
+                                    placeholder="Описание (Русский)"
+                                    onChange={(e) => {
+                                      const updated = [...editPaymentMethods];
+                                      updated[idx] = { ...pm, description: { ...pm.description, ru: e.target.value } };
+                                      setEditPaymentMethods(updated);
+                                    }}
+                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={pm.description.ar}
+                                    placeholder="الوصف (العربية)"
+                                    onChange={(e) => {
+                                      const updated = [...editPaymentMethods];
+                                      updated[idx] = { ...pm, description: { ...pm.description, ar: e.target.value } };
+                                      setEditPaymentMethods(updated);
+                                    }}
+                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none font-sans"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Payment Method Logo Manager (Uploader and Preset Library Selector) */}
+                        <div className="bg-capsule-accent/5 p-4 rounded-xl border border-dashed border-capsule-accent/10 space-y-4">
+                          <span className="text-[10px] text-capsule-accent font-black uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">🛡️ Լոգոտիպի Կառավարիչ (Logo Manager)</span>
+                          
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Left Column: Upload custom image logo button + raw code edit textarea */}
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <span className="text-[10px] text-capsule-dark font-bold block">1. Բեռնել Սեփական Լոգոն (Upload Custom Logo File)</span>
+                                <div className="flex flex-wrap items-center gap-3">
+                                  <input
+                                    type="file"
+                                    id={`logo_upload_${pm.id}`}
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = (event) => {
+                                          const dataUrl = event.target?.result as string;
+                                          const imgHtml = `<img src="${dataUrl}" class="h-[20px] w-auto max-h-[22px] object-contain inline-block" alt="Logo" />`;
+                                          const updated = [...editPaymentMethods];
+                                          updated[idx] = { ...pm, iconSvg: imgHtml };
+                                          setEditPaymentMethods(updated);
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }
+                                    }}
+                                    className="hidden"
+                                  />
+                                  <label
+                                    htmlFor={`logo_upload_${pm.id}`}
+                                    className="flex items-center gap-1.5 px-3 py-2 bg-capsule-accent text-capsule-surf hover:bg-capsule-accent-hover cursor-pointer rounded-lg text-xs font-bold transition-all shadow-[0_2px_6px_rgba(197,155,109,0.15)] hover:shadow-[0_4px_10px_rgba(197,155,109,0.25)] select-none"
+                                  >
+                                    <Upload size={14} />
+                                    <span>📁 Ընտրել Լոգո Ֆայլ (Select Logo Image)</span>
+                                  </label>
+                                  
+                                  {pm.iconSvg && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const updated = [...editPaymentMethods];
+                                        updated[idx] = { ...pm, iconSvg: "" };
+                                        setEditPaymentMethods(updated);
+                                      }}
+                                      className="px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-lg cursor-pointer font-bold transition-colors"
+                                    >
+                                      Ջնջել (Clear)
+                                    </button>
+                                  )}
+                                </div>
+                                <p className="text-[10px] text-capsule-text-muted">Աջակցում է PNG, JPG, JPEG, SVG կամ WebP ձևաչափերին։ Ֆայլն ավտոմատ կերպով կվերածվի Base64 կոդի։</p>
+                              </div>
+
+                              <div className="space-y-1">
+                                <label className="text-[9px] text-capsule-text-muted font-bold uppercase tracking-wider block">Կամ խմբագրել կոդը ձեռքով (Or Modify Raw HTML/SVG Code):</label>
+                                <textarea
+                                  rows={2}
+                                  value={pm.iconSvg}
+                                  placeholder="<svg ...>...</svg> or <img ... />"
+                                  onChange={(e) => {
+                                    const updated = [...editPaymentMethods];
+                                    updated[idx] = { ...pm, iconSvg: e.target.value };
+                                    setEditPaymentMethods(updated);
+                                  }}
+                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1.5 px-3 text-[10px] text-capsule-dark font-mono outline-none resize-y min-h-[50px]"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Right Column: Premium Quick-Apply Logo Presets Library */}
+                            <div className="space-y-2">
+                              <span className="text-[10px] text-[#C59B6D] font-extrabold uppercase tracking-wider block">2. 💡 Պատրաստի Լոգոների Գրադարան (Ready-to-use Preset Logos)</span>
+                              <p className="text-[10px] text-capsule-text-muted">Սեղմեք ցանկացած լոգոյի վրա՝ այն ակնթարթորեն այս վճարման համակարգին կցելու համար։</p>
+                              
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[165px] overflow-y-auto p-2 border border-dashed border-capsule-accent/15 rounded-xl bg-black/5">
+                                {[
+                                  {
+                                    label: "Visa",
+                                    icon: `<svg class="h-[12px] w-auto text-[#1434CB] inline-block" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M42.2 2.1l-6.3 27.8H26.3L32.6 2.1h9.6zm29.3 0c-4.4 0-8 2.4-9.8 6.5l-11.3 21.3h9.8s1.6-4.5 1.9-5.4h11c.2 1 1.1 5.4 1.1 5.4h8.7L78 2.1h-6.5zm-5.4 14.8c.6-1.7 4.1-11.4 4.1-11.4s.8 2.3 1.3 3.6c.5 1.3 3.1 7.8 3.1 7.8h-8.5zM22.2 2.1l-10 19L11 6.5C10.5 4.1 8 2.1 5.5 2.1H0l.2.8c3.1.8 6.7 2.3 8.9 3.5l7.8 23.5h10.4L42 2.1H22.2zm76.5 0h-7.6c-2.4 0-4.3 1.5-5.2 3.7l-15.5 24.1h10.2l2-5.6h12.5c.3 1.3 1.2 5.6 1.2 5.6h9L98.7 2.1z" /></svg>`
+                                  },
+                                  {
+                                    label: "Mastercard",
+                                    icon: `<svg class="h-[20px] w-auto inline-block" viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="15" r="11" fill="#EB001B" /><circle cx="26" cy="15" r="11" fill="#F79E1B" opacity="0.88" /><path d="M 20 6.5 C 17.5 8.7 16 11.7 16 15 C 16 18.3 17.5 21.3 20 23.5 C 22.5 21.3 24 18.3 24 15 C 24 11.7 22.5 8.7 20 6.5 Z" fill="#FF5F00" /></svg>`
+                                  },
+                                  {
+                                    label: "ArCa",
+                                    icon: `<svg class="h-[18px] w-auto max-w-[95%] inline-block" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg"><g fill="#0c54a3"><path d="M 12.5 45 C 10.5 45, 8.5 44, 8 42 C 7.5 40, 8.5 37.5, 10 33.5 L 22.5 7.5 C 24 4.5, 27 3, 31 3 L 41.5 3 C 44.5 3, 46.5 4.5, 47 6 L 56 34 L 59 34 C 61 34, 62 36, 62 38 C 62 40, 60.5 45, 53.5 45 L 35.5 45 L 36 40 L 38.5 40 C 40.5 40, 42 39, 42 37.5 L 40 28.5 L 23.5 28.5 L 18 39.5 C 17 41.5, 18 43, 20.5 43 L 23 43 L 21 45 Z" /><path d="M 28 28.5 L 31.75 12 L 35.5 28.5 L 33.75 28.5 L 33.75 37.5 L 29.75 37.5 L 29.75 28.5 Z" fill="#ffffff" /><path d="M 52.5 45 C 51.5 45, 50.5 44, 50.5 42 L 51 39.5 L 53.5 39.5 C 55 39.5, 56 38.5, 56.5 36.5 L 61.5 14.5 C 62 12, 63.5 10.5, 66 10.5 L 75 10.5 C 77 10.5, 78 12, 78 13.5 C 78 15, 76.5 16, 74.5 16 L 71 16 L 66 38 C 65.5 40, 66.5 41, 68.5 41 L 70.5 41 L 69.5 45 Z" /><path d="M 64.5 24 C 67.5 17.5, 71.5 12.5, 76 12.5 C 79.5 12.5, 81 14.5, 80.5 17 C 80 19, 78.5 21, 77 21 C 75.5 21, 74.8 20, 75.2 18 C 75.5 16.5, 74.5 15.5, 73 15.5 C 69.8 15.5, 66.8 20.5, 65.2 24 Z" stroke="#ffffff" stroke-width="1" /><path d="M 111 10.5 C 104.5 4.5, 91.5 4.5, 84.5 12.5 C 77.5 20.5, 74.5 31.5, 78.5 39.5 C 82.5 47.5, 93.5 49.5, 100.5 49.5 C 107.5 49.5, 112.5 44.5, 114.5 38.5 L 108.5 38.5 C 106.5 42.5, 103.5 44.5, 99.5 44.5 C 94.5 44.5, 89.5 42.5, 86.5 36.5 C 82.5 30.5, 83.5 21.5, 87.5 14.5 C 91.5 8.5, 97.5 6.5, 101.5 6.5 C 104.5 6.5, 106.5 8.5, 107.5 10.5 Z" /><path d="M 136 19.5 C 130.5 19.5, 126.5 24, 125.5 29.5 C 124.5 35, 127.5 38.5, 132.5 38.5 C 138 38.5, 142 34, 143 28.5 C 144 23, 141 19.5, 136 19.5 Z M 134.5 23.5 C 137.5 23.5, 139.5 26, 139 29.5 C 138.5 33, 135 35, 132 35 C 129 35, 127.5 32.5, 128 29.5 C 128.5 26, 131.5 23.5, 134.5 23.5 Z" /><path d="M 134.5 41 C 133.5 41, 132.5 40, 132.5 38.5 C 132.5 37, 133.5 36, 135 36 L 137.5 36 L 140 24 C 140.5 21.5, 142 20.5, 144 20.5 L 146 20.5 L 145 25 C 140.5 35, 138 41, 138 42.5 C 138 44, 139 45, 140.5 45 L 142 45 L 140.5 49 L 131 49 C 130.5 49, 129.5 48, 129.5 46.5 C 129.5 45, 130.5 44, 132 44 L 134 44 Z" /></g></svg>`
+                                  },
+                                  {
+                                    label: "Idram",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg"><path d="M12.4 34.6c-.6 0-1.2-.5-1.2-1.2V16.6H7.1c-.6 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2h4.1V10c0-.6.5-1.2 1.2-1.2s1.2.5 1.2 1.2v4.2h5.1c.6 0 1.2.5 1.2 1.2 0 .7-.5 1.2-1.2 1.2h-5.1v16.8c0 .6-.5 1.2-1.2 1.2z" fill="#FF7900"/><path d="M37.8 34.6c-5.7 0-10.4-4.7-10.4-10.4s4.7-10.4 10.4-10.4 10.4 4.7 10.4 10.4-4.7 10.4-10.4 10.4zm0-18.4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z" fill="#00B3E3"/><path d="M68 34.6c-.6 0-1.2-.5-1.2-1.2V16.6h-5.1c-.6 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2H68c.6 0 1.2.5 1.2 1.2v16.8c0 .7-.5 1.2-1.2 1.2z" fill="#00B3E3"/><text x="76" y="32" font-family="sans-serif" font-weight="900" font-size="20" fill="#2E2E2E">idram</text></svg>`
+                                  },
+                                  {
+                                    label: "Telcell",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="40" rx="4" fill="#E30613"/><circle cx="9" cy="20" r="5" fill="#FFFFFF"/><text x="26" y="33" font-family="sans-serif" font-weight="900" font-size="22" fill="#E30613">telcell</text></svg>`
+                                  },
+                                  {
+                                    label: "EasyPay",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="50" rx="8" fill="#0A2540"/><text x="15" y="35" font-family="sans-serif" font-weight="bold" font-size="26" fill="#00D4B2">easy</text><text x="92" y="35" font-family="sans-serif" font-weight="bold" font-size="26" fill="#FFFFFF">pay</text></svg>`
+                                  },
+                                  {
+                                    label: "Apple Pay",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M43 14h-5.9c-.3 0-.5.2-.5.5v11c0 .3.2.5.5.5h2.1c.3 0 .5-.2.5-.5v-3.7h3.3c2.7 0 4.3-1.5 4.3-3.9v-.1c0-2.3-1.6-3.8-4.3-3.8zm1.5 4c0 1.1-.7 1.7-1.9 1.7H39.2v-3.4h3.4c1.1 0 1.9.6 1.9 1.6V18zm11-.1c-1-.1-2.2.3-2.6.9v-.6c0-.3-.2-.5-.5-.5h-2.1c-.3 0-.5.2-.5.5v11.7c0 .3.2.5.5.5h2.1c.3 0 .5-.2.5-.5v-5.2c.4.6 1.5 1 2.5.9 2.1-.2 3.8-2 3.8-4.4v-.1c.1-2.4-1.6-4.5-3.7-4.7zm-.6 5.5c-1 0-1.8-.8-1.8-1.9v-.1c0-1.1.8-1.9 1.8-1.9s1.8.8 1.8 1.9v.1c0 1.1-.8 1.9-1.8 1.9zm15.7-5.4c-.9 0-1.8.4-2.2 1.2v-.9c0-.3-.2-.5-.5-.5h-2.1c-.3 0-.5.2-.5.5v11.8c0 .2.1.3.2.4l1.1 1.1c.1.1.3.1.4 0l1.4-1c.1-.1.1-.3.1-.4v-4c.4.7 1.3 1.1 2.2 1.1 2.1 0 3.7-1.8 3.7-4.6v-.1c-.1-2.8-1.7-4.6-3.8-4.6zm-.4 5.5c-1 0-1.7-.9-1.7-2.1v-.1c0-1.2.7-2.1 1.7-2.1s1.7.9 1.7 2.1v.1c.1 1.2-.7 2.1-1.7 2.1zm-49-11c-.5 0-1 .2-1.4.5-.7.5-1.2 1.4-1.2 2.5 0 1.4.8 2.3 2.1 2.3.4 0 .9-.1 1.2-.3.6-.4.9-1.2.9-2.3.1-1.5-.7-2.7-2.1-2.7zm-1.8-1c.3-1.6 1.5-2.7 2.9-2.7h.5c0-.1 0-.3-.1-.4-.2-1.4-1.4-2.4-2.9-2.4-1.2 0-2.3.7-2.8 1.4-.2.2-.1.5.1.7l.9.6c.2.1.4.1.6 0 .3-.3.8-.6 1.3-.6.6 0 1 .3 1.1.9l-1 .1c-2.3.2-3.7 1.4-3.7 3.2 0 1.7 1.2 2.9 3.2 2.9 1.4 0 2.4-.7 2.9-1.5v.9c0 .3.2.5.5.5h2c.3 0 .5-.2.5-.5v-4.1c0-2-1.5-3.5-3.7-3.5-2.2-.1-3.9 1.3-4.3 3.4-.1.3.1.5.4.6l1.2.2zm11.2-.6c-1.3 0-2.4.7-2.9 1.5v-1.1c0-.3-.2-.5-.5-.5h-2.1c-.3 0-.5.2-.5.5v11.8c0 .3.2.5.5.5h2.1c.3 0 .5-.2.5-.5v-5.2c.4.6 1.3 1.2 2.4 1.2 2.3 0 3.8-1.8 3.8-4.6v-.1c.1-2.8-1.4-4.6-3.7-4.6zm-.4 5.5c-1.1 0-1.8-.9-1.8-2v-.1c0-1.1.7-2 1.8-2s1.8.9 1.8 2v.1c.1 1.1-.7 2-1.8 2zm13.1-4c-.7-1.1-1.9-1.5-3.3-1.5-2.6 0-4.4 2.1-4.4 4.7v.1c0 2.6 1.8 4.7 4.5 4.7 1.4 0 2.5-.5 3.3-1.5v.9c0 .3.2.5.5.5h2.1c.3 0 .5-.2.5-.5V9.4c0-.3-.2-.5-.5-.5H87c-.3 0-.5.2-.5.5V18zm-3.3 5.4c-1.1 0-1.9-.9-1.9-2.1v-.1c0-1.2.8-2.1 1.9-2.1s1.9.9 1.9 2.1v.1c0 1.2-.8 2.1-1.9 2.1z" /></svg>`
+                                  },
+                                  {
+                                    label: "Google Pay",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg"><rect width="160" height="50" rx="8" fill="#F8F9FA" stroke="#E0E0E0" stroke-width="1"/><text x="12" y="34" font-family="sans-serif" font-weight="950" font-size="24" fill="#5F6368">G</text><text x="36" y="34" font-family="sans-serif" font-weight="800" font-size="20" fill="#7F848C">Pay</text></svg>`
+                                  },
+                                  {
+                                    label: "PayPal",
+                                    icon: `<svg class="h-[18px] w-auto inline-block" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 22h6l2-6h5c5 0 8-3 8-7s-3-7-8-7H12zm23 4c1 4-1 8-5 10l-2 5h-5l2-6H9l3-9h8c1 0 2 0 3 .5.7.5 1.5 1.5 1.5 3.5zm-5 12h-4v4h4v-4z" fill="#003087"/></svg>`
+                                  },
+                                  {
+                                    label: "Stripe",
+                                    icon: `<svg class="h-[18px] w-auto inline-block text-[#635BFF]" viewBox="0 0 80 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M80 16.5c0-5-3.5-8.5-8.3-8.5-4.8 0-8.2 3.5-8.2 8.5 0 5 3.4 8.5 8.2 8.5 4.8 0 8.3-3.5 8.3-8.5zm-11.7 0c0-2.8 1.8-4.4 4.5-4.4s4.5 1.6 4.5 4.4c0 2.8-1.8 4.4-4.5 4.4s-4.5-1.6-4.5-4.4zM53.6 11.8V9H45v15.5h4.8V17c1.7-2.3 4.3-2 5-1.5V11c-.7-.4-2-.4-3.5.8zM40.2 16.6h-7c.1-2.2 1.6-3.2 3.6-3.2 1.8 0 3 .8 3.4 1.7h4.8c-.8-3.4-4.2-5.1-8.2-5.1-5.3 0-8.6 3.5-8.6 8.5s3.3 8.5 8.7 8.5c4.1 0 7.7-2 8.3-5.2H40c-.4 1-1.6 1.7-3.4 1.7-2.1 0-3.4-1.1-3.5-3.4h7.1zm-21.5-6h-4.8V9H9.1v2.8H4.6v4h4.5v5.5c0 3.3 2.1 5.2 5.5 5.2 1.4 0 2.5-.2 3.2-.5v-4.1c-.5.2-1 .3-1.6.3-1.1 0-1.7-.6-1.7-1.9V13h4.9v-2.4zM24.2 4.4h4.8V24h-4.8V4.4z"/></svg>`
+                                  },
+                                  {
+                                    label: "Credit Card",
+                                    icon: `<svg class="h-[18px] w-auto text-capsule-accent inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="15" x2="6" y2="15"/></svg>`
+                                  },
+                                  {
+                                    label: "Bank Transfer",
+                                    icon: `<svg class="h-[18px] w-auto text-capsule-accent inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><polyline points="6 18 6 11 10 11 10 18"/><polyline points="14 18 14 11 18 11 18 18"/><polygon points="12 2 20 7 4 7"/></svg>`
+                                  }
+                                ].map((preset, pIdx) => (
+                                  <button
+                                    key={pIdx}
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = [...editPaymentMethods];
+                                      updated[idx] = { ...pm, iconSvg: preset.icon };
+                                      setEditPaymentMethods(updated);
+                                    }}
+                                    className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-[#E8E7E9] hover:border-capsule-accent/50 hover:bg-capsule-accent/5 cursor-pointer text-center text-[10px] font-sans transition-all group shadow-[0_1px_2px_rgba(0,0,0,0.01)] h-[68px]"
+                                    title={`Apply ${preset.label} Logo`}
+                                  >
+                                    <div 
+                                      className="h-8 flex items-center justify-center max-w-full overflow-hidden mb-1 transform group-hover:scale-105 transition-transform" 
+                                      dangerouslySetInnerHTML={{ __html: preset.icon }}
+                                    />
+                                    <span className="text-[9px] text-capsule-dark/80 font-black tracking-tight group-hover:text-capsule-accent">{preset.label}</span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    ))}
+
+                    {editPaymentMethods.length === 0 && (
+                      <div className="text-center py-12 border-2 border-dashed border-capsule-accent/15 rounded-2xl bg-capsule-surf2/10">
+                        <p className="text-sm font-semibold text-capsule-text-muted">Ոչ մի վճարման մեթոդ գտնված չէ։</p>
+                        <p className="text-xs text-capsule-text-muted/70 mt-1">Ավելացրեք նոր մեթոդ կամ սեղմեք հրապարակված Presets-ի վերականգնման վրա։</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Save button at the bottom of the tab */}
+                  <div className="flex justify-end pt-4 border-t border-capsule-accent/10 mt-6">
+                    <button
+                      type="button"
+                      onClick={handleSaveAll}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase shadow-sm cursor-pointer transition-all flex items-center gap-1.5"
+                    >
+                      <span>💾 Պահպանել Փոփոխությունները (Save Payment Methods)</span>
+                    </button>
+                  </div>
+
                 </div>
               )}
 
@@ -2318,6 +3183,366 @@ export default function AdminPanel({
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: FEATURED PRODUCTS / HOME PAGE HIGHLIGHTS */}
+              {activeTab === "featured_products" && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-3 flex-wrap gap-2">
+                    <div>
+                      <h3 className="font-serif text-base text-capsule-accent font-semibold">🌟 Գլխավոր Էջի Ապրանքներ (Main Page Featured Cards)</h3>
+                      <p className="text-[11px] text-capsule-text-muted mt-1">Այստեղ կարող եք ավելացնել և կառավարել գլխավոր էջում ցուցադրվող ապրանքների քարտերը՝ կապելով դրանք կոնկրետ կալկուլյատորի բաժինների հետ։</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newFP: FeaturedProduct = {
+                          id: "fp_" + Date.now(),
+                          nameHy: "Նոր Գովազդային Ապրանք",
+                          nameRu: "Новый рекламный товар",
+                          nameEn: "New Featured Product",
+                          minQtyTextHy: "Նվազ. 50 հատ",
+                          minQtyTextRu: "Мин. 50 шт.",
+                          minQtyTextEn: "Min. 50 pieces",
+                          tagHy: "ՆՈՐ",
+                          tagRu: "НОВИНКА",
+                          tagEn: "NEW",
+                          secondaryTagHy: "",
+                          secondaryTagRu: "",
+                          secondaryTagEn: "",
+                          categoryId: categories[0]?.id || "boxes",
+                          image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=600",
+                          active: true
+                        };
+                        setEditFeaturedProducts([...editFeaturedProducts, newFP]);
+                      }}
+                      className="bg-capsule-accent text-capsule-surf text-xs font-bold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      + Ավելացնել Ապրանք Գլխավոր Էջում
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {editFeaturedProducts.map((fp, fIdx) => (
+                      <div key={fp.id} className="p-4 bg-capsule-surf2/20 border border-capsule-accent/10 rounded-2xl space-y-4 shadow-sm relative group">
+                        
+                        {/* Control buttons */}
+                        <div className="absolute top-4 right-4 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...editFeaturedProducts];
+                              updated[fIdx] = { ...fp, active: !fp.active };
+                              setEditFeaturedProducts(updated);
+                            }}
+                            className={`text-[9px] font-bold px-2 py-1 rounded-full transition ${fp.active ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-500"}`}
+                          >
+                            {fp.active ? "● Active" : "○ Draft"}
+                          </button>
+                          
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (confirm("Ցանկանու՞մ եք ջնջել այս ապրանքը գլխավոր էջից։")) {
+                                setEditFeaturedProducts(editFeaturedProducts.filter((_, idx) => idx !== fIdx));
+                              }
+                            }}
+                            className="p-1.5 text-red-700 hover:bg-red-100 rounded-lg transition active:scale-95 cursor-pointer text-xs font-bold"
+                          >
+                            ✕
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                          
+                          {/* Left Column: Image Preview, Upload button & URL input */}
+                          <div className="col-span-1 md:col-span-3 flex flex-col justify-between space-y-2">
+                            <div>
+                              <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">
+                                {locale === "hy" ? "Ապրանքի Նկար" : locale === "ru" ? "Изображение товара" : "Product Image"}
+                              </label>
+                              <div className="w-full h-32 rounded-xl border border-capsule-accent/10 bg-white overflow-hidden shadow-inner flex flex-col items-center justify-center relative group">
+                                {fp.image ? (
+                                  <img 
+                                    src={fp.image} 
+                                    alt="Featured Product" 
+                                    className="w-full h-full object-cover" 
+                                    referrerPolicy="no-referrer" 
+                                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} 
+                                  />
+                                ) : (
+                                  <span className="text-xs text-capsule-text-muted font-sans text-center px-2">
+                                    {locale === "hy" ? "Պատկեր չկա" : locale === "ru" ? "Нет изображения" : "No Image"}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                              {/* Hidden file uploader input */}
+                              <input
+                                type="file"
+                                id={`fp_upload_${fp.id}`}
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = (event) => {
+                                      const dataUrl = event.target?.result as string;
+                                      const updated = [...editFeaturedProducts];
+                                      updated[fIdx] = { ...fp, image: dataUrl };
+                                      setEditFeaturedProducts(updated);
+                                    };
+                                    reader.readAsDataURL(file);
+                                  }
+                                }}
+                                className="hidden"
+                              />
+                              <label
+                                htmlFor={`fp_upload_${fp.id}`}
+                                className="flex items-center justify-center gap-1.5 w-full py-1.5 bg-capsule-accent text-capsule-surf hover:bg-opacity-95 cursor-pointer rounded-lg text-[10px] font-bold transition-all shadow-sm select-none"
+                              >
+                                <Upload size={11} className="stroke-[2.5]" />
+                                <span>
+                                  {locale === "hy" ? "Բեռնել Նկար" : locale === "ru" ? "Загрузить Фото" : "Upload Image"}
+                                </span>
+                              </label>
+
+                              <input
+                                type="text"
+                                value={fp.image}
+                                onChange={(e) => {
+                                              const updated = [...editFeaturedProducts];
+                                              updated[fIdx] = { ...fp, image: e.target.value };
+                                              setEditFeaturedProducts(updated);
+                                }}
+                                placeholder={locale === "hy" ? "Կամ տեղադրեք CDN հղումը..." : locale === "ru" ? "Или вставьте ссылку..." : "Or paste CDN URL..."}
+                                className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-[10px] outline-none focus:border-capsule-accent font-mono"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right Column: Name, Description and Anchors */}
+                          <div className="col-span-1 md:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-3 pr-20">
+                            
+                            {/* Names Translation */}
+                            <div className="col-span-2 grid grid-cols-3 gap-2">
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (Հայերեն)</label>
+                                <input
+                                  type="text"
+                                  value={fp.nameHy}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, nameHy: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-bold"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (Русский)</label>
+                                <input
+                                  type="text"
+                                  value={fp.nameRu}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, nameRu: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-semibold"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (English)</label>
+                                <input
+                                  type="text"
+                                  value={fp.nameEn}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, nameEn: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-semibold"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Min Qty text Translations */}
+                            <div className="col-span-2 grid grid-cols-3 gap-2">
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (Հայերեն)</label>
+                                <input
+                                  type="text"
+                                  value={fp.minQtyTextHy}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, minQtyTextHy: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (Русский)</label>
+                                <input
+                                  type="text"
+                                  value={fp.minQtyTextRu}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, minQtyTextRu: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (English)</label>
+                                <input
+                                  type="text"
+                                  value={fp.minQtyTextEn}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, minQtyTextEn: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Tags Translation */}
+                            <div className="col-span-2 grid grid-cols-3 gap-2">
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Հայերեն)</label>
+                                <input
+                                  type="text"
+                                  value={fp.tagHy}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, tagHy: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Русский)</label>
+                                <input
+                                  type="text"
+                                  value={fp.tagRu}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, tagRu: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (English)</label>
+                                <input
+                                  type="text"
+                                  value={fp.tagEn}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, tagEn: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Secondary Tags Translation */}
+                            <div className="col-span-2 grid grid-cols-3 gap-2">
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Հայերեն)</label>
+                                <input
+                                  type="text"
+                                  value={fp.secondaryTagHy || ""}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, secondaryTagHy: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  placeholder="Օրինակ` ԷԿՈ ԸՆՏՐՈՒԹՅՈՒՆ 🌿"
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Русский)</label>
+                                <input
+                                  type="text"
+                                  value={fp.secondaryTagRu || ""}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, secondaryTagRu: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  placeholder="Например` ЭКО ВЫБОР 🌿"
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (English)</label>
+                                <input
+                                  type="text"
+                                  value={fp.secondaryTagEn || ""}
+                                  onChange={(e) => {
+                                                const updated = [...editFeaturedProducts];
+                                                updated[fIdx] = { ...fp, secondaryTagEn: e.target.value };
+                                                setEditFeaturedProducts(updated);
+                                  }}
+                                  placeholder="Example` ECO CHOICE 🌿"
+                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Category dropdown links / Calculator categories Anchor */}
+                            <div className="col-span-2">
+                              <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Կապված Կալկուլյատորի Բաժինը (Target Calculator Category Anchor)</label>
+                              <select
+                                value={fp.categoryId}
+                                onChange={(e) => {
+                                              const updated = [...editFeaturedProducts];
+                                              updated[fIdx] = { ...fp, categoryId: e.target.value };
+                                              setEditFeaturedProducts(updated);
+                                }}
+                                className="w-full bg-white border border-[#2E3159]/20 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-bold text-capsule-accent"
+                              >
+                                {categories.map(cat => (
+                                  <option key={cat.id} value={cat.id}>
+                                    {cat.navLabel || cat.name} (ID: {cat.id})
+                                  </option>
+                                ))}
+                              </select>
+                              <p className="text-[10px] text-capsule-accent mt-1">
+                                🔗 Գլխավոր էջում այս ապրանքի վրա սեղմելիս, օգտատերը կուղղորդվի կալկուլյատոր և ավտոմատ կընտրվի նշված բաժինը։
+                              </p>
+                            </div>
+
+                          </div>
+                          
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Symmetrical bottom save button */}
+                  <div className="flex justify-end pt-4">
+                    <button
+                      type="button"
+                      onClick={handleSaveAll}
+                      className="bg-[#1A3F25] text-white text-xs font-bold px-6 py-2 rounded-full hover:bg-opacity-95 transition cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>💾 {locale === "hy" ? "Պահպանել բոլորը" : "Save All"}</span>
+                    </button>
                   </div>
                 </div>
               )}

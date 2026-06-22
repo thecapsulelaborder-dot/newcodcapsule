@@ -18,6 +18,7 @@ interface Product3DViewerProps {
   sides?: number; // active print sides (1 or 2)
   ribbonWidthCm?: number; // ribbon width in cm from admin rules
   boxStyle?: "shoulder_lid" | "sleeve_drawer" | string;
+  logoFoilMode?: "none" | "gold" | "silver" | string;
 }
 
 // ── PROCEDURAL 3D IPHONE BUILDER FOR SCALE REFERENCE ─────────────────────────
@@ -218,6 +219,7 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({
   sides = 1,
   ribbonWidthCm = 2.0,
   boxStyle = "shoulder_lid",
+  logoFoilMode = "none",
 }) => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -539,15 +541,15 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({
   // Track state changes inside a ref for the animate loop to access without recreating scene
   const paramsRef = useRef({
     productType, w, h, d, paperType, lamination, handleType, ribbonColor, finishes, colorsCount, baseHexColor,
-    grainScale: paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines
+    grainScale: paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines, logoFoilMode
   });
 
   useEffect(() => {
     paramsRef.current = {
       productType, w, h, d, paperType, lamination, handleType, ribbonColor, finishes, colorsCount, baseHexColor,
-      grainScale: paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines
+      grainScale: paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines, logoFoilMode
     };
-  }, [productType, w, h, d, paperType, lamination, handleType, ribbonColor, finishes, colorsCount, baseHexColor, paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines]);
+  }, [productType, w, h, d, paperType, lamination, handleType, ribbonColor, finishes, colorsCount, baseHexColor, paperConfig.grain, sides, handlePose, bagHandleColor, ribbonWidthCm, boxStyle, compareSize, showGuidelines, logoFoilMode]);
 
   useEffect(() => {
     if (!containerRef.current || !w || !h) return;

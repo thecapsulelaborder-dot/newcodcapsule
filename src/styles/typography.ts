@@ -10,16 +10,16 @@ export const typography = {
 
   // Universal default fallback in case language isn't directly matched
   fonts: {
-    body: '"Noto Sans Armenian", system-ui, sans-serif',
-    heading: '"Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif',
+    body: 'system-ui, -apple-system, sans-serif',
+    heading: 'system-ui, -apple-system, serif',
     mono: '"JetBrains Mono", monospace'
   },
 
   // Centralized configuration categorized by active language prefix (html lang attribute)
   languages: {
     hy: {
-      sans: '"Noto Sans Armenian", "Helvetica Neue", Helvetica, Arial, sans-serif',
-      serif: '"Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif',
+      sans: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      serif: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       mono: '"JetBrains Mono", monospace'
     },
     en: {

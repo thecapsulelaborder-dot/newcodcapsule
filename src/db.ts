@@ -1,4 +1,7 @@
 import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import bcrypt from "bcrypt";
 import { db } from "./db/index.ts";
 import {
   categories,
@@ -25,7 +28,9 @@ import {
   OrderSubmission,
   PrintingMethod,
   BagRibbonHandle,
-  AISettings
+  AISettings,
+  PaymentMethod,
+  FeaturedProduct
 } from "./types";
 
 export interface DatabaseSchema {
@@ -46,7 +51,9 @@ export interface DatabaseSchema {
   discountCodes?: DiscountCode[];
   siteTexts?: Record<string, string>;
   bagRibbonHandles?: BagRibbonHandle[];
+  featuredProducts?: FeaturedProduct[];
   aiSettings?: AISettings;
+  paymentMethods?: PaymentMethod[];
   contactMessages?: any[];
 }
 
@@ -66,6 +73,31 @@ export async function readDB(forceFresh = false): Promise<DatabaseSchema> {
     configMap[c.key] = c.value;
   }
 
+  // Fallback / dynamic seeding of featuredProducts from capsule_database.json
+  if (!configMap["featuredProducts"] || !Array.isArray(configMap["featuredProducts"]) || configMap["featuredProducts"].length === 0) {
+    try {
+      const dbPath = path.join(process.cwd(), "capsule_database.json");
+      if (fs.existsSync(dbPath)) {
+        const fileContent = fs.readFileSync(dbPath, "utf-8");
+        const jsonDb = JSON.parse(fileContent);
+        if (jsonDb && Array.isArray(jsonDb.featuredProducts) && jsonDb.featuredProducts.length > 0) {
+          configMap["featuredProducts"] = jsonDb.featuredProducts;
+          // Dynamically insert into configurations table
+          await db.insert(configurations).values({
+            key: "featuredProducts",
+            value: jsonDb.featuredProducts
+          }).onConflictDoUpdate({
+            target: configurations.key,
+            set: { value: jsonDb.featuredProducts }
+          });
+          console.log(`[SEED] Dynamically restored ${jsonDb.featuredProducts.length} featuredProducts into PostgreSQL configurations table.`);
+        }
+      }
+    } catch (err: any) {
+      console.error("[SEED_WARNING] Failed fallback loading for featuredProducts:", err.message);
+    }
+  }
+
   const productsWithItems = dbProducts.map(p => ({
     id: p.id,
     categoryId: p.categoryId,
@@ -74,6 +106,14 @@ export async function readDB(forceFresh = false): Promise<DatabaseSchema> {
     waText: p.waText || undefined,
     orderNote: p.orderNote || undefined,
     active: p.active,
+    materialTags: p.materialTags || [],
+    finishingTags: p.finishingTags || [],
+    purposeTags: p.purposeTags || [],
+    collectionTags: p.collectionTags || [],
+    isEco: p.isEco ?? false,
+    isNew: p.isNew ?? false,
+    isHit: p.isHit ?? false,
+    templateType: p.templateType || 'on_demand',
     items: dbProductItems.filter(i => i.productId === p.id).map(i => ({
       id: i.id,
       name: i.name,
@@ -88,10 +128,16 @@ export async function readDB(forceFresh = false): Promise<DatabaseSchema> {
     adminPasswordHash: "da16e5260cccb9ab8f1a238ec3f2cbced1ca5f6132ead48ae098dfd975e53a5b"
   };
 
+  if (adminCreds.adminPasswordHash === "da16e5260cccb9ab8f1a238ec3f2cbced1ca5f6132ead48ae098dfd975e53a5b" || !adminCreds.adminPasswordHash.startsWith("$2")) {
+    adminCreds.adminPasswordHash = await bcrypt.hash("admin", 12);
+  }
+
   return {
     categories: dbCategories.map(c => ({
       id: c.id,
       name: c.name,
+      nameRu: c.nameRu || undefined,
+      nameEn: c.nameEn || undefined,
       navLabel: c.navLabel || undefined,
       active: c.active,
       heroTitle: c.heroTitle || undefined,
@@ -100,7 +146,10 @@ export async function readDB(forceFresh = false): Promise<DatabaseSchema> {
       heroSmall: c.heroSmall || undefined,
       ruleChips: c.ruleChips || undefined,
       minQty: c.minQty,
-      qtyPresets: (c.qtyPresets as number[]) || undefined
+      qtyPresets: (c.qtyPresets as number[]) || undefined,
+      icon: c.icon || undefined,
+      sortOrder: c.sortOrder,
+      status: c.status
     })),
     products: productsWithItems,
     dimensions: dbDimensions.map(d => ({
@@ -165,7 +214,9 @@ export async function readDB(forceFresh = false): Promise<DatabaseSchema> {
     discountCodes: configMap["discountCodes"] || [],
     siteTexts: configMap["siteTexts"] || {},
     bagRibbonHandles: configMap["bagRibbonHandles"] || [],
+    featuredProducts: configMap["featuredProducts"] || [],
     aiSettings: configMap["aiSettings"] || {},
+    paymentMethods: configMap["paymentMethods"] || [],
     contactMessages: configMap["contactMessages"] || [],
     adminUsername: adminCreds.adminUsername,
     adminPinHash: adminCreds.adminPinHash,
@@ -182,6 +233,8 @@ export async function writeDB(data: DatabaseSchema): Promise<void> {
         await tx.insert(categories).values({
           id: cat.id,
           name: cat.name,
+          nameRu: cat.nameRu || null,
+          nameEn: cat.nameEn || null,
           navLabel: cat.navLabel || null,
           active: cat.active !== false,
           heroTitle: cat.heroTitle || null,
@@ -191,7 +244,9 @@ export async function writeDB(data: DatabaseSchema): Promise<void> {
           ruleChips: cat.ruleChips || null,
           minQty: typeof cat.minQty === "number" ? cat.minQty : 100,
           qtyPresets: cat.qtyPresets || null,
-          status: "published"
+          icon: cat.icon || null,
+          sortOrder: typeof cat.sortOrder === "number" ? cat.sortOrder : 0,
+          status: cat.status || "published"
         });
       }
     }
@@ -209,7 +264,15 @@ export async function writeDB(data: DatabaseSchema): Promise<void> {
           waText: prod.waText || null,
           orderNote: prod.orderNote || null,
           active: prod.active !== false,
-          status: "published"
+          status: "published",
+          materialTags: prod.materialTags || [],
+          finishingTags: prod.finishingTags || [],
+          purposeTags: prod.purposeTags || [],
+          collectionTags: prod.collectionTags || [],
+          isEco: prod.isEco ?? false,
+          isNew: prod.isNew ?? false,
+          isHit: prod.isHit ?? false,
+          templateType: prod.templateType || 'on_demand'
         });
 
         if (Array.isArray(prod.items)) {
@@ -326,7 +389,9 @@ export async function writeDB(data: DatabaseSchema): Promise<void> {
       { key: "discountCodes", value: data.discountCodes || [] },
       { key: "siteTexts", value: data.siteTexts || {} },
       { key: "bagRibbonHandles", value: data.bagRibbonHandles || [] },
+      { key: "featuredProducts", value: data.featuredProducts || [] },
       { key: "aiSettings", value: data.aiSettings || {} },
+      { key: "paymentMethods", value: data.paymentMethods || [] },
       { key: "contactMessages", value: data.contactMessages || [] },
       { key: "adminCredentials", value: {
           adminUsername: data.adminUsername || "admin",

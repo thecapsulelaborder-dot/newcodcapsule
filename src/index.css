@@ -2,15 +2,15 @@
 @import "tailwindcss";
 
 :root {
-  --font-sans-family: "Noto Sans Armenian", system-ui, sans-serif;
-  --font-heading-family: "Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif;
+  --font-sans-family: system-ui, -apple-system, sans-serif;
+  --font-heading-family: system-ui, -apple-system, serif;
   --font-mono-family: "JetBrains Mono", monospace;
 }
 
 /* Multilingual Typography Auto-switching System */
 html[lang="hy"], :root[lang="hy"] {
-  --font-sans-family: "Noto Sans Armenian", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-heading-family: "Cinzel", "Playfair Display", "Cormorant Garamond", "Noto Serif Armenian", serif;
+  --font-sans-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
   --font-mono-family: "JetBrains Mono", monospace;
 }
 

@@ -1,4 +1,4 @@
-import { readDB } from "./db";
+// Config types are exported from types.ts
 import { PricingRules, DiscountCode } from "./types";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -159,8 +159,8 @@ export interface CalculationResult {
 // BAGS & DECORATIVE BAGS CALCULATOR
 // ─────────────────────────────────────────────────────────────────────────────
 
-export async function calculateBagsPrice(input: CalculationInput): Promise<CalculationResult> {
-  const db = await readDB();
+export async function calculateBagsPrice(input: CalculationInput, passedDb?: any): Promise<CalculationResult> {
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
 
   // ── Category & minimum quantity ──────────────────────────────────────────
   const categoryId = input.productKey || "bags";
@@ -464,7 +464,7 @@ export async function calculateBoxesPrice(input: {
   boxStyle?: string;
   appliedDiscountCode?: string;
   wallThickness?: number;
-}): Promise<{
+}, passedDb?: any): Promise<{
   success: boolean;
   unitCost: number;
   unitPrice: number;
@@ -483,7 +483,7 @@ export async function calculateBoxesPrice(input: {
   printingMethodUsed?: string;
   wallThickness?: number;
 }> {
-  const db = await readDB();
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
   const rules = db.pricingRules;
 
   // ── Dimensions ───────────────────────────────────────────────────────────
@@ -865,8 +865,8 @@ export interface RibbonInput {
   appliedDiscountCode?: string;
 }
 
-export async function calculateRibbonsPrice(input: RibbonInput): Promise<any> {
-  const db = await readDB();
+export async function calculateRibbonsPrice(input: RibbonInput, passedDb?: any): Promise<any> {
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
   const rules = db.pricingRules;
 
   const meters = Math.max(1, Number(input.meters) || 100);
@@ -980,8 +980,8 @@ export interface StickerInput {
   appliedDiscountCode?: string;
 }
 
-export async function calculateStickersPrice(input: StickerInput): Promise<any> {
-  const db = await readDB();
+export async function calculateStickersPrice(input: StickerInput, passedDb?: any): Promise<any> {
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
   const rules = db.pricingRules;
 
   const qty = Math.max(1, Number(input.qty) || 300);
@@ -1097,8 +1097,8 @@ export interface GiftCardInput {
   appliedDiscountCode?: string;
 }
 
-export async function calculateGiftCardsPrice(input: GiftCardInput): Promise<any> {
-  const db = await readDB();
+export async function calculateGiftCardsPrice(input: GiftCardInput, passedDb?: any): Promise<any> {
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
   const rules = db.pricingRules;
 
   const qty = Math.max(1, Number(input.qty) || 50);
@@ -1236,8 +1236,8 @@ export interface BusinessCardInput {
   appliedDiscountCode?: string;
 }
 
-export async function calculateBusinessCardsPrice(input: BusinessCardInput): Promise<any> {
-  const db = await readDB();
+export async function calculateBusinessCardsPrice(input: BusinessCardInput, passedDb?: any): Promise<any> {
+  const db = passedDb || (typeof window === "undefined" ? await (await import("./db")).readDB() : null);
   const rules = db.pricingRules;
 
   const qty = Math.max(1, Number(input.qty) || 100);

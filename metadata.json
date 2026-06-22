@@ -2,7 +2,8 @@
   "name": "Capsule Concept Packaging Calculator",
   "description": "Premium full-stack custom bags and boxes calculator featuring design config options, MOQ matrices, and instant order submissions for Capsule Concept.",
   "requestFramePermissions": [
-    "geolocation"
+    "geolocation",
+    "microphone"
   ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

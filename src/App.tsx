@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CapsuleLogo } from "./components/CapsuleLogo";
+import PackhelpShowcase from "./components/PackhelpShowcase";
 import { 
   Calculator, 
   Settings, 
@@ -53,7 +54,16 @@ import {
   User,
   Menu,
   Mic,
-  Paperclip
+  Paperclip,
+  Instagram,
+  Facebook,
+  Linkedin,
+  Twitter,
+  Youtube,
+  Info,
+  Trash,
+  Upload,
+  Image as ImageIcon
 } from "lucide-react";
 import { 
   Category, 
@@ -67,7 +77,9 @@ import {
   ContactSettings, 
   DiscountCode,
   BagRibbonHandle,
-  AISettings
+  AISettings,
+  PaymentMethod,
+  FeaturedProduct
 } from "./types";
 import AdminPanel from "./components/AdminPanel";
 import ClientCabinet from "./components/ClientCabinet";
@@ -78,14 +90,18 @@ import { LuxuryNumericInput } from "./components/LuxuryNumericInput";
 import DynamicProductCalculator from "./components/DynamicProductCalculator";
 import { useTranslation, LocaleType } from "./locales/i18n";
 import { Product3DViewer } from "./components/Product3DViewer";
+import { PaymentMethods } from "./components/PaymentMethods";
+import AIAgentBlock from "./components/AIAgentBlock";
+import EcommerceStore from "./components/EcommerceStore";
+
 import {
-  clientCalculateBagsPrice,
-  clientCalculateBoxesPrice,
-  clientCalculateRibbonsPrice,
-  clientCalculateStickersPrice,
-  clientCalculateGiftCardsPrice,
-  clientCalculateBusinessCardsPrice
-} from "./clientCalculator";
+  calculateBagsPrice as clientCalculateBagsPrice,
+  calculateBoxesPrice as clientCalculateBoxesPrice,
+  calculateRibbonsPrice as clientCalculateRibbonsPrice,
+  calculateStickersPrice as clientCalculateStickersPrice,
+  calculateGiftCardsPrice as clientCalculateGiftCardsPrice,
+  calculateBusinessCardsPrice as clientCalculateBusinessCardsPrice
+} from "./calculator";
 
 const renderCategoryIcon = (iconName: string | undefined, fallbackId: string) => {
   const iconStyle = "w-10 h-10 stroke-[1.2]";
@@ -340,13 +356,17 @@ export default function App() {
   const [siteTexts, setSiteTexts] = useState<Record<string, string>>({});
   const [submissions, setSubmissions] = useState<OrderSubmission[]>([]);
   const [bagRibbonHandles, setBagRibbonHandles] = useState<BagRibbonHandle[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
   const [aiSettings, setAiSettings] = useState<AISettings>({
     systemPrompt: "",
     temperature: 0.1,
     modelName: "gemini-3.5-flash",
     enabled: true
   });
-  const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeCategory, setActiveCategory] = useState<string>("bags");
+  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>([]);
   const categoryTabsRef = useRef<HTMLDivElement>(null);
   const lastActiveCategoryRef = useRef<string>("");
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -355,7 +375,7 @@ export default function App() {
   // ── AI ASSISTANT CLIENT STATES ──────────────────────────────────
   const [isAssistantOpen, setIsAssistantOpen] = useState<boolean>(false);
   const [assistantMessages, setAssistantMessages] = useState<{ role: "user" | "assistant"; text: string }[]>([
-    { role: "assistant", text: "Ողջույն! Ես Capsule Concept-ի փաթեթավորման և տպագրության պաշտոնական AI օգնականն եմ։ Կարող եմ Ձեզ խորհրդատվություն տալ տոպրակների, տուփերի, սթիքերների, այցեքարտերի կամ ժապավենների նյութերի, լամինացիայի, չափսերի և տպագրական տեխնիկաների վերաբերյալ։ Ինչպե՞ս կարող եմ օգնել։" }
+    { role: "assistant", text: "Ողջույն! Ես PACKY-ի փաթեթավորման և տպագրության պաշտոնական AI օգնականն եմ։ Կարող եմ Ձեզ խորհրդատվություն տալ տոպրակների, տուփերի, սթիքերների, այցեքարտերի կամ ժապավենների նյութերի, լամինացիայի, չափսերի և տպագրական տեխնիկաների վերաբերյալ։ Ինչպե՞ս կարող եմ օգնել։" }
   ]);
   const [assistantInput, setAssistantInput] = useState<string>("");
   const [isAssistantTyping, setIsAssistantTyping] = useState<boolean>(false);
@@ -520,6 +540,12 @@ export default function App() {
     } catch {
       return [];
     }
+  });
+  const [currentView, setCurrentView] = useState<"home" | "calculator" | "track" | "ecommerce">(() => {
+    if (window.location.pathname === "/track-order") return "track";
+    if (window.location.pathname === "/calculator") return "calculator";
+    if (window.location.pathname === "/shop") return "ecommerce";
+    return "home";
   });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isInTrackPortal, setIsInTrackPortal] = useState(() => {
@@ -687,7 +713,17 @@ export default function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      setIsInTrackPortal(window.location.pathname === "/track-order");
+      const path = window.location.pathname;
+      if (path === "/track-order") {
+        setCurrentView("track");
+        setIsInTrackPortal(true);
+      } else if (path === "/calculator") {
+        setCurrentView("calculator");
+        setIsInTrackPortal(false);
+      } else {
+        setCurrentView("home");
+        setIsInTrackPortal(false);
+      }
     };
     window.addEventListener("popstate", handlePopState);
     return () => {
@@ -697,12 +733,14 @@ export default function App() {
 
   const navigateToTrackPortal = () => {
     window.history.pushState({}, "", "/track-order");
+    setCurrentView("track");
     setIsInTrackPortal(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const navigateToHomeFromPortal = () => {
     window.history.pushState({}, "", "/");
+    setCurrentView("home");
     setIsInTrackPortal(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -730,7 +768,8 @@ export default function App() {
       setQrMatrixQty(order.qty || 100);
     }
 
-    window.history.pushState({}, "", "/");
+    window.history.pushState({}, "", "/calculator");
+    setCurrentView("calculator");
     setIsInTrackPortal(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -945,7 +984,7 @@ export default function App() {
       const pFinishes = p.finishes !== undefined ? p.finishes : boxFinishes;
       const finishesTranslated = pFinishes.length > 0 
         ? pFinishes.map((k: string) => {
-            const fObj = finishes.find(f => f.key === k || f.id === k);
+            const fObj = finishes.find(f => f.key === k || (f as any).id === k);
             return fObj ? t(`db.finish.${fObj.key}`, fObj.label) : "";
           }).filter(Boolean).join(", ")
         : t("common.none", "Չկան");
@@ -1172,6 +1211,43 @@ export default function App() {
 
   const handleRemoveBundleItem = (id: string) => {
     setBundleItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleAddShopItemToCart = (item: any) => {
+    const defaultCatName = categories.find(c => c.id === item.categoryId)?.navLabel || categories.find(c => c.id === item.categoryId)?.name || "Shop Item";
+    const newItem = {
+      id: `bundle_${Date.now()}`,
+      catId: item.categoryId || "bags",
+      catName: defaultCatName,
+      itemName: item.name,
+      qty: item.qty,
+      isMeters: item.categoryId === "ribbons",
+      unitPrice: item.price,
+      totalPrice: item.price * item.qty,
+      dimensionsText: "Preset Standard",
+      description: item.details,
+      icon: categories.find(c => c.id === item.categoryId)?.icon || "📦",
+      payload: {},
+      calcResult: {
+        itemName: item.name,
+        qty: item.qty,
+        unitPrice: item.price,
+        totalPrice: item.price * item.qty,
+        dimensionsText: "Preset Standard",
+        discountAmount: 0
+      }
+    };
+    setBundleItems(prev => [...prev, newItem]);
+    
+    setSuccessMessage(locale === "hy" 
+      ? `«${newItem.itemName}»-ը հաջողությամբ ավելացվել է զամբյուղին:`
+      : locale === "ru"
+        ? `«${newItem.itemName}» успешно добавлен в корзину!`
+        : `"${newItem.itemName}" successfully added to cart!`);
+    
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 4500);
   };
   
   const handleClearBundle = () => {
@@ -1489,6 +1565,15 @@ export default function App() {
   const [inquiryDetails, setInquiryDetails] = useState("");
   const [inquiryPrice, setInquiryPrice] = useState(0);
 
+  // Call booking modal states
+  const [isBookCallOpen, setIsBookCallOpen] = useState(false);
+  const [bookingName, setBookingName] = useState("");
+  const [bookingPhone, setBookingPhone] = useState("+374 ");
+  const [bookingGoal, setBookingGoal] = useState("");
+
+  // Slide index for homepage slider
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
   // Box Specific customized options
   const [selectedBoxItemId, setSelectedBoxItemId] = useState<string>("box_1");
   const [boxLength, setBoxLength] = useState<string>("20");
@@ -1499,7 +1584,7 @@ export default function App() {
   const [boxColors, setBoxColors] = useState<number>(0);
   const [boxPaperId, setBoxPaperId] = useState<string>("");
   const [boxPrintingMethod, setBoxPrintingMethod] = useState<string>("");
-  const [boxStyle, setBoxStyle] = useState<"shoulder_lid" | "sleeve_drawer" | "shoulder_neck" | "magnetic_flap" | "">("");
+  const [boxStyle, setBoxStyle] = useState<"shoulder_lid" | "sleeve_drawer" | "shoulder_neck" | "magnetic_flap" | "lid_base" | "dry_folding" | "">("");
   const [boxWallThickness, setBoxWallThickness] = useState<number>(2.0);
   const [boxFinishes, setBoxFinishes] = useState<string[]>([]);
 
@@ -1650,11 +1735,13 @@ export default function App() {
         if (data.siteTexts) setSiteTexts(data.siteTexts);
         if (data.submissions) setSubmissions(data.submissions);
         if (data.bagRibbonHandles) setBagRibbonHandles(data.bagRibbonHandles);
+        if (data.featuredProducts) setFeaturedProducts(data.featuredProducts);
+        if (data.paymentMethods) setPaymentMethods(data.paymentMethods);
         if (data.aiSettings) setAiSettings(data.aiSettings);
         
         if (data.categories && data.categories.length > 0 && !activeCategory) {
-          // Keep activeCategory as "" on initial land so the premium landing page is shown
-          setActiveCategory("");
+          const firstCat = data.categories.find((c: any) => c.active)?.id || "bags";
+          setActiveCategory(firstCat);
         }
       }
     } catch (err) {
@@ -1665,6 +1752,15 @@ export default function App() {
   useEffect(() => {
     loadPublicConfig();
   }, []);
+
+  // Autoplay effect for the premier homepage product slides
+  useEffect(() => {
+    if (activeCategory || isInTrackPortal) return;
+    const interval = setInterval(() => {
+      setCurrentSlideIndex((prev) => (prev + 1) % 4);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [activeCategory, isInTrackPortal]);
 
   // Automatically initialize sensible defaults when activeCategory changes
   useEffect(() => {
@@ -2201,30 +2297,151 @@ export default function App() {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const targetId = id === "footer-contact-section" ? "app-footer" : id;
+    setIsInTrackPortal(false);
+    setTimeout(() => {
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        const footer = document.getElementById("app-footer");
+        if (footer) {
+          footer.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }, 150);
+  };
+
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-capsule-bg flex flex-col text-capsule-dark-secondary transition-all selection:bg-capsule-accent/15">
-      {/* Luxury Minimalist Dual-Row Header (UNERO Style & Colors) */}
-      <header className="relative z-[150] w-full select-none border-b border-[#E5E1D8] bg-[#FAFAF8] shadow-[0_1px_3px_rgba(58,32,16,0.02)] transition-colors">
-        {/* Top Header Row */}
-        <div className="max-w-[1400px] mx-auto h-16 sm:h-20 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      {/* Luxury Minimalist Single-Row Header (PACKY Premium Style & Colors based on official mockup) */}
+      <header className="relative z-[150] w-full select-none bg-[#FAFAF8] shadow-[inset_0_1px_0_rgba(255,255,255,0.7),_0_3px_12px_rgba(58,32,16,0.03)] border-b border-[#E5E1D8]/50 transition-colors py-1.5">
+        <div className="max-w-[1440px] mx-auto h-20 px-4 sm:px-6 lg:px-8 xl:px-12 flex items-center justify-between">
           
-          {/* LEFT: Multi-language & Currency Selectors (Desktop) / Hamburger Menu (Mobile) */}
-          <div className="flex items-center gap-3 md:gap-5 w-1/3 justify-start">
+          {/* LEFT: Premium Star Logo + Brand Typography */}
+          <div className="flex items-center gap-3.5">
+            {/* Mobile Hamburger menu - visible only on mobile/tablet */}
+            <button
+              type="button"
+              onClick={() => setIsDrawerMenuOpen(true)}
+              className="lg:hidden cursor-pointer group flex items-center justify-center w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[2.5px_2.5px_6px_#E5DDD1,_-2.5px_-2.5px_6px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_4px_#E5DDD1,_inset_-1.5px_-1.5px_4px_#FFFFFF] transition-all duration-200 outline-none"
+              title="Menu"
+            >
+              <Menu size={16} className="text-[#3D271B]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                handleLogoClickClick();
+                setCurrentView("home");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/");
+              }}
+              className="flex items-center select-none border-none outline-none cursor-pointer hover:opacity-95 active:scale-95 transition-all bg-transparent group"
+              title="PACKY"
+            >
+              <svg 
+                className="h-10.5 sm:h-11 md:h-12 w-auto shrink-0 select-none transition-transform duration-300 group-hover:scale-[1.02] text-[#FF2300]" 
+                viewBox="0 0 205 84" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M59.206 28.152H54.662C54.2567 27.4053 53.8407 26.7973 53.414 26.328C53.0087 25.8373 52.614 25.4747 52.23 25.24C51.3553 24.7067 50.374 24.44 49.286 24.44C47.8567 24.44 46.6193 25.0053 45.574 26.136C45.0407 26.7333 44.6353 27.3733 44.358 28.056C44.102 28.8027 43.974 29.592 43.974 30.424C43.974 32.1307 44.4967 33.5493 45.542 34.68C46.6087 35.7893 47.8993 36.344 49.414 36.344C50.4593 36.344 51.4193 36.0773 52.294 35.544C52.742 35.2667 53.1473 34.904 53.51 34.456C53.8727 34.008 54.246 33.3893 54.63 32.6H59.174C58.5767 34.2853 57.9687 35.5973 57.35 36.536C56.7313 37.4533 55.9953 38.2107 55.142 38.808C54.31 39.384 53.4353 39.8107 52.518 40.088C51.6007 40.3867 50.598 40.536 49.51 40.536C46.8433 40.536 44.486 39.5333 42.438 37.528C41.5633 36.568 40.87 35.5013 40.358 34.328C39.8673 33.1333 39.622 31.8427 39.622 30.456C39.622 27.704 40.582 25.3253 42.502 23.32C44.4433 21.3147 46.8007 20.312 49.574 20.312C51.6647 20.312 53.51 20.8773 55.11 22.008C55.942 22.6053 56.646 23.32 57.222 24.152C57.9047 25.1333 58.566 26.4667 59.206 28.152ZM79.6042 40.056H75.3802V38.712L74.0363 39.544C73.7802 39.6507 73.4602 39.768 73.0763 39.896C72.6922 40.024 72.3402 40.1307 72.0202 40.216C71.3376 40.408 70.6016 40.504 69.8122 40.504C67.0389 40.504 64.7029 39.544 62.8042 37.624C61.8869 36.6853 61.1616 35.608 60.6282 34.392C60.2016 33.2187 59.9882 31.9173 59.9882 30.488C59.9882 27.672 60.9482 25.2933 62.8682 23.352C64.8096 21.3893 67.1882 20.408 70.0042 20.408C70.7509 20.408 71.4656 20.472 72.1482 20.6C72.7456 20.7493 73.3856 20.984 74.0682 21.304L75.3802 22.072V20.792H79.6042V40.056ZM75.3802 30.264C75.3802 28.792 74.8149 27.4693 73.6842 26.296C72.5749 25.1227 71.3269 24.536 69.9402 24.536C68.3829 24.536 67.0709 25.1013 66.0042 26.232C65.4282 26.8507 65.0016 27.5013 64.7242 28.184C64.6602 28.376 64.5749 28.696 64.4682 29.144C64.3616 29.5707 64.3082 30.0507 64.3082 30.584C64.3082 32.2267 64.8629 33.6133 65.9722 34.744C66.5056 35.256 67.1029 35.6613 67.7642 35.96C68.4682 36.2373 69.1722 36.376 69.8762 36.376C70.5162 36.376 71.1989 36.2373 71.9242 35.96C72.5002 35.6613 73.0656 35.2347 73.6202 34.68C74.1749 34.04 74.6122 33.3467 74.9323 32.6C75.0602 32.216 75.1669 31.832 75.2522 31.448C75.3376 31.0427 75.3802 30.648 75.3802 30.264ZM101.552 30.488C101.552 33.24 100.603 35.6187 98.7045 37.624C97.8512 38.52 96.7952 39.2347 95.5365 39.768C94.9605 40.0027 94.3525 40.184 93.7125 40.312C93.0725 40.44 92.3898 40.504 91.6645 40.504C90.1498 40.504 88.7525 40.1947 87.4725 39.576C87.1952 39.448 86.8965 39.288 86.5765 39.096C86.2778 38.9253 86.0005 38.7333 85.7445 38.52C85.4885 38.3067 85.3392 38.1893 85.2965 38.168C85.2752 38.1253 85.2538 38.0933 85.2325 38.072C85.2965 38.1787 85.3605 38.2747 85.4245 38.36C85.6805 38.7013 85.9258 39.0213 86.1605 39.32V37.464V40.024V45.624H81.9045V20.792H86.1605V22.072L87.3125 21.368C88.5712 20.728 89.9578 20.408 91.4725 20.408C94.3738 20.408 96.7738 21.3787 98.6725 23.32C100.592 25.2613 101.552 27.6507 101.552 30.488ZM97.1685 30.552C97.1685 28.8453 96.6138 27.416 95.5045 26.264C94.4165 25.0907 93.0832 24.504 91.5045 24.504C90.1605 24.504 88.9232 25.0907 87.7925 26.264C87.2592 26.84 86.8432 27.48 86.5445 28.184C86.2672 28.952 86.1285 29.656 86.1285 30.296C86.1285 31.9387 86.6725 33.368 87.7605 34.584C88.8485 35.7787 90.1285 36.376 91.6005 36.376C93.1152 36.376 94.4058 35.8107 95.4725 34.68C96.0058 34.1467 96.4218 33.528 96.7205 32.824C96.8272 32.5253 96.9232 32.1947 97.0085 31.832C97.1152 31.4693 97.1685 31.0427 97.1685 30.552ZM114.989 34.328C114.989 36.0773 114.349 37.5493 113.069 38.744C111.81 39.9173 110.274 40.504 108.461 40.504C106.583 40.504 105.037 39.8747 103.821 38.616C103.607 38.4027 103.458 38.2427 103.373 38.136C103.202 37.88 103.074 37.688 102.989 37.56L102.413 36.344C102.263 35.9173 102.157 35.448 102.093 34.936C102.029 34.4027 101.997 33.6133 101.997 32.568H106.349C106.349 33.5493 106.391 34.232 106.477 34.616C106.562 34.9787 106.733 35.32 106.989 35.64C107.415 36.1093 107.917 36.344 108.493 36.344C109.069 36.344 109.538 36.1627 109.901 35.8C110.285 35.48 110.477 35.0533 110.477 34.52C110.477 34.0293 110.327 33.6027 110.029 33.24C109.666 32.856 108.994 32.472 108.013 32.088C106.989 31.7467 106.125 31.3733 105.421 30.968C104.717 30.5413 104.194 30.1253 103.853 29.72C103.106 28.8453 102.733 27.672 102.733 26.2C102.733 24.5787 103.319 23.2027 104.493 22.072C105.687 20.92 107.095 20.344 108.717 20.344C110.423 20.344 111.842 20.8453 112.973 21.848C113.229 22.104 113.453 22.3813 113.645 22.68C113.858 22.9787 114.05 23.3413 114.221 23.768C114.391 24.1733 114.509 24.6107 114.573 25.08C114.658 25.528 114.701 26.2213 114.701 27.16H110.253C110.253 26.4773 110.242 26.072 110.221 25.944C110.199 25.7947 110.157 25.6347 110.093 25.464C110.029 25.272 109.922 25.1013 109.773 24.952C109.559 24.7173 109.175 24.6 108.621 24.6C108.215 24.6 107.863 24.7387 107.565 25.016C107.287 25.2933 107.149 25.6453 107.149 26.072C107.149 26.4133 107.202 26.6907 107.309 26.904C107.415 27.032 107.607 27.192 107.885 27.384L108.525 27.736L109.517 28.056L111.149 28.6C112.343 29.1333 113.282 29.88 113.965 30.84C114.647 31.7787 114.989 32.9413 114.989 34.328ZM132.93 40.056H128.642C128.984 39.6293 129.154 39.3627 129.154 39.256C129.069 39.256 128.994 39.256 128.93 39.256C128.482 39.512 128.12 39.704 127.842 39.832C127.736 39.8747 127.512 39.9493 127.17 40.056C126.829 40.1627 126.52 40.2587 126.242 40.344C125.773 40.4293 125.4 40.472 125.122 40.472C124.845 40.4933 124.621 40.504 124.45 40.504C123.042 40.504 121.816 40.3013 120.77 39.896C119.746 39.512 118.925 38.9467 118.306 38.2C117.688 37.432 117.218 36.44 116.898 35.224C116.578 33.9867 116.418 32.504 116.418 30.776V20.792H120.674V30.936C120.674 32.0453 120.738 32.952 120.866 33.656C121.016 34.3387 121.229 34.8613 121.506 35.224C121.784 35.5653 122.189 35.8427 122.722 36.056C123.256 36.248 123.853 36.344 124.514 36.344C125.197 36.344 125.848 36.1947 126.466 35.896C127.106 35.5973 127.629 35.128 128.034 34.488C128.12 34.3387 128.205 34.168 128.29 33.976C128.376 33.7627 128.44 33.528 128.482 33.272L128.61 32.056L128.642 30.264V20.792H132.93V40.056ZM139.606 40.056H135.318V15.224H139.606V40.056ZM160.971 32.152H145.515C145.579 32.5147 145.686 32.8453 145.835 33.144C146.177 33.784 146.603 34.3493 147.115 34.84C147.627 35.3307 148.214 35.704 148.875 35.96C149.558 36.216 150.262 36.344 150.987 36.344C152.033 36.344 152.993 36.0667 153.867 35.512C154.315 35.192 154.721 34.808 155.083 34.36C155.467 33.912 155.841 33.304 156.203 32.536H160.875C160.235 34.2 159.585 35.5013 158.923 36.44C158.283 37.3573 157.537 38.1253 156.683 38.744C155.062 39.9387 153.185 40.536 151.051 40.536C148.257 40.536 145.889 39.5333 143.947 37.528C143.073 36.568 142.358 35.48 141.803 34.264C141.334 33.112 141.099 31.8213 141.099 30.392C141.099 27.4693 142.049 25.0587 143.947 23.16C145.867 21.2613 148.267 20.312 151.147 20.312C154.027 20.312 156.385 21.304 158.219 23.288C160.054 25.272 160.971 27.8213 160.971 30.936V32.152ZM156.139 28.216C155.734 27.1067 155.179 26.264 154.475 25.688C153.579 24.8773 152.363 24.472 150.827 24.472C149.441 24.472 148.257 24.8987 147.275 25.752C146.571 26.3707 146.059 27.192 145.739 28.216H156.139Z" fill="currentColor"/>
+                <path d="M59.32 57.488C59.32 60.24 58.3707 62.6187 56.472 64.624C55.6187 65.52 54.5627 66.2347 53.304 66.768C52.728 67.0027 52.12 67.184 51.48 67.312C50.84 67.44 50.1573 67.504 49.432 67.504C47.9173 67.504 46.52 67.1947 45.24 66.576C44.9627 66.448 44.664 66.288 44.344 66.096C44.0453 65.9253 43.768 65.7333 43.512 65.52C43.256 65.3067 43.1067 65.1893 43.064 65.168C43.0427 65.1253 43.0213 65.0933 43 65.072C43.064 65.1787 43.128 65.2747 43.192 65.36C43.448 65.7013 43.6933 66.0213 43.928 66.32V64.464V67.024V72.624H39.672V47.792H43.928V49.072L45.08 48.368C46.3387 47.728 47.7253 47.408 49.24 47.408C52.1413 47.408 54.5413 48.3787 56.44 50.32C58.36 52.2613 59.32 54.6507 59.32 57.488ZM54.936 57.552C54.936 55.8453 54.3813 54.416 53.272 53.264C52.184 52.0907 50.8507 51.504 49.272 51.504C47.928 51.504 46.6907 52.0907 45.56 53.264C45.0267 53.84 44.6107 54.48 44.312 55.184C44.0347 55.952 43.896 56.656 43.896 57.296C43.896 58.9387 44.44 60.368 45.528 61.584C46.616 62.7787 47.896 63.376 49.368 63.376C50.8827 63.376 52.1733 62.8107 53.24 61.68C53.7733 61.1467 54.1893 60.528 54.488 59.824C54.5947 59.5253 54.6907 59.1947 54.776 58.832C54.8827 58.4693 54.936 58.0427 54.936 57.552ZM79.6042 67.056H75.3802V65.712L74.0363 66.544C73.7802 66.6507 73.4602 66.768 73.0763 66.896C72.6922 67.024 72.3402 67.1307 72.0202 67.216C71.3376 67.408 70.6016 67.504 69.8122 67.504C67.0389 67.504 64.7029 64.624 62.8042 64.624C61.8869 63.6853 61.1616 62.608 60.6282 61.392C60.2016 60.2187 59.9882 58.9173 59.9882 57.488C59.9882 54.672 60.9482 52.2933 62.8682 50.352C64.8096 48.3893 67.1882 47.408 70.0042 47.408C70.7509 47.408 71.4656 47.472 72.1482 47.6C72.7456 47.7493 73.3856 47.984 74.0682 48.304L75.3802 49.072V47.792H79.6042V67.056ZM75.3802 57.264C75.3802 55.792 74.8149 54.4693 73.6842 53.296C72.5749 52.1227 71.3269 51.536 69.9402 51.536C68.3829 51.536 67.0709 52.1013 66.0042 53.232C65.4282 53.8507 65.0016 54.5013 64.7242 55.184C64.6602 55.376 64.5749 55.696 64.4682 56.144C64.3616 56.5707 64.3082 57.0507 64.3082 57.584C64.3082 59.2267 64.8629 60.6133 65.9722 61.744C66.5056 62.256 67.1029 62.6613 67.7642 62.96C68.4682 63.2373 69.1722 63.376 69.8762 63.376C70.5162 63.376 71.1989 63.2373 71.9242 62.96C72.5002 62.6613 73.0656 62.2347 73.6202 61.68C74.1749 61.04 74.6122 60.3467 74.9323 59.6C75.0602 59.216 75.1669 58.832 75.2522 58.448C75.3376 58.0427 75.3802 57.648 75.3802 57.264ZM100.688 55.152H96.1445C95.7392 54.4053 95.3232 53.7973 94.8965 53.328C94.4912 52.8373 94.0965 52.4747 93.7125 52.24C92.8378 51.7067 91.8565 51.44 90.7685 51.44C89.3392 51.44 88.1018 52.0053 87.0565 53.136C86.5232 53.7333 86.1178 54.3733 85.8405 55.056C85.5845 55.8027 85.4565 56.592 85.4565 57.424C85.4565 59.1307 85.9792 60.5493 87.0245 61.68C88.0912 62.7893 89.3818 63.344 90.8965 63.344C91.9418 63.344 92.9018 63.0773 93.7765 62.544C94.2245 62.2667 94.6298 61.904 94.9925 61.456C95.3552 61.008 95.7285 60.3893 96.1125 59.6H100.656C100.059 61.2853 99.4512 62.5973 98.8325 63.536C98.2138 64.4533 97.4778 65.2107 96.6245 65.808C95.7925 66.384 94.9178 66.8107 94.0005 67.088C93.0832 67.3867 92.0805 67.536 90.9925 67.536C88.3258 67.536 85.9685 66.5333 83.9205 64.528C83.0458 63.568 82.3525 62.5013 81.8405 61.328C81.3498 60.1333 81.1045 58.8427 81.1045 57.456C81.1045 54.704 82.0645 52.3253 83.9845 50.32C85.9258 48.3147 88.2832 47.312 91.0565 47.312C93.1472 47.312 94.9925 47.8773 96.5925 49.008C97.4245 49.6053 98.1285 50.32 98.7045 51.152C99.3872 52.1333 100.048 53.4667 100.688 55.152ZM117.887 67.056H112.415L106.655 59.984V67.056H102.367V42.224H106.655V53.712L111.263 47.792H116.479L109.439 56.784L117.887 67.056Z" fill="currentColor"/>
+                <path d="M120.75 67.06C121.855 67.06 122.75 66.1646 122.75 65.06C122.75 63.9554 121.855 63.06 120.75 63.06C119.645 63.06 118.75 63.9554 118.75 65.06C118.75 66.1646 119.645 67.06 120.75 67.06Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* CENTER: Symmetrical Navigation Links (Hidden on mobile) */}
+          <div className="hidden lg:flex items-center justify-center gap-2 px-2.5 py-1.5 rounded-full bg-[#FAFAF8] shadow-[inset_3px_3px_7px_#E5DDD1,_inset_-3px_-3px_7px_#FFFFFF] border border-white/45 selection:bg-transparent">
+            {/* Home Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("home");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/");
+              }}
+              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+                currentView === "home" 
+                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
+                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ԳԼԽԱՎՈՐ" : locale === "ru" ? "ГЛАВНАЯ" : "HOME"}
+            </button>
+
+            {/* Calculator Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("calculator");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/calculator");
+              }}
+              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+                currentView === "calculator" 
+                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
+                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ՀԱՇՎԻՉ" : locale === "ru" ? "КАЛЬКУЛЯТОР" : "CALCULATOR"}
+            </button>
+
+            {/* Shop E-commerce Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("ecommerce");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/shop");
+              }}
+              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+                currentView === "ecommerce" 
+                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
+                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ԽԱՆՈՒԹ" : locale === "ru" ? "МАГАЗИН" : "SHOP"}
+            </button>
+
+            {/* Tracking Portal Selector */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("track");
+                setIsInTrackPortal(true);
+                window.history.pushState({}, "", "/track-order");
+              }}
+              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+                currentView === "track" 
+                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
+                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ՊԱՏՎԵՐԻ ՀԵՏԵՎՈՒՄ" : locale === "ru" ? "ОТСЛЕЖИВАНИЕ" : "TRACK ORDER"}
+            </button>
+          </div>
+
+          {/* RIGHT: Switchers, Actions */}
+          <div className="flex items-center justify-end gap-3.5 sm:gap-4 lg:gap-5 selection:bg-transparent">
             
-            {/* Desktop-only dropdown switchers */}
-            <div className="hidden lg:flex items-center gap-4 text-[11px] font-bold tracking-[0.12em] text-[#3D271B]/80 font-sans">
-              {/* Language Switcher Dropdown */}
+            {/* Extremely subtle dropdown select switchers (Desktop only) */}
+            <div className="hidden xl:flex items-center gap-3 px-4.5 py-2.5 rounded-full bg-[#FAFAF8] shadow-[inset_2.5px_2.5px_6px_#E5DDD1,_inset_-2.5px_-2.5px_6px_#FFFFFF] border border-white/35 text-[10px] font-extrabold tracking-[0.1em] text-[#3D271B]/75 font-sans">
+              {/* Language Switcher */}
               <div className="relative" ref={langMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className="cursor-pointer flex items-center gap-1.5 py-1 hover:text-capsule-accent transition-colors uppercase border-none outline-none select-none"
+                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-[#F4F2EE]/45 hover:text-capsule-accent transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
                   title="Language Selector"
                 >
-                  <span>{locale === "hy" ? "AM (Հայ)" : locale === "ru" ? "RU (Рус)" : locale === "ar" ? "AR (عرب)" : "EN (Eng)"}</span>
-                  <ChevronDown size={11} className={`text-[#3D271B]/50 transition-transform duration-200 ${isLangMenuOpen ? "rotate-180 text-capsule-accent" : ""}`} />
+                  <span>{locale === "hy" ? "AM" : locale === "ru" ? "RU" : "EN"}</span>
+                  <ChevronDown size={10} className={`text-[#3D271B]/40 transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : ""}`} />
                 </button>
-                
                 <AnimatePresence>
                   {isLangMenuOpen && (
                     <motion.div
@@ -2232,9 +2449,9 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute left-0 mt-2.5 w-36 bg-white border border-[#E5E1D8] rounded-xl shadow-lg py-1.5 z-[200]"
+                      className="absolute right-0 mt-2.5 w-32 bg-[#FAFAF8] border border-[#E5E1D8] shadow-[4px_4px_12px_rgba(58,32,16,0.1)] rounded-2xl py-1.5 z-[220] overflow-hidden"
                     >
-                      {(["hy", "en", "ru", "ar"] as const).map((lang) => (
+                      {(["hy", "en", "ru"] as const).map((lang) => (
                         <button
                           key={lang}
                           type="button"
@@ -2242,12 +2459,10 @@ export default function App() {
                             setLocale(lang);
                             setIsLangMenuOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 text-[10px] uppercase tracking-wider hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between ${locale === lang ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
+                          className={`w-full text-left px-4 py-2 text-[9px] uppercase tracking-wider hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between border-none bg-transparent ${locale === lang ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
                         >
-                          <span>
-                            {lang === "hy" ? "AM (Հայերեն)" : lang === "en" ? "EN (English)" : lang === "ru" ? "RU (Русский)" : "AR (العربية)"}
-                          </span>
-                          {locale === lang && <Check size={10} className="text-capsule-accent shrink-0" />}
+                          <span>{lang === "hy" ? "AM" : lang === "en" ? "EN" : "RU"}</span>
+                          {locale === lang && <Check size={8} className="text-capsule-accent" />}
                         </button>
                       ))}
                     </motion.div>
@@ -2255,21 +2470,19 @@ export default function App() {
                 </AnimatePresence>
               </div>
 
-              {/* Vertical Divider */}
-              <span className="h-3.5 w-px bg-[#E5E1D8]"></span>
+              <span className="h-3.5 w-px bg-[#E5E1D8]/80"></span>
 
-              {/* Currency Switcher Dropdown */}
+              {/* Currency Switcher */}
               <div className="relative" ref={currencyMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsCurrencyMenuOpen(!isCurrencyMenuOpen)}
-                  className="cursor-pointer flex items-center gap-1.5 py-1 hover:text-capsule-accent transition-colors uppercase border-none outline-none select-none"
+                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-[#F4F2EE]/45 hover:text-capsule-accent transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
                   title="Currency Selector"
                 >
-                  <span>{activeCurrency} {activeCurrency === "AMD" ? "֏" : activeCurrency === "USD" ? "$" : "₽"}</span>
-                  <ChevronDown size={11} className={`text-[#3D271B]/50 transition-transform duration-200 ${isCurrencyMenuOpen ? "rotate-180 text-capsule-accent" : ""}`} />
+                  <span>{activeCurrency}</span>
+                  <ChevronDown size={10} className={`text-[#3D271B]/40 transition-transform duration-200 ${isCurrencyMenuOpen ? "rotate-180" : ""}`} />
                 </button>
-
                 <AnimatePresence>
                   {isCurrencyMenuOpen && (
                     <motion.div
@@ -2277,7 +2490,7 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute left-0 mt-2.5 w-36 bg-white border border-[#E5E1D8] rounded-xl shadow-lg py-1.5 z-[200]"
+                      className="absolute right-0 mt-2.5 w-32 bg-[#FAFAF8] border border-[#E5E1D8] shadow-[4px_4px_12px_rgba(58,32,16,0.1)] rounded-2xl py-1.5 z-[220] overflow-hidden"
                     >
                       {(["AMD", "USD", "RUB"] as const).map((curr) => (
                         <button
@@ -2287,10 +2500,10 @@ export default function App() {
                             setActiveCurrency(curr);
                             setIsCurrencyMenuOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 text-[10.5px] font-bold hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between ${activeCurrency === curr ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
+                          className={`w-full text-left px-4 py-2 text-[9px] font-bold hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between border-none bg-transparent ${activeCurrency === curr ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
                         >
-                          <span>{curr} {curr === "AMD" ? "(֏)" : curr === "USD" ? "($)" : "(₽)"}</span>
-                          {activeCurrency === curr && <Check size={10} className="text-capsule-accent shrink-0" />}
+                          <span>{curr}</span>
+                          {activeCurrency === curr && <Check size={8} className="text-capsule-accent" />}
                         </button>
                       ))}
                     </motion.div>
@@ -2299,1124 +2512,333 @@ export default function App() {
               </div>
             </div>
 
-            {/* Mobile Hamburger menu */}
-            <button
-              type="button"
-              onClick={() => setIsDrawerMenuOpen(true)}
-              className="lg:hidden cursor-pointer group flex items-center gap-2 h-10 px-3 md:px-4 rounded-full bg-[#FAFAF8] text-[#3D271B]/80 hover:text-capsule-accent border border-[#E5E1D8] transition-all duration-200 active:scale-95 select-none outline-none"
-              id="mobile-drawer-hamburger"
-              title="Menu"
-            >
-              <Menu size={16} className="text-[#3D271B] group-hover:text-capsule-accent transition-colors" />
-              <span className="hidden sm:inline text-[9px] font-black uppercase tracking-widest font-sans">
-                {locale === "hy" ? "ՄԵՆՅՈՒ" : locale === "ru" ? "МЕНЮ" : "MENU"}
-              </span>
-            </button>
-          </div>
-
-          {/* CENTER: Vector Logo (Always symmetrical and elegant) */}
-          <div className="flex items-center justify-center w-1/3">
-            <div
-              onClick={() => {
-                setIsInTrackPortal(false);
-                setActiveCategory("");
-              }}
-              className="cursor-pointer w-fit max-w-[170px] sm:max-w-[210px] md:max-w-[230px] flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] mx-auto select-none"
-            >
-              <CapsuleLogo className="h-9 sm:h-11 md:h-13 w-auto text-[#3D271B]" />
-            </div>
-          </div>
-
-          {/* RIGHT: Elegant luxury action icons (Search, Account, Cart Bag) */}
-          <div className="relative flex items-center justify-end gap-2.5 sm:gap-4.5 md:gap-5.5 w-1/3 selection:bg-transparent">
-            {/* Minimal Inline Header Search Box (Toggled on click) */}
-            <div className="relative flex items-center">
-              <AnimatePresence>
-                {isHeaderSearchOpen && (
-                  <motion.div
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 170, opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    className="overflow-hidden mr-2 hidden xs:block"
-                  >
-                    <input
-                      type="text"
-                      placeholder={locale === "ru" ? "Поиск..." : locale === "hy" ? "Փնտրել..." : "Search..."}
-                      value={neumorphicSearchInput}
-                      onChange={(e) => setNeumorphicSearchInput(e.target.value)}
-                      className="w-full text-[11px] font-sans h-8 px-3 rounded-md bg-[#FAF9F5] border border-[#E5E1D8] text-[#3D271B] focus:border-capsule-accent transition-all focus:ring-1 focus:ring-capsule-accent/20 outline-none"
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              
-              <button
-                type="button"
-                onClick={() => setIsHeaderSearchOpen(!isHeaderSearchOpen)}
-                className="cursor-pointer text-[#3D271B]/80 hover:text-capsule-accent p-1.5 hover:bg-[#F4F2EE]/30 rounded-full transition-all border-none outline-none"
-                title="Search Products"
-              >
-                <Search size={17} className="stroke-[2.2]" />
-              </button>
-            </div>
-
-            {/* Account / Personal Cabinet Icon */}
-            <button
-              type="button"
-              onClick={() => setIsClientCabinetOpen(true)}
-              className="cursor-pointer text-[#3D271B]/80 hover:text-capsule-accent p-1.5 hover:bg-[#F4F2EE]/30 rounded-full transition-all border-none outline-none flex items-center relative"
-              id="mobile-drawer-cabinet-btn"
-              title="Personal Area"
-            >
-              <User size={18} className="stroke-[2.2]" />
-              {userEmail && (
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#FAFAF8]" />
-              )}
-            </button>
-
-            {/* Shopping Bag / Cart triggering button with count bubble */}
+            {/* Shopping Bag / Cart Dial (Embossed Neumorphic Dial) */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="cursor-pointer group text-[#3D271B]/80 hover:text-capsule-accent p-1.5 hover:bg-[#F4F2EE]/30 rounded-full transition-all border-none outline-none flex items-center relative"
+              className="cursor-pointer group text-[#3D271B] w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[3px_3px_7px_#E5DDD1,_-3px_-3px_7px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5DDD1,_inset_-2px_-2px_5px_#FFFFFF] transition-all duration-200 flex items-center justify-center relative outline-none"
               title="Shopping Cart"
             >
-              <ShoppingBag size={18} className="stroke-[2.2] group-hover:scale-[1.05] transition-transform" />
+              <ShoppingBag size={15} className="stroke-[2.4] group-hover:scale-[1.05] transition-transform" />
               {bundleItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full bg-capsule-accent text-white flex items-center justify-center font-sans font-black text-[8px] px-1 border-2 border-[#FAFAF8] shadow-xs">
+                <span className="absolute -top-1 -right-1 min-w-[15px] h-3.5 rounded-full bg-capsule-accent text-white flex items-center justify-center font-sans font-black text-[7.5px] px-0.5 border-1.5 border-[#FAFAF8] shadow-[1px_1px_3px_rgba(58,32,16,0.15)]">
                   {bundleItems.length}
                 </span>
               )}
             </button>
-          </div>
-        </div>
 
-        {/* Row 2: Centered Desktop Navigation Menu Bar - Hidden on mobile/tablet */}
-        <div className="hidden lg:block border-t border-[#E5E1D8]/40 bg-[#FAFAF8]">
-          <div className="max-w-[1400px] mx-auto h-11 px-6 flex items-center justify-center gap-7 sm:gap-9 selection:bg-transparent">
-            {/* Landing page resets category selection */}
+            {/* User Account / Cabinet Dial (Embossed Neumorphic Dial) */}
             <button
               type="button"
-              onClick={() => {
-                setIsInTrackPortal(false);
-                setActiveCategory("");
-              }}
-              className={`pb-3.5 pt-3.5 border-b-2 hover:text-capsule-accent transition-all duration-200 text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer ${!activeCategory && !isInTrackPortal ? "text-capsule-accent border-capsule-accent font-black" : "text-[#3D271B]/60 hover:text-[#3D271B] border-transparent"}`}
+              onClick={() => setIsClientCabinetOpen(true)}
+              className="cursor-pointer text-[#3D271B] w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[3px_3px_7px_#E5DDD1,_-3px_-3px_7px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5DDD1,_inset_-2px_-2px_5px_#FFFFFF] transition-all duration-200 flex items-center justify-center relative outline-none"
+              title="Personal Cabinet"
             >
-              {locale === "hy" ? "ԳԼԽԱՎՈՐ" : locale === "ru" ? "ГЛАВНАЯ" : "HOME"}
-            </button>
-
-            {/* Dynamic categories loaded directly in center main navigation bar */}
-            {categories.map((c) => {
-              if (!c.active) return null;
-              const isSelected = activeCategory === c.id && !isInTrackPortal;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => {
-                    setIsInTrackPortal(false);
-                    setActiveCategory(c.id);
-                    setCalcResult(null);
-                    setCalcError(null);
-                  }}
-                  className={`pb-3.5 pt-3.5 border-b-2 hover:text-capsule-accent transition-all duration-200 text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer ${isSelected ? "text-capsule-accent border-capsule-accent font-black text-[10.5px]" : "text-[#3D271B]/60 hover:text-[#3D271B] border-transparent"}`}
-                >
-                  {t(`db.category.${c.id}.navLabel`, c.navLabel || c.name)}
-                </button>
-              );
-            })}
-
-            {/* Tracking Portal Selector */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsInTrackPortal(true);
-              }}
-              className={`pb-3.5 pt-3.5 border-b-2 hover:text-capsule-accent transition-all duration-200 text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer ${isInTrackPortal ? "text-capsule-accent border-capsule-accent font-black" : "text-[#3D271B]/60 hover:text-[#3D271B] border-transparent"}`}
-            >
-              {locale === "hy" ? "ՀԵՏԵՎԵԼ ՊԱՏՎԵՐԻՆ" : locale === "ru" ? "ОТСЛЕЖИВАНИЕ" : "TRACK SHIPMENT"}
-            </button>
-
-            {/* Quick Contact navigation */}
-            <button
-              type="button"
-              onClick={() => {
-                // Smooth scroll to the contact form at bottom
-                const contactSection = document.getElementById("footer-contact-section") || document.getElementById("app-footer");
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-              className="pb-3.5 pt-3.5 border-b-2 border-transparent text-[#3D271B]/60 hover:text-[#3D271B] hover:text-capsule-accent transition-all duration-200 text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer"
-            >
-              {locale === "hy" ? "ԿԱՊ" : locale === "ru" ? "КОНТАКТЫ" : "CONTACT"}
+              <User size={15} className="stroke-[2.2]" />
+              {userEmail && (
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 ring-1 ring-[#FAFAF8]" />
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      {isInTrackPortal ? (
-        <OrderTrackPortal currentLocale={locale} onBackToHome={navigateToHomeFromPortal} onReorder={handleReorder} />
-      ) : !activeCategory ? (
-            <div className="flex-1 max-w-4xl w-full mx-auto py-10 px-4 flex flex-col items-center justify-center gap-8 select-none animate-[fadeIn_0.5s_ease_out] relative z-10">
-              <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-capsule-accent/5 border border-capsule-accent/15 text-capsule-accent text-[10px] font-bold tracking-widest uppercase">
-                  <Sparkles size={12} className="text-capsule-accent animate-pulse" />
-                  {siteTexts?.home_hero_badge || "Premium Customizer"}
-                </div>
-                <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-capsule-accent tracking-[0.15em] uppercase font-normal leading-tight">
-                  {siteTexts?.home_hero_title || "The Capsule Lab"}
-                </h1>
-                <p className="max-w-xl mx-auto text-xs sm:text-sm text-capsule-text-secondary leading-relaxed font-sans mt-2 text-center">
-                  {siteTexts?.home_hero_desc || "Ընտրեք ցանկալի արտադրանքի տեսակը՝ հաշվարկը և 3D ֆիզիկական մոդելավորումը սկսելու համար։"}
-                </p>
+      {currentView === "home" && (
+        <div className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-8 sm:mt-12 md:mt-16 mb-20 select-none">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#FAFAF8] shadow-[5px_5px_15px_#E5DDD1,_-5px_-5px_15px_#FFFFFF] border border-white/60 min-h-[460px] sm:min-h-[500px] lg:min-h-[560px] flex items-center p-8 sm:p-14 lg:p-16 xl:p-20">
+            
+            {/* Ambient Purple/Blue Glow Overlays */}
+            <div className="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-violet-400/20 mix-blend-multiply filter blur-[70px] opacity-75 pointer-events-none" />
+            <div className="absolute top-10 left-36 w-64 h-64 rounded-full bg-indigo-300/15 mix-blend-multiply filter blur-[60px] opacity-60 pointer-events-none" />
+            
+            {/* Highly detailed decorative vector-svg radial-dial coordinate widget representing precision luxury packaging geometry design exactly matching the image */}
+            <svg className="absolute -right-28 sm:-right-20 lg:-right-6 bottom-[-22%] sm:bottom-[-18%] lg:bottom-[-5%] w-[360px] sm:w-[480px] lg:w-[620px] h-[360px] sm:h-[480px] lg:w-[620px] h-[620px] pointer-events-none opacity-80 lg:opacity-100 select-none duration-1000" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Outer boundary concentric rings */}
+              <circle cx="300" cy="300" r="280" stroke="url(#card-grad)" strokeWidth="1" strokeDasharray="4 8" opacity="0.35" />
+              <circle cx="300" cy="300" r="255" stroke="#7C72E6" strokeWidth="1" opacity="0.1" />
+              <circle cx="300" cy="300" r="225" stroke="url(#arc-grad)" strokeWidth="1.2" strokeDasharray="2 12" opacity="0.4" />
+              
+              {/* The prominent wide bluish-purple semi-transparent ring */}
+              <circle cx="300" cy="300" r="190" stroke="url(#ring-grad)" strokeWidth="34" opacity="0.18" />
+              <circle cx="300" cy="300" r="190" stroke="#8E9AE2" strokeWidth="0.5" opacity="0.3" />
+              
+              {/* Middle circle with radial line ticks */}
+              <circle cx="300" cy="300" r="145" stroke="#7C72E6" strokeWidth="1" strokeDasharray="3 6" opacity="0.22" />
+              
+              {/* Ticks ring */}
+              <g opacity="0.45">
+                {Array.from({ length: 48 }).map((_, i) => {
+                  const angle = (i * 360) / 48;
+                  const rad = (angle * Math.PI) / 180;
+                  const x1 = 300 + Math.cos(rad) * 145;
+                  const y1 = 300 + Math.sin(rad) * 145;
+                  const x2 = 300 + Math.cos(rad) * 160;
+                  const y2 = 300 + Math.sin(rad) * 160;
+                  return (
+                    <line
+                      key={i}
+                      x1={x1}
+                      y1={y1}
+                      x2={x2}
+                      y2={y2}
+                      stroke="#8A7EE4"
+                      strokeWidth={i % 4 === 0 ? "1.5" : "0.75"}
+                    />
+                  );
+                })}
+              </g>
+              
+              {/* Core elements */}
+              <circle cx="300" cy="300" r="95" stroke="#7D8DE5" strokeWidth="1.5" strokeDasharray="6 18" opacity="0.45" />
+              <circle cx="300" cy="300" r="65" stroke="url(#arc-grad)" strokeWidth="1" opacity="0.3" />
+              <circle cx="300" cy="300" r="12" fill="#7C72E6" opacity="0.1" />
 
-                {/* Spectacular Ultra-Modern AI Assistant Block modeled after the screenshot, with custom brand colors matching the project */}
-                <div className="w-full max-w-4xl mx-auto flex flex-col items-center text-center mt-9 space-y-6 animate-[fadeIn_0.6s_ease_out]">
-                  
-                  {/* Top Elegant Brand Bot Icon (matching top-center icon from the screenshot) */}
-                  <div className="flex flex-col items-center space-y-3.5 select-none scroll-mt-20" id="ai-assistant-header">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-b from-[#FAF9F5] to-[#EBE4D5] shadow-[6px_6px_15px_#D0C9B9,_-6px_-6px_15px_#FFFFFF] border border-capsule-accent/45 flex items-center justify-center relative transition-transform duration-300 hover:scale-105 active:scale-95">
-                      <div className="w-11 h-11 rounded-full bg-[#3D271B] flex items-center justify-center text-white shadow-inner border border-capsule-accent/20">
-                        {/* Custom sleek chat bubble smiley vector icon (similar to Zap) with branding colors */}
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="2" y="4" width="20" height="15" rx="5" fill="#FAF9F5" />
-                          <circle cx="8" cy="11" r="2" fill="#ff2300" />
-                          <circle cx="16" cy="11" r="2" fill="#ff2300" />
-                          <path d="M10 15C10 15 11 16 12 16C13 16 14 15 14 15" stroke="#ff2300" strokeWidth="1.5" strokeLinecap="round" />
-                          <path d="M12 19L15 22V19H12Z" fill="#FAF9F5" />
-                        </svg>
-                      </div>
-                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-capsule-accent opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-capsule-accent"></span>
-                      </span>
-                    </div>
+              {/* Glow/Gradient Definitions */}
+              <defs>
+                <linearGradient id="ring-grad" x1="0" y1="0" x2="600" y2="600" gradientUnits="userSpaceOnUse">
+                  <stop offset="0.1" stopColor="#8A7EE4" />
+                  <stop offset="0.6" stopColor="#5E83F2" />
+                  <stop offset="0.9" stopColor="#BD85E6" />
+                </linearGradient>
+                <linearGradient id="card-grad" x1="0" y1="0" x2="600" y2="600" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#8E7EE2" />
+                  <stop offset="1" stopColor="#FAFAF8" />
+                </linearGradient>
+                <linearGradient id="arc-grad" x1="0" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#7C72E6" />
+                  <stop offset="1" stopColor="#E3ABFF" />
+                </linearGradient>
+              </defs>
+            </svg>
 
-                    {/* Centered Greetings typography exactly styled like the screenshot mockup */}
-                    <div className="space-y-1">
-                      <h2 className="font-serif text-xl sm:text-2xl text-[#3D271B] tracking-wide uppercase font-black">
-                        {locale === "hy" ? "Ողջո՛ւյն, ես Capsule-ն եմ" : locale === "ru" ? "Привет, я Capsule AI" : "Hi, I'm Capsule AI."}
-                      </h2>
-                      <p className="font-sans text-xs sm:text-[13px] text-[#3D271B]/60 font-bold tracking-tight">
-                        {locale === "hy" ? "Ինչպե՞ս կարող եմ օգնել Ձեզ այսօր։" : locale === "ru" ? "Чем я могу помочь вам сегодня?" : "How can I help you today?"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Elegant Glassmorphic Panel containing BOTH input and active conversation history */}
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (!homepageAssistantInput.trim()) return;
-                      handleSendAssistantMessage(homepageAssistantInput);
-                    }}
-                    className="w-full bg-gradient-to-b from-[#FAF9F5] to-[#F5F2EA] shadow-[10px_10px_25px_#DBD5C7,_-10px_-10px_25px_#FFFFFF] border border-[#E3DCD0] rounded-2xl sm:rounded-[2.25rem] p-3.5 sm:p-5.5 space-y-3 sm:space-y-4 text-left transition-all duration-300 hover:shadow-[18px_18px_40px_#DBD5C7]"
-                  >
-                    {/* Active Chat Conversation Viewport - Integrated inside the input container for clear structure */}
-                    {assistantMessages.length > 1 && (
-                      <div className="w-full bg-white/45 shadow-inner rounded-2xl p-3 sm:p-4.5 max-h-[200px] sm:max-h-[240px] overflow-y-auto custom-scrollbar flex flex-col gap-3 sm:gap-4 text-left border border-[#E3DCD0]/35 transition-all duration-300">
-                        {assistantMessages.map((msg, index) => (
-                          <div
-                            key={index}
-                            className={`flex flex-col max-w-[85%] ${
-                              msg.role === "user" ? "self-end items-end" : "self-start items-start"
-                            } animate-[fadeIn_0.3s_ease_out]`}
-                          >
-                            <span className="text-[8px] uppercase font-sans tracking-[0.1em] text-[#3D271B]/50 font-black mb-1 px-1.5 block">
-                              {msg.role === "user" 
-                                ? (locale === "hy" ? "Դուք" : locale === "ru" ? "Вы" : "You") 
-                                : (locale === "hy" ? "Օգնական" : locale === "ru" ? "Ասիստենտ" : "Assistant")}
-                            </span>
-                            <div
-                              className={`p-3 sm:p-3.5 rounded-[1.25rem] text-[11px] sm:text-[11.5px] leading-relaxed select-text font-semibold border transition-all duration-200 ${
-                                msg.role === "user"
-                                  ? "bg-gradient-to-r from-[#3D271B] to-[#2B180F] text-[#FAF9F5] rounded-tr-none border-capsule-accent/25 shadow-sm"
-                                  : "bg-[#FAFAF8] text-[#3D271B] rounded-tl-none border-[#E3DCD0]/90 shadow-[3px_3px_6px_#ECE7DD]"
-                              }`}
-                            >
-                              {msg.role === "assistant" ? formatAssistantMessageText(msg.text) : msg.text}
-                            </div>
-                          </div>
-                        ))}
-                        {isAssistantTyping && (
-                          <div className="self-start flex flex-col items-start gap-1 p-0.5">
-                            <span className="text-[8px] uppercase font-sans tracking-[0.1em] text-[#3D271B]/50 font-black px-1.5">
-                              AI {locale === "hy" ? "Մտածում է..." : locale === "ru" ? "Печатает..." : "Thinking..."}
-                            </span>
-                            <div className="bg-[#FAFAF8] border border-[#E3DCD0]/80 px-4 py-3 rounded-2xl rounded-tl-none shadow-[2px_2px_4px_#ECE7DD] flex gap-2 items-center">
-                              <span className="w-1.5 h-1.5 bg-capsule-accent rounded-full animate-bounce [animation-delay:-0.3s]" />
-                              <span className="w-1.5 h-1.5 bg-capsule-accent rounded-full animate-bounce [animation-delay:-0.15s]" />
-                              <span className="w-1.5 h-1.5 bg-capsule-accent rounded-full animate-bounce" />
-                            </div>
-                          </div>
-                        )}
-                        <div ref={homepageChatEndRef} />
-                      </div>
-                    )}
-
-                    {/* The Ask anything text input */}
-                    <div className="w-full">
-                      <textarea
-                        rows={2}
-                        placeholder={locale === "hy" ? "Հարցրեք ինձ ցանկացած բան..." : locale === "ru" ? "Спросите меня о чем угодно..." : "Ask anything..."}
-                        value={homepageAssistantInput}
-                        onChange={(e) => setHomepageAssistantInput(e.target.value)}
-                        className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[13px] sm:text-[14.5px] text-[#3D271B] font-bold placeholder:text-[#3D271B]/35 resize-none px-2 py-1 leading-relaxed"
-                      />
-                    </div>
-
-                    {/* Integrated footer action bar exactly replicating the screenshot structure in brand colors, optimized for single-line desktop & mobile layout */}
-                    <div className="flex items-center justify-between gap-2 pt-3 sm:pt-3.5 border-t border-[#3D271B]/5 select-none">
-                      {/* Left Side Area: Attachment Button & Scrollable prompt pills */}
-                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                        {/* Sleek attachment paperclip button */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const q = locale === "hy" 
-                              ? "Ողջու՛յն, ցանկանում եմ կցել ինձ համար նախընտրելի լոգոն կամ լուսանկարը՝ տուփի տպագրության համար։" 
-                              : "Здравствуйте! Я бы хотел прикрепить свой фирменный логотип для макета упаковки.";
-                            handleSendAssistantMessage(q);
-                          }}
-                          className="cursor-pointer w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#FAF9F5] to-[#FAFAF8] border border-[#E3DCD0]/50 text-[#3D271B]/75 hover:text-capsule-accent flex items-center justify-center shadow-[1.5px_1.5px_3.5px_#DBD5C7] hover:scale-[1.03] active:scale-95 transition-all outline-none shrink-0"
-                          title="Attach logo or image layout"
-                        >
-                          <Paperclip className="w-[13px] h-[13px] sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
-                        </button>
-
-                        {/* Custom Pills (Deep Search + FAQ Search replica) in Brand Accent Colors - scrollable horizontally on mobile with swipe */}
-                        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-nowrap py-0.5 pr-2 flex-1 min-w-0">
-                          <button
-                            type="button"
-                            onClick={() => handleSendAssistantMessage(locale === "hy" ? "Ի՞նչ տուփերի տեսակներ կան և որո՞նք են նվազագույն պատվերի քանակները (MOQ)։" : "Какие виды коробок доступны и какой минимальный тираж (MOQ)?")}
-                            className="cursor-pointer shrink-0 text-[8.5px] sm:text-[9.5px] font-sans font-black uppercase tracking-wider px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-b from-[#FAF9F5] to-[#FAFAF8] text-[#3D271B]/85 shadow-[1px_1px_2.5px_#DBD5C7] hover:text-capsule-accent hover:border-capsule-accent/40 border border-[#E3DCD0]/50 flex items-center gap-1 sm:gap-1.5 transition-all"
-                          >
-                            <Search size={10} className="text-capsule-accent shrink-0" strokeWidth={3} />
-                            <span>{locale === "hy" ? "Պատվերի MOQ" : locale === "ru" ? "Тираж MOQ" : "Order MOQ"}</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => handleSendAssistantMessage(locale === "hy" ? "Ի՞նչ է Spot UV լաքը և ոսկետառ ֆոյլը տպագրության մեջ։" : "Что такое выборочный лак Spot UV и тиснение фольгой?")}
-                            className="cursor-pointer shrink-0 text-[8.5px] sm:text-[9.5px] font-sans font-black uppercase tracking-wider px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-b from-[#FAF9F5] to-[#FAFAF8] text-[#3D271B]/85 shadow-[1px_1px_2.5px_#DBD5C7] hover:text-capsule-accent hover:border-capsule-accent/40 border border-[#E3DCD0]/50 flex items-center gap-1 sm:gap-1.5 transition-all"
-                          >
-                            <Globe size={10} className="text-capsule-accent shrink-0" strokeWidth={3} />
-                            <span>{locale === "hy" ? "Պրեմիում" : locale === "ru" ? "Премиум" : "Finishes"}</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Right Side Area: Microphone voice simulation indicator + Sleek Active Send Arrow */}
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {/* Audio simulate wave icon from photo */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const greet = locale === "hy" 
-                              ? "Լսում եմ Ձեզ, խնդրում եմ հարցրեք ցանկացած տեղեկատվություն տուփերի մասին։" 
-                              : "Слушаю вас! Пожалуйста, задайте любой вопрос по поводу упаковки голосом.";
-                            setHomepageAssistantInput("");
-                            handleSendAssistantMessage(greet);
-                          }}
-                          className="cursor-pointer w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-gradient-to-b from-[#FAF9F5] to-[#FAFAF8] border border-[#E3DCD0]/50 text-[#3D271B]/75 hover:text-capsule-accent flex items-center justify-center shadow-[1.5px_1.5px_3.5px_#DBD5C7] hover:scale-[1.03] active:scale-95 transition-all outline-none"
-                          title="Simulate Voice Input"
-                        >
-                          <Mic className="w-[13px] h-[13px] sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
-                        </button>
-
-                        {/* Round glowing Send Button (Exactly centered rightmost, styled with brand accent color) */}
-                        <button
-                          type="submit"
-                          disabled={!homepageAssistantInput.trim() || isAssistantTyping}
-                          className="cursor-pointer w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-capsule-accent hover:bg-capsule-accent-light text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-[1.05] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed select-none transition-all duration-200 border-none outline-none"
-                        >
-                          <ArrowUp className="w-[15px] h-[15px] sm:w-[16px] sm:h-[16px] text-white" strokeWidth={3.5} />
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-
-                  {/* Aesthetic Premium Brand/Studio Bottom Label */}
-                  <div className="w-full max-w-sm pt-1 select-none">
-                    <div className="flex justify-between items-center bg-[#FAFAF8]/95 border border-[#E3DCD0]/50 p-4 rounded-2xl shadow-[2px_2px_5px_rgba(220,214,201,0.25)]">
-                      <div className="flex items-center gap-2.5">
-                        <span className="text-sm text-capsule-accent">✦</span>
-                        <p className="text-[10px] uppercase font-sans tracking-[0.18em] font-black text-[#3D271B]">
-                          Capsule Studio AI
-                        </p>
-                      </div>
-                      <span className="text-[9px] text-[#A69785] font-mono tracking-widest font-black uppercase">
-                        Yerevan
-                      </span>
-                    </div>
-                  </div>
-
-                </div>
-
-
+            {/* Left Content Column */}
+            <div className="relative z-10 w-full max-w-xl flex flex-col items-start text-left">
+              {/* Beta/Information Pill Tag */}
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[9px] tracking-[0.25em] uppercase font-mono font-bold text-[#554DDC] bg-white/80 backdrop-blur-sm border border-[#E0D7FC]/65 rounded-full shadow-[0_2px_8px_rgba(99,102,241,0.06)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#554DDC] animate-ping" />
+                {locale === "hy" ? "ՊՐԵՄԻՈՒՄ ՓԱԹԵԹԱՎՈՐՈՒՄ" : locale === "ru" ? "ПРЕМИАЛЬНАЯ УПАКОВКА" : "PREMIUM PACKAGING LAB"}
               </div>
 
-              {/* Luxury Kit Bundle Display */}
-              {bundleItems.length > 0 && (
-                <div className="w-full bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm relative overflow-hidden animate-[fadeIn_0.5s_ease_out]">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-capsule-accent/5 rounded-full -mr-12 -mt-12 pointer-events-none" />
-                  
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-capsule-accent/10 pb-4">
-                    <div className="space-y-1">
-                      <span className="text-[9px] uppercase font-mono tracking-widest text-capsule-accent/70 font-semibold block">
-                        🛒 Ձեր Զամբյուղը / Your Selected Cart
-                      </span>
-                      <h3 className="font-serif text-xl sm:text-2xl text-capsule-accent tracking-wide uppercase">
-                        Պատվերի Զամբյուղ
-                      </h3>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setIsCartOpen(true)}
-                        className="text-[10px] uppercase tracking-widest text-[#fbfbf8] bg-capsule-accent hover:bg-capsule-accent-light px-4 py-2 rounded-xl transition-all duration-250 cursor-pointer font-bold select-none"
-                      >
-                        Բացել Զամբյուղը / Open Cart
-                      </button>
-                      <button
-                        onClick={handleClearBundle}
-                        className="text-[10px] font-sans font-bold uppercase tracking-wider px-3 py-2 rounded-xl border text-red-700 hover:text-white border-red-700/10 hover:border-red-700 hover:bg-red-700 transition-all duration-200 cursor-pointer"
-                      >
-                        Մաքրել / Clear
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Dynamic summary list of cart contents */}
-                  <div className="flex flex-wrap gap-3 py-2">
-                    {bundleItems.map((item) => (
-                      <div 
-                        key={item.id} 
-                        onClick={() => setIsCartOpen(true)}
-                        className="flex items-center gap-3 bg-capsule-bg/25 hover:bg-capsule-bg/60 border border-capsule-accent/10 hover:border-capsule-accent/25 px-4 bg-opacity-40 py-2.5 rounded-2xl cursor-pointer transition-all duration-200"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-capsule-accent/5 text-capsule-accent flex items-center justify-center shrink-0">
-                          {renderCategoryIcon(item.icon, item.catId)}
-                        </div>
-                        <div className="text-left select-text">
-                          <span className="text-[8px] uppercase tracking-wider text-capsule-accent/70 block font-mono font-bold leading-none mb-0.5">
-                            {item.catName}
-                          </span>
-                          <span className="text-[11px] font-bold text-capsule-dark block truncate max-w-[150px]">
-                            {item.itemName}
-                          </span>
-                        </div>
-                        <span className="text-[10px] font-mono bg-capsule-accent/10 text-capsule-accent px-1.5 py-0.5 rounded-md font-bold shrink-0">
-                          {item.qty.toLocaleString()} {item.isMeters ? "մ." : "հ."}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Summary Total */}
-                  <div className="border-t border-capsule-accent/10 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div className="text-center sm:text-left select-text">
-                      <span className="text-[10px] uppercase font-mono tracking-wider text-capsule-text-muted font-semibold block">
-                        Զամբյուղի Ընդհանուր Արժեքը
-                      </span>
-                      <h4 className="text-2xl sm:text-3xl font-extrabold text-capsule-accent font-sans">
-                        {totalBundlePrice.toLocaleString()} ֏
-                      </h4>
-                    </div>
-                    
-                    <button
-                      onClick={handleLaunchBundleInquiry}
-                      className="w-full sm:w-auto bg-[#ff2300] hover:bg-[#e61f00] text-white text-xs px-8 py-4 rounded-full font-bold uppercase tracking-wider cursor-pointer text-center select-none shadow-md flex justify-center items-center gap-2 transition-colors duration-200"
-                    >
-                      <ShoppingBag size={14} />
-                      Հաստատել Պատվերը / Send Cart Quote
-                    </button>
-                  </div>
-                </div>
-              )}
-
-
-
-              {/* Categorized workspace selection (Moved to the very top as the hero element for ideal UX flow) */}
-              <div className="w-full text-center mt-6 space-y-4">
-                <span className="text-[10px] font-mono tracking-[0.25em] text-[#3D271B]/60 font-extrabold uppercase block select-none">
-                  ✦ Ընտրեք կատեգորիան արտադրանքի հաշվարկի համար / Select Product Category to Start Calculating ✦
+              {/* Double-fonts title matching the reference image layout precisely */}
+              <h1 className="font-sans font-black text-4xl sm:text-5xl lg:text-5xl xl:text-6xl tracking-tight text-[#30241C] leading-[1.1] mt-5 md:mt-6 mb-4 md:mb-5">
+                {locale === "hy" ? "Ձևավորել Խելացի:" : locale === "ru" ? "Проектируй Умно." : "Design Smarter."}
+                <span className="block font-serif font-light italic text-[#30241C] mt-1 lg:mt-2">
+                  {locale === "hy" ? "Արտադրել Արագ," : locale === "ru" ? "Создавай Быстрее," : "Brand Faster,"}
                 </span>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-                  {categories.filter(c => c.active).map((c) => {
-                    let badgeText = c.heroSmall || "";
-                    if (!badgeText) {
-                      switch(c.id) {
-                        case "bags": badgeText = "Պայուսակներ / Standard Bags"; break;
-                        case "boxes": badgeText = "Պրեմիում Տուփեր / Rigid Boxes"; break;
-                        case "ribbons": badgeText = "Սատին / Ռեպսե Ժապավեններ"; break;
-                        case "stickers": badgeText = "Պիտակներ / Custom Stickers"; break;
-                        case "giftcards": badgeText = "Նվեր Քարտեր / Gift Cards"; break;
-                        case "businesscards": badgeText = "Այցեքարտեր / Business Cards"; break;
-                        case "other_products": badgeText = "Այլ Արտադրանք / Custom Print"; break;
-                        case "qr_matrix": badgeText = "QR & Matrix / Generate"; break;
-                        default: badgeText = "Հաշվիչ / Dynamic Calculator"; break;
-                      }
-                    }
-                    return (
-                      <button
-                        key={c.id}
-                        onClick={() => {
-                          setActiveCategory(c.id);
-                          setCalcResult(null);
-                          setCalcError(null);
-                        }}
-                        className="luxury-card-hover p-6 rounded-[2.25rem] bg-[var(--color-capsule-bg)] border border-white/80 shadow-[7px_7px_15px_#D3C9B8,_-7px_-7px_15px_#FFFFFF] text-center cursor-pointer group flex flex-col items-center justify-between min-h-[235px] relative overflow-hidden active:scale-[0.98] active:shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-3px_-3px_6px_#FFFFFF]"
-                      >
-                        <div className="absolute top-0 right-0 w-28 h-28 bg-capsule-accent/5 rounded-full -mr-10 -mt-10 transition-transform duration-500 ease-out group-hover:scale-110 pointer-events-none" />
-                        
-                        <div className="w-20 h-20 rounded-[1.75rem] bg-[var(--color-capsule-bg)] text-capsule-accent shadow-[inset_3px_3px_6px_#E5E3DF,_inset_-3px_-3px_6px_#FFFFFF] border border-white/40 group-hover:bg-capsule-accent group-hover:text-capsule-surf flex items-center justify-center transition-all duration-200">
-                          {renderCategoryIcon(c.icon, c.id)}
-                        </div>
+              </h1>
 
-                        <div className="space-y-1.5 z-10 mt-4 px-2">
-                          <span className="text-[9px] uppercase font-mono tracking-widest text-capsule-accent/60 font-bold block">{badgeText}</span>
-                          <h4 className="font-sans text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.12em] text-capsule-dark group-hover:text-capsule-accent transition-colors leading-relaxed">
-                            {c.name}
-                          </h4>
-                        </div>
+              {/* Spaced Subtitle Description */}
+              <p className="font-sans text-xs sm:text-sm text-[#3D271B]/65 leading-relaxed max-w-sm sm:max-w-md md:max-w-lg mb-8 md:mb-9">
+                {locale === "hy" 
+                  ? "Պատվիրեք անհատականացված բրենդային տոպրակներ, տուփեր և պիտակներ հաշված վայրկյաններում մեր առաջատար առցանց հաշվիչով:" 
+                  : locale === "ru"
+                  ? "Закажите фирменные пакеты, коробки и этикетки за считанные секунды с помощью нашего умного онлайн-калькулятора."
+                  : "Order custom branded bags, luxury boxes, and bespoke labels in seconds with our advanced instant online configurator."}
+              </p>
 
-                        <div className="mt-4 text-[9px] uppercase tracking-wider text-capsule-text-secondary bg-[#FAFAF9]/70 px-4 py-1.5 rounded-full border border-white/80 shadow-[2px_2px_4px_#E5E3DF,_-2px_-2px_4px_#FFFFFF] group-hover:border-capsule-accent/20 group-hover:bg-capsule-accent/10 group-hover:text-capsule-accent transition-all duration-300 font-bold flex items-center gap-1.5 font-sans">
-                          <span>Սկսել հաշվարկը</span>
-                          <span className="transition-transform group-hover:translate-x-1 duration-200">➔</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+              {/* Clean Symmetrical Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-4 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentView("calculator");
+                    window.history.pushState({}, "", "/calculator");
+                  }}
+                  className="bg-[#1A3F25] hover:bg-[#112d19] text-white font-sans text-[11px] font-bold py-3.5 px-8 rounded-full shadow-[2px_4px_10px_rgba(26,63,37,0.15)] cursor-pointer uppercase tracking-[0.1em] border-none outline-none hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                >
+                  {locale === "hy" ? "Բացել Հաշվիչը" : locale === "ru" ? "Открыть Калькулятор" : "Open Calculator"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentView("track");
+                    setIsInTrackPortal(true);
+                    window.history.pushState({}, "", "/track-order");
+                  }}
+                  className="bg-white/90 hover:bg-white text-[#30241C] border border-[#E0DCD4] shadow-[2px_2px_8px_#E5DDD1] transition-all duration-300 py-3.5 px-8 rounded-full font-bold text-[11px] uppercase tracking-[0.1em] cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  {locale === "hy" ? "Հետևել Պատվերին" : locale === "ru" ? "Отследить Заказ" : "Track Order"}
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          {/* AI Mode packaging assistant block exactly as requested */}
+          <AIAgentBlock locale={locale} />
+
+          {/* "Others also bought" / "Այլ հաճախորդներ նաև գնել են" block */}
+          {featuredProducts && featuredProducts.filter(fp => fp.active).length > 0 && (
+            <div className="w-full py-16 px-6 sm:px-10 lg:px-12 max-w-[1240px] mx-auto select-none font-sans mt-16 mb-16 select-none animate-fade-in" id="others-also-bought-block">
+              <div className="text-center mb-12">
+                <h2 className="font-sans font-black text-3.5xl sm:text-4.5xl text-[#3D271B] tracking-tight leading-none uppercase font-bold">
+                  {locale === "hy" 
+                    ? "Սա նույնպես ձեռնտու է (Այլ հաճախորդներ գնում են)" 
+                    : locale === "ru" 
+                    ? "С этим товаром также часто покупают" 
+                    : "Others Also Bought"}
+                </h2>
+                <div className="w-24 h-2 bg-[#F4F2EE] shadow-[inset_2.5px_2.5px_5px_rgba(180,175,166,0.65),inset_-2.5px_-2.5px_5px_#ffffff] rounded-full mx-auto mt-6" />
               </div>
 
-              {/* Spectacular Neumorphic Interactive Console (Disabled) */}
-              {false && (
-                <AnimatePresence mode="wait">
-                {!isEmbeddedAiExpanded ? (
-                  <motion.div
-                    key="collapsed-ai"
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -15 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    onClick={() => setIsEmbeddedAiExpanded(true)}
-                    className="w-full mt-6 bg-capsule-surf rounded-[2.5rem] p-6 sm:p-8 md:p-10 shadow-[8px_8px_20px_#E5E3DF,_-8px_-8px_20px_#FFFFFF] border-2 border-white cursor-pointer hover:shadow-[10px_10px_25px_#DCDAD5,_-10px_-10px_25px_#FFFFFF] hover:scale-[1.005] active:scale-[0.998] transition-all duration-300 select-none flex flex-col items-center justify-center text-center gap-6"
-                  >
-                    {/* Compact Interactive Mascot with Pulsing Glow */}
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_5px_#FFFFFF] bg-capsule-surf2 overflow-hidden p-1">
-                        <div className="absolute inset-1.5 rounded-full bg-gradient-to-tr from-[#FFAA33]/20 via-[#ff2300]/15 to-[#ff2300]/35 opacity-80 animate-pulse" />
-                        <Bot size={24} className="text-capsule-accent relative z-10 drop-shadow-sm" />
-                      </div>
-                      
-                      <div className="space-y-1">
-                        <span className="text-[9px] bg-capsule-accent-dim text-capsule-accent border border-capsule-accent/15 px-2.5 py-0.5 rounded-full font-mono font-black tracking-widest uppercase shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF]">
-                          CAPSULE AI CONSOLE
-                        </span>
-                        <h2 className="font-sans text-lg sm:text-xl text-capsule-dark tracking-tight font-black uppercase mt-1">
-                          ԽԵԼԱՑԻ ՕԳՆԱԿԱՆ &amp; ՍՊԱՍԱՐԿՈՒՄ
-                        </h2>
-                        <p className="text-xs text-capsule-text-secondary max-w-md mx-auto font-semibold">
-                          Կտտացրեք՝ բացելու նորագույն նեյրոմորֆիկ (Neumorphic) ինտերակտիվ վահանակը։
-                        </p>
-                      </div>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                {featuredProducts.filter(fp => fp.active).map((fp, idx) => {
+                  const prodName = locale === "hy" ? fp.nameHy : locale === "ru" ? fp.nameRu : fp.nameEn;
+                  const minQtyText = locale === "hy" ? fp.minQtyTextHy : locale === "ru" ? fp.minQtyTextRu : fp.minQtyTextEn;
+                  const tagText = locale === "hy" ? fp.tagHy : locale === "ru" ? fp.tagRu : fp.tagEn;
+                  const secTagText = locale === "hy" ? fp.secondaryTagHy : locale === "ru" ? fp.secondaryTagRu : fp.secondaryTagEn;
 
-                    {/* Quick Access Neumorphic Pills */}
-                    <div className="flex flex-wrap justify-center gap-3 max-w-xl">
-                      <span className="text-[10px] bg-capsule-surf text-capsule-dark px-3.5 py-2 rounded-full font-bold shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] border border-capsule-border">
-                        💬 AI Chat
-                      </span>
-                      <span className="text-[10px] bg-capsule-surf text-capsule-dark px-3.5 py-2 rounded-full font-bold shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] border border-capsule-border">
-                        🔑 Sign Up Code
-                      </span>
-                      <span className="text-[10px] bg-capsule-surf text-capsule-dark px-3.5 py-2 rounded-full font-bold shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] border border-capsule-border">
-                        🔍 Product Specs
-                      </span>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="expanded-ai"
-                    initial={{ opacity: 0, y: -15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="w-full mt-6 bg-capsule-surf rounded-[2.8rem] p-6 sm:p-8 md:p-10 shadow-[12px_12px_28px_#E5E3DF,_-12px_-12px_28px_#FFFFFF] border-3 border-white flex flex-col gap-6 select-text relative overflow-hidden"
-                  >
-                    {/* Interactive Floating Toast Notification for Bookmarks / Simulated Actions */}
-                    <AnimatePresence>
-                      {showBookmarkToast && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -50, scale: 0.9 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                          className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 bg-[#FAFAF9] border-2 border-white text-gray-800 font-sans font-bold text-xs px-5 py-3.5 rounded-2xl shadow-[6px_6px_12px_#E5E3DF,_-6px_-6px_12px_#FFFFFF] flex items-center gap-2.5"
-                        >
-                          <span className="text-emerald-500 text-sm">✦</span>
-                          <span>{bookmarkToastText}</span>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  // Define Packhelp-style premium custom themes for each card
+                  let themeClass = "";
+                  let textClass = "";
+                  let tagClass = "";
+                  let subtextClass = "";
+                  let btnClass = "";
+                  let borderClass = "";
+                  let cardShadowClass = "";
+                  let btnShadowClass = "";
+                  let imgWBorderClass = "";
 
-                    {/* Header Zone: Neumorphic Dual View Controller & Close Button */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[#3D271B]/5 pb-4">
-                      {/* Left: Beautiful receded Neumorphic tab controller */}
-                      <div className="flex items-center p-1.5 bg-[#FAFAF9] rounded-full shadow-[inset_3px_3px_6px_#E5E3DF,_inset_-3px_-3px_6px_#FFFFFF] w-full sm:w-auto relative">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setNeumorphicActiveTab("ai_chat");
-                            if (neumorphicVolume) {
-                              // Play subtle chime simulation
-                              setBookmarkToastText("Անցում AI Chat վահանակին");
-                              setShowBookmarkToast(true);
-                              setTimeout(() => setShowBookmarkToast(false), 1500);
-                            }
-                          }}
-                          className={`flex-1 sm:flex-none text-center px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all duration-300 ${
-                            neumorphicActiveTab === "ai_chat"
-                              ? "bg-capsule-surf text-[#3B82F6] shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] border-t border-white"
-                              : "text-[#3D271B]/60 hover:text-[#3D271B]"
-                          }`}
-                        >
-                          💬 AI Chat Info
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setNeumorphicActiveTab("signup");
-                            if (neumorphicVolume) {
-                              setBookmarkToastText("Անցում Sign Up վահանակին");
-                              setShowBookmarkToast(true);
-                              setTimeout(() => setShowBookmarkToast(false), 1500);
-                            }
-                          }}
-                          className={`flex-1 sm:flex-none text-center px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all duration-300 ${
-                            neumorphicActiveTab === "signup"
-                              ? "bg-capsule-surf text-red-700 shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] border-t border-white"
-                              : "text-[#3D271B]/60 hover:text-[#3D271B]"
-                          }`}
-                        >
-                          🔑 Sign Up &amp; Tools
-                        </button>
-                      </div>
- 
-                      {/* Right: Close Console circle button */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsEmbeddedAiExpanded(false);
-                          setIsConsoleActivated(false);
-                        }}
-                        className="w-10 h-10 rounded-full flex items-center justify-center bg-capsule-surf text-capsule-dark hover:text-red-600 shadow-[3px_3px_6px_#E5E3DF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#DCDAD5,_-4px_-4px_8px_#FFFFFF] border-t border-white active:shadow-[inset_2px_2px_4px_#E5E3DF,_inset_-2px_-2px_4px_#FFFFFF] active:scale-95 transition-all cursor-pointer"
-                        title="Close Console"
-                      >
-                        <X size={15} />
-                      </button>
-                    </div>
- 
-                    {/* Main Workspace Frame */}
-                    <div className="w-full">
-                      {neumorphicActiveTab === "ai_chat" ? (
-                        /* ==================== STYLE 2: AI CHAT VIEW (From Screenshot 2) ==================== */
-                        <div className="flex flex-col items-center gap-6">
-                          
-                          {/* Main Heading styled like the screenshot header but slightly blue */}
-                          <div className="text-center">
-                            <h3 className="text-[#3B82F6] font-sans font-black tracking-widest text-lg sm:text-xl select-none">
-                              AI Chat
-                            </h3>
-                          </div>
- 
-                          {/* Outer Raised White Card - Screenshot 2 exact shape */}
-                          <div className="w-full max-w-lg bg-capsule-surf border-3 border-white rounded-[2.5rem] p-6 sm:p-8 shadow-[8px_8px_18px_#E5E3DF,_-8px_-8px_18px_#FFFFFF] flex flex-col items-center gap-6 relative overflow-hidden">
-                            
-                            {/* Spectacular Frosty Glass Layer at the Beginning (Unlockable upon focus/typing) */}
-                            <AnimatePresence>
-                              {!isConsoleActivated && (
-                                <motion.div
-                                  initial={{ opacity: 1 }}
-                                  exit={{ opacity: 0, scale: 0.98, y: -5 }}
-                                  transition={{ duration: 0.45, ease: "easeInOut" }}
-                                  className="absolute inset-x-0 top-0 bottom-[84px] z-30 bg-capsule-surf/95 rounded-t-[2.3rem] flex flex-col items-center justify-center p-6 text-center select-none"
-                                >
-                                  {/* Premium Armenia text at the top of frosty block */}
-                                  <div className="space-y-1.5 pt-2">
-                                    <span className="text-[9px] bg-capsule-accent-dim text-capsule-accent border-2 border-white px-3 py-0.5 rounded-full font-mono font-black tracking-widest uppercase shadow-[2px_2px_4px_#E5E3DF,_-2px_-2px_4px_#FFFFFF]">
-                                      CAPSULE SMART CORE
-                                    </span>
-                                    <h4 className="font-sans text-xs sm:text-[13px] font-black uppercase text-capsule-dark tracking-wider mt-2.5">
-                                      ԽԵԼԱՑԻ AI ՕԳՆԱԿԱՆ
-                                    </h4>
-                                    <p className="text-[10px] text-[#3D271B]/60 font-bold uppercase tracking-widest">
-                                      Concept Assistance Ready
-                                    </p>
-                                  </div>
- 
-                                  {/* Beautiful straight horizontal line requested by user */}
-                                  <div className="w-40 h-[2.5px] bg-gradient-to-r from-transparent via-capsule-border to-transparent my-4" />
- 
-                                  {/* Description space for writing text */}
-                                  <div className="space-y-2.5 max-w-xs mt-1">
-                                    <p className="text-[11px] sm:text-xs text-capsule-text-secondary font-semibold leading-relaxed">
-                                      Գրեք Ձեր հարցը կամ կտտացրեք տեքստային դաշտի վրա համակարգն ակտիվացնելու համար։
-                                    </p>
-                                    <p className="text-[9px] font-mono text-capsule-accent font-extrabold uppercase tracking-wider animate-pulse">
-                                      ✦ Click text box below to activate ✦
-                                    </p>
-                                  </div>
- 
-                                  {/* Floating lock icon indicator matching screenshot aesthetic */}
-                                  <div className="mt-4 w-9 h-9 rounded-full bg-capsule-surf border border-white shadow-[3px_3px_6px_#E5E3DF,_-3px_-2px_6px_#FFFFFF] flex items-center justify-center text-[#3D271B]/60">
-                                    <Lock size={12} className="animate-pulse" />
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
+                  if (idx % 4 === 0) {
+                    // Lilac / Lavender
+                    themeClass = "bg-[#ECE2F7] hover:bg-[#E4D7F2]";
+                    textClass = "text-[#1C0D32]";
+                    tagClass = "bg-[#D6C5EB] text-[#1C0D32]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(162,143,184,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
+                    subtextClass = "text-[#1C0D32]/75";
+                    btnClass = "bg-[#ECE2F7] text-[#1C0D32]";
+                    borderClass = "border-[#1C0D32]/10";
+                    cardShadowClass = "shadow-[12px_12px_24px_rgba(162,143,184,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(162,143,184,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
+                    btnShadowClass = "shadow-[3px_3px_6px_rgba(162,143,184,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(162,143,184,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
+                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(162,143,184,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
+                  } else if (idx % 4 === 1) {
+                    // Deep Forest Green
+                    themeClass = "bg-[#0B5C3A] hover:bg-[#094F31]";
+                    textClass = "text-white";
+                    tagClass = "bg-white/10 text-white/95 border-none shadow-[inset_1.5px_1.5px_3px_rgba(5,50,32,0.5),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,0.15)]";
+                    subtextClass = "text-white/80";
+                    btnClass = "bg-[#0B5C3A] text-white";
+                    borderClass = "border-white/10";
+                    cardShadowClass = "shadow-[12px_12px_24px_rgba(5,50,32,0.45),_-12px_-12px_24px_rgba(30,168,110,0.3)] hover:shadow-[6px_6px_12px_rgba(5,50,32,0.4),_-6px_-6px_12px_rgba(30,168,110,0.25)]";
+                    btnShadowClass = "shadow-[3px_3px_6px_rgba(5,50,32,0.45),_-3px_-3px_6px_rgba(30,168,110,0.35)] hover:shadow-[inset_2px_2px_4px_rgba(5,50,32,0.45),_inset_-2px_-2px_4px_rgba(30,168,110,0.35)]";
+                    imgWBorderClass = "border-white/10 shadow-[inset_3px_3px_6px_rgba(5,50,32,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,0.1)]";
+                  } else if (idx % 4 === 2) {
+                    // Warm Silt Gray / Silver
+                    themeClass = "bg-[#E6E4E2] hover:bg-[#DDDCDA]";
+                    textClass = "text-[#282624]";
+                    tagClass = "bg-[#D6D3D1] text-[#282624]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(170,164,160,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
+                    subtextClass = "text-[#282624]/75";
+                    btnClass = "bg-[#E6E4E2] text-[#282624]";
+                    borderClass = "border-[#282624]/10";
+                    cardShadowClass = "shadow-[12px_12px_24px_rgba(170,164,160,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(170,164,160,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
+                    btnShadowClass = "shadow-[3px_3px_6px_rgba(170,164,160,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(170,164,160,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
+                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(170,164,160,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
+                  } else {
+                    // Sage / Eco Green
+                    themeClass = "bg-[#D7E6DD] hover:bg-[#C9DAD0]";
+                    textClass = "text-[#1B3021]";
+                    tagClass = "bg-[#BDD4C5] text-[#1B3021]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(154,170,160,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
+                    subtextClass = "text-[#1B3021]/75";
+                    btnClass = "bg-[#D7E6DD] text-[#1B3021]";
+                    borderClass = "border-[#1B3021]/10";
+                    cardShadowClass = "shadow-[12px_12px_24px_rgba(154,170,160,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(154,170,160,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
+                    btnShadowClass = "shadow-[3px_3px_6px_rgba(154,170,160,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(154,170,160,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
+                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(154,170,160,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
+                  }
 
-                            {/* Centered Glowing Neomorphic Rainbow Sphere */}
-                            <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-[inset_3px_3px_7px_rgba(31,42,42,0.15),_inset_-3px_-3px_7px_#FFFFFF] bg-capsule-surf overflow-hidden p-1.5">
-                              {/* Iridescent background layers rotating/pulsing */}
-                              <div className="absolute inset-2 rounded-full bg-gradient-to-tr from-[#FFCCD3] via-[#BCEEFF] to-[#E9D5FF] opacity-90 animate-[pulse_3.5s_infinite_alternate]" />
-                              <div className="absolute inset-4 rounded-full bg-gradient-to-bl from-[#FFEAC7] via-[#D3F5FF] to-[#F1ACFF] mix-blend-screen animate-[spin_12s_linear_infinite]" />
-                              <div className="absolute inset-5 rounded-full bg-white/90 flex items-center justify-center shadow-3xs">
-                                <span className="text-base">✨</span>
-                              </div>
-                            </div>
+                  return (
+                    <div
+                      key={fp.id}
+                      onClick={() => {
+                        setActiveCategory(fp.categoryId);
+                        setCalcResult(null); // Clear previous calcs to start fresh
+                        setCurrentView("calculator");
+                        window.history.pushState({}, "", "/calculator");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className={`group cursor-pointer rounded-[36px] pt-10 pb-12 px-8 flex flex-col justify-between min-h-[500px] md:min-h-[560px] transition-all duration-300 border border-[#E3DFD7]/20 relative active:scale-[0.98] ${themeClass} ${cardShadowClass}`}
+                    >
+                      <div className="flex flex-col justify-between h-full flex-1">
+                        <div>
+                          {/* Slogan classification label / Main custom Tag */}
+                          {tagText && (
+                            <span className={`text-[10px] uppercase font-mono tracking-widest font-black opacity-90 inline-block mb-3.5 px-3 py-1 rounded-full ${tagClass}`}>
+                              {tagText}
+                            </span>
+                          )}
 
-                            {/* Center Headline */}
-                            <div className="text-center space-y-1">
-                              <h4 className="font-sans text-capsule-dark font-extrabold text-sm sm:text-[15px] tracking-normal select-none">
-                                Ask Super AI anything
-                              </h4>
-                              <p className="text-[10px] text-capsule-text-secondary font-bold uppercase tracking-wider">
-                                ՏՈՒՓԵՐՈՒՄ &amp; ՓԱԹԵԹԱՎՈՐՄԱՆ ԼՈՒԾՈՒՄՆԵՐ
-                              </p>
-                            </div>
+                          {/* Large display Heading showing name */}
+                          <h3 className={`font-sans text-2xl sm:text-2xl font-black tracking-tight leading-[1.125] mb-3 ${textClass}`}>
+                            {prodName}
+                          </h3>
 
-                            {/* Chat messages inside an inset window - functional chat history scrollable block */}
-                            <div className="w-full rounded-2xl p-4 bg-capsule-surf2 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] max-h-[220px] overflow-y-auto space-y-3.5 scroll-smooth border border-white/20">
-                              {assistantMessages.map((msg, idx) => (
-                                <div
-                                  key={idx}
-                                  className={`flex gap-2.5 max-w-[90%] ${
-                                    msg.role === "user" ? "self-end ml-auto flex-row-reverse" : "self-startMR mr-auto"
-                                  }`}
-                                >
-                                  {/* Compact circular avatar */}
-                                  <div className="w-7 h-7 rounded-full flex items-center justify-center select-none text-[9px] font-mono font-black border border-white/80 shadow-[2px_2px_4px_#E5E3DF,_-2px_-2px_4px_#FFFFFF] shrink-0
-                                    bg-capsule-surf text-capsule-accent">
-                                    {msg.role === "user" ? "U" : "AI"}
-                                  </div>
-
-                                  {/* Speech speech bubble with beautiful convex feel */}
-                                  <div
-                                    className={`rounded-2xl px-3.5 py-2.5 text-xs font-semibold leading-relaxed border border-white/40 shadow-[3px_3px_5px_#E5E3DF,_-3px_-3px_5px_#FFFFFF] ${
-                                      msg.role === "user"
-                                        ? "bg-capsule-surf text-capsule-dark rounded-tr-none"
-                                        : "bg-capsule-surf text-gray-700 rounded-tl-none"
-                                    }`}
-                                  >
-                                    {formatAssistantMessageText(msg.text)}
-                                  </div>
-                                </div>
-                              ))}
-
-                              {isAssistantTyping && (
-                                <div className="flex gap-2.5 self-start mr-auto max-w-[85%]">
-                                  <div className="w-7 h-7 rounded-full bg-capsule-surf text-[#3D271B]/60 border border-white/80 shadow-[2px_2px_4px_#E5E3DF] flex items-center justify-center shrink-0">
-                                    <Bot size={11} className="animate-spin text-capsule-accent" />
-                                  </div>
-                                  <div className="bg-capsule-surf rounded-2xl rounded-tl-none px-3.5 py-2.5 border border-white/45 text-[11px] text-[#3D271B]/60 flex items-center gap-2 shadow-[3px_3px_5px_#E5E3DF]">
-                                    <span className="flex gap-1 animate-pulse">
-                                      <span className="w-1.5 h-1.5 bg-capsule-accent rounded-full"></span>
-                                      <span className="w-1.5 h-1.5 bg-capsule-accent-light rounded-full"></span>
-                                      <span className="w-1.5 h-1.5 bg-capsule-accent-active rounded-full"></span>
-                                    </span>
-                                    <span className="italic font-bold">Concept AI is writing...</span>
-                                  </div>
-                                </div>
-                              )}
-                              <div ref={homepageChatEndRef} />
-                            </div>
-
-                            {/* Suggested Prompts Pill Buttons (Laid out beautifully, active triggers) */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full">
-                              <button
-                                type="button"
-                                onClick={() => handleSendAssistantMessage("Ի՞նչ տուփերի տեսակներ կան և որո՞նք են նվազագույն պատվերի քանակները (MOQ)։")}
-                                className="bg-capsule-surf border border-white/60 hover:border-capsule-accent/30 rounded-2xl p-3 text-left transition-all duration-300 cursor-pointer shadow-[3.5px_3.5px_7px_#E5E3DF,_-3.5px_-3.5px_7px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 text-[10.5px] font-sans font-bold text-[#3D271B] hover:text-capsule-accent flex items-center gap-2"
-                              >
-                                <span className="text-sm">📦</span>
-                                <div className="truncate flex-1">
-                                  <span className="block font-black text-capsule-dark">Boxes &amp; MOQ</span>
-                                  <span className="text-[9px] text-[#3D271B]/65 font-bold">Տուփերի տեսակներն ու MOQ-ն</span>
-                                </div>
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleSendAssistantMessage("Ինչպիսի՞ թղթերի տեսակներ ու հաստություններ կան տոպրակների համար։")}
-                                className="bg-capsule-surf border border-white/60 hover:border-capsule-accent/30 rounded-2xl p-3 text-left transition-all duration-300 cursor-pointer shadow-[3.5px_3.5px_7px_#E5E3DF,_-3.5px_-3.5px_7px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 text-[10.5px] font-sans font-bold text-[#3D271B] hover:text-capsule-accent flex items-center gap-2"
-                              >
-                                <span className="text-sm">📄</span>
-                                <div className="truncate flex-1">
-                                  <span className="block font-black text-capsule-dark">Paper Qualities</span>
-                                  <span className="text-[9px] text-[#3D271B]/65 font-bold">Տոպրակի թղթերն ու հաստությունները</span>
-                                </div>
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleSendAssistantMessage("Ի՞նչ է Spot UV լաքը և ոսկետառ ֆոյլը տպագրության մեջ։")}
-                                className="bg-capsule-surf border border-white/60 hover:border-capsule-accent/30 rounded-2xl p-3 text-left transition-all duration-300 cursor-pointer shadow-[3.5px_3.5px_7px_#E5E3DF,_-3.5px_-3.5px_7px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 text-[10.5px] font-sans font-bold text-[#3D271B] hover:text-capsule-accent flex items-center gap-2"
-                              >
-                                <span className="text-sm">✦</span>
-                                <div className="truncate flex-1">
-                                  <span className="block font-black text-capsule-dark">Premium Finishes</span>
-                                  <span className="text-[9px] text-[#3D271B]/65 font-bold">Spot UV և Ոսկետառ Ֆոյլ</span>
-                                </div>
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleSendAssistantMessage("Ինչպե՞ս է կատարվում տոպրակների կամ տուփերի չափսի ընտրությունը։")}
-                                className="bg-capsule-surf border border-white/60 hover:border-capsule-accent/30 rounded-2xl p-3 text-left transition-all duration-300 cursor-pointer shadow-[3.5px_3.5px_7px_#E5E3DF,_-3.5px_-3.5px_7px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 text-[10.5px] font-sans font-bold text-[#3D271B] hover:text-capsule-accent flex items-center gap-2"
-                              >
-                                <span className="text-sm">📐</span>
-                                <div className="truncate flex-1">
-                                  <span className="block font-black text-capsule-dark">Sizing Framework</span>
-                                  <span className="text-[9px] text-[#3D271B]/65 font-bold">Ինչպես չափել կամ ընտրել չափսը</span>
-                                </div>
-                              </button>
-                            </div>
-
-                            {/* Message Input - Debossed Capsule exactly like Screenshot 2 */}
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                if (!homepageAssistantInput.trim()) return;
-                                handleSendAssistantMessage(homepageAssistantInput);
-                              }}
-                              className="w-full flex items-center bg-capsule-surf rounded-full pl-5 pr-2 py-2 shadow-[inset_3px_3px_6px_#E5E3DF,_inset_-3px_-3px_6px_#FFFFFF] border border-white/20 hover:border-capsule-accent/35 focus-within:border-capsule-accent focus-within:ring-4 focus-within:ring-capsule-accent/5 transition-all duration-300 gap-2"
-                            >
-                              <input
-                                type="text"
-                                value={homepageAssistantInput}
-                                onChange={(e) => {
-                                  setHomepageAssistantInput(e.target.value);
-                                  if (e.target.value.trim().length > 0) {
-                                    setIsConsoleActivated(true);
-                                  }
-                                }}
-                                onFocus={() => setIsConsoleActivated(true)}
-                                onClick={() => setIsConsoleActivated(true)}
-                                placeholder="Message..."
-                                className="flex-1 bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-capsule-dark font-semibold placeholder:text-gray-400"
-                              />
-                              {/* Round circular dark button with crisp arrow up icon */}
-                              <button
-                                type="submit"
-                                disabled={!homepageAssistantInput.trim() || isAssistantTyping}
-                                className="w-9 h-9 rounded-full bg-capsule-accent overflow-hidden flex items-center justify-center text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1)] hover:bg-capsule-accent-light active:scale-[0.92] disabled:opacity-40 disabled:cursor-not-allowed select-none transition-all duration-200"
-                              >
-                                <ArrowUp size={16} strokeWidth={2.7} />
-                              </button>
-                            </form>
-                          </div>
-
-                          {/* Footnote matching screenshot 2 */}
-                          <p className="text-[10px] sm:text-[11px] font-sans font-bold text-gray-400 select-none text-center">
-                            Ask AI with instant topic prompts.
+                          {/* Symmetrical elegant details description */}
+                          <p className={`font-sans text-xs sm:text-xs leading-relaxed mb-6 ${subtextClass}`}>
+                            {locale === "hy" 
+                              ? `Բարձրակարգ բրենդավորում հատուկ չափսերով։ ${minQtyText}` 
+                              : locale === "ru" 
+                              ? `Премиальное брендирование по Вашим размерам. ${minQtyText}` 
+                              : `Premium branding tailored to your dimensions. ${minQtyText}`}
                           </p>
-                        </div>
-                      ) : (
-                        <>
-                          {/* ==================== STYLE 1: SIGN UP VIEW (From Screenshot 1) ==================== */}
-                          <LandingAuthPanel
-                          locale={locale}
-                          userEmail={userEmail}
-                          setUserEmail={setUserEmail}
-                          partnerDiscount={partnerDiscount}
-                          setPartnerDiscount={setPartnerDiscount}
-                          setIsClientCabinetOpen={setIsClientCabinetOpen}
-                          setNeumorphicActiveTab={setNeumorphicActiveTab}
-                          savedItemsCount={savedItemsCount}
-                          setSavedItemsCount={setSavedItemsCount}
-                          setBookmarkToastText={setBookmarkToastText}
-                          setShowBookmarkToast={setShowBookmarkToast}
-                          signUpSuccessMessage={signUpSuccessMessage}
-                          setSignUpSuccessMessage={setSignUpSuccessMessage}
-                          neumorphicEmail={neumorphicEmail}
-                          setNeumorphicEmail={setNeumorphicEmail}
-                          neumorphicPassword={neumorphicPassword}
-                          setNeumorphicPassword={setNeumorphicPassword}
-                        />
-                        {false && (
-                        <div className="flex flex-col items-center gap-5 max-w-lg mx-auto bg-[#FAFAF9] border-3 border-white rounded-[2.5rem] p-7 sm:p-9 shadow-[8px_8px_18px_#E5E3DF,_-8px_-8px_18px_#FFFFFF]">
-                          
-                          {/* Heading with Under-smile Line signature */}
-                          <div className="flex flex-col items-center select-none pt-2 mb-2">
-                            <h3 className="text-xl sm:text-2xl font-sans font-black tracking-widest text-[#1F2A2A] uppercase">
-                              SIGN UP
-                            </h3>
-                            {/* Hand-curved smile-underline vector exactly matching image, now colored in signature hot orange! */}
-                            <svg className="w-14 h-2.5 text-capsule-accent mt-1" viewBox="0 0 48 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M2 2C12 6.5 36 6.5 46 2" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                            </svg>
-                          </div>
 
-                          {/* Email Address Inset Pill (Concave) */}
-                          <div className="w-full">
-                            <div className="w-full flex items-center bg-[#FAFAF9] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/40 focus-within:ring-2 focus-within:ring-capsule-accent/10 transition-all duration-200">
-                              <input
-                                type="email"
-                                value={neumorphicEmail}
-                                onChange={(e) => {
-                                  setNeumorphicEmail(e.target.value);
-                                  setSignUpSuccessMessage("");
-                                }}
-                                placeholder="Email Address"
-                                className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA]"
-                              />
-                            </div>
-                          </div>
-
-                          {/* Password Inset Pill (Concave) */}
-                          <div className="w-full">
-                            <div className="w-full flex items-center bg-[#FAFAF9] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/40 focus-within:ring-2 focus-within:ring-capsule-accent/10 transition-all duration-200">
-                              <input
-                                type="password"
-                                value={neumorphicPassword}
-                                onChange={(e) => {
-                                  setNeumorphicPassword(e.target.value);
-                                  setSignUpSuccessMessage("");
-                                }}
-                                placeholder="Password"
-                                className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA]"
-                              />
-                            </div>
-                          </div>
-
-                          {/* Interactive Result Error / Success block */}
-                          <AnimatePresence>
-                            {signUpSuccessMessage && (
-                              <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="w-full rounded-2xl p-3.5 bg-[#ff2300]/5 border-2 border-[#ff2300]/20 text-capsule-accent text-[11px] font-bold text-center leading-normal shadow-[inset_2px_2px_5px_rgba(255,35,0,0.05),_2px_2px_4px_rgba(0,0,0,0.02)]"
-                              >
-                                {signUpSuccessMessage}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-
-                          {/* Convex Pill button is styled exactly as Signature Hot Orange "Log in" container with dark overlay hover state */}
-                          <div className="w-full">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (!neumorphicEmail.trim() || !neumorphicPassword.trim()) {
-                                  setSignUpSuccessMessage("⚠️ Խնդրում ենք լրացնել թե՛ Էլ. փոստը և թե՛ Գաղտնաբառը / Please fill both fields!");
-                                  return;
-                                }
-                                // Simulated register success
-                                setSignUpSuccessMessage("✨ Գրանցումը կատարված է։ Զեղչի Կոդ CAPSULE10-ն ավտոմատ կիրառվել է Ձեր զամբյուղում: / Registration successful!");
-                                handleApplyCartPromo("CAPSULE10");
-                                
-                                setBookmarkToastText("🎟️ CAPSULE10 պրոմո-կոդն ակտիվացավ!");
-                                setShowBookmarkToast(true);
-                                setTimeout(() => setShowBookmarkToast(false), 3000);
-                              }}
-                              className="group w-full flex items-center justify-center gap-2.5 bg-[#FAFAF9] hover:bg-capsule-accent rounded-full py-4 text-capsule-accent hover:text-white font-sans font-extrabold text-xs sm:text-[13px] tracking-wider uppercase border-2 border-white shadow-[4px_4px_10px_rgba(163,153,139,0.35),_-4px_-4px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_rgba(244,90,29,0.25),_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_5px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none"
-                            >
-                              <Lock size={13} className="text-capsule-accent group-hover:text-white transition-colors duration-200" />
-                              <span className="transition-colors duration-200">Log in</span>
-                            </button>
-                          </div>
-
-                          {/* Control Row Containing the Three Raised Neumorphic Squares */}
-                          <div className="flex items-center justify-center gap-7 w-full py-1">
-                            
-                            {/* Square Button 1: Arrow Left */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setNeumorphicActiveTab("ai_chat");
-                                setBookmarkToastText("Վերադարձ AI Chat");
-                                setShowBookmarkToast(true);
-                                setTimeout(() => setShowBookmarkToast(false), 1200);
-                              }}
-                              className="group w-12 h-12 rounded-2xl flex items-center justify-center bg-[#FAFAF9] text-[#1F2A2A] hover:text-capsule-accent border border-white shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 transition-all duration-200 cursor-pointer"
-                              title="Go to AI Chat"
-                            >
-                              <ArrowLeft size={16} strokeWidth={2.5} className="group-hover:translate-x-[-2px] transition-transform duration-200" />
-                            </button>
-
-                            {/* Square Button 2: Saved Item Bookmark */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newCount = savedItemsCount + 1;
-                                  setSavedItemsCount(newCount);
-                                  setBookmarkToastText(`Saved! Profile Spec Entries: ${newCount} 🔖`);
-                                  setShowBookmarkToast(true);
-                                  setTimeout(() => setShowBookmarkToast(false), 2000);
-                              }}
-                              className="group w-12 h-12 rounded-2xl flex items-center justify-center bg-[#FAFAF9] text-[#1F2A2A] hover:text-capsule-accent border border-white shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 transition-all text-xs relative cursor-pointer"
-                              title="Bookmark Current Specifications"
-                            >
-                              <Bookmark size={15} className="mr-0.5 group-hover:scale-110 transition-transform duration-200" />
-                              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-capsule-accent text-white font-sans font-black text-[9px] flex items-center justify-center border-2 border-white shadow-3xs">
-                                {savedItemsCount}
-                              </span>
-                            </button>
-
-                            {/* Square Button 3: Settings Gear */}
-                            <button
-                              type="button"
-                              onClick={() => setNeumorphicSettingsOpen(!neumorphicSettingsOpen)}
-                              className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-[#FAFAF9] border transition-all duration-200 cursor-pointer ${
-                                neumorphicSettingsOpen
-                                  ? "text-capsule-accent shadow-[inset_3px_3px_5px_#E5E3DF,_inset_-3px_-3px_5px_#FFFFFF] border-[#ff2300]/20"
-                                  : "text-[#1F2A2A] hover:text-capsule-accent border-white shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95"
-                              }`}
-                              title="Preferences Settings"
-                            >
-                              <Settings size={15} className={neumorphicSettingsOpen ? "animate-spin-slow text-capsule-accent" : ""} />
-                            </button>
-                          </div>
-
-                          {/* Expandable Settings Dropdown matching the Neumorphic styling */}
-                          <AnimatePresence>
-                            {neumorphicSettingsOpen && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="w-full bg-[#FAFAF9] shadow-[inset_3px_3px_6px_#E5E3DF,_inset_-3px_-3px_6px_#FFFFFF] rounded-2xl p-4 border border-white/20 space-y-3 overflow-hidden"
-                              >
-                                <span className="text-[9px] font-mono tracking-widest font-black uppercase text-[#3D271B]/60 block border-b border-gray-200/80 pb-1.5">
-                                  Ambient Console Preferences
-                                </span>
-                                
-                                <div className="flex items-center justify-between text-[11px] font-bold text-[#1F2A2A]">
-                                  <span>Sound Alerts:</span>
-                                  <button
-                                    type="button"
-                                    onClick={() => setNeumorphicVolume(!neumorphicVolume)}
-                                    className={`w-8 h-8 rounded-xl flex items-center justify-center bg-[#FAFAF9] border transition-all cursor-pointer ${
-                                      neumorphicVolume
-                                        ? "text-capsule-accent shadow-[3px_3px_6px_#E5E3DF,_-3px_-2px_6px_#FFFFFF] border-[#ff2300]/10"
-                                        : "text-[#3D271B]/60 shadow-[inset_2px_2px_4px_#E5E3DF,_inset_-2px_-2px_4px_#FFFFFF]"
-                                    }`}
-                                  >
-                                    {neumorphicVolume ? <Volume2 size={13} /> : <VolumeX size={13} />}
-                                  </button>
-                                </div>
-
-                                <div className="flex items-center justify-between text-[11px] font-bold text-[#1F2A2A]">
-                                  <span>Reset Inputs:</span>
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setNeumorphicEmail("");
-                                      setNeumorphicPassword("");
-                                      setNeumorphicSearchInput("");
-                                      setSignUpSuccessMessage("");
-                                      setBookmarkToastText("Console Fields Reset");
-                                      setShowBookmarkToast(true);
-                                      setTimeout(() => setShowBookmarkToast(false), 1500);
-                                    }}
-                                    className="px-3 py-1.5 text-[9px] uppercase font-black tracking-wider bg-[#FAFAF9] text-[#1F2A2A] rounded-lg shadow-[2px_2px_4px_#E5E3DF,_-2px_-2px_4px_#FFFFFF] border border-white hover:text-capsule-accent hover:border-capsule-accent/20 active:scale-95 transition-all"
-                                  >
-                                    Clear
-                                  </button>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-
-                          {/* Bottom Search Form Fields exactly matching Screenshot 1 layout */}
-                          <div className="w-full flex items-center gap-4 border-t border-gray-200/50 pt-5 mt-1 select-none">
-                            {/* Search Inset Capsule (Concave) */}
-                            <div className="flex-1">
-                              <div className="w-full flex items-center bg-[#FAFAF9] rounded-full px-5 py-3 shadow-[inset_3.5px_3.5px_6px_#E5E3DF,_inset_-3.5px_-3.5px_6px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/40 focus-within:ring-2 focus-within:ring-capsule-accent/10 transition-all duration-200">
-                                <input
-                                  type="text"
-                                  value={neumorphicSearchInput}
-                                  onChange={(e) => setNeumorphicSearchInput(e.target.value)}
-                                  placeholder="Email Address"
-                                  className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA]"
-                                />
-                              </div>
-                            </div>
-
-                            {/* Square Search Button (Convex) */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const term = neumorphicSearchInput.trim().toLowerCase();
-                                if (!term) {
-                                  setBookmarkToastText("Որոնման համար գրեք բանալի բառ / Enter keyword!");
-                                  setShowBookmarkToast(true);
-                                  setTimeout(() => setShowBookmarkToast(false), 2000);
-                                  return;
-                                }
-
-                                // TODO: Real API call to the product catalog should go here
-                              }}
-                              className="group w-[44px] h-[44px] rounded-2xl flex items-center justify-center bg-[#FAFAF9] text-[#1F2A2A] hover:text-capsule-accent border-2 border-white shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5E3DF,inset_-2px_-2px_4px_#FFFFFF] active:scale-95 transition-all text-xs shrink-0 cursor-pointer"
-                              title="Search specifications catalog"
-                            >
-                              <Search size={16} strokeWidth={2.7} className="group-hover:scale-110 transition-transform duration-200" />
-                            </button>
+                          {/* Action call - simple link styling matching packhelp.com */}
+                          <div className={`mt-2.5 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 select-none text-center flex items-center justify-center gap-1.5 border-none outline-none ${btnClass} ${btnShadowClass}`}>
+                            <span>
+                              {locale === "hy" ? "Պատվիրել հիմա" : locale === "ru" ? "Заказать сейчас" : "Shop now"}
+                            </span>
+                            <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                           </div>
                         </div>
-                        )}
-                        </>
-                      )}
-                    </div>
 
-                    {/* Footer helper logo and status conforming to Neumorphic styles */}
-                    <div className="flex items-center justify-center gap-2 select-none opacity-45 pb-0.5 pt-1 text-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                      <span className="text-[9px] font-sans font-bold tracking-widest uppercase text-[#3D271B]/60">
-                        Concept Haptic Interface Grounding Active
-                      </span>
+                        {/* Visual asset / Nested 3D Mockup Product image at the bottom */}
+                        <div className={`relative aspect-[16/10] w-full overflow-hidden rounded-[1.8rem] border bg-white/10 mt-8 ${imgWBorderClass}`}>
+                          <img
+                            src={fp.image || "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=600"}
+                            alt={prodName}
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                          />
+                          {secTagText && (
+                            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm border border-emerald-100 rounded-full px-2.5 py-1 text-[8px] uppercase tracking-wider font-mono font-bold text-emerald-800 shadow-sm">
+                              {secTagText}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              )}
-
+                  );
+                })}
+              </div>
             </div>
-          ) : (
+          )}
+
+          <PackhelpShowcase locale={locale as any} setCurrentView={setCurrentView} setActiveCategory={setActiveCategory} />
+        </div>
+      )}
+
+      {currentView === "ecommerce" && (
+        <EcommerceStore
+          locale={locale}
+          featuredProducts={featuredProducts}
+          categories={categories}
+          onConfigureProduct={(catId) => {
+            setActiveCategory(catId);
+            setCurrentView("calculator");
+            window.history.pushState({}, "", "/calculator");
+          }}
+          onAddToCart={handleAddShopItemToCart}
+          currency={activeCurrency}
+        />
+      )}
+
+
+      {currentView === "track" && (
+        <OrderTrackPortal currentLocale={locale} onBackToHome={navigateToHomeFromPortal} onReorder={handleReorder} />
+      )}
+
+      {currentView === "calculator" && (
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-6">
-              {/* Premium, Sleek Back Arrow Button */}
-              <div className="flex items-center justify-between mb-4 select-none gap-2">
-                <button
-                  onClick={() => {
-                    setActiveCategory("");
-                    setCalcResult(null);
-                    setCalcError(null);
-                  }}
-                  className="group inline-flex items-center gap-1.5 sm:gap-2.5 px-3.5 py-2 sm:px-5 sm:py-2.5 bg-[#FAFAF9] border border-white/60 shadow-[2px_2px_5px_#E5E3DF,_-2px_-2px_5px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5E3DF,_-3px_-3px_7px_#FFFFFF] text-[#3D271B] hover:text-capsule-accent hover:scale-[1.02] active:scale-[0.98] rounded-full font-bold text-[10px] sm:text-xs transition-all duration-300 cursor-pointer"
-                >
-                  <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform duration-300 text-capsule-accent" />
-                  <span className="uppercase tracking-wider">
-                    <span className="hidden sm:inline">Դեպի Գլխավոր / Back</span>
-                    <span className="inline sm:hidden">Հետ</span>
-                  </span>
-                </button>
-                
+              {/* Premium Category Label (Removed back to main link) */}
+              <div className="flex items-center justify-end mb-4 select-none gap-2">
                 {(() => {
                   const catObj = categories.find((c) => c.id === activeCategory);
                   return catObj ? (
@@ -3444,16 +2866,6 @@ export default function App() {
                   onScroll={handleTabsScroll}
                   className="flex items-center gap-1 sm:gap-1.5 p-1 bg-[#FAFAF9] border border-[#E9E4DB]/40 rounded-full shadow-[inset_2px_2px_4px_rgba(58,32,16,0.05),_inset_-2px_-2px_6px_rgba(255,255,255,0.85)] w-full overflow-x-auto no-scrollbar scroll-smooth flex-nowrap md:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
-                  <button
-                    onClick={() => setActiveCategory("")}
-                    className={`px-3.5 py-1.5 sm:px-4.5 sm:py-2.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-normal transition-all duration-300 uppercase cursor-pointer flex items-center justify-center shrink-0 select-none whitespace-nowrap active:scale-[0.97] ${
-                      activeCategory === ""
-                        ? "bg-capsule-accent text-white shadow-[2px_2px_5px_rgba(58,32,16,0.18),_-1px_-1px_4px_rgba(255,255,255,0.15)] font-bold scale-[1.01]"
-                        : "bg-[#FAFAF9]/40 text-[#3D271B]/70 hover:text-[#3D271B] hover:bg-white/80 shadow-[1px_1px_3px_rgba(58,32,16,0.02)] hover:shadow-[2px_2px_5px_rgba(58,32,16,0.04)] hover:scale-[1.01]"
-                    }`}
-                  >
-                    <span>{t("menu.all", "ԳԼԽԱՎՈՐ (All)")}</span>
-                  </button>
                   {categories.map((c) => {
                     if (!c.active) return null;
                     const isSelected = activeCategory === c.id;
@@ -3497,7 +2909,7 @@ export default function App() {
             </div>
           )}
 
-          {activeCategory && (
+          {currentView === "calculator" && activeCategory && (
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-6 flex flex-col gap-8 pb-10">
               {/* ACTIVE CATEGORY HERO HEADERS */}
           {(() => {
@@ -4201,18 +3613,18 @@ export default function App() {
                         <table className="w-full text-left text-xs border-collapse">
                           <thead className="bg-[#E9E4DB] text-capsule-text-muted text-[9px] uppercase font-bold sticky top-0">
                             <tr>
-                              <th className="p-3">{t("common.dimensions", "Չափսեր (սմ)")}</th>
+                              <th key="dimensions-col-header" className="p-3">{t("common.dimensions", "Չափսեր (սմ)")}</th>
                               {tiers.map((tItem) => (
-                                <th key={tItem.id} className="p-3 text-center">{formatNumber(tItem.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</th>
+                                <th key={`header-tier-${tItem.id}`} className="p-3 text-center">{formatNumber(tItem.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</th>
                               ))}
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-capsule-accent/5">
                             {bulkMatrix.map((bm, index) => (
-                              <tr key={index} className="hover:bg-[#EFECE6]/60 transition-colors">
-                                <td className="p-3 font-bold text-capsule-dark">{bm.dimText}</td>
+                              <tr key={`matrix-row-${index}`} className="hover:bg-[#EFECE6]/60 transition-colors">
+                                <td key={`matrix-col-dim-${index}`} className="p-3 font-bold text-capsule-dark">{bm.dimText}</td>
                                 {tiers.map((tItem) => (
-                                  <td key={tItem.id} className="p-3 text-center font-mono text-capsule-text-secondary">
+                                  <td key={`matrix-col-tier-${index}-${tItem.id}`} className="p-3 text-center font-mono text-capsule-text-secondary">
                                     {bm.tierPrices[tItem.qty] ? formatPrice(bm.tierPrices[tItem.qty]) : "—"}
                                   </td>
                                 ))}
@@ -6019,7 +5431,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* CARD 2: Quantity & Technical Requirements */}
+                    {/* CARD 2: Other Product Quantity */}
                     <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
                       <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
                         <Sliders size={14} className="text-capsule-accent" />
@@ -6077,10 +5489,10 @@ export default function App() {
                         <QrCode size={14} className="text-capsule-accent" />
                         <span>Քարտ 1. Կոդի Տեսակ / Պիտակ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք անհրաժեշտ ինտեգրվող կոդի տիպը, նախընտրելի չափսը կամ պիտակի տեսակը</p>
+                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք անհրաժեշտ ինտեգրվող կոդի տիպը, նյութը կամ պիտակը</p>
 
                       <div className="space-y-4">
-                        {/* Select QR/Matrix Item */}
+                        {/* Select QR items */}
                         <div className="grid grid-cols-1 gap-3">
                           {products
                             .filter(p => p.categoryId === "qr_matrix")
@@ -6088,6 +5500,7 @@ export default function App() {
                             .map((item) => (
                               <button
                                 key={item.id}
+                                type="button"
                                 onClick={() => {
                                   setSelectedQrMatrixId(item.id);
                                   // Auto-fill default qty if current is 0
@@ -6097,14 +5510,9 @@ export default function App() {
                                   selectedQrMatrixId === item.id ? "bg-capsule-accent/10 border-capsule-accent text-capsule-accent shadow-sm" : "bg-capsule-surf2/40 border-capsule-accent/10 hover:border-capsule-accent/20"
                                 }`}
                               >
-                                <div className="flex items-center gap-3">
-                                  <div className={`p-2.5 rounded-xl transition-all ${selectedQrMatrixId === item.id ? "bg-capsule-accent text-white" : "bg-capsule-accent/10 text-capsule-accent"}`}>
-                                    <QrCode size={18} />
-                                  </div>
-                                  <div>
-                                    <span className="block text-xs font-bold">{item.name}</span>
-                                    {item.desc && <span className="block text-[10px] text-capsule-text-muted mt-1">{item.desc}</span>}
-                                  </div>
+                                <div>
+                                  <span className="block text-xs font-bold">{item.name}</span>
+                                  {item.desc && <span className="block text-[10px] text-capsule-text-muted mt-1">{item.desc}</span>}
                                 </div>
                                 <div className="text-right font-mono">
                                   <span className="block text-xs font-bold text-capsule-accent">{item.price} ֏</span>
@@ -6122,7 +5530,7 @@ export default function App() {
                         <Sliders size={14} className="text-capsule-accent" />
                         <span>Քարտ 2. Քանակ և Հատուկ Պահանջներ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները` անհատականացման համար</p>
+                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները՝ անհատականացման համար</p>
 
                       <div className="space-y-4">
                         {/* QR Matrix Quantity selection */}
@@ -6132,6 +5540,7 @@ export default function App() {
                             {[50, 100, 250, 500, 1000, 2500, 5000].map((bqVal) => (
                               <button
                                 key={bqVal}
+                                type="button"
                                 onClick={() => setQrMatrixQty(bqVal)}
                                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                                   qrMatrixQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent" : "bg-capsule-surf2/30 border-capsule-accent/10"
@@ -6152,9 +5561,9 @@ export default function App() {
 
                         {/* Extra Notes */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Սերիալացման տվյալներ / Հավելյալ նշումներ</label>
+                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Հավելյալ պահանջներ / Նշումներ</label>
                           <textarea
-                            placeholder="Օրինակ` հղումներ, սերիալացման հաջորդականություն (0001-1000), կամ այլ հատուկ պահանջներ..."
+                            placeholder="Օրինակ՝ չափսեր, լամինացիայի տիպ, այլ նախընտրություններ..."
                             value={qrMatrixNotes}
                             onChange={(e) => setQrMatrixNotes(e.target.value)}
                             className="w-full h-24 bg-capsule-surf2/40 border border-capsule-accent/10 focus:border-capsule-accent rounded-xl px-4 py-3 text-xs focus:outline-none resize-none font-sans"
@@ -6165,534 +5574,381 @@ export default function App() {
                   </div>
                 )}
 
-                {/* DYNAMIC CATEGORY CALCULATOR RENDER */}
-                {!["ribbons", "stickers", "giftcards", "businesscards", "other_products", "qr_matrix"].includes(activeTemplate) && (
-                  (() => {
-                    const matchedCat = categories.find(c => c.id === activeCategory);
-                    const matchedProd = products.find(p => p.categoryId === activeCategory);
-                    if (matchedCat && matchedProd) {
-                      return (
-                        <DynamicProductCalculator
-                          product={matchedProd as any}
-                          category={matchedCat as any}
-                          tiers={tiers}
-                          onCalculate={(summary) => {
-                            setCalcResult({
-                              unitPrice: summary.unitPrice,
-                              totalPrice: summary.totalPrice,
-                              qty: summary.qty,
-                              itemName: matchedProd.name,
-                              materialType: Object.values(summary.selectedOptionValues).map(v => v.label).join(", ") || "Custom",
-                              dimensionsText: `${summary.dimensions.w}x${summary.dimensions.h}${summary.dimensions.d ? `x${summary.dimensions.d}` : ""} սմ`,
-                              detailsText: summary.details,
-                            });
-                          }}
-                        />
-                      );
-                    }
-                    return null;
-                  })()
-                )}
-
               </div>
 
-              {/* Right Column: Output Card */}
-              <div className="lg:col-span-4 sticky top-6">
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 shadow-md space-y-5">
-                  <div>
-                    <span className="bg-capsule-accent/10 px-2 py-0.5 rounded text-[8px] font-bold text-capsule-accent tracking-widest uppercase">
-                      Գնառաջարկ (Calculated)
-                    </span>
-                    <h3 className="font-serif text-lg text-capsule-accent font-semibold mt-3">
-                      {calcResult ? calcResult.itemName : "Հաշվարկում..."}
-                    </h3>
-                    <p className="text-[10px] text-capsule-text-muted mt-0.5">
-                      Տեսակ: {calcResult ? calcResult.materialType : "---"} | Քանակ: {calcResult ? calcResult.qty : "---"} {activeCategory === "ribbons" ? "մետր" : "հատ"}
-                    </p>
-                  </div>
+              {/* Right Column: Calculations Outputs Card for Simpler Channels */}
+              <div className="lg:col-span-4 sticky top-6 space-y-6">
+                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm select-none">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-capsule-accent/5 text-capsule-accent flex items-center justify-center border border-capsule-accent/10 shadow-inner">
+                        <Sliders size={18} className="text-capsule-accent" />
+                      </div>
+                      <div>
+                        <span className="text-[9px] uppercase tracking-widest font-mono font-bold text-capsule-accent block leading-none">
+                          {locale === "hy" ? "ՊՐԵՄԻՈՒՄ ՀԱՇՎԻՉ" : locale === "ru" ? "ПРЕМИУМ КАЛЬКУЛЯТОР" : "PREMIUM SERVICE"}
+                        </span>
+                        <h3 className="font-serif text-base text-capsule-dark uppercase tracking-wider mt-1 font-bold leading-none">
+                          {t(`db.category.${activeCategory}.name`, categories.find(c => c.id === activeCategory)?.name || activeCategory)}
+                        </h3>
+                      </div>
+                    </div>
 
-                  {calcError ? (
-                    <div className="bg-red-50 border border-red-200 text-red-800 text-xs p-3.5 rounded-xl font-semibold">
-                      {calcError}
-                    </div>
-                  ) : !calcResult ? (
-                    <div className="py-8 px-4 text-center text-capsule-text-muted space-y-3 select-none">
-                      <HelpCircle className="mx-auto text-capsule-accent/40" size={24} />
-                      <div className="text-[11px] font-bold text-capsule-accent/80 uppercase tracking-wider font-mono">Ընտրեք Բոլոր Պարամետրերը</div>
-                      <p className="text-[10px] sm:text-xs leading-relaxed max-w-xs mx-auto text-capsule-text-secondary">
-                        Արժեքը և 3D նախադիտումը տեսնելու համար խնդրում ենք ընտրել բոլոր պարտադիր դաշտերը՝
-                      </p>
-                      {getMissingOptions().length > 0 && (
-                        <div className="flex flex-wrap justify-center gap-1 mt-2">
-                          {getMissingOptions().map((opt) => (
-                            <span key={opt} className="px-2 py-0.5 rounded bg-capsule-accent/5 border border-capsule-accent/15 text-capsule-accent text-[9px] font-bold whitespace-nowrap">
-                              ● {opt}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="space-y-4 text-xs text-capsule-text-secondary">
-                      
-                      <div className="space-y-2 border-b border-capsule-accent/10 pb-4">
-                        <div className="flex justify-between items-center py-1">
-                          <span>{t("common.category", "Ապրանքի Բաժին")}</span>
-                          <span className="font-bold text-capsule-dark uppercase">
-                            {t(`db.category.${activeCategory}.name`, categories.find(c => c.id === activeCategory)?.name || activeCategory)}
+                    {!calcResult ? (
+                      <div className="bg-amber-500/5 border border-amber-500/20 text-amber-900 rounded-2xl p-4 text-[11px] font-medium leading-relaxed font-sans">
+                        <Info size={14} className="text-amber-600 block mb-1.5" />
+                        {locale === "hy" 
+                          ? "Խնդրում ենք լրացնել բոլոր անհրաժեշտ պարամետրերը գինը տեսնելու համար։" 
+                          : "Пожалуйста, заполните все параметры для расчёта окончательной стоимости."}
+                      </div>
+                    ) : (
+                      <div className="space-y-3.5 pt-3.5 border-t border-capsule-accent/10 text-xs text-left">
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
+                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Արտադրանք" : "Продукт / Тип"}</span>
+                          <span className="font-bold text-capsule-dark font-sans max-w-[160px] truncate block text-right">
+                            {calcResult.itemName}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>{t("common.size", "Ընտրված Չափս")}</span>
-                          <span className="font-bold text-capsule-dark uppercase">{calcResult.dimensionsText}</span>
+
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
+                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Չափս" : "Размеры"}</span>
+                          <span className="font-bold text-capsule-dark font-mono">{calcResult.dimensionsText}</span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>{t("common.qty_label", "Պատվերի Քանակ")}</span>
+
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
+                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Քանակ" : "Количество"}</span>
                           <span className="font-bold text-capsule-dark font-mono">
-                            {calcResult.qty} {activeCategory === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>{t("common.material_type", "Նյութի տեսակ")}</span>
-                          <span className="font-bold text-capsule-dark text-right uppercase">
-                            {calcResult.materialType}
+                            {calcResult.qty?.toLocaleString()} {activeCategory === "ribbons" ? (locale === "hy" ? "մետր" : "м.") : (locale === "hy" ? "հատ" : "шт.")}
                           </span>
                         </div>
 
-                        {activeCategory === "ribbons" && (
-                          <>
-                            <div className="flex justify-between items-center py-1">
-                              <span>{t("common.ribbon_type", "Ժապավենի տեսակ")}</span>
-                              <span className="font-bold text-capsule-dark uppercase">{calcResult.type === "reps" ? t("options.ribbon_reps", "Ռեպսե") : t("options.ribbon_satin", "Սատինե")}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-1">
-                              <span>{t("common.ribbon_width", "Ժապավենի լայնություն")}</span>
-                              <span className="font-bold text-capsule-dark uppercase font-mono">{calcResult.width} {t("common.units.cm", "սմ")}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-1">
-                              <span>{t("common.print_color", "Տպագրության գույն")}</span>
-                              <span className="font-bold text-capsule-dark uppercase">
-                                {calcResult.printColor === "foil_gold" ? t("options.print_color_gold_foil", "Ոսկեփայլ Ֆոյլ") : calcResult.printColor === "foil_silver" ? t("options.print_color_silver_foil", "Արծաթափայլ Ֆոյլ") : t("options.print_color_silkscreen", "Մաղային տպագրություն")}
-                              </span>
-                            </div>
-                          </>
-                        )}
-
-                        {activeCategory === "stickers" && (
-                          <div className="flex justify-between items-center py-1">
-                            <span>{t("common.sticker_shape", "Ֆորմատ / Ձև")}</span>
-                            <span className="font-bold text-capsule-dark uppercase">
-                              {calcResult.shape === "circle" ? t("options.shape_circle", "Կլոր") : calcResult.shape === "rectangle" ? t("options.shape_square", "Ուղղանկյուն") : t("options.shape_custom", "Ձևավոր / Կոնտուրային")}
-                            </span>
-                          </div>
-                        )}
-
-                        {activeCategory === "giftcards" && (
-                          <div className="flex justify-between items-center py-1">
-                            <span>{t("common.envelope", "Ծրարի Տեսակ")}</span>
-                            <span className="font-bold text-capsule-dark uppercase">
-                              {calcResult.envelope === "none" ? t("options.envelope_none", "Առանց ծրարի") : calcResult.envelope === "standard_white" ? t("options.envelope_standard_white", "Սպիտակ ծրար") : calcResult.envelope === "kraft" ? t("options.envelope_kraft", "Կրաֆտ ծրար") : t("options.envelope_colored_premium", "Գունավոր պրեմիում ծրար")}
-                            </span>
-                          </div>
-                        )}
-
-                        {activeCategory === "businesscards" && (
-                          <>
-                            <div className="flex justify-between items-center py-1">
-                              <span>{t("common.sides", "Կիրառում")}</span>
-                              <span className="font-bold text-capsule-dark uppercase">{calcResult.sides === 2 ? t("options.sides_2", "Երկկողմանի") : t("options.sides_1", "Միակողմանի")}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-1">
-                              <span>{t("common.corners", "Անկյուններ")}</span>
-                              <span className="font-bold text-capsule-dark uppercase">{calcResult.corners === "rounded" ? t("options.corners_rounded", "Կլորացված") : t("options.corners_straight", "Ուղղաղ")}</span>
-                            </div>
-                          </>
-                        )}
-
-                        {activeCategory === "other_products" && (
-                          <div className="flex justify-between items-start py-1 flex-col gap-1 w-full border-t border-capsule-accent/5 pt-2 mt-2">
-                            <span className="text-[10px] text-capsule-text-secondary">{t("common.other_notes", "Հավելյալ պահանջներ (Նշումներ)՝")}</span>
-                            <span className="font-semibold text-capsule-dark h-auto italic whitespace-pre-wrap text-[10px] sm:text-xs leading-snug bg-capsule-surf2/20 p-2 rounded-xl w-full border border-capsule-accent/5">
-                              {otherProductNotes || t("common.no_notes", "Չկան հատուկ նշումներ")}
-                            </span>
-                          </div>
-                        )}
-
-                        {activeCategory === "qr_matrix" && (
-                          <div className="flex justify-between items-start py-1 flex-col gap-1 w-full border-t border-capsule-accent/5 pt-2 mt-2">
-                            <span className="text-[10px] text-capsule-text-secondary">{t("common.qr_notes", "Սերիալացման տվյալներ (Նշումներ)՝")}</span>
-                            <span className="font-semibold text-capsule-dark h-auto italic whitespace-pre-wrap text-[10px] sm:text-xs leading-snug bg-capsule-surf2/20 p-2 rounded-xl w-full border border-capsule-accent/5">
-                              {qrMatrixNotes || t("common.no_notes", "Չկան հատուկ նշումներ")}
-                            </span>
-                          </div>
-                        )}
-
                         <div className="flex justify-between items-center py-1">
-                          <span>{t("common.unit_price", "Միավորի Գին")}</span>
+                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Միավորի Գին" : "Цена за ед."}</span>
                           <span className="font-bold font-mono text-capsule-accent text-sm">
-                            {formatPrice(calcResult.unitPrice)} <span className="text-[10px] text-capsule-text-muted">/ {activeCategory === "ribbons" ? t("common.units.meters", "մ") : t("common.units.pcs", "հատ")}</span>
+                            {formatPrice(calcResult.unitPrice)}
                           </span>
                         </div>
-                      </div>
 
-                      {/* Promo coupon interface */}
-                      <div className="space-y-1">
-                        <label className="block text-[9px] font-bold text-capsule-text-muted uppercase">{t("common.coupon_code2", "Պրոմո Կոդ")}</label>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            value={promoInput}
-                            onChange={(e) => setPromoInput(e.target.value.toUpperCase().replace(/\s/g, ""))}
-                            disabled={!!appliedPromo}
-                            placeholder="EX: WELCOME10"
-                            className="flex-1 bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-bold font-mono outline-none"
-                          />
-                          {appliedPromo ? (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setAppliedPromo("");
-                                setPromoInput("");
-                                setPromoSuccess(null);
-                                setPromoError(null);
-                                setDiscountAmount(0);
-                              }}
-                              className="bg-red-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg cursor-pointer"
-                            >
-                              {t("common.cancel", "Չեղարկել")}
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={handleApplyCoupon}
-                              className="bg-capsule-accent text-capsule-surf text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-lg cursor-pointer"
-                            >
-                              {t("common.apply", "Կիրառել")}
-                            </button>
-                          )}
+                        <div className="border-t border-capsule-accent/10 pt-4 flex justify-between items-baseline">
+                          <span className="text-[10px] font-bold uppercase block text-capsule-text-muted">
+                            {locale === "hy" ? "Ընդամենը" : "Итого"}
+                          </span>
+                          <h3 className="text-2xl font-black text-capsule-accent font-sans">
+                            {formatPrice(calcResult.totalPrice)}
+                          </h3>
                         </div>
-                        {promoError && <p className="text-[10px] text-red-700 font-semibold">{promoError}</p>}
-                        {promoSuccess && <p className="text-[10px] text-green-700 font-bold">{promoSuccess}</p>}
+
+                        <div className="space-y-2.5 mt-4">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const desc = getSingleItemDetails(activeCategory, calcResult, { 
+                                itemId: selectedOtherProductId || selectedQrMatrixId || "custom" 
+                              });
+                              const fullDesc = `Պատվեր:\nԲաժին: ${categories.find(c => c.id === activeCategory)?.name || activeCategory}\n${desc}`;
+                              setInquiryDetails(fullDesc);
+                              setInquiryPrice(calcResult.totalPrice);
+                              setIsInquiryOpen(true);
+                            }}
+                            className="w-full bg-[#1A3F25] hover:bg-[#112d19] text-white text-xs py-3.5 rounded-full font-bold uppercase cursor-pointer text-center select-none shadow flex justify-center items-center gap-1.5 transition-all duration-250 border-none outline-none"
+                          >
+                            <ShoppingBag size={14} />
+                            <span>{locale === "hy" ? "Հաստատել Պատվերը" : "Отправить запрос"}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleAddItemToBundle(activeCategory)}
+                            className="w-full bg-capsule-surf hover:bg-capsule-accent/10 text-capsule-accent border border-capsule-accent/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250 outline-none"
+                          >
+                            <ShoppingCart size={14} />
+                            <span>{locale === "hy" ? "Ավելացնել Զամբյուղին" : "Добавить в корзину"}</span>
+                          </button>
+                        </div>
                       </div>
-
-                      {/* Price view */}
-                      <div className="border-t border-capsule-accent/10 pt-4 flex justify-between items-baseline">
-                        <span className="text-[10px] font-bold uppercase block text-capsule-text-muted">{t("common.total_price", "Ընդամենը")}</span>
-                        <h3 className="text-2xl font-extrabold text-capsule-accent font-sans">{formatPrice(calcResult.totalPrice)}</h3>
-                      </div>
-
-                      <div className="space-y-2 mt-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            let desc = `${t("inquiry_modal.msg_subject", "Պատվերի Հայտ")}:\n${t("common.category", "Բաժին")}: ${t(`db.category.${activeCategory}.name`, categories.find(c => c.id === activeCategory)?.name || activeCategory)}\n${t("common.product", "Ապրանք")}: ${calcResult.itemName}\n${t("common.dimensions", "Չափսեր (սմ)")}: ${calcResult.dimensionsText}\n${t("common.qty_label", "Քանակ")}: ${calcResult.qty} ${activeCategory === "ribbons" ? t("common.units.meters") : t("common.units.pcs")}\n${t("common.material_type", "Նյութը")}: ${calcResult.materialType}\n${t("inquiry_modal.desc_title", "Մանրամասներ")}:`;
-                            if (activeCategory === "ribbons") {
-                              desc += `\n- ${t("common.ribbon_width", "Լայնություն")}: ${calcResult.width} ${t("common.units.cm", "սմ")}\n- ${t("common.ribbon_type", "Տիպ")}: ${calcResult.type === "reps" ? t("options.ribbon_reps") : t("options.ribbon_satin")}\n- ${t("common.print_color", "Տպագրություն")}: ${calcResult.printColor === "foil_gold" ? t("options.print_color_gold_foil") : calcResult.printColor === "foil_silver" ? t("options.print_color_silver_foil") : t("options.print_color_silkscreen")}`;
-                            } else if (activeCategory === "stickers") {
-                              desc += `\n- ${t("common.sticker_shape", "Ձև")}: ${calcResult.shape === "circle" ? t("options.shape_circle") : calcResult.shape === "rectangle" ? t("options.shape_square") : t("options.shape_custom")}\n- ${t("common.material", "Նյութ")}: ${calcResult.materialType}`;
-                            } else if (activeCategory === "giftcards") {
-                              desc += `\n- ${t("common.envelope", "Ծրար")}: ${calcResult.envelope === "none" ? t("options.envelope_none") : calcResult.envelope === "standard_white" ? t("options.envelope_standard_white") : calcResult.envelope === "kraft" ? t("options.envelope_kraft") : t("options.envelope_colored_premium")}\n- ${t("common.paper", "Թուղթ")}: ${calcResult.paper}`;
-                            } else if (activeCategory === "businesscards") {
-                              desc += `\n- ${t("common.sides", "Կողմեր")}: ${calcResult.sides === 2 ? t("options.sides_2", "Երկկողմանի") : t("options.sides_1", "Միակողմանի")}\n- ${t("common.corners", "Անկյուններ")}: ${calcResult.corners === "rounded" ? t("options.corners_rounded", "Կլորացված") : t("options.corners_straight", "Ուղիղ")}\n- ${t("common.paper", "Թուղթ")}: ${calcResult.paper}`;
-                            } else if (!["bags", "boxes", "ribbons", "stickers", "giftcards", "businesscards", "other_products", "qr_matrix"].includes(activeCategory)) {
-                              desc += `\n- ${t("common.material_type", "Պարամետրեր")}: ${calcResult.materialType}`;
-                              if (calcResult.detailsText) desc += `\n- ${calcResult.detailsText}`;
-                            }
-                            desc += `\n${t("common.unit_price", "Միավորի Գին")}: ${formatPrice(calcResult.unitPrice)}\n${t("common.total_price", "Ընդամենը")}: ${formatPrice(calcResult.totalPrice)}`;
-                            setInquiryDetails(desc);
-                            setInquiryPrice(calcResult.totalPrice);
-                            setIsInquiryOpen(true);
-                          }}
-                          className="w-full bg-[#ff2300] hover:bg-[#e61f00] text-white text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250"
-                        >
-                          <ShoppingBag size={14} />
-                          <span>{t("buttons.complete_order", "Ձևակերպել Պատվերը")}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleAddItemToBundle(activeCategory)}
-                          className="w-full bg-capsule-surf hover:bg-capsule-accent/5 text-capsule-accent border border-capsule-accent/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250"
-                        >
-                          <ShoppingCart size={14} />
-                          <span>{t("buttons.add_to_cart", "Ավելացնել Զամբյուղին")}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={handleSaveToCabinet}
-                          className="w-full bg-red-50/50 hover:bg-red-50 text-[#ff2300] border border-[#ff2300]/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250"
-                        >
-                          <Bookmark size={14} />
-                          <span>{locale === "hy" ? "Պահպանել Կաբինետում" : locale === "ru" ? "Сохранить в кабинет" : "Save to Cabinet"}</span>
-                        </button>
-                      </div>
-
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
 
             </div>
           )}
 
-      {/* Contact & FAQ Grid Container */}
-      <div className="max-w-6xl mx-auto px-4 mt-16 mb-12 select-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          
-          {/* Frequently Asked Questions (FAQ) Block */}
-          <div className="w-full bg-[#FAFAF9] border-3 border-white rounded-[2.5rem] p-6 sm:p-10 shadow-[8px_8px_20px_#E5E3DF,_-8px_-8px_20px_#FFFFFF] relative overflow-hidden flex flex-col transition-all duration-300">
-            <div className="relative z-10 flex flex-col w-full">
-              {/* Elegant tiny line indicator */}
-              <div className="w-10 h-1 bg-capsule-accent/15 rounded-full mb-5 mx-auto"></div>
-
-              {/* Heading with Under-smile Line signature */}
-              <div className="flex flex-col items-center select-none pt-1 mb-6 text-center">
-                <h4 className="font-serif text-lg sm:text-xl font-bold tracking-widest text-[#7C8592] uppercase">
-                  {locale === "hy" ? "Հաճախ տրվող հարցեր" :
-                   locale === "ru" ? "Часто задаваемые вопросы" :
-                   locale === "ar" ? "الأسئلة الشائعة" :
-                   "Frequently Asked Questions"}
-                </h4>
-                {/* Hand-curved smile-underline vector */}
-                <svg className="w-16 h-2.5 text-capsule-accent/75 mt-1.5" viewBox="0 0 48 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 2C12 6.5 36 6.5 46 2" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-                <p className="text-[9px] sm:text-[10px] text-capsule-dark-secondary/40 font-mono font-bold uppercase tracking-widest mt-3.5">
-                  {locale === "hy" ? "Պատասխաններ հանրամատչելի հարցերին" :
-                   locale === "ru" ? "Ответы на популярные вопросы" :
-                   locale === "ar" ? "إجابات على الأسئلة الشائعة" :
-                   "Answers to popular questions"}
-                </p>
-              </div>
-
-              {/* FAQ Accordion list */}
-              <div className="space-y-4">
-                {FAQ_ITEMS.map((item, idx) => {
-                  const isOpen = activeFaq === idx;
-                  const questionText = item.question[locale as LocaleType] || item.question["hy"];
-                  const answerText = item.answer[locale as LocaleType] || item.answer["hy"];
-
-                  return (
-                    <div 
-                      key={idx}
-                      className="group flex flex-col w-full rounded-2xl bg-[#FAFAF9] border border-white/60 transition-all duration-300"
-                      style={{
-                        boxShadow: isOpen 
-                          ? "inset 3px 3px 6px #E5E3DF, inset -3px -3px 6px #FFFFFF" 
-                          : "4px 4px 8px #E5E3DF, -4px -4px 8px #FFFFFF"
-                      }}
-                    >
-                      {/* Accordion header button */}
-                      <button
-                        onClick={() => setActiveFaq(isOpen ? null : idx)}
-                        className="w-full flex items-center justify-between text-left py-3.5 px-4 sm:px-5 gap-3 transition-colors duration-200 hover:text-capsule-accent cursor-pointer select-none bg-transparent border-none outline-none focus:outline-none"
-                      >
-                        <span className="text-xs sm:text-[13px] font-sans font-extrabold text-[#3a2010] leading-snug group-hover:text-capsule-accent transition-colors duration-200">
-                          {questionText}
-                        </span>
-                        <div 
-                          className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                            isOpen 
-                              ? "bg-capsule-accent text-white rotate-180 shadow-[inset_1.5px_1.5px_3px_rgba(0,0,0,0.15)]" 
-                              : "bg-capsule-accent/10 text-capsule-accent hover:bg-capsule-accent/15"
-                          }`}
-                        >
-                          <ChevronDown size={12} className="stroke-[2.5]" />
-                        </div>
-                      </button>
-
-                      {/* Accordion content body using simple React height and ease transitions */}
-                      {isOpen && (
-                        <div className="px-4 sm:px-5 pb-4 text-xs sm:text-sm text-capsule-dark-secondary/80 font-sans leading-relaxed select-text border-t border-dashed border-capsule-border/10 pt-3">
-                          {answerText}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Direct Contact column */}
-          <div className="w-full bg-[#FAFAF9] border-3 border-white rounded-[2.5rem] p-6 sm:p-10 shadow-[8px_8px_20px_#E5E3DF,_-8px_-8px_20px_#FFFFFF] relative overflow-hidden flex flex-col transition-all duration-300">
-            <div className="relative z-10 flex flex-col w-full">
-              {/* Elegant tiny line indicator */}
-              <div className="w-10 h-1 bg-capsule-accent/15 rounded-full mb-5 mx-auto"></div>
-
-              <div className="flex flex-col items-center select-none pt-1 mb-6 text-center">
-                <h4 className="font-serif text-lg sm:text-xl font-bold tracking-widest text-[#7C8592] uppercase">
-                  {t("contact.heading", "GET IN TOUCH")}
-                </h4>
-                {/* Hand-curved smile-underline vector */}
-                <svg className="w-16 h-2.5 text-capsule-accent/75 mt-1.5" viewBox="0 0 48 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 2C12 6.5 36 6.5 46 2" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-                <p className="text-[9px] sm:text-[10px] text-capsule-dark-secondary/40 font-mono font-bold uppercase tracking-widest mt-3.5">
-                  {t("contact.subheading", "Contact & Wholesale inquiries")}
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6 w-full max-w-lg select-none">
-                {/* Phone item */}
-                <a 
-                  href="tel:+37499218090" 
-                  className="group flex items-center justify-center gap-3 bg-[#FAFAF9] border border-white/60 hover:border-capsule-accent/20 py-3.5 px-5 rounded-2xl w-full sm:w-1/2 transition-all duration-300 shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2.5px_2.5px_5px_#E5E3DF,_inset_-2.5px_-2.5px_5px_#FFFFFF] active:scale-97"
-                >
-                  <div className="w-8 h-8 rounded-full bg-capsule-accent/10 text-capsule-accent flex items-center justify-center shrink-0 transition-all group-hover:bg-capsule-accent group-hover:text-white duration-300 shadow-[2px_2px_4px_rgba(163,153,139,0.1)]">
-                    <Phone size={13} />
+          {/* Method A: The Beautiful e-commerce footer has been moved outside of any nested max-width wrappers to the bottom of the outermost layout container, ensuring perfect edge-to-edge browser margin stretching. */}
+          <footer className="relative z-20 w-full bg-[#FCFCFA] text-[#1C1B19] border-t border-[#E5DDD1] mt-28 pt-16 pb-12 px-0 mx-0 max-w-none animate-[fadeIn_0.5s_ease_out]" id="app-footer">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12 text-left">
+                {/* Col 1: Brand & Contact */}
+                <div className="col-span-2 md:col-span-3 space-y-5 text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="font-serif text-base font-black tracking-wider text-neutral-800">thecapsulelab</span>
                   </div>
-                  <div className="text-left">
-                    <span className="block text-[8px] uppercase tracking-wider text-[#A8AFBA] font-mono font-bold leading-none mb-0.5">
-                      {t("contact.phone_label", "Հեռախոս")}
-                    </span>
-                    <span className="text-[#3a2010] font-sans font-extrabold text-xs sm:text-sm group-hover:text-capsule-accent transition-colors duration-200">
-                      +374 99 218090
-                    </span>
-                  </div>
-                </a>
-
-                {/* Email item */}
-                <a 
-                  href={`mailto:${contactSettings.email || "order@capsule.am"}`} 
-                  className="group flex items-center justify-center gap-3 bg-[#FAFAF9] border border-white/60 hover:border-capsule-accent/20 py-3.5 px-5 rounded-2xl w-full sm:w-1/2 transition-all duration-300 shadow-[4px_4px_8px_#E5E3DF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DCDAD5,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2.5px_2.5px_5px_#E5E3DF,_inset_-2.5px_-2.5px_5px_#FFFFFF] active:scale-97"
-                >
-                  <div className="w-8 h-8 rounded-full bg-capsule-accent/10 text-capsule-accent flex items-center justify-center shrink-0 transition-all group-hover:bg-capsule-accent group-hover:text-white duration-300 shadow-[2px_2px_4px_rgba(163,153,139,0.1)]">
-                    <Mail size={13} />
-                  </div>
-                  <div className="text-left">
-                    <span className="block text-[8px] uppercase tracking-wider text-[#A8AFBA] font-mono font-bold leading-none mb-0.5">
-                      {t("contact.email_label", "Էլ․ Փոստ")}
-                    </span>
-                    <span className="text-[#3a2010] font-sans font-extrabold text-xs sm:text-sm group-hover:text-capsule-accent transition-colors duration-200 break-all">
-                      {contactSettings.email || "order@capsule.am"}
-                    </span>
-                  </div>
-                </a>
-              </div>
-
-              {/* Elegant Divider */}
-              <div className="flex items-center gap-4 w-full my-7 select-none">
-                <div className="h-[1.5px] bg-gradient-to-r from-transparent via-[#E5E3DF] to-transparent flex-1"></div>
-                <span className="text-[9.5px] font-mono tracking-widest text-[#3D271B]/60 font-bold uppercase leading-none">
-                  {locale === "hy" ? "Կամ Ուղարկեք Հաղորդագրություն" : 
-                   locale === "ru" ? "ИЛИ ОТПРАВЬТЕ СООБЩЕНИЕ" : 
-                   locale === "ar" ? "أו أرسل لنا رسالة" : 
-                   "OR SEND A DIRECT MESSAGE"}
-                </span>
-                <div className="h-[1.5px] bg-gradient-to-l from-transparent via-[#E5E3DF] to-transparent flex-1"></div>
-              </div>
-
-              {/* Direct Message Form */}
-              <form onSubmit={handleSendContactMessage} className="w-full text-left space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {/* Name */}
-                  <div className="space-y-1.5">
-                    <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#7C8592]/95 pl-1.5">
-                      {t("contact.name_label", "Your Name / Brand")}
-                    </label>
-                    <div className="w-full flex items-center bg-[#FAFAF9] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/40 focus-within:shadow-[inset_4px_4px_8px_#DCDAD5,_inset_-4px_-4px_8px_#FFFFFF,_0_0_12px_rgba(124,133,146,0.08)] transition-all duration-250">
-                      <input
-                        type="text"
-                        value={contactName}
-                        onChange={(e) => setContactName(e.target.value)}
-                        placeholder={t("contact.name_placeholder", "e.g., John Doe / Coco Bakery")}
-                        className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA] font-sans"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Contact info (Email/Phone) */}
-                  <div className="space-y-1.5">
-                    <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#7C8592]/95 pl-1.5">
-                      {t("contact.contact_label", "Your Phone or Email")}
-                    </label>
-                    <div className="w-full flex items-center bg-[#FAFAF9] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/40 focus-within:shadow-[inset_4px_4px_8px_#DCDAD5,_inset_-4px_-4px_8px_#FFFFFF,_0_0_12px_rgba(124,133,146,0.08)] transition-all duration-250">
-                      <input
-                        type="text"
-                        value={contactInfo}
-                        onChange={(e) => setContactInfo(e.target.value)}
-                        placeholder={t("contact.contact_placeholder", "e.g., +374 99 123456 or mail@example.com")}
-                        className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA] font-sans"
-                        required
-                      />
-                    </div>
+                  <p className="text-[12.5px] text-neutral-500 leading-relaxed font-sans max-w-xs">
+                    {locale === "hy" 
+                      ? "Բարձրակարգ փաթեթավորման և տպագրական լուծումներ բիզնեսի և անհատների համար։" 
+                      : locale === "ru" 
+                      ? "Премиальные упаковочные и печатные решения для бизнеса и частных клиентов." 
+                      : "Premium packaging and print solutions for business and retail."}
+                  </p>
+                  <div className="space-y-1.5 text-[11.5px] text-neutral-500 font-sans">
+                    <p className="flex items-center gap-2">
+                      <span>📍</span> Yerevan, Armenia
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span>📞</span> +374 99 999999
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span>✉️</span> support@thecapsulelab.com
+                    </p>
                   </div>
                 </div>
 
-                {/* Message text */}
-                <div className="space-y-1.5">
-                  <label className="block text-[9px] font-extrabold uppercase tracking-widest text-[#7C8592]/95 pl-1.5">
-                    {t("contact.message_label", "Your Message")}
-                  </label>
-                  <div className="w-full flex items-center bg-[#FAFAF9] rounded-[1.75rem] px-5 py-4 shadow-[inset_4px_4px_8px_#E5E3DF,_inset_-4px_-4px_8px_#FFFFFF] border border-white/20 focus-within:border-capsule-accent/25 transition-all duration-200">
-                    <textarea
-                      value={contactMessage}
-                      onChange={(e) => setContactMessage(e.target.value)}
-                      placeholder={t("contact.message_placeholder", "Write your inquiry, custom sizes, or questions here...")}
-                      rows={3}
-                      className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-xs sm:text-[13px] text-gray-700 font-semibold placeholder:text-[#A8AFBA] resize-none"
+                {/* Col 2: Quick Links */}
+                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
+                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
+                    {locale === "hy" ? "Արտադրանք" : locale === "ru" ? "Продукты" : "Products"}
+                  </h4>
+                  <ul className="space-y-2 text-[12.5px] text-[#777777]">
+                    {categories.map((cat) => (
+                      <li key={cat.id}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveCategory(cat.id);
+                            setCurrentView("calculator");
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                        >
+                          {locale === "hy" ? cat.name : cat.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Col 3: Sustainability */}
+                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
+                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
+                    {locale === "hy" ? "Էկոլոգիա" : locale === "ru" ? "Экологичность" : "Sustainability"}
+                  </h4>
+                  <ul className="space-y-2.5 text-[12.5px] text-neutral-500">
+                    {[
+                      { 
+                        hy: "Էկո-պորտալ", 
+                        ru: "Эко-портал", 
+                        en: "Sustainability Hub", 
+                        action: () => { alert("Our environment-first design and premium materials list."); } 
+                      },
+                      { 
+                        hy: "Զեկույցներ", 
+                        ru: "Отчеты о прогрессе", 
+                        en: "Our Progress Reports", 
+                        action: () => { alert("Transparency and eco-accountability standards."); } 
+                      },
+                      { 
+                        hy: "Պատասխանատու մատակարարում", 
+                        ru: "Ответственные поставки", 
+                        en: "Responsible Supply Chain", 
+                        action: () => { alert("Pristine premium cardboard sourced from responsibly managed forests."); } 
+                      },
+                      { 
+                        hy: "FSC Սերտիֆիկացում", 
+                        ru: "Сертификация FSC", 
+                        en: "FSC Certification", 
+                        action: () => { alert("Highlighting the FSC symbol on customer request on all production runs."); } 
+                      },
+                      { 
+                        hy: "Էկո հատկություններ", 
+                        ru: "Эко-свойства", 
+                        en: "Eco properties", 
+                        action: () => { alert("Compostable, bio-degradable, water-based printing inks."); } 
+                      },
+                      { 
+                        hy: "Էկո տարբերանշան", 
+                        ru: "Эко-значок", 
+                        en: "Eco badge", 
+                        action: () => { alert("Add our organic stamp to print layouts for premium visual green verification."); } 
+                      }
+                    ].map((item, idx) => (
+                      <li key={idx}>
+                        <button
+                          type="button"
+                          onClick={item.action}
+                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                        >
+                          {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Col 4: Resources */}
+                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
+                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
+                    {locale === "hy" ? "Ռեսուրսներ" : locale === "ru" ? "Ресурсы" : "Resources"}
+                  </h4>
+                  <ul className="space-y-2.5 text-[12.5px] text-neutral-500">
+                    {[
+                      { 
+                        hy: "Բլոգ", 
+                        ru: "Блог", 
+                        en: "Blog", 
+                        action: () => { alert("Tips for foil hot stamping, custom boxes and luxury paper craft."); } 
+                      },
+                      { 
+                        hy: "Ոգեշնչում", 
+                        ru: "Вдохновение", 
+                        en: "Inspirations", 
+                        action: () => { alert("See our custom lookbook for outstanding premium designs!"); } 
+                      },
+                      { 
+                        hy: "Պայմաններ", 
+                        ru: "Условия обслуживания", 
+                        en: "Terms of service", 
+                        action: () => { alert("Premium bespoke manufacturer production rules and agreement codes."); } 
+                      },
+                      { 
+                        hy: "Գաղտնիություն", 
+                        ru: "Конфиденциальность", 
+                        en: "Privacy policy", 
+                        action: () => { alert("Your design files and secrets are safe and protected with us."); } 
+                      },
+                      { 
+                        hy: "Բողոքների քաղաքականություն", 
+                        ru: "Политика информирования", 
+                        en: "Whistleblowing policy", 
+                        action: () => { alert("Maintaining high business ethics and absolute transparency."); } 
+                      },
+                      { 
+                        hy: "Կայքի քարտեզ", 
+                        ru: "Карта сайта", 
+                        en: "Sitemap", 
+                        action: () => { alert("Explore the premium products, boxes, sleeves and ribbons catalog."); } 
+                      },
+                      { 
+                        hy: "Cookie կարգավորումներ", 
+                        ru: "Файлы-cookie", 
+                        en: "Cookie settings", 
+                        action: () => { alert("Customize secure tracker preference options."); } 
+                      }
+                    ].map((item, idx) => (
+                      <li key={idx}>
+                        <button
+                          type="button"
+                          onClick={item.action}
+                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                        >
+                          {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Col 5: Newsletter Sign Up Box (col-span-3) */}
+                <div className="col-span-2 md:col-span-3 space-y-4 text-left">
+                  <h4 className="font-sans text-sm font-extrabold tracking-tight text-neutral-800 leading-snug">
+                    {locale === "hy" 
+                      ? "Բաց մի թողեք – ստացեք 15% զեղչ ձեր առաջին պատվերի համար, երբ միանում եք լրատվականին:" 
+                      : locale === "ru" 
+                      ? "Не упустите – получите скидку 15% на первый заказ при подписке на рассылку." 
+                      : "Don't miss out – get 15% off your first order when you join the newsletter."}
+                  </h4>
+                  
+                  <form 
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (newsletterEmail.trim()) {
+                        setNewsletterSuccess(true);
+                        setTimeout(() => {
+                          setNewsletterSuccess(false);
+                          setNewsletterEmail("");
+                        }, 5000);
+                      }
+                    }} 
+                    className="flex flex-col sm:flex-row items-stretch border border-neutral-300 w-full rounded-md overflow-hidden bg-white shadow-sm mt-3"
+                  >
+                    <input 
+                      type="email" 
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder={locale === "hy" ? "Էլ. հասցե" : locale === "ru" ? "Электронная почта" : "E-mail"}
+                      className="flex-1 px-4 py-3 text-sm text-neutral-800 outline-none border-none bg-transparent placeholder-neutral-400 font-sans focus:ring-0 min-w-0"
                       required
                     />
+                    <button
+                      type="submit"
+                      className="bg-[#2B5DF5] hover:bg-blue-700 text-white font-sans text-xs font-bold py-3 px-6 transition-colors tracking-wider uppercase shrink-0 cursor-pointer border-none outline-none"
+                    >
+                      {locale === "hy" ? "Բաժանորդագրվել" : locale === "ru" ? "Подписаться" : "Subscribe"}
+                    </button>
+                  </form>
+
+                  {newsletterSuccess && (
+                    <p className="text-xs text-emerald-850 font-bold font-sans mt-2 animate-pulse">
+                      🌱 {locale === "hy" ? "Դուք հաջողությամբ բաժանորդագրվել եք:" : locale === "ru" ? "Вы успешно подписались на рассылку!" : "Successfully subscribed to our newsletter!"}
+                    </p>
+                  )}
+
+                  {/* Securely access Admin panel link inside news section */}
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsAdminOpen(true)}
+                      className="text-[11px] text-neutral-400 hover:text-[#ff2300] transition-colors font-semibold inline-flex items-center gap-1.5 cursor-pointer font-sans bg-transparent border-none p-0 select-none opacity-85 hover:opacity-100"
+                    >
+                      🔑 {locale === "hy" ? "Ադմին" : locale === "ru" ? "Админ" : "Admin Panel"}
+                    </button>
                   </div>
                 </div>
 
-                {/* Submit CTA - Premium, exact match of the burgundy "Log in" round pill from Screenshot 1 */}
-                <button
-                  type="submit"
-                  disabled={isSendingMsg}
-                  className="w-full flex items-center justify-center gap-2.5 bg-[#FAFAF9] rounded-full py-4 text-capsule-accent font-sans font-extrabold text-xs sm:text-[13px] tracking-widest uppercase border-2 border-white shadow-[4px_4px_10px_rgba(163,153,139,0.35),_-4px_-4px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_rgba(163,153,139,0.4),_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_5px_#FFFFFF] active:scale-[0.98] transition-all duration-250 cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  {isSendingMsg ? (
-                    <>
-                      <RefreshCw className="animate-spin text-capsule-accent" size={14} />
-                      <span>{t("contact.sending", "Sending...")}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send size={13} className="text-capsule-accent" />
-                      <span>{t("contact.send_message", "Send Direct Message & Email")}</span>
-                    </>
-                  )}
-                </button>
+              </div>
 
-                {/* Success Notification Alert */}
-                <AnimatePresence>
-                  {msgSentSuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0, y: 10 }}
-                      animate={{ opacity: 1, height: "auto", y: 0 }}
-                      exit={{ opacity: 0, height: 0, y: 10 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
+              {/* Secure Payment Methods Row */}
+              <div className="pt-6 border-t border-[#E5DDD1]/50 pb-4">
+                <PaymentMethods locale={locale} paymentMethods={paymentMethods} />
+              </div>
+
+              {/* Bottom Copyright & Legal Info */}
+              <div className="flex flex-col md:flex-row items-center justify-between pt-6 mt-4 text-center md:text-left gap-6 text-xs text-neutral-500 font-sans">
+                <p className="font-medium">
+                  &copy; {new Date().getFullYear()} <span className="font-bold text-neutral-800">thecapsulelab</span> . {locale === "ru" ? "Все права защищены." : locale === "hy" ? "Բոլոր իրավունքները պաշտպանված են։" : "All rights reserved."} 
+                  <span className="mx-2 font-light opacity-50">|</span> 
+                  {locale === "hy" 
+                    ? "Բիզնես ժամեր: Երկուշաբթի - Ուրբաթ 09:00 - 18:00 (Yerevan)" 
+                    : locale === "ru" 
+                    ? "Часы работы: Понедельник - Пятница 09:00 - 18:00 (Yerevan)" 
+                    : "Business Hours: Monday - Friday 09:00 - 18:00 (Yerevan)"}
+                </p>
+
+                {/* Social icons matching Packhelp.com layout */}
+                <div className="flex items-center gap-3">
+                  {[
+                    { href: "https://instagram.com/thecapsulelab", icon: <Instagram size={15} />, label: "Instagram" },
+                    { href: "https://twitter.com/thecapsulelab", icon: <Twitter size={15} />, label: "Twitter" },
+                    { href: "https://linkedin.com/company/thecapsulelab", icon: <Linkedin size={15} />, label: "LinkedIn" },
+                    { href: "https://youtube.com/thecapsulelab", icon: <Youtube size={15} />, label: "YouTube" },
+                    { href: "https://facebook.com/thecapsulelab", icon: <Facebook size={15} />, label: "Facebook" },
+                    { href: "https://t.me/thecapsulelab", icon: <Send size={15} className="-translate-x-[0.5px] translate-y-[0.5px]" />, label: "Telegram" }
+                  ].map((soc, idx) => (
+                    <a 
+                      key={idx}
+                      href={soc.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-[#094F31] hover:text-white text-zinc-600 flex items-center justify-center transition-all duration-300 outline-none hover:shadow-sm"
+                      aria-label={soc.label}
                     >
-                      <div className="bg-[#ff2300]/10 border border-[#ff2300]/20 rounded-xl p-3 flex items-center gap-2.5 mt-3 select-none text-[#ff2300] text-[11px] font-medium leading-normal">
-                        <div className="w-5 h-5 rounded-full bg-[#ff2300]/20 flex items-center justify-center shrink-0 text-[#ff2300]">
-                          <Check size={12} className="stroke-[3]" />
-                        </div>
-                        <p>{t("contact.message_success", "Thank you! Your message was saved and email draft prepared.")}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </form>
+                      {soc.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
             </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Footer system */}
-      <footer className="py-10 text-center text-capsule-text-muted text-xs select-none border-t border-capsule-accent/5 mt-16 bg-transparent">
-        <p 
-          onClick={handleLogoClickClick}
-          className="font-arial cursor-pointer transition-all active:scale-98"
-        >
-          &copy; {new Date().getFullYear()} Capsule Concept Studio. All rights reserved.
-        </p>
-      </footer>
+          </footer>
 
       {/* Inquiry modal popup */}
       <OrderInquiryModal
@@ -6809,35 +6065,81 @@ export default function App() {
                     {locale === "hy" ? "Պորտալներ" : locale === "ru" ? "Порталы" : "Portals"}
                   </span>
 
-                  {/* Calculator/Configurator Link */}
+                  {/* Home Link */}
                   <button
                     type="button"
                     onClick={() => {
+                      setCurrentView("home");
                       setIsInTrackPortal(false);
-                      setActiveCategory("");
                       setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/");
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
-                      !isInTrackPortal && !activeCategory
+                      (currentView as any) === "home"
                         ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
                         : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
                   >
                     <span className="text-xs font-sans">
-                      {locale === "hy" ? "Հաշվիչի Գլխավոր" : locale === "ru" ? "Главный Калькулятор" : "Calculator Home"}
+                      {locale === "hy" ? "Գլխավոր" : locale === "ru" ? "Главная" : "Home"}
                     </span>
-                    <ChevronRight size={11} className={!isInTrackPortal && !activeCategory ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={(currentView as any) === "home" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                  </button>
+
+                  {/* Calculator/Configurator Link */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentView("calculator");
+                      setIsInTrackPortal(false);
+                      setActiveCategory("bags");
+                      setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/calculator");
+                    }}
+                    className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
+                      currentView === "calculator"
+                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                    }`}
+                  >
+                    <span className="text-xs font-sans">
+                      {locale === "hy" ? "Հաշվիչ" : locale === "ru" ? "Калькулятор" : "Calculator"}
+                    </span>
+                    <ChevronRight size={11} className={currentView === "calculator" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                  </button>
+
+                  {/* Shop E-commerce Link */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentView("ecommerce");
+                      setIsInTrackPortal(false);
+                      setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/shop");
+                    }}
+                    className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
+                      (currentView as any) === "ecommerce"
+                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                    }`}
+                  >
+                    <span className="text-xs font-sans">
+                      {locale === "hy" ? "Խանութ" : locale === "ru" ? "Магазин" : "Shop"}
+                    </span>
+                    <ChevronRight size={11} className={(currentView as any) === "ecommerce" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
 
                   {/* Order Track Portal Link */}
                   <button
                     type="button"
                     onClick={() => {
+                      setCurrentView("track");
                       setIsInTrackPortal(true);
                       setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/track-order");
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
-                      isInTrackPortal
+                      (currentView as any) === "track"
                         ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
                         : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
@@ -6845,7 +6147,7 @@ export default function App() {
                     <span className="text-xs font-sans">
                       {locale === "hy" ? "Հետևել Պատվերին" : locale === "ru" ? "Отследить Заказ" : "Track Order"}
                     </span>
-                    <ChevronRight size={11} className={isInTrackPortal ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={(currentView as any) === "track" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
                 </div>
 
@@ -7104,7 +6406,9 @@ export default function App() {
         decorativeBagsPricingRules={decorativeRules}
         submissions={submissions}
         bagRibbonHandles={bagRibbonHandles}
+        featuredProducts={featuredProducts || []}
         aiSettings={aiSettings}
+        paymentMethods={paymentMethods}
         onSaveConfig={handleSaveAdminConfigAll}
         onClearSubmissions={handleClearAdminLogs}
         onReload={loadPublicConfig}
@@ -7185,7 +6489,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setIsCartOpen(false);
-                      setActiveCategory("");
+                      setActiveCategory("bags");
                     }}
                     className="cursor-pointer bg-[#FAFAF8] text-[#3D271B] font-sans text-[10px] sm:text-[11px] font-black uppercase tracking-widest px-7 py-3.5 rounded-full shadow-[4px_4px_8px_#DFD9CD,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DFD9CD,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#DFD9CD,_inset_-2px_-2px_4px_#FFFFFF] hover:text-capsule-accent transition-all border-none outline-none select-none"
                   >
@@ -7472,20 +6776,10 @@ export default function App() {
 
               {/* Box info inside the modal container */}
               <div className="bg-[#FAFAF9] border border-[#EBEBE8] rounded-2xl p-5 space-y-3.5 text-left select-text relative">
-                {/* Order ID display */}
+                {/* Unified Single Order Code display */}
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-mono text-[10px] text-capsule-text-muted font-bold uppercase tracking-wider">
-                    {locale === "hy" ? "Պատվերի ID" : locale === "ru" ? "Номер заказа" : "Order ID"}
-                  </span>
-                  <span className="font-sans font-black text-capsule-accent">
-                    {submittedTrackData.id}
-                  </span>
-                </div>
-
-                {/* Unique Tracking code Display */}
-                <div className="border-t border-[#EBEBE8] pt-3 flex justify-between items-center text-xs">
-                  <span className="font-mono text-[10px] text-capsule-text-muted font-bold uppercase tracking-wider">
-                    {locale === "hy" ? "Հետևման կոդ" : locale === "ru" ? "Код отслеживания" : "Tracking Code"}
+                    {locale === "hy" ? "Պատվերի Կոդ" : locale === "ru" ? "Код заказа" : "Order Code"}
                   </span>
                   <span className="font-mono font-black text-green-800 text-sm tracking-widest uppercase">
                     {submittedTrackData.trackingCode}

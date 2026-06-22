@@ -736,7 +736,7 @@ export default function ClientCabinet({
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          transition={{ duration: 0.3, cubicBezier: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-md bg-[#F8F6F1] p-6 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] relative my-auto text-[#1A1A1A]"
         >
           {/* Close button on the top right of the auth container */}
@@ -1414,7 +1414,7 @@ export default function ClientCabinet({
             )}
 
             {/* ── CENTRAL PREMIUM AUTHENTICATION TABS LAYOUT ── */}
-            {(activeTab === "login" || activeTab === "register") && (
+            {((activeTab as string) === "login" || (activeTab as string) === "register") && (
               <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 
                 {/* WIDGET TABS HEAD */}
@@ -1423,14 +1423,14 @@ export default function ClientCabinet({
                     type="button"
                     onClick={() => { setErrorMsg(null); setActiveTab("login"); }}
                     className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
-                      activeTab === "login" 
+                      (activeTab as any) === "login" 
                         ? "text-capsule-accent scale-105 font-black" 
                         : "text-[#7C8797] hover:text-[#5A6578]"
                     }`}
                   >
                     <span className="relative">
                       {currentLocale === "hy" ? "ՄՈՒՏՔ" : currentLocale === "ru" ? "ВХОД" : "SIGN IN"}
-                      {activeTab === "login" && (
+                      {(activeTab as any) === "login" && (
                         <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
                           <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
@@ -1443,14 +1443,14 @@ export default function ClientCabinet({
                     type="button"
                     onClick={() => { setErrorMsg(null); setActiveTab("register"); }}
                     className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
-                      activeTab === "register" 
+                      (activeTab as any) === "register" 
                         ? "text-capsule-accent scale-105 font-black" 
                         : "text-[#7C8797] hover:text-[#5A6578]"
                     }`}
                   >
                     <span className="relative">
                       {currentLocale === "hy" ? "ԳՐԱՆՑՈՒՄ" : currentLocale === "ru" ? "РЕГИСТРАЦИЯ" : "SIGN UP"}
-                      {activeTab === "register" && (
+                      {(activeTab as any) === "register" && (
                         <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
                           <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
@@ -1462,7 +1462,7 @@ export default function ClientCabinet({
                 </div>
 
                 {/* SIGN IN VIEW CONTENT */}
-                {activeTab === "login" && (
+                {(activeTab as any) === "login" && (
                   <form onSubmit={handleLogin} className="space-y-5">
                     {/* Concave Neumorphic Email Input */}
                     <div className="w-full">
@@ -1562,7 +1562,7 @@ export default function ClientCabinet({
                 )}
 
                 {/* SIGN UP VIEW CONTENT */}
-                {activeTab === "register" && (
+                {(activeTab as any) === "register" && (
                   <form onSubmit={handleRegister} className="space-y-4">
                     {/* First & Last Name Concave Inputs */}
                     <div className="grid grid-cols-2 gap-3">
@@ -1730,7 +1730,7 @@ export default function ClientCabinet({
             )}
 
             {/* ── PASSWORD RECOVERY VIEW ────────────────── */}
-            {activeTab === "recovery" && (
+            {(activeTab as string) === "recovery" && (
               <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 <button 
                   type="button"
@@ -1777,7 +1777,7 @@ export default function ClientCabinet({
             )}
 
             {/* ── RESET PASSWORD VIEW FROM OTP ────────────────── */}
-            {activeTab === "reset" && (
+            {(activeTab as string) === "reset" && (
               <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 <div className="text-center mb-6">
                   <h2 className="text-xl font-black text-[#1A3F25] tracking-tight">{getT("enterOtp")}</h2>

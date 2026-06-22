@@ -1,6 +1,8 @@
 export interface Category {
   id: string;
   name: string;
+  nameRu?: string;
+  nameEn?: string;
   navLabel?: string;
   heroTitle?: string;
   heroDesc?: string;
@@ -11,6 +13,8 @@ export interface Category {
   qtyPresets?: number[];
   ruleChips?: string;
   icon?: string;
+  sortOrder?: number;
+  status?: string;
   template?: string;
   sizing?: SizingConfig;
   options?: ProductOption[];
@@ -35,6 +39,14 @@ export interface Product {
   items: ProductItem[];
   pricingFormula?: SizePricingFormula;
   options?: ProductOption[];
+  materialTags?: string[];
+  finishingTags?: string[];
+  purposeTags?: string[];
+  collectionTags?: string[];
+  isEco?: boolean;
+  isNew?: boolean;
+  isHit?: boolean;
+  templateType?: 'on_demand' | 'ready_template';
 }
 
 export interface Dimension {
@@ -302,4 +314,45 @@ export interface DynamicProduct {
   pricingFormula: SizePricingFormula;
   options: ProductOption[]; // Product-specific custom overrides or extra options
 }
+
+export interface PaymentMethod {
+  id: string;
+  name: string; // machine name, like "visa", "mastercard", etc.
+  title: {
+    hy: string;
+    en: string;
+    ru: string;
+    ar: string;
+  };
+  description: {
+    hy: string;
+    en: string;
+    ru: string;
+    ar: string;
+  };
+  iconSvg: string; // full XML SVG string or raw inner SVG paths
+  sortOrder: number;
+  active: boolean;
+}
+
+export interface FeaturedProduct {
+  id: string;
+  nameHy: string;
+  nameRu: string;
+  nameEn: string;
+  minQtyTextHy: string;
+  minQtyTextRu: string;
+  minQtyTextEn: string;
+  tagHy: string;
+  tagRu: string;
+  tagEn: string;
+  secondaryTagHy?: string;
+  secondaryTagRu?: string;
+  secondaryTagEn?: string;
+  categoryId: string;
+  image: string;
+  active: boolean;
+  productId?: string;
+}
+
 

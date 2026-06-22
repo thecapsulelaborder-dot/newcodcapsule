@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, boolean, real, jsonb, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, boolean, real, jsonb, timestamp, index } from "drizzle-orm/pg-core";
 
 // 1. Roles and Users Table (RBAC)
 export const users = pgTable("users", {
@@ -22,7 +22,11 @@ export const configurations = pgTable("configurations", {
 export const categories = pgTable("categories", {
   id: text("id").primaryKey(), // e.g., 'bags', 'boxes'
   name: text("name").notNull(),
+  nameRu: text("name_ru"),
+  nameEn: text("name_en"),
   navLabel: text("nav_label"),
+  icon: text("icon"),
+  sortOrder: integer("sort_order").notNull().default(0),
   active: boolean("active").notNull().default(true),
   heroTitle: text("hero_title"),
   heroDesc: text("hero_desc"),
@@ -46,6 +50,14 @@ export const products = pgTable("products", {
   active: boolean("active").notNull().default(true),
   status: text("status").notNull().default("published"), // 'draft' | 'published'
   createdAt: timestamp("created_at").defaultNow(),
+  materialTags: jsonb("material_tags").$type<string[]>(),
+  finishingTags: jsonb("finishing_tags").$type<string[]>(),
+  purposeTags: jsonb("purpose_tags").$type<string[]>(),
+  collectionTags: jsonb("collection_tags").$type<string[]>(),
+  isEco: boolean("is_eco").default(false),
+  isNew: boolean("is_new").default(false),
+  isHit: boolean("is_hit").default(false),
+  templateType: text("template_type").$type<'on_demand' | 'ready_template'>().default('on_demand'),
 });
 
 // 5. Product Items Table (Nesting pricing items)
@@ -149,7 +161,13 @@ export const submissions = pgTable("submissions", {
   productionDeadline: text("production_deadline"), // крайний срок производства
   actualCompletionDate: text("actual_completion_date"), // фактическая дата выполнения
   estimatedCompletionUpdatedAt: text("estimated_completion_updated_at"), // дата изменения планируемой даты
-});
+}, (table) => [
+  index("submissions_status_idx").on(table.status),
+  index("submissions_customer_phone_idx").on(table.customerPhone),
+  index("submissions_customer_email_idx").on(table.customerEmail),
+  index("submissions_tracking_code_idx").on(table.trackingCode),
+  index("submissions_ts_idx").on(table.ts),
+]);
 
 // WhatsApp Integration Logs
 export const whatsappLogs = pgTable("whatsapp_logs", {
