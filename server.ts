@@ -35,6 +35,7 @@ async function startServer() {
   app.use("/api/calculate", calculateRouter);
   app.use("/api", calculateRouter); // Fallback public routes support
   app.use("/api", authRouter);       // Registration, verification, login
+  app.use("/api/auth", authRouter);  // Fallback support for ClientCabinet.tsx /api/auth pathing
   app.use("/api/client", clientRouter);
   app.use("/api", clientRouter);     // Backward compatibility on cabinet routes
   app.use("/api", trackingRouter);   // Public tracking, alert controls and reviews
