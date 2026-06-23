@@ -1,5 +1,25 @@
 import React, { useState } from "react";
-import { Search, ShoppingCart, ArrowRight, Tag, Filter, ChevronDown, ChevronUp, Leaf, Sparkles, RotateCcw } from "lucide-react";
+import { 
+  Search, 
+  ShoppingCart, 
+  ArrowRight, 
+  Tag, 
+  Filter, 
+  ChevronDown, 
+  ChevronUp, 
+  Leaf, 
+  Sparkles, 
+  RotateCcw,
+  Shirt,
+  Coffee,
+  ShoppingBag,
+  Gift,
+  Flame,
+  Home,
+  Laptop,
+  Truck,
+  Landmark
+} from "lucide-react";
 
 interface FeaturedProduct {
   id: string;
@@ -550,6 +570,80 @@ export default function EcommerceStore({
     setSearchTerm("");
   };
 
+  const getIndustryIcon = (id: string, active: boolean) => {
+    const size = 18;
+    const colorClass = active ? "text-white" : "text-capsule-accent";
+    switch (id) {
+      case "any":
+        return <Tag size={size} className={colorClass} />;
+      case "apparel":
+        return <Shirt size={size} className={colorClass} />;
+      case "health_beauty":
+        return <Sparkles size={size} className={colorClass} />;
+      case "food_drinks":
+        return <Coffee size={size} className={colorClass} />;
+      case "ecommerce":
+        return <ShoppingBag size={size} className={colorClass} />;
+      case "gifts":
+        return <Gift size={size} className={colorClass} />;
+      case "marketing_events":
+        return <Flame size={size} className={colorClass} />;
+      case "home_deco":
+        return <Home size={size} className={colorClass} />;
+      case "electronics":
+        return <Laptop size={size} className={colorClass} />;
+      case "logistics":
+        return <Truck size={size} className={colorClass} />;
+      default:
+        return <Landmark size={size} className={colorClass} />;
+    }
+  };
+
+  const getIndustryProductCountText = (count: number) => {
+    if (locale === "hy") {
+      return `${count} տեսականի`;
+    }
+    if (locale === "ru") {
+      const lastDigit = count % 10;
+      const lastTwo = count % 100;
+      if (lastTwo >= 11 && lastTwo <= 19) return `${count} товаров`;
+      if (lastDigit === 1) return `${count} товар`;
+      if (lastDigit >= 2 && lastDigit <= 4) return `${count} товара`;
+      return `${count} товаров`;
+    }
+    return `${count} items`;
+  };
+
+  const getIndustryCount = (indId: string) => {
+    if (indId === "any") return uniqueProducts.length;
+    return uniqueProducts.filter(p => p.industry && p.industry.includes(indId)).length;
+  };
+
+  const indHeader = locale === "hy" 
+    ? "ՄԱՍՆԱԳԻՏԱՑՎԱԾ ՓԱԹԵԹԱՎՈՐՈՒՄ ԸՍՏ ՈԼՈՐՏՆԵՐԻ" 
+    : locale === "ru" 
+      ? "УПАКОВКА ПО ОТРАСЛЯМ БИЗНЕСА" 
+      : "SPECIALISED PACKAGING BY INDUSTRY";
+
+  const indSub = locale === "hy"
+    ? "Ընտրեք ձեր ոլորտը՝ համապատասխան փաթեթավորման լուծումներն արագ գտնելու համար"
+    : locale === "ru"
+      ? "Выберите вашу нишу для мгновенного подбора идеальных упаковочных решений"
+      : "Select your business niche to instantly match the perfect packaging tailored to your brand";
+
+  const orderedIndustries = [
+    { id: "any", en: "All Industries", ru: "Все отрасли", hy: "Բոլոր Ոլորտները" },
+    { id: "apparel", en: "Apparel & Fashion", ru: "Одежда и мода", hy: "Հագուստ և Նորաձևություն" },
+    { id: "food_drinks", en: "Food & Drinks (HoReCa)", ru: "Еда, напитки и HoReCa", hy: "Սնունդ և Ըմպելիք (HoReCa)" },
+    { id: "health_beauty", en: "Health & Beauty (Cosmetics)", ru: "Косметика и бьюти", hy: "Կոսմետիկա և Գեղեցկություն" },
+    { id: "ecommerce", en: "E-commerce Startups", ru: "Электронная коммерция", hy: "Էլեկտրոնային Առևտուր" },
+    { id: "gifts", en: "Gifts & Souvenirs", ru: "Подарки и сувениры", hy: "Նվերներ և Հուշանվերներ" },
+    { id: "home_deco", en: "Home & Deco", ru: "Дом и декор", hy: "Տուն և Դեկոր" },
+    { id: "marketing_events", en: "Marketing & Events", ru: "Маркетинг и события", hy: "Մարքեթինգ և Միջոցառումներ" },
+    { id: "electronics", en: "Electronics & Tech", ru: "Электроника и девайсы", hy: "Էլեկտրոնիկա" },
+    { id: "logistics", en: "Logistics & Delivery", ru: "Логистика и доставка", hy: "Լոգիստիկա և Առաքում" }
+  ];
+
   return (
     <div className="w-full bg-capsule-bg min-h-screen py-8 select-none" id="primary-packhelp-store-canvas">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -565,6 +659,76 @@ export default function EcommerceStore({
           <p className="text-xs sm:text-sm text-capsule-text-secondary mt-2 max-w-xl mx-auto leading-relaxed">
             {texts.headerSubtitle}
           </p>
+        </div>
+
+        {/* Visual Industry Category Selector Cards */}
+        <div className="mb-12 animate-fade-in-quick" id="industry-selector-cards-section">
+          <div className="text-center sm:text-left mb-8">
+            <div className="flex items-center justify-center sm:justify-start gap-2.5 mb-2">
+              <span className="w-2 h-2 rounded-full bg-capsule-accent shadow-[0_0_10px_#ff2300]" />
+              <h2 className="font-sans font-black text-[11px] tracking-[0.25em] text-capsule-dark uppercase">
+                {indHeader}
+              </h2>
+            </div>
+            <p className="text-[12px] text-capsule-text-secondary/90 leading-relaxed max-w-2xl">
+              {indSub}
+            </p>
+          </div>
+
+          {/* Premium, fully visible responsive grid - no scrolling on desktop or mobile for instant accessibility */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 pb-3 pt-1 px-1">
+            {orderedIndustries.map((ind) => {
+              const isSelected = industry === ind.id;
+              const count = getIndustryCount(ind.id);
+              const name = locale === "hy" ? ind.hy : locale === "ru" ? ind.ru : ind.en;
+              
+              return (
+                <button
+                  key={ind.id}
+                  onClick={() => setIndustry(ind.id)}
+                  className={`group flex flex-col items-start p-4 w-full rounded-[28px] h-[126px] justify-between cursor-pointer transition-all duration-300 relative select-none text-left overflow-hidden border ${
+                    isSelected
+                      ? "bg-[#efede8] border-white/20 shadow-[inset_4px_4px_9px_#cfc9be,inset_-4px_-4px_9px_#ffffff] scale-[0.97]"
+                      : "bg-[#fafaf8] border-white/90 shadow-[6px_6px_14px_#d2ccc2,-6px_-6px_14px_#ffffff] hover:scale-[1.03] hover:shadow-[8px_8px_18px_#d2ccc2,-8px_-8px_18px_#ffffff]"
+                  }`}
+                  id={`industry-card-${ind.id}`}
+                >
+                  {/* Soft organic circular gradient for modern physical material simulation */}
+                  <div className={`absolute top-[-25px] right-[-25px] w-24 h-24 rounded-full transition-all duration-500 pointer-events-none ${
+                    isSelected 
+                      ? "bg-capsule-accent/[0.05] scale-110" 
+                      : "bg-capsule-accent/[0.02] group-hover:scale-115 group-hover:bg-capsule-accent/[0.05]"
+                  }`} />
+
+                  <div className="flex items-center justify-between w-full relative z-10">
+                    <div className={`p-2.5 rounded-[16px] transition-all duration-300 group-hover:scale-105 ${
+                      isSelected 
+                        ? "bg-capsule-accent text-white shadow-[0_6px_16px_rgba(255,35,0,0.35),_inset_1.5px_1.5px_3px_rgba(255,255,255,0.4)]" 
+                        : "bg-[#fafaf8] shadow-[3px_3px_7px_#dcdad5,-3px_-3px_7px_#ffffff] border border-white/80 text-capsule-accent"
+                    }`}>
+                      {getIndustryIcon(ind.id, isSelected)}
+                    </div>
+                    {isSelected && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-capsule-accent shadow-[0_0_6px_#ff2300] animate-pulse" />
+                    )}
+                  </div>
+
+                  <div className="mt-3 relative z-10 w-full">
+                    <span className={`block font-sans font-black text-[11px] tracking-tight uppercase leading-tight line-clamp-1 transition-colors duration-300 ${
+                      isSelected ? "text-capsule-accent" : "text-capsule-dark"
+                    }`}>
+                      {name}
+                    </span>
+                    <span className={`block font-mono text-[9px] font-bold mt-0.5 transition-colors duration-300 ${
+                      isSelected ? "text-capsule-dark/80" : "text-capsule-text-secondary"
+                    }`}>
+                      {getIndustryProductCountText(count)}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="lg:hidden w-full mb-4">
