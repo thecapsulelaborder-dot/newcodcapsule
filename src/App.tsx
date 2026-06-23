@@ -1294,108 +1294,110 @@ export default function App() {
       updatedPayload.qty = newQty;
     }
 
-    let localResult: any = null;
-    try {
-      if (item.catId === "boxes") {
-        localResult = clientCalculateBoxesPrice(updatedPayload, localDb);
-      } else if (item.catId === "ribbons") {
-        localResult = clientCalculateRibbonsPrice(updatedPayload, localDb);
-      } else if (item.catId === "stickers") {
-        localResult = clientCalculateStickersPrice(updatedPayload, localDb);
-      } else if (item.catId === "giftcards") {
-        localResult = clientCalculateGiftCardsPrice(updatedPayload, localDb);
-      } else if (item.catId === "businesscards") {
-        localResult = clientCalculateBusinessCardsPrice(updatedPayload, localDb);
-      } else if (item.catId === "other_products") {
-        const itemsList = products
-          .filter(p => p.categoryId === "other_products")
-          .flatMap(p => p.items || []);
-        const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
-        if (matchedItem) {
-          const rawItemPrice = matchedItem.price * newQty;
-          let finalPrice = rawItemPrice;
-          let discountAmountForLocal = 0;
-          if (updatedPayload.appliedDiscountCode) {
-            const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === updatedPayload.appliedDiscountCode.toUpperCase() && d.active);
-            if (matchedPromo) {
-              if (matchedPromo.type === "percentage") {
-                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-              } else if (matchedPromo.type === "fixed") {
-                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+    (async () => {
+      let localResult: any = null;
+      try {
+        if (item.catId === "boxes") {
+          localResult = await clientCalculateBoxesPrice(updatedPayload, localDb);
+        } else if (item.catId === "ribbons") {
+          localResult = await clientCalculateRibbonsPrice(updatedPayload, localDb);
+        } else if (item.catId === "stickers") {
+          localResult = await clientCalculateStickersPrice(updatedPayload, localDb);
+        } else if (item.catId === "giftcards") {
+          localResult = await clientCalculateGiftCardsPrice(updatedPayload, localDb);
+        } else if (item.catId === "businesscards") {
+          localResult = await clientCalculateBusinessCardsPrice(updatedPayload, localDb);
+        } else if (item.catId === "other_products") {
+          const itemsList = products
+            .filter(p => p.categoryId === "other_products")
+            .flatMap(p => p.items || []);
+          const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
+          if (matchedItem) {
+            const rawItemPrice = matchedItem.price * newQty;
+            let finalPrice = rawItemPrice;
+            let discountAmountForLocal = 0;
+            if (updatedPayload.appliedDiscountCode) {
+              const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === updatedPayload.appliedDiscountCode.toUpperCase() && d.active);
+              if (matchedPromo) {
+                if (matchedPromo.type === "percentage") {
+                  discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+                } else if (matchedPromo.type === "fixed") {
+                  discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+                }
+                finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
               }
-              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
             }
+            localResult = {
+              success: true,
+              itemName: matchedItem.name,
+              qty: newQty,
+              unitPrice: matchedItem.price,
+              rawTotal: rawItemPrice,
+              totalPrice: finalPrice,
+              discountAmount: discountAmountForLocal,
+              materialType: matchedItem.unit || "հատ",
+              dimensionsText: "անհատական",
+              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${newQty} ${matchedItem.unit || "հատ"}`
+            };
           }
-          localResult = {
-            success: true,
-            itemName: matchedItem.name,
-            qty: newQty,
-            unitPrice: matchedItem.price,
-            rawTotal: rawItemPrice,
-            totalPrice: finalPrice,
-            discountAmount: discountAmountForLocal,
-            materialType: matchedItem.unit || "հատ",
-            dimensionsText: "անհատական",
-            detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${newQty} ${matchedItem.unit || "հատ"}`
-          };
-        }
-      } else if (item.catId === "qr_matrix") {
-        const itemsList = products
-          .filter(p => p.categoryId === "qr_matrix")
-          .flatMap(p => p.items || []);
-        const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
-        if (matchedItem) {
-          const rawItemPrice = matchedItem.price * newQty;
-          let finalPrice = rawItemPrice;
-          let discountAmountForLocal = 0;
-          if (updatedPayload.appliedDiscountCode) {
-            const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === updatedPayload.appliedDiscountCode.toUpperCase() && d.active);
-            if (matchedPromo) {
-              if (matchedPromo.type === "percentage") {
-                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-              } else if (matchedPromo.type === "fixed") {
-                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+        } else if (item.catId === "qr_matrix") {
+          const itemsList = products
+            .filter(p => p.categoryId === "qr_matrix")
+            .flatMap(p => p.items || []);
+          const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
+          if (matchedItem) {
+            const rawItemPrice = matchedItem.price * newQty;
+            let finalPrice = rawItemPrice;
+            let discountAmountForLocal = 0;
+            if (updatedPayload.appliedDiscountCode) {
+              const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === updatedPayload.appliedDiscountCode.toUpperCase() && d.active);
+              if (matchedPromo) {
+                if (matchedPromo.type === "percentage") {
+                  discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+                } else if (matchedPromo.type === "fixed") {
+                  discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+                }
+                finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
               }
-              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
             }
+            localResult = {
+              success: true,
+              itemName: matchedItem.name,
+              qty: newQty,
+              unitPrice: matchedItem.price,
+              rawTotal: rawItemPrice,
+              totalPrice: finalPrice,
+              discountAmount: discountAmountForLocal,
+              materialType: "հատ",
+              dimensionsText: "անհատական",
+              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${newQty} հատ`
+            };
           }
-          localResult = {
-            success: true,
-            itemName: matchedItem.name,
-            qty: newQty,
-            unitPrice: matchedItem.price,
-            rawTotal: rawItemPrice,
-            totalPrice: finalPrice,
-            discountAmount: discountAmountForLocal,
-            materialType: "հատ",
-            dimensionsText: "անհատական",
-            detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${newQty} հատ`
-          };
+        } else {
+          localResult = await clientCalculateBagsPrice(updatedPayload, localDb);
         }
-      } else {
-        localResult = clientCalculateBagsPrice(updatedPayload, localDb);
+      } catch (err: any) {
+        alert(err.message || t("cart.update_qty_error", "Քանակը փոխելու սխալ:"));
+        return;
       }
-    } catch (err: any) {
-      alert(err.message || t("cart.update_qty_error", "Քանակը փոխելու սխալ:"));
-      return;
-    }
 
-    if (localResult && localResult.success !== false) {
-      const newDesc = getSingleItemDetails(item.catId, localResult, updatedPayload);
-      setBundleItems(prev => prev.map(it => {
-        if (it.id === id) {
-          return {
-            ...it,
-            qty: localResult.qty,
-            unitPrice: localResult.unitPrice,
-            totalPrice: localResult.totalPrice,
-            description: newDesc,
-            payload: updatedPayload
-          };
-        }
-        return it;
-      }));
-    }
+      if (localResult && localResult.success !== false) {
+        const newDesc = getSingleItemDetails(item.catId, localResult, updatedPayload);
+        setBundleItems(prev => prev.map(it => {
+          if (it.id === id) {
+            return {
+              ...it,
+              qty: localResult.qty,
+              unitPrice: localResult.unitPrice,
+              totalPrice: localResult.totalPrice,
+              description: newDesc,
+              payload: updatedPayload
+            };
+          }
+          return it;
+        }));
+      }
+    })();
   };
 
   const handleApplyCartPromo = (codeStr: string) => {
@@ -1424,99 +1426,102 @@ export default function App() {
       bagRibbonHandles
     };
 
-    const updatedItems = bundleItems.map(item => {
-      const updatedPayload = item.payload ? { ...item.payload, appliedDiscountCode: trimmed } : { appliedDiscountCode: trimmed };
-      
-      let localResult: any = null;
-      try {
-        if (item.catId === "boxes") {
-          localResult = clientCalculateBoxesPrice(updatedPayload, localDb);
-        } else if (item.catId === "ribbons") {
-          localResult = clientCalculateRibbonsPrice(updatedPayload, localDb);
-        } else if (item.catId === "stickers") {
-          localResult = clientCalculateStickersPrice(updatedPayload, localDb);
-        } else if (item.catId === "giftcards") {
-          localResult = clientCalculateGiftCardsPrice(updatedPayload, localDb);
-        } else if (item.catId === "businesscards") {
-          localResult = clientCalculateBusinessCardsPrice(updatedPayload, localDb);
-        } else if (item.catId === "other_products") {
-          const itemsList = products
-            .filter(p => p.categoryId === "other_products")
-            .flatMap(p => p.items || []);
-          const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
-          if (matchedItem) {
-            const rawItemPrice = matchedItem.price * item.qty;
-            let finalPrice = rawItemPrice;
-            let discountAmountForLocal = 0;
-            if (matchedPromo.type === "percentage") {
-              discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-            } else if (matchedPromo.type === "fixed") {
-              discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+    (async () => {
+      const updatedItemsPromises = bundleItems.map(async item => {
+        const updatedPayload = item.payload ? { ...item.payload, appliedDiscountCode: trimmed } : { appliedDiscountCode: trimmed };
+        
+        let localResult: any = null;
+        try {
+          if (item.catId === "boxes") {
+            localResult = await clientCalculateBoxesPrice(updatedPayload, localDb);
+          } else if (item.catId === "ribbons") {
+            localResult = await clientCalculateRibbonsPrice(updatedPayload, localDb);
+          } else if (item.catId === "stickers") {
+            localResult = await clientCalculateStickersPrice(updatedPayload, localDb);
+          } else if (item.catId === "giftcards") {
+            localResult = await clientCalculateGiftCardsPrice(updatedPayload, localDb);
+          } else if (item.catId === "businesscards") {
+            localResult = await clientCalculateBusinessCardsPrice(updatedPayload, localDb);
+          } else if (item.catId === "other_products") {
+            const itemsList = products
+              .filter(p => p.categoryId === "other_products")
+              .flatMap(p => p.items || []);
+            const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
+            if (matchedItem) {
+              const rawItemPrice = matchedItem.price * item.qty;
+              let finalPrice = rawItemPrice;
+              let discountAmountForLocal = 0;
+              if (matchedPromo.type === "percentage") {
+                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+              } else if (matchedPromo.type === "fixed") {
+                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+              }
+              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
+              localResult = {
+                success: true,
+                itemName: matchedItem.name,
+                qty: item.qty,
+                unitPrice: matchedItem.price,
+                rawTotal: rawItemPrice,
+                totalPrice: finalPrice,
+                discountAmount: discountAmountForLocal,
+                materialType: matchedItem.unit || "հատ",
+                dimensionsText: "անհատական",
+                detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${item.qty} ${matchedItem.unit || "հատ"}`
+              };
             }
-            finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
-            localResult = {
-              success: true,
-              itemName: matchedItem.name,
-              qty: item.qty,
-              unitPrice: matchedItem.price,
-              rawTotal: rawItemPrice,
-              totalPrice: finalPrice,
-              discountAmount: discountAmountForLocal,
-              materialType: matchedItem.unit || "հատ",
-              dimensionsText: "անհատական",
-              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${item.qty} ${matchedItem.unit || "հատ"}`
-            };
-          }
-        } else if (item.catId === "qr_matrix") {
-          const itemsList = products
-            .filter(p => p.categoryId === "qr_matrix")
-            .flatMap(p => p.items || []);
-          const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
-          if (matchedItem) {
-            const rawItemPrice = matchedItem.price * item.qty;
-            let finalPrice = rawItemPrice;
-            let discountAmountForLocal = 0;
-            if (matchedPromo.type === "percentage") {
-              discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-            } else if (matchedPromo.type === "fixed") {
-              discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+          } else if (item.catId === "qr_matrix") {
+            const itemsList = products
+              .filter(p => p.categoryId === "qr_matrix")
+              .flatMap(p => p.items || []);
+            const matchedItem = itemsList.find(it => it.id === updatedPayload.itemId);
+            if (matchedItem) {
+              const rawItemPrice = matchedItem.price * item.qty;
+              let finalPrice = rawItemPrice;
+              let discountAmountForLocal = 0;
+              if (matchedPromo.type === "percentage") {
+                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+              } else if (matchedPromo.type === "fixed") {
+                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+              }
+              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
+              localResult = {
+                success: true,
+                itemName: matchedItem.name,
+                qty: item.qty,
+                unitPrice: matchedItem.price,
+                rawTotal: rawItemPrice,
+                totalPrice: finalPrice,
+                discountAmount: discountAmountForLocal,
+                materialType: "հատ",
+                dimensionsText: "անհատական",
+                detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${item.qty} հատ`
+              };
             }
-            finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
-            localResult = {
-              success: true,
-              itemName: matchedItem.name,
-              qty: item.qty,
-              unitPrice: matchedItem.price,
-              rawTotal: rawItemPrice,
-              totalPrice: finalPrice,
-              discountAmount: discountAmountForLocal,
-              materialType: "հատ",
-              dimensionsText: "անհատական",
-              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${item.qty} հատ`
-            };
+          } else {
+            localResult = await clientCalculateBagsPrice(updatedPayload, localDb);
           }
-        } else {
-          localResult = clientCalculateBagsPrice(updatedPayload, localDb);
+        } catch {
+          // Fail gracefully and use same pricing
         }
-      } catch {
-        // Fail gracefully and use same pricing
-      }
 
-      if (localResult && localResult.success !== false) {
-        const newDesc = getSingleItemDetails(item.catId, localResult, updatedPayload);
-        return {
-          ...item,
-          unitPrice: localResult.unitPrice,
-          totalPrice: localResult.totalPrice,
-          description: newDesc,
-          payload: { ...updatedPayload }
-        };
-      }
-      return item;
-    });
+        if (localResult && localResult.success !== false) {
+          const newDesc = getSingleItemDetails(item.catId, localResult, updatedPayload);
+          return {
+            ...item,
+            unitPrice: localResult.unitPrice,
+            totalPrice: localResult.totalPrice,
+            description: newDesc,
+            payload: { ...updatedPayload }
+          };
+        }
+        return item;
+      });
 
-    setBundleItems(updatedItems);
-    setAppliedPromo(trimmed);
+      const updatedItems = await Promise.all(updatedItemsPromises);
+      setBundleItems(updatedItems);
+      setAppliedPromo(trimmed);
+    })();
   };
 
   const totalBundlePrice = bundleItems.reduce((acc, item) => acc + item.totalPrice, 0);
@@ -1895,216 +1900,218 @@ export default function App() {
       bagRibbonHandles
     };
 
-    let payload: any = {};
-    let result: any = null;
+    (async () => {
+      let payload: any = {};
+      let result: any = null;
 
-    try {
-      if (activeCategory === "bags") {
-        const isCustomBag = calcTab === "custom";
-        payload = {
-          productKey: activeCategory,
-          paperId: selectedPaperId,
-          gsm,
-          lamination,
-          handle,
-          ribbonWidthPrice,
-          colors,
-          sides,
-          method,
-          design,
-          finishes: [...selectedFinishes],
-          qty: isCustomBag ? custQty : qty,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        if (isCustomBag) {
-          payload.w = parseFloat(custW);
-          payload.h = parseFloat(custH);
-          payload.d = parseFloat(custD) || 0;
-        } else {
-          payload.sizeIndex = selectedSizeIndex;
-        }
-        result = clientCalculateBagsPrice(payload, localDb);
-      } else if (activeCategory === "boxes") {
-        const isCustomBox = selectedBoxItemId === "custom";
-        payload = {
-          productKey: "boxes",
-          itemId: selectedBoxItemId,
-          qty: boxQty,
-          lamination: boxLamination,
-          colors: boxColors,
-          paperId: boxPaperId,
-          method: boxPrintingMethod,
-          boxStyle: boxStyle,
-          wallThickness: boxWallThickness,
-          finishes: [...boxFinishes],
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        if (isCustomBox) {
-          payload.w = parseFloat(boxLength);
-          payload.h = parseFloat(boxWidth);
-          payload.d = parseFloat(boxHeight);
-        }
-        result = clientCalculateBoxesPrice(payload, localDb);
-      } else if (activeCategory === "ribbons") {
-        payload = {
-          productKey: "ribbons",
-          width: ribbonWidth,
-          ribbonType: ribbonType,
-          printColor: ribbonPrintColor,
-          meters: ribbonMeters,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        result = clientCalculateRibbonsPrice(payload, localDb);
-      } else if (activeCategory === "stickers") {
-        payload = {
-          productKey: "stickers",
-          shape: stickerShape,
-          width: stickerWidth,
-          height: stickerHeight,
-          material: stickerMaterial,
-          qty: stickerQty,
-          colors: stickerColors,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        result = clientCalculateStickersPrice(payload, localDb);
-      } else if (activeCategory === "giftcards") {
-        payload = {
-          productKey: "giftcards",
-          size: giftCardSize,
-          envelope: giftCardEnvelope,
-          paper: giftCardPaper,
-          qty: giftCardQty,
-          colors: giftCardColors,
-          finishes: [...giftCardFinishes],
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        result = clientCalculateGiftCardsPrice(payload, localDb);
-      } else if (activeCategory === "businesscards") {
-        payload = {
-          productKey: "businesscards",
-          size: businessCardSize,
-          paper: businessCardPaper,
-          sides: businessCardSides,
-          corners: businessCardCorners,
-          qty: businessCardQty,
-          colors: businessCardColors,
-          finishes: [...businessCardFinishes],
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        result = clientCalculateBusinessCardsPrice(payload, localDb);
-      } else if (activeCategory === "other_products") {
-        payload = {
-          productKey: "other_products",
-          itemId: selectedOtherProductId,
-          qty: otherProductQty,
-          notes: otherProductNotes,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        const itemsList = products
-          .filter(p => p.categoryId === "other_products")
-          .flatMap(p => p.items || []);
-        const matchedItem = itemsList.find(it => it.id === selectedOtherProductId);
-        if (matchedItem) {
-          const rawItemPrice = matchedItem.price * otherProductQty;
-          let finalPrice = rawItemPrice;
-          let discountAmountForLocal = 0;
-          if (payload.appliedDiscountCode) {
-            const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === payload.appliedDiscountCode.toUpperCase() && d.active);
-            if (matchedPromo) {
-              if (matchedPromo.type === "percentage") {
-                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-              } else if (matchedPromo.type === "fixed") {
-                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
-              }
-              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
-            }
+      try {
+        if (activeCategory === "bags") {
+          const isCustomBag = calcTab === "custom";
+          payload = {
+            productKey: activeCategory,
+            paperId: selectedPaperId,
+            gsm,
+            lamination,
+            handle,
+            ribbonWidthPrice,
+            colors,
+            sides,
+            method,
+            design,
+            finishes: [...selectedFinishes],
+            qty: isCustomBag ? custQty : qty,
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          if (isCustomBag) {
+            payload.w = parseFloat(custW);
+            payload.h = parseFloat(custH);
+            payload.d = parseFloat(custD) || 0;
+          } else {
+            payload.sizeIndex = selectedSizeIndex;
           }
-          result = {
-            success: true,
-            itemName: matchedItem.name,
+          result = await clientCalculateBagsPrice(payload, localDb);
+        } else if (activeCategory === "boxes") {
+          const isCustomBox = selectedBoxItemId === "custom";
+          payload = {
+            productKey: "boxes",
+            itemId: selectedBoxItemId,
+            qty: boxQty,
+            lamination: boxLamination,
+            colors: boxColors,
+            paperId: boxPaperId,
+            method: boxPrintingMethod,
+            boxStyle: boxStyle,
+            wallThickness: boxWallThickness,
+            finishes: [...boxFinishes],
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          if (isCustomBox) {
+            payload.w = parseFloat(boxLength);
+            payload.h = parseFloat(boxWidth);
+            payload.d = parseFloat(boxHeight);
+          }
+          result = await clientCalculateBoxesPrice(payload, localDb);
+        } else if (activeCategory === "ribbons") {
+          payload = {
+            productKey: "ribbons",
+            width: ribbonWidth,
+            ribbonType: ribbonType,
+            printColor: ribbonPrintColor,
+            meters: ribbonMeters,
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          result = await clientCalculateRibbonsPrice(payload, localDb);
+        } else if (activeCategory === "stickers") {
+          payload = {
+            productKey: "stickers",
+            shape: stickerShape,
+            width: stickerWidth,
+            height: stickerHeight,
+            material: stickerMaterial,
+            qty: stickerQty,
+            colors: stickerColors,
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          result = await clientCalculateStickersPrice(payload, localDb);
+        } else if (activeCategory === "giftcards") {
+          payload = {
+            productKey: "giftcards",
+            size: giftCardSize,
+            envelope: giftCardEnvelope,
+            paper: giftCardPaper,
+            qty: giftCardQty,
+            colors: giftCardColors,
+            finishes: [...giftCardFinishes],
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          result = await clientCalculateGiftCardsPrice(payload, localDb);
+        } else if (activeCategory === "businesscards") {
+          payload = {
+            productKey: "businesscards",
+            size: businessCardSize,
+            paper: businessCardPaper,
+            sides: businessCardSides,
+            corners: businessCardCorners,
+            qty: businessCardQty,
+            colors: businessCardColors,
+            finishes: [...businessCardFinishes],
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          result = await clientCalculateBusinessCardsPrice(payload, localDb);
+        } else if (activeCategory === "other_products") {
+          payload = {
+            productKey: "other_products",
+            itemId: selectedOtherProductId,
             qty: otherProductQty,
-            unitPrice: matchedItem.price,
-            rawTotal: rawItemPrice,
-            totalPrice: finalPrice,
-            discountAmount: discountAmountForLocal,
-            materialType: matchedItem.unit || "հատ",
-            dimensionsText: "անհատական",
-            detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${otherProductQty} ${matchedItem.unit || "հատ"}`
+            notes: otherProductNotes,
+            appliedDiscountCode: appliedPromo || undefined
           };
-        }
-      } else if (activeCategory === "qr_matrix") {
-        payload = {
-          productKey: "qr_matrix",
-          itemId: selectedQrMatrixId,
-          qty: qrMatrixQty,
-          notes: qrMatrixNotes,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        const itemsList = products
-          .filter(p => p.categoryId === "qr_matrix")
-          .flatMap(p => p.items || []);
-        const matchedItem = itemsList.find(it => it.id === selectedQrMatrixId);
-        if (matchedItem) {
-          const rawItemPrice = matchedItem.price * qrMatrixQty;
-          let finalPrice = rawItemPrice;
-          let discountAmountForLocal = 0;
-          if (payload.appliedDiscountCode) {
-            const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === payload.appliedDiscountCode.toUpperCase() && d.active);
-            if (matchedPromo) {
-              if (matchedPromo.type === "percentage") {
-                discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
-              } else if (matchedPromo.type === "fixed") {
-                discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+          const itemsList = products
+            .filter(p => p.categoryId === "other_products")
+            .flatMap(p => p.items || []);
+          const matchedItem = itemsList.find(it => it.id === selectedOtherProductId);
+          if (matchedItem) {
+            const rawItemPrice = matchedItem.price * otherProductQty;
+            let finalPrice = rawItemPrice;
+            let discountAmountForLocal = 0;
+            if (payload.appliedDiscountCode) {
+              const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === payload.appliedDiscountCode.toUpperCase() && d.active);
+              if (matchedPromo) {
+                if (matchedPromo.type === "percentage") {
+                  discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+                } else if (matchedPromo.type === "fixed") {
+                  discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+                }
+                finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
               }
-              finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
             }
+            result = {
+              success: true,
+              itemName: matchedItem.name,
+              qty: otherProductQty,
+              unitPrice: matchedItem.price,
+              rawTotal: rawItemPrice,
+              totalPrice: finalPrice,
+              discountAmount: discountAmountForLocal,
+              materialType: matchedItem.unit || "հատ",
+              dimensionsText: "անհատական",
+              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${otherProductQty} ${matchedItem.unit || "հատ"}`
+            };
           }
-          result = {
-            success: true,
-            itemName: matchedItem.name,
+        } else if (activeCategory === "qr_matrix") {
+          payload = {
+            productKey: "qr_matrix",
+            itemId: selectedQrMatrixId,
             qty: qrMatrixQty,
-            unitPrice: matchedItem.price,
-            rawTotal: rawItemPrice,
-            totalPrice: finalPrice,
-            discountAmount: discountAmountForLocal,
-            materialType: "հատ",
-            dimensionsText: "անհատական",
-            detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${qrMatrixQty} հատ`
+            notes: qrMatrixNotes,
+            appliedDiscountCode: appliedPromo || undefined
           };
-        }
-      } else {
-        // Fallback or decorative bags
-        payload = {
-          productKey: activeCategory,
-          paperId: selectedPaperId,
-          gsm,
-          lamination,
-          handle,
-          ribbonWidthPrice,
-          colors,
-          sides,
-          method,
-          design,
-          finishes: [...selectedFinishes],
-          qty: calcTab === "custom" ? custQty : qty,
-          appliedDiscountCode: appliedPromo || undefined
-        };
-        if (calcTab === "custom") {
-          payload.w = parseFloat(custW);
-          payload.h = parseFloat(custH);
-          payload.d = parseFloat(custD) || 0;
+          const itemsList = products
+            .filter(p => p.categoryId === "qr_matrix")
+            .flatMap(p => p.items || []);
+          const matchedItem = itemsList.find(it => it.id === selectedQrMatrixId);
+          if (matchedItem) {
+            const rawItemPrice = matchedItem.price * qrMatrixQty;
+            let finalPrice = rawItemPrice;
+            let discountAmountForLocal = 0;
+            if (payload.appliedDiscountCode) {
+              const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === payload.appliedDiscountCode.toUpperCase() && d.active);
+              if (matchedPromo) {
+                if (matchedPromo.type === "percentage") {
+                  discountAmountForLocal = Math.ceil(finalPrice * (matchedPromo.value / 100));
+                } else if (matchedPromo.type === "fixed") {
+                  discountAmountForLocal = Math.min(matchedPromo.value, finalPrice);
+                }
+                finalPrice = Math.max(0, finalPrice - discountAmountForLocal);
+              }
+            }
+            result = {
+              success: true,
+              itemName: matchedItem.name,
+              qty: qrMatrixQty,
+              unitPrice: matchedItem.price,
+              rawTotal: rawItemPrice,
+              totalPrice: finalPrice,
+              discountAmount: discountAmountForLocal,
+              materialType: "հատ",
+              dimensionsText: "անհատական",
+              detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${qrMatrixQty} հատ`
+            };
+          }
         } else {
-          payload.sizeIndex = selectedSizeIndex;
+          // Fallback or decorative bags
+          payload = {
+            productKey: activeCategory,
+            paperId: selectedPaperId,
+            gsm,
+            lamination,
+            handle,
+            ribbonWidthPrice,
+            colors,
+            sides,
+            method,
+            design,
+            finishes: [...selectedFinishes],
+            qty: calcTab === "custom" ? custQty : qty,
+            appliedDiscountCode: appliedPromo || undefined
+          };
+          if (calcTab === "custom") {
+            payload.w = parseFloat(custW);
+            payload.h = parseFloat(custH);
+            payload.d = parseFloat(custD) || 0;
+          } else {
+            payload.sizeIndex = selectedSizeIndex;
+          }
+          result = await clientCalculateBagsPrice(payload, localDb);
         }
-        result = clientCalculateBagsPrice(payload, localDb);
-      }
 
-      setCalcResult(result);
-      setCalcError(null);
-    } catch (err: any) {
-      setCalcResult(null);
-      setCalcError(err.message || "Հաշվարկի սխալ:");
-    }
+        setCalcResult(result);
+        setCalcError(null);
+      } catch (err: any) {
+        setCalcResult(null);
+        setCalcError(err.message || "Հաշվարկի սխալ:");
+      }
+    })();
   }, [
     activeCategory,
     calcTab,
