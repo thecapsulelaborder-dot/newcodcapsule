@@ -662,7 +662,7 @@ export default function PackhelpShowcase({ locale, setCurrentView, setActiveCate
         {tabCards[activeTab]?.map((card, idx) => (
           <div 
             key={idx}
-            className="bg-[#F4F2EE] rounded-[36px] pt-10 pb-12 px-8 flex flex-col items-center justify-between text-center min-h-[440px] shadow-[12px_12px_24px_rgba(180,175,166,0.55),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(180,175,166,0.5),_-6px_-6px_12px_rgba(255,255,255,1)] transition-all duration-300 border border-[#E3DFD7]/20 relative group"
+            className="glass-mirror-card bg-white/40 rounded-[36px] pt-10 pb-12 px-8 flex flex-col items-center justify-between text-center min-h-[440px] border border-white/80 shadow-[12px_12px_28px_rgba(180,175,166,0.25),_-12px_-12px_28px_rgba(255,255,255,0.9)] hover:scale-[1.025] hover:border-white/90 hover:shadow-[16px_16px_36px_rgba(255,35,0,0.08),_0_12px_24px_rgba(61,39,27,0.04)] transition-all duration-500 relative group"
           >
             {/* Cell Titles and Descriptions */}
             <div className="flex flex-col items-center w-full">

@@ -134,7 +134,7 @@ export default function AIAgentBlock({ locale }: AIAgentBlockProps) {
         
         {/* Chat History Box (Displays only when there are messages) */}
         {messages.length > 0 && (
-          <div className="bg-[#FAF9F6]/80 rounded-[32px] p-6 mb-8 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border border-[#EBE8D5]/30 overflow-hidden animate-fade-in relative">
+          <div className="bg-white/60 backdrop-blur-md rounded-[32px] p-6 mb-8 shadow-[inset_3px_3px_8px_rgba(211,205,191,0.4),_inset_-3.5px_-3.5px_8px_rgba(255,255,255,0.95)] border border-white/85 overflow-hidden animate-fade-in relative">
             <button
               onClick={handleClearHistory}
               className="absolute top-4 right-4 text-[10px] font-mono font-bold uppercase tracking-wider text-red-700 hover:text-red-900 transition-all flex items-center gap-1.5 cursor-pointer bg-[#F4F2EE] px-3.5 py-2 rounded-full shadow-[2px_2px_4px_#D3CDBF,_-2px_-2px_4px_#FFFFFF] hover:shadow-[inset_1px_1px_3px_#D3CDBF,_inset_-1px_-1px_3px_#FFFFFF] border-none"
@@ -187,8 +187,8 @@ export default function AIAgentBlock({ locale }: AIAgentBlockProps) {
           </div>
         )}
 
-        {/* Input Bar Container with Soft Neumorphic Inset Groove */}
-        <div className="relative rounded-[26px] bg-[#F4F2EE] p-5 shadow-[inset_6px_6px_12px_#D2CBBF,_inset_-6px_-6px_12px_#FFFFFF] border border-[#FAF9F6]/10 mb-8">
+        {/* Input Bar Container styled as premium glass mirror interface */}
+        <div className="relative rounded-[26px] bg-white/40 backdrop-blur-md p-5 shadow-[inset_4px_4px_10px_rgba(210,203,191,0.45),_inset_-4px_-4px_10px_rgba(255,255,255,0.85)] border border-white/80 mb-8 hover:bg-white/50 transition-all duration-300">
           <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4">
             
             {/* Left Icons helpers (Styled as outset soft buttons) */}

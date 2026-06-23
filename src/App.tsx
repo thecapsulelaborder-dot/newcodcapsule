@@ -1636,6 +1636,17 @@ export default function App() {
   const [qrMatrixQty, setQrMatrixQty] = useState<number>(0);
   const [qrMatrixNotes, setQrMatrixNotes] = useState<string>("");
 
+  // Tarot Decks State with Neumorphic features
+  const [tarotCardCount, setTarotCardCount] = useState<number>(78);
+  const [tarotSize, setTarotSize] = useState<string>("7x12");
+  const [tarotPaper, setTarotPaper] = useState<string>("canvas_310");
+  const [tarotEdge, setTarotEdge] = useState<string>("gold");
+  const [tarotBox, setTarotBox] = useState<string>("magnetic");
+  const [tarotCardQty, setTarotCardQty] = useState<number>(100);
+  const [tarotHoloLamination, setTarotHoloLamination] = useState<boolean>(true);
+  const [selectedTarotCardFace, setSelectedTarotCardFace] = useState<string>("magician");
+  const [isTarotCardFlipped, setIsTarotCardFlipped] = useState<boolean>(false);
+
   const getMissingOptions = (): string[] => {
     const missing: string[] = [];
     if (activeCategory === "bags") {
@@ -1682,6 +1693,8 @@ export default function App() {
     } else if (activeCategory === "qr_matrix") {
       if (!selectedQrMatrixId) missing.push("Ապրանք");
       if (qrMatrixQty === 0) missing.push("Քանակ");
+    } else if (activeCategory === "tarot") {
+      if (tarotCardQty === 0) missing.push("Քանակ");
     }
     return missing;
   };
@@ -1726,7 +1739,31 @@ export default function App() {
       const res = await fetch("/api/config");
       const data = await res.json();
       if (data.success) {
-        if (data.categories) setCategories(data.categories.filter((c: any) => c.active));
+        if (data.categories) {
+          const loadedCategories = [...data.categories];
+          const hasTarot = loadedCategories.some((c: any) => c.id === "tarot");
+          if (!hasTarot) {
+            loadedCategories.push({
+              id: "tarot",
+              name: "Տարո / Տարոսիկ Քարտեր",
+              nameRu: "Карты Таро / Таросики",
+              nameEn: "Tarot Card Decks & Favors",
+              navLabel: "Տարո / Tarot",
+              active: true,
+              heroTitle: "Պրեմիում Տարո Քարտեր",
+              heroDesc: "Էզոտերիկ և հուշանվերային տարոսիկների տպագրություն՝ ոսկեզօծ հայելային եզրագծերով, թավշյա կազմով և լաքապատման 3D էֆեկտներով։",
+              heroBadge: "GOLD EDGES",
+              heroSmall: "Luxury Cards",
+              ruleChips: "Tarot Cards | Gilded Edges | Velvet Soft Touch | Holographic Foil",
+              minQty: 50,
+              qtyPresets: [50, 100, 200, 500, 1000],
+              icon: "Sparkles",
+              sortOrder: 15,
+              status: "published"
+            });
+          }
+          setCategories(loadedCategories.filter((c: any) => c.active));
+        }
         if (data.products) setProducts(data.products);
         if (data.dimensions) setDimensions(data.dimensions);
         if (data.finishes) setFinishes(data.finishes);
@@ -1848,6 +1885,14 @@ export default function App() {
         setSelectedQrMatrixId("");
       }
       setQrMatrixQty(100);
+    } else if (activeCategory === "tarot") {
+      setTarotCardCount(78);
+      setTarotSize("7x12");
+      setTarotPaper("canvas_310");
+      setTarotEdge("gold");
+      setTarotBox("magnetic");
+      setTarotCardQty(100);
+      setTarotHoloLamination(true);
     }
   }, [activeCategory, products]);
 
@@ -2078,6 +2123,83 @@ export default function App() {
               detailsText: `Ապրանք: ${matchedItem.name}\nՔանակ: ${qrMatrixQty} հատ`
             };
           }
+        } else if (activeCategory === "tarot") {
+          payload = {
+            productKey: "tarot",
+            cardCount: tarotCardCount,
+            size: tarotSize,
+            paper: tarotPaper,
+            edge: tarotEdge,
+            box: tarotBox,
+            qty: tarotCardQty,
+            holoLamination: tarotHoloLamination,
+            appliedDiscountCode: appliedPromo || undefined
+          };
+
+          // Premium Tarot pricing model
+          let cardUnitPrice = 4.0; // standard art paper unit rate
+          if (tarotPaper === "canvas_310") cardUnitPrice = 5.2; // German air-cushion canvas deck
+          if (tarotPaper === "eco_300") cardUnitPrice = 3.6;   // organic Kraft stock
+
+          if (tarotSize === "6x11") cardUnitPrice *= 0.9;
+          if (tarotSize === "8.8x12.6") cardUnitPrice *= 1.35;
+
+          let deckCardsTotal = cardUnitPrice * tarotCardCount;
+
+          let boxAddition = 450; // tuck box default
+          if (tarotBox === "magnetic") boxAddition = 1600;
+          if (tarotBox === "two_piece") boxAddition = 1100;
+          if (tarotBox === "velvet") boxAddition = 750;
+
+          let edgeAddition = 0;
+          if (tarotEdge === "gold") edgeAddition = 380;
+          if (tarotEdge === "silver") edgeAddition = 340;
+          if (tarotEdge === "holographic") edgeAddition = 480;
+          if (tarotEdge === "matte_black") edgeAddition = 280;
+
+          let holoAddition = tarotHoloLamination ? (tarotCardCount * 1.8) : 0;
+
+          let baseSingleDeckPrice = deckCardsTotal + boxAddition + edgeAddition + holoAddition;
+
+          // Quantity scale tier discounts (MOQ starts at 50)
+          let quantityDiscountScale = 1.0;
+          if (tarotCardQty >= 1000) quantityDiscountScale = 0.52;
+          else if (tarotCardQty >= 500) quantityDiscountScale = 0.62;
+          else if (tarotCardQty >= 250) quantityDiscountScale = 0.72;
+          else if (tarotCardQty >= 100) quantityDiscountScale = 0.82;
+          else if (tarotCardQty >= 50) quantityDiscountScale = 0.92;
+
+          let finalDeckUnitRate = Math.ceil(baseSingleDeckPrice * quantityDiscountScale);
+          if (finalDeckUnitRate < 480) finalDeckUnitRate = 480; // Hard custom limit floor
+
+          let rawPriceSum = finalDeckUnitRate * tarotCardQty;
+          let finalDiscountedSum = rawPriceSum;
+          let discountSum = 0;
+
+          if (payload.appliedDiscountCode) {
+            const matchedPromo = discountCodes.find(d => d.code.toUpperCase() === payload.appliedDiscountCode.toUpperCase() && d.active);
+            if (matchedPromo) {
+              if (matchedPromo.type === "percentage") {
+                discountSum = Math.ceil(finalDiscountedSum * (matchedPromo.value / 100));
+              } else if (matchedPromo.type === "fixed") {
+                discountSum = Math.min(matchedPromo.value, finalDiscountedSum);
+              }
+              finalDiscountedSum = Math.max(0, finalDiscountedSum - discountSum);
+            }
+          }
+
+          result = {
+            success: true,
+            itemName: locale === "ru" ? `Колода ТАРО (${tarotCardCount} карт)` : locale === "en" ? `Tarot Deck (${tarotCardCount} cards)` : `Տարո Քարտեր (${tarotCardCount} հատ)`,
+            qty: tarotCardQty,
+            unitPrice: finalDeckUnitRate,
+            rawTotal: rawPriceSum,
+            totalPrice: finalDiscountedSum,
+            discountAmount: discountSum,
+            materialType: locale === "hy" ? "տուփ+քարտ" : "колода",
+            dimensionsText: `${tarotSize} սմ`,
+            detailsText: `Տիպ: Տարո Քարտեր\nՔարտերի քանակ: ${tarotCardCount}\nՉափս: ${tarotSize} սմ\nԹուղթ: ${tarotPaper === "canvas_310" ? "German Canvas 310g" : tarotPaper === "art_350" ? "Art Board 350g" : "Kraft Craft 300g"}\nԵզրեր: ${tarotEdge === "gold" ? "gilded gold" : tarotEdge === "silver" ? "gilded silver" : tarotEdge === "holographic" ? "holographic laser" : tarotEdge === "matte_black" ? "matte black" : "none"}\nՏուփ: ${tarotBox}\nՀոլոգրաֆիա: ${tarotHoloLamination ? "Այո" : "Ոչ"}`
+          };
         } else {
           // Fallback or decorative bags
           payload = {
@@ -2183,7 +2305,14 @@ export default function App() {
     tiers,
     discountCodes,
     bagRibbonHandles,
-    appliedPromo
+    appliedPromo,
+    tarotCardCount,
+    tarotSize,
+    tarotPaper,
+    tarotEdge,
+    tarotBox,
+    tarotCardQty,
+    tarotHoloLamination
   ]);
 
   // Coupon applying handler for Customizable calculator blocks
@@ -2762,7 +2891,7 @@ export default function App() {
                         window.history.pushState({}, "", "/calculator");
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }}
-                      className={`group cursor-pointer rounded-[36px] pt-10 pb-12 px-8 flex flex-col justify-between min-h-[500px] md:min-h-[560px] transition-all duration-300 border border-[#E3DFD7]/20 relative active:scale-[0.98] ${themeClass} ${cardShadowClass}`}
+                      className={`group cursor-pointer glass-mirror-card rounded-[36px] pt-10 pb-12 px-8 flex flex-col justify-between min-h-[500px] md:min-h-[560px] transition-all duration-500 border border-[#E3DFD7]/20 relative active:scale-[0.98] ${themeClass} ${cardShadowClass}`}
                     >
                       <div className="flex flex-col justify-between h-full flex-1">
                         <div>
@@ -5581,6 +5710,463 @@ export default function App() {
                   </div>
                 )}
 
+                {activeTemplate === "tarot" && (
+                  <div className="space-y-6">
+                    {/* CARD 1: Tarot Card & Deck Specifications */}
+                    <div className="bg-[#ECF0F3] shadow-[8px_8px_16px_#c8ccd0,-8px_-8px_16px_#ffffff] border border-white/60 rounded-3xl p-6 space-y-6 text-left">
+                      
+                      {/* Dynamic Header */}
+                      <div className="flex items-center gap-2 border-b border-gray-300/40 pb-3">
+                        <div className="w-8 h-8 rounded-full bg-[#ECF0F3] shadow-[3px_3px_6px_#c8ccd0,-3px_-3px_6px_#ffffff] flex items-center justify-center text-[#4C90F5]">
+                          <Sparkles size={16} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-extrabold uppercase tracking-widest text-[#2B3B4C] leading-none">
+                            {locale === "hy" ? "Տարո Քարտերի Պարամետրեր" : locale === "ru" ? "Параметры Карт ТАРО" : "Tarot Deck Parameters"}
+                          </h4>
+                          <span className="text-[9px] font-mono text-[#7A8B9E] uppercase tracking-wider block mt-1">
+                            {locale === "hy" ? "Անհատականացրեք Ձեր Տարո Տուփն ու Քարտերը" : locale === "ru" ? "Настройте колоду, коробку и спецэффекты" : "Customize deck count, borders, lamination and box design"}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        {/* Left Specifications */}
+                        <div className="space-y-5">
+                          {/* 1. Card Count Selector (Neumorphic Buttons) */}
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-2.5 font-mono">
+                              {locale === "hy" ? "Քարտերի Քանակը Տուփում" : locale === "ru" ? "Количество карт в колоде" : "Cards per Deck"}
+                            </label>
+                            <div className="grid grid-cols-3 gap-2">
+                              {[22, 36, 78].map((cnt) => {
+                                const isSelected = tarotCardCount === cnt;
+                                return (
+                                  <button
+                                    key={cnt}
+                                    type="button"
+                                    onClick={() => {
+                                      setTarotCardCount(cnt);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`py-2 px-3 rounded-xl font-bold font-mono text-center text-xs transition-all duration-300 border border-white/40 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-[#ECF0F3] text-[#4C90F5] shadow-[inset_3px_3px_6px_#babecc,inset_-3px_-3px_6px_#ffffff] border-none"
+                                        : "bg-[#ECF0F3] text-[#5A6E85] shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff] hover:text-[#2B3B4C]"
+                                    }`}
+                                  >
+                                    {cnt} {locale === "hy" ? "քարտ" : locale === "ru" ? "карт" : "cards"}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* 2. Card Size Options */}
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-2.5 font-mono">
+                              {locale === "hy" ? "Քարտի Չափսերը" : locale === "ru" ? "Формат / Размер карт" : "Card Dimensions"}
+                            </label>
+                            <div className="grid grid-cols-3 gap-2">
+                              {[
+                                { val: "6x11", label: "Pocket (6x11)" },
+                                { val: "7x12", label: "Standard (7x12)" },
+                                { val: "8.8x12.6", label: "Large (8.8x12.6)" }
+                              ].map((sz) => {
+                                const isSelected = tarotSize === sz.val;
+                                return (
+                                  <button
+                                    key={sz.val}
+                                    type="button"
+                                    onClick={() => {
+                                      setTarotSize(sz.val);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`py-2 px-2 rounded-xl font-bold text-center text-[10px] transition-all duration-300 border border-white/40 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-[#ECF0F3] text-[#4C90F5] shadow-[inset_3px_3px_6px_#babecc,inset_-3px_-3px_6px_#ffffff] border-none"
+                                        : "bg-[#ECF0F3] text-[#5A6E85] shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff] hover:text-[#2B3B4C]"
+                                    }`}
+                                  >
+                                    {sz.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* 3. Paper Type Selection */}
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-2.5 font-mono">
+                              {locale === "hy" ? "Թղթի Տեսակ" : locale === "ru" ? "Материал / Бумага" : "Paper Material"}
+                            </label>
+                            <div className="grid grid-cols-1 gap-2.5">
+                              {[
+                                { val: "canvas_310", label: "German Air-Cushion Canvas 310g", desc: "Premium textured playing card stock with core layer" },
+                                { val: "art_350", label: "Luxury Silk Art Card 350g", desc: "Smooth ultra-thick high-density premium paper" },
+                                { val: "eco_300", label: "Recycled Eco Kraft 300g", desc: "Organic rustic brown cardboard for esoteric style" }
+                              ].map((p) => {
+                                const isSelected = tarotPaper === p.val;
+                                return (
+                                  <button
+                                    key={p.val}
+                                    type="button"
+                                    onClick={() => {
+                                      setTarotPaper(p.val);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`p-3 rounded-xl font-sans text-left transition-all duration-300 border border-white/40 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-[#ECF0F3] shadow-[inset_3px_3px_6px_#babecc,inset_-3px_-3px_6px_#ffffff] border-none"
+                                        : "bg-[#ECF0F3] shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff] hover:shadow-[6px_6px_12px_#c8ccd0,-6px_-6px_12px_#ffffff]"
+                                    }`}
+                                  >
+                                    <span className={`block text-xs font-bold ${isSelected ? "text-[#4C90F5]" : "text-[#2B3B4C]"}`}>{p.label}</span>
+                                    <span className="block text-[9px] text-[#7A8B9E] font-medium leading-normal mt-0.5">{p.desc}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Specifications */}
+                        <div className="space-y-5">
+                          {/* 4. Luxury Gilded Edge Accent */}
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-2.5 font-mono">
+                              {locale === "hy" ? "Քարտերի Ոսկեզօծում (Եզրագիծ)" : locale === "ru" ? "Обработка среза колоды" : "Gilded Edge Finishing"}
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                              {[
+                                { val: "gold", label: "✨ Mirror Gold", desc: "Shiny gold guilding" },
+                                { val: "silver", label: "✨ Mirror Silver", desc: "Shiny silver guilding" },
+                                { val: "holographic", label: "🔮 Holo Laser Edge", desc: "Interstellar laser shine" },
+                                { val: "matte_black", label: "🖤 Matte Charcoal", desc: "Mysterious dark velvet" }
+                              ].map((ed) => {
+                                const isSelected = tarotEdge === ed.val;
+                                return (
+                                  <button
+                                    key={ed.val}
+                                    type="button"
+                                    onClick={() => {
+                                      setTarotEdge(ed.val);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`p-2.5 rounded-xl text-left transition-all duration-300 border border-white/40 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-[#ECF0F3] shadow-[inset_3px_3px_6px_#babecc,inset_-3px_-3px_6px_#ffffff] border-none"
+                                        : "bg-[#ECF0F3] shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff]"
+                                    }`}
+                                  >
+                                    <span className={`block text-[10px] font-bold ${isSelected ? "text-[#4C90F5]" : "text-[#2B3B4C]"}`}>{ed.label}</span>
+                                    <span className="block text-[8px] text-[#7A8B9E] font-medium mt-0.5 leading-none">{ed.desc}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* 5. Custom Outer Box Style */}
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-2.5 font-mono">
+                              {locale === "hy" ? "Փաթեթավորման Տուփ" : locale === "ru" ? "Формат упаковочной коробки" : "Outer Gift Packaging Box"}
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                              {[
+                                { val: "magnetic", label: "🧲 Magnetic Rigid Box", desc: "Luxury solid magnet flip box" },
+                                { val: "two_piece", label: "📦 Lid & Base Tray Box", desc: "Rigid classic two-piece box" },
+                                { val: "tuck", label: "🧁 Custom Tuck Box", desc: "Folding carton tuck case" },
+                                { val: "velvet", label: "👜 Luxury Velvet Pouch", desc: "Golden embroidered drawstring bag" }
+                              ].map((bx) => {
+                                const isSelected = tarotBox === bx.val;
+                                return (
+                                  <button
+                                    key={bx.val}
+                                    type="button"
+                                    onClick={() => {
+                                      setTarotBox(bx.val);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`p-2.5 rounded-xl text-left transition-all duration-300 border border-white/40 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-[#ECF0F3] shadow-[inset_3px_3px_6px_#babecc,inset_-3px_-3px_6px_#ffffff] border-none"
+                                        : "bg-[#ECF0F3] shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff]"
+                                    }`}
+                                  >
+                                    <span className={`block text-[10px] font-bold ${isSelected ? "text-[#4C90F5]" : "text-[#2B3B4C]"}`}>{bx.label}</span>
+                                    <span className="block text-[8px] text-[#7A8B9E] font-medium mt-0.5 leading-none">{bx.desc}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* 6. Holographic Overlay / 3D Spec Toggle */}
+                          <div className="bg-[#ECF0F3] shadow-[inset_2px_2px_5px_#c8ccd0,inset_-2px_-2px_5px_#ffffff] p-4 rounded-2xl flex items-center justify-between">
+                            <div className="space-y-0.5 text-left">
+                              <span className="block text-xs font-bold text-[#2B3B4C] leading-none">
+                                {locale === "hy" ? "3D Հոլոգրաֆիկ Լամինացիա" : locale === "ru" ? "3D Голографический эффект" : "3D Holographic Shell"}
+                              </span>
+                              <span className="block text-[9px] text-[#7A8B9E] font-medium leading-none">
+                                {locale === "hy" ? "Ավելացնում է աստղային փայլ" : locale === "ru" ? "Голографический отблеск карт" : "Rainbow starry dynamic overlays"}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTarotHoloLamination(!tarotHoloLamination);
+                                setCalcResult(null);
+                              }}
+                              className={`w-12 h-6 rounded-full p-0.5 transition-all duration-300 border-none cursor-pointer flex items-center ${
+                                tarotHoloLamination
+                                  ? "bg-[#4C90F5] justify-end shadow-[inset_1px_1px_3px_rgba(0,0,0,0.2)]"
+                                  : "bg-gray-300 justify-start shadow-[inset_2px_2px_4px_#c8ccd0]"
+                              }`}
+                            >
+                              <span className="w-5 h-5 rounded-full bg-white shadow-md block" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 7. Quantity & Pricing scale selector */}
+                      <div className="border-t border-gray-300/40 pt-5">
+                        <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] mb-3 font-mono">
+                          {locale === "hy" ? "Պատվիրվող Տպաքանակ (MOQ = 50 Տուփ)" : locale === "ru" ? "Общий объём тиража (MOQ = 50 колод)" : "Deck Production Quantity (MOQ = 50)"}
+                        </label>
+                        
+                        <div className="flex flex-wrap gap-2.5 mb-4">
+                          {[50, 100, 200, 500, 1000].map((qt) => {
+                            const isSelected = tarotCardQty === qt;
+                            return (
+                              <button
+                                key={qt}
+                                type="button"
+                                onClick={() => {
+                                  setTarotCardQty(qt);
+                                  setCalcResult(null);
+                                }}
+                                className={`py-1.5 px-3.5 rounded-full font-bold font-mono text-center text-[11px] transition-all duration-300 border border-white/40 cursor-pointer ${
+                                  isSelected
+                                    ? "bg-[#ECF0F3] text-[#4C90F5] shadow-[inset_2px_2px_5px_#babecc,inset_-2px_-2px_5px_#ffffff] border-none"
+                                    : "bg-[#ECF0F3] text-[#5A6E85] shadow-[3px_3px_6px_#c8ccd0,-3px_-3px_6px_#ffffff] hover:text-[#2B3B4C]"
+                                }`}
+                              >
+                                {qt} {locale === "hy" ? "տուփ" : locale === "ru" ? "колод" : "decks"}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Free Custom Range Input */}
+                        <div className="relative">
+                          <input
+                            type="number"
+                            min="50"
+                            max="15000"
+                            placeholder="Մուտքագրեք այլ քանակ..."
+                            value={tarotCardQty || ""}
+                            onChange={(e) => {
+                              setTarotCardQty(Math.max(0, parseInt(e.target.value) || 0));
+                              setCalcResult(null);
+                            }}
+                            className="w-full bg-[#ECF0F3] border border-white/50 focus:border-[#4C90F5]/50 shadow-[inset_2px_2px_5px_#c8ccd0,inset_-2px_-2px_5px_#ffffff] rounded-2xl px-4 py-3 text-xs focus:outline-none font-bold text-[#2B3B4C]"
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono font-bold text-[#7A8B9E]">
+                            DECKS
+                          </span>
+                        </div>
+                      </div>
+                      
+                    </div>
+
+                    {/* SECOND CARD: Interactive NEUMORPHIC 3D Tarot card player Mock-up */}
+                    <div className="bg-[#ECF0F3] shadow-[8px_8px_16px_#c8ccd0,-8px_-8px_16px_#ffffff] border border-white/60 rounded-3xl p-6 space-y-6 text-left">
+                      
+                      {/* Dynamic Header */}
+                      <div className="flex items-center justify-between border-b border-gray-300/40 pb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-[#ECF0F3] shadow-[3px_3px_6px_#c8ccd0,-3px_-3px_6px_#ffffff] flex items-center justify-center text-[#4C90F5]">
+                            <Crown size={15} />
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-black uppercase tracking-wider text-[#2B3B4C] leading-none">
+                              {locale === "hy" ? "Ինտերակտիվ 3D Tarot Փորձարկիչ" : locale === "ru" ? "Интерактивный ТАРО Плеер" : "Interactive Tarot Card Deck Preview"}
+                            </h4>
+                            <span className="text-[9px] font-mono text-[#7A8B9E] uppercase tracking-wider block mt-1">
+                              {locale === "hy" ? "Սեղմեք քարտին՝ շրջելու և հոլοգրաֆիկ փայլը տեսնելու համար" : locale === "ru" ? "Кликните на карту для вращения и голографического рендера" : "Tap the card to flip and view premium edge gilding reflections"}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Flip Status Pilot Light */}
+                        <div className="flex items-center gap-1.5 bg-[#ECF0F3] shadow-[inset_1px_1px_3px_#c8ccd0,inset_-1px_-1px_3px_#ffffff] rounded-full px-2.5 py-1 text-[8px] font-bold font-mono tracking-wider text-[#5A6E85]">
+                          <span className={`w-1.5 h-1.5 rounded-full ${isTarotCardFlipped ? "bg-amber-400 animate-pulse" : "bg-[#4C90F5]"} block`} />
+                          {isTarotCardFlipped ? "FACE" : "BACK"}
+                        </div>
+                      </div>
+
+                      {/* Main card stage container */}
+                      <div className="flex flex-col lg:flex-row items-center justify-center gap-6 py-4">
+                        
+                        {/* Card Stage - Neumorphic elevated holder */}
+                        <div className="w-56 h-80 rounded-2xl bg-[#ECF0F3] shadow-[6px_6px_12px_#c8ccd0,-6px_-6px_12px_#ffffff] border border-white/50 p-2 relative flex items-center justify-center">
+                          
+                          {/* Rotating Card Body */}
+                          <div 
+                            onClick={() => setIsTarotCardFlipped(!isTarotCardFlipped)}
+                            className="w-full h-full cursor-pointer relative transition-transform duration-700 ease-in-out select-none"
+                            style={{ 
+                              transformStyle: "preserve-3d",
+                              transform: isTarotCardFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
+                            }}
+                          >
+                            {/* Front: BACK of card */}
+                            <div 
+                              className="absolute inset-0 rounded-xl p-3 flex flex-col justify-between items-center bg-gradient-to-br from-[#122b19] to-[#0a180e] border-2 shadow-inner"
+                              style={{ 
+                                backfaceVisibility: "hidden",
+                                borderColor: tarotEdge === "gold" ? "#ffd700" : tarotEdge === "silver" ? "#dcdcdc" : tarotEdge === "holographic" ? "#ff33cc" : "#1C1B19"
+                              }}
+                            >
+                              <div className="text-[7px] text-white/50 tracking-widest uppercase font-serif">THE CAPSULE LAB</div>
+                              
+                              {/* Mystic Eye Mandala */}
+                              <div className="w-24 h-24 rounded-full border border-white/20 flex items-center justify-center relative p-1.5 bg-[#0a180e]/60">
+                                <div className="absolute inset-0 rounded-full border border-dashed border-[#ffd700]/30 animate-[spin_40s_linear_infinite]" />
+                                <div className="w-full h-full rounded-full bg-radial from-[#122b19]/80 to-transparent flex items-center justify-center">
+                                  <span className="text-[#ffd700] text-xl animate-pulse">👁</span>
+                                </div>
+                              </div>
+
+                              <div className="text-[7px] text-[#ffd700] tracking-wider uppercase font-mono font-bold leading-none select-none">
+                                PREMIUM TAROT DECK
+                              </div>
+                            </div>
+
+                            {/* Back: FACE of card */}
+                            <div 
+                              className="absolute inset-0 rounded-xl p-3 flex flex-col justify-between items-center bg-[#F4F2EE] border-2"
+                              style={{ 
+                                backfaceVisibility: "hidden",
+                                transform: "rotateY(180deg)",
+                                borderColor: tarotEdge === "gold" ? "#ffd700" : tarotEdge === "silver" ? "#dcdcdc" : tarotEdge === "holographic" ? "#ff33cc" : "#1C1B19"
+                              }}
+                            >
+                              {/* Starry holographic glare */}
+                              {tarotHoloLamination && (
+                                <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-pink-500/10 via-teal-400/10 to-yellow-300/15 mix-blend-color-dodge pointer-events-none z-10 animate-pulse" />
+                              )}
+
+                              {/* Card Title Label info */}
+                              <div className="text-[8px] text-[#1D3B1D] font-extrabold tracking-widest uppercase font-serif">
+                                {selectedTarotCardFace === "fool" ? "0 • THE FOOL" : selectedTarotCardFace === "magician" ? "I • THE MAGICIAN" : selectedTarotCardFace === "empress" ? "III • THE EMPRESS" : "XIX • THE SUN"}
+                              </div>
+
+                              {/* Graphic Art */}
+                              <div className="flex-1 w-full bg-stone-100 border border-stone-200/50 rounded-lg my-2 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+                                {selectedTarotCardFace === "fool" && (
+                                  <div className="text-center space-y-1">
+                                    <div className="text-3xl animate-bounce">🎒</div>
+                                    <span className="block text-[6px] tracking-normal font-mono text-zinc-400 leading-normal max-w-[120px] mx-auto">
+                                      "Beginning of core journey. Pure trust in standard packing designs."
+                                    </span>
+                                  </div>
+                                )}
+                                {selectedTarotCardFace === "magician" && (
+                                  <div className="text-center space-y-1">
+                                    <div className="text-3xl animate-[pulse_2s_infinite]">🪄</div>
+                                    <span className="block text-[6px] tracking-normal font-mono text-zinc-400 leading-normal max-w-[120px] mx-auto">
+                                      "Mastering raw formulas. Command of hot foils, custom cards and paper."
+                                    </span>
+                                  </div>
+                                )}
+                                {selectedTarotCardFace === "empress" && (
+                                  <div className="text-center space-y-1">
+                                    <div className="text-3xl">👑</div>
+                                    <span className="block text-[6px] tracking-normal font-mono text-zinc-400 leading-normal max-w-[120px] mx-auto">
+                                      "Abundant organic beauty. Premium Kraft stock and gold details."
+                                    </span>
+                                  </div>
+                                )}
+                                {selectedTarotCardFace === "sun" && (
+                                  <div className="text-center space-y-1">
+                                    <div className="text-3xl animate-spin" style={{ animationDuration: "12s" }}>☀️</div>
+                                    <span className="block text-[6px] tracking-normal font-mono text-zinc-400 leading-normal max-w-[120px] mx-auto">
+                                      "Absolute success and clarity. Outstanding gold lamination."
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="text-[7px] text-[#8C8475] font-bold tracking-widest uppercase font-mono mt-0.5">
+                                THE CAPSULE LAB
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        {/* Card Controller - Neumorphic list panel */}
+                        <div className="flex-1 w-full space-y-4 text-left">
+                          <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5A6E85] font-mono">
+                            {locale === "hy" ? "Ընտրել Քարտի Պատկերը" : locale === "ru" ? "Выбрать рисунок Аркана" : "Select Major Arcana Motif"}
+                          </label>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            {[
+                              { val: "fool", label: "0 • The Fool (🎒)", desc: "New beginning with pure trust" },
+                              { val: "magician", label: "I • The Magician (🪄)", desc: "Power to transform templates" },
+                              { val: "empress", label: "III • The Empress (👑)", desc: "Fertility of natural Kraft" },
+                              { val: "sun", label: "XIX • The Sun (☀️)", desc: "Supreme joy and bright glow" }
+                            ].map((arc) => {
+                              const isSelected = selectedTarotCardFace === arc.val;
+                              return (
+                                <button
+                                  key={arc.val}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedTarotCardFace(arc.val);
+                                    setIsTarotCardFlipped(true); // Flip over to front to see immediately
+                                  }}
+                                  className={`p-2 rounded-xl text-left transition-all duration-300 border border-white/40 cursor-pointer ${
+                                    isSelected
+                                      ? "bg-[#ECF0F3] shadow-[inset_2px_2px_5px_#babecc,inset_-2px_-2px_5px_#ffffff] border-none"
+                                      : "bg-[#ECF0F3] shadow-[3px_3px_6px_#c8ccd0,-3px_-3px_6px_#ffffff] hover:shadow-[4px_4px_8px_#c8ccd0,-4px_-4px_8px_#ffffff]"
+                                  }`}
+                                >
+                                  <span className={`block text-[10px] font-bold ${isSelected ? "text-[#4C90F5]" : "text-[#2B3B4C]"}`}>
+                                    {arc.label}
+                                  </span>
+                                  <span className="block text-[8px] text-[#7A8B9E] font-medium leading-none mt-1">
+                                    {arc.desc}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Special gilded edge simulation controller */}
+                          <div className="bg-[#ECF0F3] shadow-[inset_2px_2px_5px_#c8ccd0,inset_-2px_-2px_5px_#ffffff] p-4 rounded-xl space-y-2 text-xs">
+                            <div className="flex justify-between font-bold text-[#2B3B4C] leading-none mb-1">
+                              <span>{locale === "hy" ? "Եզրերի Փայլ" : locale === "ru" ? "Интенсивность блеска среза" : "Edge Reflection Power"}</span>
+                              <span className="text-[#4C90F5] font-mono">87%</span>
+                            </div>
+                            
+                            {/* Neumorphic progress slider track */}
+                            <div className="w-full h-2.5 bg-[#E0E5EC] shadow-[inset_1px_1px_2px_#babecc,inset_-1px_-1px_2px_#ffffff] rounded-full relative overflow-hidden p-0.5">
+                              <div className="h-full bg-[#4C90F5] rounded-full shadow-[0_0_8px_rgba(76,144,245,0.7)]" style={{ width: "87%" }} />
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
               </div>
 
               {/* Right Column: Calculations Outputs Card for Simpler Channels */}
@@ -5681,240 +6267,245 @@ export default function App() {
             </div>
           )}
 
-          {/* Method A: The Beautiful e-commerce footer has been moved outside of any nested max-width wrappers to the bottom of the outermost layout container, ensuring perfect edge-to-edge browser margin stretching. */}
-          <footer className="relative z-20 w-full bg-[#FCFCFA] text-[#1C1B19] border-t border-[#E5DDD1] mt-28 pt-16 pb-12 px-0 mx-0 max-w-none animate-[fadeIn_0.5s_ease_out]" id="app-footer">
+          {/* Method A: The Beautiful e-commerce footer operates outside of nested max-width wrappers to span edge-to-edge. It now features an elegant top-rounded, high-contrast grid design that adapts phenomenally to mobile and tablet layouts. */}
+          <footer className="relative z-20 w-full bg-[#FAFAF8] text-[#1C1B19] border-t border-[#E5DDD1] mt-28 pt-16 pb-12 px-0 mx-0 max-w-none animate-[fadeIn_0.5s_ease_out]" id="app-footer">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12 text-left">
-                {/* Col 1: Brand & Contact */}
-                <div className="col-span-2 md:col-span-3 space-y-5 text-left">
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif text-base font-black tracking-wider text-neutral-800">thecapsulelab</span>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 text-left">
+                {/* Left Side: Brand Logo, Contact & Premium Newsletter (Nietzsche style) */}
+                <div className="col-span-1 lg:col-span-5 space-y-6">
+                  <div className="space-y-3.5">
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif text-xl font-black tracking-wider text-[#1A3F25]">thecapsulelab</span>
+                    </div>
+                    <p className="text-[12.5px] text-[#6E695F] leading-relaxed font-sans max-w-md">
+                      {locale === "hy" 
+                        ? "Բարձրակարգ փաթեթավորման և տպագրական լուծումներ բիզնեսի և անհատների համար։" 
+                        : locale === "ru" 
+                        ? "Премиальные упаковочные и печатные решения для бизнеса и частных клиентов." 
+                        : "Premium packaging and print solutions for business and retail."}
+                    </p>
+                    <div className="flex flex-wrap gap-[#E5DDD1] gap-x-4 gap-y-2 text-[11.5px] text-[#8C8475] font-sans">
+                      <span className="inline-flex items-center gap-1.5">📍 Yerevan, Armenia</span>
+                      <span className="inline-flex items-center gap-1.5">📞 +374 99 999999</span>
+                      <span className="inline-flex items-center gap-1.5">✉️ support@thecapsulelab.com</span>
+                    </div>
                   </div>
-                  <p className="text-[12.5px] text-neutral-500 leading-relaxed font-sans max-w-xs">
-                    {locale === "hy" 
-                      ? "Բարձրակարգ փաթեթավորման և տպագրական լուծումներ բիզնեսի և անհատների համար։" 
-                      : locale === "ru" 
-                      ? "Премиальные упаковочные и печатные решения для бизнеса и частных клиентов." 
-                      : "Premium packaging and print solutions for business and retail."}
-                  </p>
-                  <div className="space-y-1.5 text-[11.5px] text-neutral-500 font-sans">
-                    <p className="flex items-center gap-2">
-                      <span>📍</span> Yerevan, Armenia
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <span>📞</span> +374 99 999999
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <span>✉️</span> support@thecapsulelab.com
-                    </p>
-                  </div>
-                </div>
 
-                {/* Col 2: Quick Links */}
-                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
-                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
-                    {locale === "hy" ? "Արտադրանք" : locale === "ru" ? "Продукты" : "Products"}
-                  </h4>
-                  <ul className="space-y-2 text-[12.5px] text-[#777777]">
-                    {categories.map((cat) => (
-                      <li key={cat.id}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setActiveCategory(cat.id);
-                            setCurrentView("calculator");
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                          }}
-                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
-                        >
-                          {locale === "hy" ? cat.name : cat.name}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Col 3: Sustainability */}
-                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
-                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
-                    {locale === "hy" ? "Էկոլոգիա" : locale === "ru" ? "Экологичность" : "Sustainability"}
-                  </h4>
-                  <ul className="space-y-2.5 text-[12.5px] text-neutral-500">
-                    {[
-                      { 
-                        hy: "Էկո-պորտալ", 
-                        ru: "Эко-портал", 
-                        en: "Sustainability Hub", 
-                        action: () => { alert("Our environment-first design and premium materials list."); } 
-                      },
-                      { 
-                        hy: "Զեկույցներ", 
-                        ru: "Отчеты о прогрессе", 
-                        en: "Our Progress Reports", 
-                        action: () => { alert("Transparency and eco-accountability standards."); } 
-                      },
-                      { 
-                        hy: "Պատասխանատու մատակարարում", 
-                        ru: "Ответственные поставки", 
-                        en: "Responsible Supply Chain", 
-                        action: () => { alert("Pristine premium cardboard sourced from responsibly managed forests."); } 
-                      },
-                      { 
-                        hy: "FSC Սերտիֆիկացում", 
-                        ru: "Сертификация FSC", 
-                        en: "FSC Certification", 
-                        action: () => { alert("Highlighting the FSC symbol on customer request on all production runs."); } 
-                      },
-                      { 
-                        hy: "Էկո հատկություններ", 
-                        ru: "Эко-свойства", 
-                        en: "Eco properties", 
-                        action: () => { alert("Compostable, bio-degradable, water-based printing inks."); } 
-                      },
-                      { 
-                        hy: "Էկո տարբերանշան", 
-                        ru: "Эко-значок", 
-                        en: "Eco badge", 
-                        action: () => { alert("Add our organic stamp to print layouts for premium visual green verification."); } 
-                      }
-                    ].map((item, idx) => (
-                      <li key={idx}>
-                        <button
-                          type="button"
-                          onClick={item.action}
-                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
-                        >
-                          {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Col 4: Resources */}
-                <div className="col-span-1 md:col-span-2 space-y-4 text-left">
-                  <h4 className="font-sans text-xs font-black uppercase tracking-wider text-neutral-800">
-                    {locale === "hy" ? "Ռեսուրսներ" : locale === "ru" ? "Ресурсы" : "Resources"}
-                  </h4>
-                  <ul className="space-y-2.5 text-[12.5px] text-neutral-500">
-                    {[
-                      { 
-                        hy: "Բլոգ", 
-                        ru: "Блог", 
-                        en: "Blog", 
-                        action: () => { alert("Tips for foil hot stamping, custom boxes and luxury paper craft."); } 
-                      },
-                      { 
-                        hy: "Ոգեշնչում", 
-                        ru: "Вдохновение", 
-                        en: "Inspirations", 
-                        action: () => { alert("See our custom lookbook for outstanding premium designs!"); } 
-                      },
-                      { 
-                        hy: "Պայմաններ", 
-                        ru: "Условия обслуживания", 
-                        en: "Terms of service", 
-                        action: () => { alert("Premium bespoke manufacturer production rules and agreement codes."); } 
-                      },
-                      { 
-                        hy: "Գաղտնիություն", 
-                        ru: "Конфиденциальность", 
-                        en: "Privacy policy", 
-                        action: () => { alert("Your design files and secrets are safe and protected with us."); } 
-                      },
-                      { 
-                        hy: "Բողոքների քաղաքականություն", 
-                        ru: "Политика информирования", 
-                        en: "Whistleblowing policy", 
-                        action: () => { alert("Maintaining high business ethics and absolute transparency."); } 
-                      },
-                      { 
-                        hy: "Կայքի քարտեզ", 
-                        ru: "Карта сайта", 
-                        en: "Sitemap", 
-                        action: () => { alert("Explore the premium products, boxes, sleeves and ribbons catalog."); } 
-                      },
-                      { 
-                        hy: "Cookie կարգավորումներ", 
-                        ru: "Файлы-cookie", 
-                        en: "Cookie settings", 
-                        action: () => { alert("Customize secure tracker preference options."); } 
-                      }
-                    ].map((item, idx) => (
-                      <li key={idx}>
-                        <button
-                          type="button"
-                          onClick={item.action}
-                          className="hover:text-emerald-700 hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
-                        >
-                          {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Col 5: Newsletter Sign Up Box (col-span-3) */}
-                <div className="col-span-2 md:col-span-3 space-y-4 text-left">
-                  <h4 className="font-sans text-sm font-extrabold tracking-tight text-neutral-800 leading-snug">
-                    {locale === "hy" 
-                      ? "Բաց մի թողեք – ստացեք 15% զեղչ ձեր առաջին պատվերի համար, երբ միանում եք լրատվականին:" 
-                      : locale === "ru" 
-                      ? "Не упустите – получите скидку 15% на первый заказ при подписке на рассылку." 
-                      : "Don't miss out – get 15% off your first order when you join the newsletter."}
-                  </h4>
-                  
-                  <form 
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (newsletterEmail.trim()) {
-                        setNewsletterSuccess(true);
-                        setTimeout(() => {
-                          setNewsletterSuccess(false);
-                          setNewsletterEmail("");
-                        }, 5000);
-                      }
-                    }} 
-                    className="flex flex-col sm:flex-row items-stretch border border-neutral-300 w-full rounded-md overflow-hidden bg-white shadow-sm mt-3"
-                  >
-                    <input 
-                      type="email" 
-                      value={newsletterEmail}
-                      onChange={(e) => setNewsletterEmail(e.target.value)}
-                      placeholder={locale === "hy" ? "Էլ. հասցե" : locale === "ru" ? "Электронная почта" : "E-mail"}
-                      className="flex-1 px-4 py-3 text-sm text-neutral-800 outline-none border-none bg-transparent placeholder-neutral-400 font-sans focus:ring-0 min-w-0"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      className="bg-[#2B5DF5] hover:bg-blue-700 text-white font-sans text-xs font-bold py-3 px-6 transition-colors tracking-wider uppercase shrink-0 cursor-pointer border-none outline-none"
+                  <div className="border-t border-[#E5DDD1]/60 pt-6 space-y-3.5">
+                    <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#1C1B19]">
+                      {locale === "hy" 
+                        ? "Բաժանորդագրվեք նորություններին և ստացեք 15% զեղչ" 
+                        : locale === "ru" 
+                        ? "Подпишитесь на рассылку и получите скидку 15%" 
+                        : "Subscribe to newsletter & get 15% off first order"}
+                    </h4>
+                    
+                    <form 
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (newsletterEmail.trim()) {
+                          setNewsletterSuccess(true);
+                          setTimeout(() => {
+                            setNewsletterSuccess(false);
+                            setNewsletterEmail("");
+                          }, 5000);
+                        }
+                      }} 
+                      className="flex items-center justify-between border border-[#D5D0C8] hover:border-[#1C1B19] focus-within:border-[#1A3F25] w-full max-w-sm rounded-full p-1 pl-4 bg-white shadow-xs transition-all duration-250"
                     >
-                      {locale === "hy" ? "Բաժանորդագրվել" : locale === "ru" ? "Подписаться" : "Subscribe"}
-                    </button>
-                  </form>
+                      <input 
+                        type="email" 
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        placeholder={locale === "hy" ? "Էլ. հասցե" : locale === "ru" ? "Электронная почта" : "E-mail"}
+                        className="flex-1 text-xs text-[#1C1B19] outline-none border-none bg-transparent placeholder-neutral-400 font-sans min-w-0 pr-2 focus:ring-0"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        className="bg-[#1C1B19] hover:bg-[#1A3F25] text-white font-sans text-xs font-bold py-2.5 px-5 rounded-full transition-colors shrink-0 cursor-pointer border-none outline-none"
+                      >
+                        {locale === "hy" ? "Բաժանորդագրվել" : locale === "ru" ? "Подписаться" : "Subscribe"}
+                      </button>
+                    </form>
 
-                  {newsletterSuccess && (
-                    <p className="text-xs text-emerald-850 font-bold font-sans mt-2 animate-pulse">
-                      🌱 {locale === "hy" ? "Դուք հաջողությամբ բաժանորդագրվել եք:" : locale === "ru" ? "Вы успешно подписались на рассылку!" : "Successfully subscribed to our newsletter!"}
-                    </p>
-                  )}
+                    {newsletterSuccess ? (
+                      <p className="text-xs text-emerald-800 font-bold font-sans mt-2 animate-pulse">
+                        🌱 {locale === "hy" ? "Դուք հաջողությամբ բաժանորդագրվել եք:" : locale === "ru" ? "Вы успешно подписались на рассылку!" : "Successfully subscribed to our newsletter!"}
+                      </p>
+                    ) : (
+                      <p className="text-[10.5px] text-[#A39B8E] leading-relaxed max-w-sm font-sans">
+                        {locale === "hy"
+                          ? "Բաժանորդագրվելով դուք համաձայնվում եք մեր Գաղտնիության Քաղաքականությանը և տալիս եք ձեր համաձայնությունը նորություններ ստանալու համար։"
+                          : locale === "ru"
+                          ? "Подписываясь, вы соглашаетесь с Политикой конфиденциальности и даете согласие на получение обновлений от нашей компании."
+                          : "By subscribing you agree to our Privacy Policy and provide consent to receive updates from our company."}
+                      </p>
+                    )}
 
-                  {/* Securely access Admin panel link inside news section */}
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsAdminOpen(true)}
-                      className="text-[11px] text-neutral-400 hover:text-[#ff2300] transition-colors font-semibold inline-flex items-center gap-1.5 cursor-pointer font-sans bg-transparent border-none p-0 select-none opacity-85 hover:opacity-100"
-                    >
-                      🔑 {locale === "hy" ? "Ադմին" : locale === "ru" ? "Админ" : "Admin Panel"}
-                    </button>
+                    {/* Securely access Admin panel link inside news section */}
+                    <div className="pt-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setIsAdminOpen(true)}
+                        className="text-[11px] text-[#A39B8E] hover:text-[#1A3F25] transition-colors font-semibold inline-flex items-center gap-1.5 cursor-pointer font-sans bg-transparent border-none p-0 select-none opacity-85 hover:opacity-100"
+                      >
+                        🔑 {locale === "hy" ? "Ադմին" : locale === "ru" ? "Админ" : "Admin Panel"}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
+                {/* Right Side: Quick Links Columns grouped beautifully */}
+                <div className="col-span-1 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-4 lg:pt-0">
+                  {/* Col 2: Quick Links */}
+                  <div className="space-y-4">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                      {locale === "hy" ? "Արտադրանք" : locale === "ru" ? "Продукты" : "Products"}
+                    </h4>
+                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                      {categories.map((cat) => (
+                        <li key={cat.id}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveCategory(cat.id);
+                              setCurrentView("calculator");
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                          >
+                            {locale === "hy" ? cat.name : cat.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Col 3: Sustainability */}
+                  <div className="space-y-4">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                      {locale === "hy" ? "Էկոլոգիա" : locale === "ru" ? "Экологичность" : "Sustainability"}
+                    </h4>
+                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                      {[
+                        { 
+                          hy: "Էկո-պորտալ", 
+                          ru: "Эко-портал", 
+                          en: "Sustainability Hub", 
+                          action: () => { alert("Our environment-first design and premium materials list."); } 
+                        },
+                        { 
+                          hy: "Զեկույցներ", 
+                          ru: "Отчеты о прогрессе", 
+                          en: "Our Progress Reports", 
+                          action: () => { alert("Transparency and eco-accountability standards."); } 
+                        },
+                        { 
+                          hy: "Պատասխանատու մատակարարում", 
+                          ru: "Ответственные поставки", 
+                          en: "Responsible Supply Chain", 
+                          action: () => { alert("Pristine premium cardboard sourced from responsibly managed forests."); } 
+                        },
+                        { 
+                          hy: "FSC Սերտիֆիկացում", 
+                          ru: "Сертификация FSC", 
+                          en: "FSC Certification", 
+                          action: () => { alert("Highlighting the FSC symbol on customer request on all production runs."); } 
+                        },
+                        { 
+                          hy: "Էկո հատկություններ", 
+                          ru: "Эко-свойства", 
+                          en: "Eco properties", 
+                          action: () => { alert("Compostable, bio-degradable, water-based printing inks."); } 
+                        },
+                        { 
+                          hy: "Էկո տարբերանշան", 
+                          ru: "Эко-значок", 
+                          en: "Eco badge", 
+                          action: () => { alert("Add our organic stamp to print layouts for premium visual green verification."); } 
+                        }
+                      ].map((item, idx) => (
+                        <li key={idx}>
+                          <button
+                            type="button"
+                            onClick={item.action}
+                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                          >
+                            {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Col 4: Resources */}
+                  <div className="space-y-4">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                      {locale === "hy" ? "Ռեսուրսներ" : locale === "ru" ? "Ресурсы" : "Resources"}
+                    </h4>
+                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                      {[
+                        { 
+                          hy: "Բլոգ", 
+                          ru: "Блог", 
+                          en: "Blog", 
+                          action: () => { alert("Tips for foil hot stamping, custom boxes and luxury paper craft."); } 
+                        },
+                        { 
+                          hy: "Ոգեշնչում", 
+                          ru: "Вдохновение", 
+                          en: "Inspirations", 
+                          action: () => { alert("See our custom lookbook for outstanding premium designs!"); } 
+                        },
+                        { 
+                          hy: "Պայմաններ", 
+                          ru: "Условия обслуживания", 
+                          en: "Terms of service", 
+                          action: () => { alert("Premium bespoke manufacturer production rules and agreement codes."); } 
+                        },
+                        { 
+                          hy: "Գաղտնիություն", 
+                          ru: "Конфиденциальность", 
+                          en: "Privacy policy", 
+                          action: () => { alert("Your design files and secrets are safe and protected with us."); } 
+                        },
+                        { 
+                          hy: "Բողոքների քաղաքականություն", 
+                          ru: "Политика информирования", 
+                          en: "Whistleblowing policy", 
+                          action: () => { alert("Maintaining high business ethics and absolute transparency."); } 
+                        },
+                        { 
+                          hy: "Կայքի քարտեզ", 
+                          ru: "Карта сайта", 
+                          en: "Sitemap", 
+                          action: () => { alert("Explore the premium products, boxes, sleeves and ribbons catalog."); } 
+                        },
+                        { 
+                          hy: "Cookie կարգավորումներ", 
+                          ru: "Файлы-cookie", 
+                          en: "Cookie settings", 
+                          action: () => { alert("Customize secure tracker preference options."); } 
+                        }
+                      ].map((item, idx) => (
+                        <li key={idx}>
+                          <button
+                            type="button"
+                            onClick={item.action}
+                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                          >
+                            {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
 
               {/* Secure Payment Methods Row */}
-              <div className="pt-6 border-t border-[#E5DDD1]/50 pb-4">
+              <div className="pt-6 border-t border-[#E5DDD1]/50 pb-4 mt-8">
                 <PaymentMethods locale={locale} paymentMethods={paymentMethods} />
               </div>
 
@@ -5956,6 +6547,7 @@ export default function App() {
 
             </div>
           </footer>
+
 
       {/* Inquiry modal popup */}
       <OrderInquiryModal
