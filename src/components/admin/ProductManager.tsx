@@ -48,7 +48,7 @@ export const ProductManager: React.FC<ProductManagerProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Add new product form */}
-        <form onSubmit={handleSubmit} className="lg:col-span-4 bg-[#FAF9F6] p-6 rounded-[2rem] border border-gray-150 space-y-4">
+        <form onSubmit={handleSubmit} className="lg:col-span-4 bg-[#f0f2f5] p-6 rounded-[2rem] border border-gray-150 space-y-4">
           <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider">Create Custom Packaging Product</h3>
           
           <div className="space-y-1">
@@ -59,7 +59,7 @@ export const ProductManager: React.FC<ProductManagerProps> = ({
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="e.g. Rigid Magnetic Box"
               required
-              className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-800 outline-none focus:ring-1 focus:ring-capsule-accent/30"
+              className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-800 outline-none focus:ring-1 focus:ring-[#FF2300]/30"
             />
           </div>
 

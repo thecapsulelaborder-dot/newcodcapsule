@@ -572,7 +572,7 @@ export default function EcommerceStore({
 
   const getIndustryIcon = (id: string, active: boolean) => {
     const size = 18;
-    const colorClass = active ? "text-white" : "text-capsule-accent";
+    const colorClass = active ? "text-white" : "text-[#FF2300]";
     switch (id) {
       case "any":
         return <Tag size={size} className={colorClass} />;
@@ -645,18 +645,18 @@ export default function EcommerceStore({
   ];
 
   return (
-    <div className="w-full bg-capsule-bg min-h-screen py-8 select-none" id="primary-packhelp-store-canvas">
+    <div className="w-full bg-[#f0f2f5] min-h-screen py-8 select-none" id="primary-packhelp-store-canvas">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-1 px-3 py-1 text-[9px] tracking-[0.25em] uppercase font-mono font-extrabold text-capsule-accent bg-capsule-accent-dim border border-capsule-accent/10 rounded-full shadow-sm mb-3">
-            <Sparkles size={11} className="text-capsule-accent animate-pulse" />
+          <div className="inline-flex items-center gap-1 px-3 py-1 text-[9px] tracking-[0.25em] uppercase font-mono font-extrabold text-[#FF2300] bg-[#FF2300]-dim border border-[#FF2300]/25/10 rounded-full shadow-sm mb-3">
+            <Sparkles size={11} className="text-[#FF2300] animate-pulse" />
             <span>PACKHELP CATALOGUE ECOSYSTEM</span>
           </div>
-          <h1 className="font-sans font-black text-3xl sm:text-5xl text-capsule-dark tracking-tight uppercase leading-none">
+          <h1 className="font-sans font-black text-3xl sm:text-5xl text-[#1a1c1d] tracking-tight uppercase leading-none">
             {texts.headerTitle}
           </h1>
-          <p className="text-xs sm:text-sm text-capsule-text-secondary mt-2 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#414753] mt-2 max-w-xl mx-auto leading-relaxed">
             {texts.headerSubtitle}
           </p>
         </div>
@@ -665,65 +665,86 @@ export default function EcommerceStore({
         <div className="mb-12 animate-fade-in-quick" id="industry-selector-cards-section">
           <div className="text-center sm:text-left mb-8">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 mb-2">
-              <span className="w-2 h-2 rounded-full bg-capsule-accent shadow-[0_0_10px_#ff2300]" />
-              <h2 className="font-sans font-black text-[11px] tracking-[0.25em] text-capsule-dark uppercase">
+              <span className="w-2 h-2 rounded-full bg-[#FF2300] shadow-[0_0_10px_#FF2300]" />
+              <h2 className="font-sans font-black text-[11px] tracking-[0.25em] text-[#1a1c1d] uppercase">
                 {indHeader}
               </h2>
             </div>
-            <p className="text-[12px] text-capsule-text-secondary/90 leading-relaxed max-w-2xl">
+            <p className="text-[12px] text-[#414753]/90 leading-relaxed max-w-2xl">
               {indSub}
             </p>
           </div>
 
           {/* Premium, fully visible responsive grid - no scrolling on desktop or mobile for instant accessibility */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 pb-3 pt-1 px-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 pb-3 pt-1 px-1">
             {orderedIndustries.map((ind) => {
               const isSelected = industry === ind.id;
               const count = getIndustryCount(ind.id);
               const name = locale === "hy" ? ind.hy : locale === "ru" ? ind.ru : ind.en;
               
+              // Localized labels for the action pill matching the screenshot's "Start calculation" style
+              const getPillLabel = () => {
+                if (locale === "hy") return isSelected ? "Ընտրված է ➔" : "Ընտրել ➔";
+                if (locale === "ru") return isSelected ? "Выбрано ➔" : "Выбрать ➔";
+                return isSelected ? "Selected ➔" : "Select ➔";
+              };
+
+              const getPillSub = () => {
+                if (locale === "hy") return "ՈԼՈՐՏ";
+                if (locale === "ru") return "ОТРАСЛЬ";
+                return "INDUSTRY";
+              };
+
               return (
                 <button
-                  key={ind.id}
-                  onClick={() => setIndustry(ind.id)}
-                  className={`group flex flex-col items-start p-4 w-full rounded-[28px] h-[126px] justify-between cursor-pointer transition-all duration-300 relative select-none text-left overflow-hidden border ${
+                   key={ind.id}
+                   onClick={() => setIndustry(ind.id)}
+                   className={`group flex flex-col items-center justify-between p-5 w-full rounded-[32px] h-[172px] cursor-pointer transition-all duration-500 relative select-none text-center overflow-hidden border-0 ${
                     isSelected
-                      ? "bg-[#efede8] border-white/20 shadow-[inset_4px_4px_9px_#cfc9be,inset_-4px_-4px_9px_#ffffff] scale-[0.97]"
-                      : "bg-[#fafaf8] border-white/90 shadow-[6px_6px_14px_#d2ccc2,-6px_-6px_14px_#ffffff] hover:scale-[1.03] hover:shadow-[8px_8px_18px_#d2ccc2,-8px_-8px_18px_#ffffff]"
+                      ? "bg-[#f0f2f5] shadow-[inset_6px_6px_12px_#cdc7ba,inset_-6px_-6px_12px_#ffffff] scale-[0.98]"
+                      : "bg-[#f0f2f5] shadow-[8px_8px_18px_#d3cdc1,-8px_-8px_18px_#ffffff] hover:scale-[1.03] hover:shadow-[10px_10px_24px_#cdc7ba,-10px_-10px_24px_#ffffff]"
                   }`}
                   id={`industry-card-${ind.id}`}
                 >
-                  {/* Soft organic circular gradient for modern physical material simulation */}
-                  <div className={`absolute top-[-25px] right-[-25px] w-24 h-24 rounded-full transition-all duration-500 pointer-events-none ${
-                    isSelected 
-                      ? "bg-capsule-accent/[0.05] scale-110" 
-                      : "bg-capsule-accent/[0.02] group-hover:scale-115 group-hover:bg-capsule-accent/[0.05]"
+                  {/* Soft organic circular gradient blush behind/inside the card from the premium screenshot design */}
+                  <div className={`absolute top-[-15px] right-[-15px] w-24 h-24 rounded-full blur-xl pointer-events-none transition-all duration-500 ${
+                    isSelected ? "bg-[#FF2300]/[0.1] scale-110" : "bg-[#FF2300]/[0.02]"
+                  }`} />
+                  <div className={`absolute bottom-[-20px] left-[-20px] w-24 h-24 rounded-full blur-xl pointer-events-none transition-all duration-500 ${
+                    isSelected ? "bg-[#FF2300]/[0.04] scale-110" : "bg-[#FF2300]/[0.01]"
                   }`} />
 
-                  <div className="flex items-center justify-between w-full relative z-10">
-                    <div className={`p-2.5 rounded-[16px] transition-all duration-300 group-hover:scale-105 ${
+                  <div className="flex flex-col items-center justify-center w-full relative z-10">
+                    <div className={`p-3 rounded-full transition-all duration-500 ${
                       isSelected 
-                        ? "bg-capsule-accent text-white shadow-[0_6px_16px_rgba(255,35,0,0.35),_inset_1.5px_1.5px_3px_rgba(255,255,255,0.4)]" 
-                        : "bg-[#fafaf8] shadow-[3px_3px_7px_#dcdad5,-3px_-3px_7px_#ffffff] border border-white/80 text-capsule-accent"
+                        ? "bg-[#FF2300] text-white shadow-[inset_1.5px_1.5px_3px_rgba(255,255,255,0.4),_3px_3px_10px_rgba(255,35,0,0.35)] scale-105" 
+                        : "bg-[#f0f2f5] shadow-[3px_3px_8px_#d2ccc2,-3px_-3px_8px_#ffffff] text-[#FF2300] group-hover:scale-110 group-hover:rotate-3"
                     }`}>
                       {getIndustryIcon(ind.id, isSelected)}
                     </div>
-                    {isSelected && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-capsule-accent shadow-[0_0_6px_#ff2300] animate-pulse" />
-                    )}
                   </div>
 
-                  <div className="mt-3 relative z-10 w-full">
-                    <span className={`block font-sans font-black text-[11px] tracking-tight uppercase leading-tight line-clamp-1 transition-colors duration-300 ${
-                      isSelected ? "text-capsule-accent" : "text-capsule-dark"
+                  <div className="mt-2.5 relative z-10 w-full flex flex-col items-center">
+                    <span className={`block font-sans font-black text-[8px] tracking-[0.18em] mb-0.5 uppercase transition-colors duration-300 ${
+                      isSelected ? "text-[#FF2300]" : "text-[#FF2300]/60"
+                    }`}>
+                      {getPillSub()}
+                    </span>
+                    <span className={`block font-sans font-black text-[11px] tracking-tight uppercase leading-tight line-clamp-1 transition-colors duration-300 px-1 ${
+                      isSelected ? "text-[#FF2300]" : "text-[#1a1c1d]"
                     }`}>
                       {name}
                     </span>
-                    <span className={`block font-mono text-[9px] font-bold mt-0.5 transition-colors duration-300 ${
-                      isSelected ? "text-capsule-dark/80" : "text-capsule-text-secondary"
+                  </div>
+
+                  <div className="mt-2.5 relative z-10 w-full flex justify-center">
+                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-black tracking-wider transition-all duration-500 ${
+                      isSelected
+                        ? "bg-[#FF2300] text-white shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),_2px_2px_6px_rgba(255,35,0,0.25)]"
+                        : "bg-[#f0f2f5] text-[#1a1c1d]/80 shadow-[2px_2px_5px_#d2ccc2,-2px_-2px_5px_#ffffff] group-hover:bg-[#FF2300] group-hover:text-white group-hover:border-transparent group-hover:shadow-[3px_3px_8px_rgba(255,35,0,0.25)]"
                     }`}>
-                      {getIndustryProductCountText(count)}
-                    </span>
+                      {getPillLabel()}
+                    </div>
                   </div>
                 </button>
               );
@@ -734,12 +755,12 @@ export default function EcommerceStore({
         <div className="lg:hidden w-full mb-4">
           <button
             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-            className="w-full flex items-center justify-center gap-2 py-3 px-5 bg-capsule-surf text-capsule-dark text-sm font-bold rounded-xl shadow-sm neu-convex-surf neu-convex-hover"
+            className="w-full flex items-center justify-center gap-2 py-3 px-5 bg-[#f0f2f5] text-[#1a1c1d] text-sm font-bold rounded-xl shadow-sm neu-convex-surf neu-convex-hover"
           >
-            <Filter size={14} className="text-capsule-accent" />
+            <Filter size={14} className="text-[#FF2300]" />
             <span>{texts.mobileFiltersButton}</span>
             {isAnyFilterActive && (
-              <span className="w-2 h-2 rounded-full bg-capsule-accent" />
+              <span className="w-2 h-2 rounded-full bg-[#FF2300]" />
             )}
           </button>
         </div>
@@ -751,12 +772,12 @@ export default function EcommerceStore({
               mobileFiltersOpen ? "block" : "hidden"
             }`}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-capsule-border/30">
-              <span className="text-xs font-black uppercase text-capsule-dark font-mono tracking-wider">Side filters</span>
+            <div className="flex items-center justify-between pb-3 border-b border-white/40/30">
+              <span className="text-xs font-black uppercase text-[#1a1c1d] font-mono tracking-wider">Side filters</span>
               {isAnyFilterActive && (
                 <button
                   onClick={handleClearFilters}
-                  className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-capsule-accent font-extrabold font-mono hover:text-capsule-accent-light cursor-pointer"
+                  className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-[#FF2300] font-extrabold font-mono hover:text-[#FF2300]-light cursor-pointer"
                 >
                   <RotateCcw size={10} />
                   <span>{texts.clearAll}</span>
@@ -765,7 +786,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.categoriesTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.categoriesTitle}</span>
               <div className="space-y-1 pt-1">
                 {FILTER_METRICS.categories.map((cat) => {
                   const label = locale === "hy" ? cat.hy : locale === "ru" ? cat.ru : cat.en;
@@ -776,12 +797,12 @@ export default function EcommerceStore({
                       onClick={() => setSelectedCategory(cat.id)}
                       className={`w-full text-left py-1.5 px-2.5 rounded-lg text-xs transition-all duration-200 cursor-pointer flex items-center justify-between ${
                         isSelected
-                          ? "bg-capsule-accent-dim text-capsule-accent font-black border-l-4 border-capsule-accent pl-2"
-                          : "text-capsule-dark/80 hover:text-capsule-accent hover:bg-capsule-bg/30 font-semibold"
+                          ? "bg-[#FF2300]-dim text-[#FF2300] font-black border-l-4 border-[#FF2300]/25 pl-2"
+                          : "text-[#1a1c1d]/80 hover:text-[#FF2300] hover:bg-[#f0f2f5]/30 font-semibold"
                       }`}
                     >
                       <span>{label}</span>
-                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-capsule-accent" />}
+                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-[#FF2300]" />}
                     </button>
                   );
                 })}
@@ -789,7 +810,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.customisationTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.customisationTitle}</span>
               <div className="space-y-2 pt-1">
                 {FILTER_METRICS.customisation.map((option) => {
                   const label = locale === "hy" ? option.hy : locale === "ru" ? option.ru : option.en;
@@ -798,10 +819,10 @@ export default function EcommerceStore({
                     <button
                       key={option.id}
                       onClick={() => setCustomisation(option.id)}
-                      className="w-full flex items-center gap-2.5 text-xs text-left cursor-pointer text-capsule-dark/80 font-semibold hover:text-capsule-accent transition-colors"
+                      className="w-full flex items-center gap-2.5 text-xs text-left cursor-pointer text-[#1a1c1d]/80 font-semibold hover:text-[#FF2300] transition-colors"
                     >
-                      <div className="w-4 h-4 rounded-full border border-capsule-border flex items-center justify-center bg-capsule-surf">
-                        {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-capsule-accent" />}
+                      <div className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center bg-[#f0f2f5]">
+                        {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#FF2300]" />}
                       </div>
                       <span>{label}</span>
                     </button>
@@ -811,7 +832,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.industryTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.industryTitle}</span>
               <div className="space-y-2 pt-1 max-h-56 overflow-y-auto no-scrollbar">
                 {FILTER_METRICS.industry.map((ind) => {
                   const label = locale === "hy" ? ind.hy : locale === "ru" ? ind.ru : ind.en;
@@ -820,10 +841,10 @@ export default function EcommerceStore({
                     <button
                       key={ind.id}
                       onClick={() => setIndustry(ind.id)}
-                      className="w-full flex items-center gap-2.5 text-xs text-left cursor-pointer text-capsule-dark/80 font-semibold hover:text-capsule-accent transition-colors"
+                      className="w-full flex items-center gap-2.5 text-xs text-left cursor-pointer text-[#1a1c1d]/80 font-semibold hover:text-[#FF2300] transition-colors"
                     >
-                      <div className="w-4 h-4 rounded-full border border-capsule-border flex items-center justify-center bg-capsule-surf">
-                        {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-capsule-accent" />}
+                      <div className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center bg-[#f0f2f5]">
+                        {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#FF2300]" />}
                       </div>
                       <span>{label}</span>
                     </button>
@@ -833,7 +854,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.pkgTypeTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.pkgTypeTitle}</span>
               <div className="space-y-2.5 pt-1">
                 {FILTER_METRICS.pkgType.map((pkg) => {
                   const label = locale === "hy" ? pkg.hy : locale === "ru" ? pkg.ru : pkg.en;
@@ -841,10 +862,10 @@ export default function EcommerceStore({
                   return (
                     <div 
                       key={pkg.id}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-capsule-dark/80 hover:text-capsule-accent transition-colors cursor-pointer"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-[#1a1c1d]/80 hover:text-[#FF2300] transition-colors cursor-pointer"
                       onClick={() => toggleCheckbox(selectedPkgTypes, setSelectedPkgTypes, pkg.id)}
                     >
-                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-capsule-surf ${isChecked ? "border-capsule-accent bg-capsule-accent text-white" : "border-capsule-border"}`}>
+                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-[#f0f2f5] ${isChecked ? "border-[#FF2300]/25 bg-[#FF2300] text-white" : "border-white/40"}`}>
                         {isChecked && <span className="text-[9px] font-bold">✓</span>}
                       </div>
                       <span>{label}</span>
@@ -855,7 +876,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.sustainabilityTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.sustainabilityTitle}</span>
               <div className="space-y-2.5 pt-1">
                 {FILTER_METRICS.sustainability.map((sus) => {
                   const label = locale === "hy" ? sus.hy : locale === "ru" ? sus.ru : sus.en;
@@ -863,10 +884,10 @@ export default function EcommerceStore({
                   return (
                     <div 
                       key={sus.id}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-capsule-dark/80 hover:text-capsule-accent transition-colors cursor-pointer"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-[#1a1c1d]/80 hover:text-[#FF2300] transition-colors cursor-pointer"
                       onClick={() => toggleCheckbox(selectedSustainabilities, setSelectedSustainabilities, sus.id)}
                     >
-                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-capsule-surf ${isChecked ? "border-capsule-accent bg-capsule-accent text-white" : "border-capsule-border"}`}>
+                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-[#f0f2f5] ${isChecked ? "border-[#FF2300]/25 bg-[#FF2300] text-white" : "border-white/40"}`}>
                         {isChecked && <span className="text-[9px] font-bold">✓</span>}
                       </div>
                       <span>{label}</span>
@@ -877,7 +898,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.collectionsTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.collectionsTitle}</span>
               <div className="space-y-2.5 pt-1">
                 {FILTER_METRICS.collections.map((coll) => {
                   const label = locale === "hy" ? coll.hy : locale === "ru" ? coll.ru : coll.en;
@@ -885,10 +906,10 @@ export default function EcommerceStore({
                   return (
                     <div 
                       key={coll.id}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-capsule-dark/80 hover:text-capsule-accent transition-colors cursor-pointer"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-[#1a1c1d]/80 hover:text-[#FF2300] transition-colors cursor-pointer"
                       onClick={() => toggleCheckbox(selectedCollections, setSelectedCollections, coll.id)}
                     >
-                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-capsule-surf ${isChecked ? "border-capsule-accent bg-capsule-accent text-white" : "border-capsule-border"}`}>
+                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-[#f0f2f5] ${isChecked ? "border-[#FF2300]/25 bg-[#FF2300] text-white" : "border-white/40"}`}>
                         {isChecked && <span className="text-[9px] font-bold">✓</span>}
                       </div>
                       <span>{label}</span>
@@ -899,7 +920,7 @@ export default function EcommerceStore({
             </div>
 
             <div className="space-y-2.5">
-              <span className="block text-xs font-black uppercase text-capsule-dark/40 font-mono tracking-widest">{texts.useCaseTitle}</span>
+              <span className="block text-xs font-black uppercase text-[#1a1c1d]/40 font-mono tracking-widest">{texts.useCaseTitle}</span>
               <div className="space-y-2.5 pt-1">
                 {FILTER_METRICS.useCases.slice(0, showAllUseCases ? 12 : 5).map((uc) => {
                   const label = locale === "hy" ? uc.hy : locale === "ru" ? uc.ru : uc.en;
@@ -907,10 +928,10 @@ export default function EcommerceStore({
                   return (
                     <div 
                       key={uc.id}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-capsule-dark/80 hover:text-capsule-accent transition-colors cursor-pointer"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-[#1a1c1d]/80 hover:text-[#FF2300] transition-colors cursor-pointer"
                       onClick={() => toggleCheckbox(selectedUseCases, setSelectedUseCases, uc.id)}
                     >
-                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-capsule-surf ${isChecked ? "border-capsule-accent bg-capsule-accent text-white" : "border-capsule-border"}`}>
+                      <div className={`w-4 h-4 border rounded flex items-center justify-center transition-all bg-[#f0f2f5] ${isChecked ? "border-[#FF2300]/25 bg-[#FF2300] text-white" : "border-white/40"}`}>
                         {isChecked && <span className="text-[9px] font-bold">✓</span>}
                       </div>
                       <span>{label}</span>
@@ -921,7 +942,7 @@ export default function EcommerceStore({
                 <button
                   type="button"
                   onClick={() => setShowAllUseCases(!showAllUseCases)}
-                  className="flex items-center gap-1 text-[11px] font-bold text-capsule-accent hover:text-capsule-accent-light mt-2 transition-colors focus:outline-none cursor-pointer"
+                  className="flex items-center gap-1 text-[11px] font-bold text-[#FF2300] hover:text-[#FF2300]-light mt-2 transition-colors focus:outline-none cursor-pointer"
                 >
                   <span>{showAllUseCases ? texts.showLess : texts.showMore}</span>
                   {showAllUseCases ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
@@ -935,11 +956,11 @@ export default function EcommerceStore({
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-2xl neu-convex-surf">
               <div className="flex items-center gap-2 pl-1 select-none">
-                <span className="font-sans font-black text-capsule-dark text-sm sm:text-base uppercase tracking-tight">
+                <span className="font-sans font-black text-[#1a1c1d] text-sm sm:text-base uppercase tracking-tight">
                   {texts.productsCount(filteredProductsList.length)}
                 </span>
                 {isAnyFilterActive && (
-                  <span className="px-2.5 py-1 bg-capsule-accent-dim text-[9px] text-capsule-accent font-mono font-extrabold uppercase rounded-full border border-capsule-accent/10">
+                  <span className="px-2.5 py-1 bg-[#FF2300]-dim text-[9px] text-[#FF2300] font-mono font-extrabold uppercase rounded-full border border-[#FF2300]/25/10">
                     Filtered
                   </span>
                 )}
@@ -951,20 +972,20 @@ export default function EcommerceStore({
                   placeholder={texts.searchPlaceholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full glass-input text-xs font-bold rounded-xl py-2.5 pl-9 pr-4 text-capsule-dark placeholder-gray-400"
+                  className="w-full glass-input text-xs font-bold rounded-xl py-2.5 pl-9 pr-4 text-[#1a1c1d] placeholder-gray-400"
                 />
-                <Search size={14} className="absolute left-3.5 top-3.5 text-capsule-dark/50" />
+                <Search size={14} className="absolute left-3.5 top-3.5 text-[#1a1c1d]/50" />
               </div>
             </div>
 
             {filteredProductsList.length === 0 ? (
               <div className="text-center py-20 rounded-3xl p-8 neu-convex-surf">
-                <Filter size={36} className="mx-auto text-capsule-dark/30 mb-3" />
-                <p className="text-capsule-dark font-black text-sm uppercase tracking-wide">{texts.noProducts}</p>
+                <Filter size={36} className="mx-auto text-[#1a1c1d]/30 mb-3" />
+                <p className="text-[#1a1c1d] font-black text-sm uppercase tracking-wide">{texts.noProducts}</p>
                 <button
                   type="button"
                   onClick={handleClearFilters}
-                  className="mt-4 px-5 py-2.5 bg-capsule-accent hover:bg-capsule-accent-light text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md cursor-pointer neu-convex-hover"
+                  className="mt-4 px-5 py-2.5 bg-[#FF2300] hover:bg-[#FF2300]-light text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md cursor-pointer neu-convex-hover"
                 >
                   {texts.clearAll}
                 </button>
@@ -984,9 +1005,9 @@ export default function EcommerceStore({
                   return (
                     <div
                       key={product.id}
-                      className="group flex flex-col justify-between rounded-[24px] transition-all duration-300 p-3.5 border-none bg-capsule-surf neu-convex-surf hover:scale-[1.03]"
+                      className="group flex flex-col justify-between rounded-[24px] transition-all duration-300 p-3.5 border-none bg-[#f0f2f5] neu-convex-surf hover:scale-[1.03]"
                     >
-                      <div className="relative aspect-[4/3] bg-capsule-bg/25 overflow-hidden rounded-[18px] border border-capsule-border/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)]">
+                      <div className="relative aspect-[4/3] bg-[#f0f2f5]/25 overflow-hidden rounded-[18px] border border-white/40/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)]">
                         <img
                           src={product.image}
                           alt={prodName}
@@ -1004,7 +1025,7 @@ export default function EcommerceStore({
                           )}
 
                           {!isEco && customTagText && (
-                            <span className="inline-flex items-center bg-[#fff5f5]/90 backdrop-blur-md border border-capsule-accent/10 text-capsule-accent font-black text-[8px] uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
+                            <span className="inline-flex items-center bg-[#fff5f5]/90 backdrop-blur-md border border-[#FF2300]/25/10 text-[#FF2300] font-black text-[8px] uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
                               {customTagText}
                             </span>
                           )}
@@ -1012,7 +1033,7 @@ export default function EcommerceStore({
 
                         <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
                           {hasNewArrival && (
-                            <span className="inline-flex items-center bg-capsule-accent text-white font-mono font-black text-[8px] tracking-widest uppercase px-2.5 py-1 rounded-full shadow-sm">
+                            <span className="inline-flex items-center bg-[#FF2300] text-white font-mono font-black text-[8px] tracking-widest uppercase px-2.5 py-1 rounded-full shadow-sm">
                               NEW ARRIVAL
                             </span>
                           )}
@@ -1030,25 +1051,25 @@ export default function EcommerceStore({
                           {/* Premium Status row */}
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <div className="flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${product.customisation === "custom" ? "bg-capsule-accent animate-pulse shadow-[0_0_8px_#ff2300]" : "bg-capsule-text-muted/60"}`} />
-                              <span className="text-[9px] text-capsule-text-secondary font-mono tracking-wider uppercase font-extrabold">
+                              <span className={`w-1.5 h-1.5 rounded-full ${product.customisation === "custom" ? "bg-[#FF2300] animate-pulse shadow-[0_0_8px_#ff2300]" : "bg-capsule-text-muted/60"}`} />
+                              <span className="text-[9px] text-[#414753] font-mono tracking-wider uppercase font-extrabold">
                                 {product.customisation === "custom" ? texts.customisable : "Catalogue Item"}
                               </span>
                             </div>
-                            <span className="text-[9px] text-capsule-accent font-mono font-extrabold tracking-wider uppercase bg-capsule-accent-dim px-2 py-0.5 rounded border border-capsule-accent/10">
+                            <span className="text-[9px] text-[#FF2300] font-mono font-extrabold tracking-wider uppercase bg-[#FF2300]-dim px-2 py-0.5 rounded border border-[#FF2300]/25/10">
                               {minQtyText}
                             </span>
                           </div>
 
-                          <h3 className="font-sans font-black text-sm text-capsule-dark group-hover:text-capsule-accent transition-colors tracking-tight leading-snug uppercase min-h-[40px] line-clamp-2 mt-1">
+                          <h3 className="font-sans font-black text-sm text-[#1a1c1d] group-hover:text-[#FF2300] transition-colors tracking-tight leading-snug uppercase min-h-[40px] line-clamp-2 mt-1">
                             {prodName}
                           </h3>
                         </div>
 
-                        <div className="space-y-3.5 pt-3 border-t border-capsule-border/20 mt-3.5">
+                        <div className="space-y-3.5 pt-3 border-t border-white/40/20 mt-3.5">
                           <div className="flex items-baseline justify-between text-xs px-0.5">
-                            <span className="text-capsule-text-secondary font-black uppercase tracking-wider font-mono text-[9px]">{texts.startingFrom}</span>
-                            <span className="font-sans font-black text-capsule-accent text-base font-mono tracking-tight">
+                            <span className="text-[#414753] font-black uppercase tracking-wider font-mono text-[9px]">{texts.startingFrom}</span>
+                            <span className="font-sans font-black text-[#FF2300] text-base font-mono tracking-tight">
                               {formatPrice(product.price || 150)}
                             </span>
                           </div>
@@ -1073,7 +1094,7 @@ export default function EcommerceStore({
                                   details: `Packhelp Instant Order:\n- Item ID: ${product.id}\n- Customisation: ${product.customisation}`
                                 });
                               }}
-                              className="w-10 h-10 bg-capsule-surf border border-capsule-border/40 hover:border-capsule-accent/30 text-capsule-dark hover:text-capsule-accent rounded-xl flex items-center justify-center transition-all cursor-pointer hover:scale-[1.05] active:scale-[0.95] neu-convex-surf"
+                              className="w-10 h-10 bg-[#f0f2f5] border border-white/40/40 hover:border-[#FF2300]/25/30 text-[#1a1c1d] hover:text-[#FF2300] rounded-xl flex items-center justify-center transition-all cursor-pointer hover:scale-[1.05] active:scale-[0.95] neu-convex-surf"
                               title={texts.addToCartBtn}
                             >
                               <ShoppingCart size={13} />
@@ -1090,7 +1111,7 @@ export default function EcommerceStore({
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10" />
                   
                   <div className="space-y-3">
-                    <span className="inline-block bg-capsule-accent text-white font-mono text-[8px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full border border-white/10 shadow-sm">
+                    <span className="inline-block bg-[#FF2300] text-white font-mono text-[8px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full border border-white/10 shadow-sm">
                       Promo Offer
                     </span>
                     <h4 className="font-sans font-black tracking-tight text-white text-base leading-snug uppercase">
@@ -1104,7 +1125,7 @@ export default function EcommerceStore({
                   <div className="pt-6">
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1.5 bg-capsule-accent hover:bg-capsule-accent-light text-white text-[10px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all shadow-md hover:scale-[1.04] active:scale-[0.96]"
+                      className="inline-flex items-center gap-1.5 bg-[#FF2300] hover:bg-[#FF2300]-light text-white text-[10px] font-black uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all shadow-md hover:scale-[1.04] active:scale-[0.96]"
                     >
                       <span>{texts.walletLearn}</span>
                       <ArrowRight size={10} />

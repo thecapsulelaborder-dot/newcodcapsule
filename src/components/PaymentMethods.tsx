@@ -33,12 +33,12 @@ export const PaymentMethods: React.FC<PaymentMethodsProps> = ({ locale, paymentM
     : [];
 
   return (
-    <div id="payment-methods-component" className="py-6 my-6 border-t border-b border-capsule-border/10 flex flex-col xl:flex-row items-center justify-between gap-6 select-none w-full">
+    <div id="payment-methods-component" className="py-6 my-6 border-t border-b border-white/40/10 flex flex-col xl:flex-row items-center justify-between gap-6 select-none w-full">
       <div className="text-center xl:text-left">
         <h4 id="payment-methods-title" className="font-serif text-[11px] sm:text-xs font-black tracking-widest text-[#7C8592] uppercase">
           {getTitle()}
         </h4>
-        <p id="payment-methods-desc" className="text-[10px] text-capsule-text-muted mt-1 max-w-md">
+        <p id="payment-methods-desc" className="text-[10px] text-[#727784] mt-1 max-w-md">
           {getDescription()}
         </p>
       </div>

@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
         return this.props.fallback;
       }
       return (
-        <div className="min-h-[300px] flex flex-col items-center justify-center p-8 text-center bg-[#F8F6F1] rounded-[2.5rem] border border-red-200 shadow-sm">
+        <div className="min-h-[300px] flex flex-col items-center justify-center p-8 text-center bg-[#f0f2f5] rounded-[2.5rem] border border-red-200 shadow-sm">
           <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-4">
             ⚠️
           </div>
@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="px-4 py-2 bg-capsule-accent text-white text-xs font-bold rounded-full shadow-md hover:bg-opacity-90 transition-all cursor-pointer"
+            className="px-4 py-2 bg-[#FF2300] text-white text-xs font-bold rounded-full shadow-md hover:bg-opacity-90 transition-all cursor-pointer"
           >
             Retry Section
           </button>

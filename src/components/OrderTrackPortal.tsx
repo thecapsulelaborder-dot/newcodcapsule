@@ -234,7 +234,7 @@ const STATUS_EXPLANATIONS: Record<string, Record<string, string>> = {
     "Сборка": "Կատարվում է պատվերի մասերի վերջնական հավաքում, սոսնձում և ամրացում համապատասխան տեխնոլոգիական չափանիշներով:",
     "Упаковка": "Ձեր պատվերը փաթեթավորվում է հատուկ պաշտպանիչ և բրենդային տուփերում՝ տեղափոխման ժամանակ վնասվածքներից խուսափելու համար:",
     "Готов": "Արտադրությունն ավարտված է: Պատվերը ստուգվել է որակի վերահսկման բաժնի կողմից և պատրաստ է ստացման կամ առաքման:",
-    "Доставлен": "Պատվերը հաջողությամբ հանձնվել է հաճախորդին: Շնորհակալություն Capsule Concept-ին վստահելու համար:"
+    "Доставлен": "Պատվերը հաջողությամբ հանձնվել է հաճախորդին: Շնորհակալություն CAPSULE PACK-ին վստահելու համար:"
   },
   ru: {
     "Новый": "Заказ успешно зарегистрирован в ERP-системе. Ведущий специалист анализирует технические параметры и формирует план производства.",
@@ -258,7 +258,7 @@ const STATUS_EXPLANATIONS: Record<string, Record<string, string>> = {
     "Сборка": "Manual or automated folding, precise box gluing, ribbon insertion and general construct assembly process is actively running.",
     "Упаковка": "Your units are securely packed into custom protective shock-absorbing brand boxes to guarantee pristine state upon arrival.",
     "Готов": "Production finished. Your entire batch has successfully qualified through our QA controls and is set for pickup or courier dispatch.",
-    "Доставлен": "Your order has been safely delivered and signed for. Thank you for choosing Capsule Concept Yerevan!"
+    "Доставлен": "Your order has been safely delivered and signed for. Thank you for choosing CAPSULE PACK Yerevan!"
   },
   ar: {
     "Новый": "تم تسجيل الطلب في نظام إدارة المبيعات بنجاح. يقوم المهندس بمراجعة المخططات الهندسية وترتيب خطوط الإنتاج.",
@@ -495,7 +495,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
 <body>
   <div class="header">
     <div class="title">${title}</div>
-    <div style="text-align: right; font-size: 12px;"><strong>Capsule Concept</strong></div>
+    <div style="text-align: right; font-size: 12px;"><strong>CAPSULE PACK</strong></div>
   </div>
   <div class="meta">
     <div>
@@ -532,7 +532,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
     </tbody>
   </table>
   <div class="total">Estimated Quote Total: ${o.totalPrice.toLocaleString()} AMD</div>
-  <div class="branding">Capsule Concept ERP Automation System - Yerevan, RA</div>
+  <div class="branding">CAPSULE PACK ERP Automation System - Yerevan, RA</div>
 </body>
 </html>`;
     const blob = new Blob([htmlContent], { type: "text/html" });
@@ -563,7 +563,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
 <body>
   <div class="header">
     <div class="title">${title}</div>
-    <div style="text-align: right; font-size: 12px;"><strong>Capsule Concept</strong></div>
+    <div style="text-align: right; font-size: 12px;"><strong>CAPSULE PACK</strong></div>
   </div>
   <div class="meta">
     <div>
@@ -595,7 +595,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
     </tbody>
   </table>
   <div class="total">Amount Due: ${o.totalPrice.toLocaleString()} AMD</div>
-  <div class="branding">Capsule Concept ERP Automation System - Yerevan, RA</div>
+  <div class="branding">CAPSULE PACK ERP Automation System - Yerevan, RA</div>
 </body>
 </html>`;
     const blob = new Blob([htmlContent], { type: "text/html" });
@@ -662,7 +662,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
 
       {!order ? (
         /* BEAUTIFUL CENTERED CARD */
-        <div id="tracking-card-container" className="w-full max-w-2xl mx-auto bg-[#F9F9F9]/95 border-3 border-white rounded-[2.5rem] p-8 sm:p-12 shadow-[4px_4px_12px_#D5D0C8,_-4px_-4px_12px_#FFFFFF] text-center select-none space-y-6 sm:space-y-8 animate-fade-in mt-6">
+        <div id="tracking-card-container" className="w-full max-w-2xl mx-auto bg-[#F9F9F9]/95 border-3 border-white rounded-[2.5rem] p-8 sm:p-12 shadow-[4px_4px_12px_#d1d9e6,_-4px_-4px_12px_#FFFFFF] text-center select-none space-y-6 sm:space-y-8 animate-fade-in mt-6">
           {/* Brand Stars */}
           <div className="flex justify-center gap-1.5 text-[#ff2300] text-sm sm:text-base">
             <span>★</span>
@@ -677,7 +677,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
             <span className="text-[#ff2300]">
               {currentLocale === "hy" ? "ՀԵՏԵՎԵԼ" : currentLocale === "ru" ? "ОТСЛЕДИТЬ" : "TRACK"}
             </span>{" "}
-            <span className="text-[#3D271B]">
+            <span className="text-[#1a1c1d]">
               {currentLocale === "hy" ? "ՊԱՏՎԵՐԻՆ" : currentLocale === "ru" ? "ЗАКАЗ" : "ORDER"}
             </span>
           </h1>
@@ -698,7 +698,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                 placeholder={currentLocale === "hy" ? "Օրինակ՝ A975198" : currentLocale === "ru" ? "Например: A975198" : "Example: A975198"}
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value.toUpperCase())}
-                className="flex-1 bg-transparent border-none outline-none py-3 px-5 text-sm font-semibold tracking-wider text-[#3D271B] placeholder-[#C2C2C2] min-w-0"
+                className="flex-1 bg-transparent border-none outline-none py-3 px-5 text-sm font-semibold tracking-wider text-[#1a1c1d] placeholder-[#C2C2C2] min-w-0"
               />
               <button
                 type="submit"
@@ -737,7 +737,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
             <form onSubmit={handleSearch} className="space-y-5">
               {/* Tracking Code Field */}
               <div className="space-y-1.5 text-left">
-                <label className="block text-[9px] font-bold text-capsule-accent uppercase tracking-wider font-mono">
+                <label className="block text-[9px] font-bold text-[#FF2300] uppercase tracking-wider font-mono">
                   {l.tracking_code_label}
                 </label>
                 <div className="relative">
@@ -747,14 +747,14 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                     placeholder={l.tracking_code_placeholder}
                     value={trackingCode}
                     onChange={(e) => setTrackingCode(e.target.value.toUpperCase())}
-                    className="w-full bg-capsule-surf border border-capsule-accent/15 rounded-xl py-3 px-4 text-xs font-bold text-capsule-dark uppercase tracking-widest outline-none focus:border-capsule-accent/40 focus:ring-1 focus:ring-capsule-accent/40"
+                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-xl py-3 px-4 text-xs font-bold text-[#1a1c1d] uppercase tracking-widest outline-none focus:border-[#FF2300]/25/40 focus:ring-1 focus:ring-[#FF2300]/40"
                   />
                 </div>
               </div>
 
               {/* Phone Number Field */}
               <div className="space-y-1.5 text-left">
-                <label className="block text-[9px] font-bold text-capsule-accent uppercase tracking-wider font-mono">
+                <label className="block text-[9px] font-bold text-[#FF2300] uppercase tracking-wider font-mono">
                   {l.phone_label}
                 </label>
                 <input
@@ -763,7 +763,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   placeholder={l.phone_placeholder}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-capsule-surf border border-capsule-accent/15 rounded-xl py-3 px-4 text-xs font-bold text-capsule-dark outline-none focus:border-capsule-accent/40 focus:ring-1 focus:ring-capsule-accent/40"
+                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-xl py-3 px-4 text-xs font-bold text-[#1a1c1d] outline-none focus:border-[#FF2300]/25/40 focus:ring-1 focus:ring-[#FF2300]/40"
                 />
               </div>
 
@@ -797,23 +797,23 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
           </div>
 
           {order ? (
-            <div className="bg-[#FAFAF9] border-3 border-white rounded-[2.5rem] p-6 sm:p-10 shadow-[4px_4px_15px_#D4CFC4,_-4px_-4px_15px_#FFFFFF] relative space-y-8 animate-[fadeIn_0.5s_ease_out]">
+            <div className="bg-[#f0f2f5] border-3 border-white rounded-[2.5rem] p-6 sm:p-10 shadow-[4px_4px_15px_#D4CFC4,_-4px_-4px_15px_#FFFFFF] relative space-y-8 animate-[fadeIn_0.5s_ease_out]">
               
               {/* Card Header & Status Ribbon */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-capsule-accent/10 pb-4 gap-4 text-left">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#FF2300]/25/10 pb-4 gap-4 text-left">
                 <div>
                   <span className="text-[10px] text-[#ff2300] font-mono font-bold uppercase tracking-widest flex items-center gap-1.5 mb-1.5 select-none">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#ff2300] animate-pulse"></span>
                     {l.order_found}
                   </span>
-                  <h3 className="font-serif text-2xl font-black text-[#3D271B] uppercase tracking-wide">
+                  <h3 className="font-serif text-2xl font-black text-[#1a1c1d] uppercase tracking-wide">
                     {l.order_number}: <span className="font-sans text-[#ff2300] font-extrabold">{order.id}</span>
                   </h3>
                 </div>
 
                 <button
                   onClick={() => handleCopyId(order.id)}
-                  className="bg-white hover:bg-[#EFECE6]/50 transition-all text-[#3D271B] border border-[#E9E4DB] hover:border-[#3D271B]/30 rounded-xl px-4 py-2 font-bold font-mono text-[10px] uppercase cursor-pointer select-none flex items-center gap-1.5 shadow-xs"
+                  className="bg-white hover:bg-[#e1e6ed]/50 transition-all text-[#1a1c1d] border border-[#d1d9e6] hover:border-[#1a1c1d]/30 rounded-xl px-4 py-2 font-bold font-mono text-[10px] uppercase cursor-pointer select-none flex items-center gap-1.5 shadow-xs"
                 >
                   {copied ? <Check size={12} className="stroke-[3.5] text-[#ff2300]" /> : <Copy size={12} />}
                   <span>{copied ? l.copy_success : l.copy_code}</span>
@@ -821,21 +821,21 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               </div>
 
               {/* Grid Specifications info */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-left font-sans text-[#3D271B]">
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60">
-                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-capsule-text-muted select-none block">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-left font-sans text-[#1a1c1d]">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60">
+                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#727784] select-none block">
                     {l.created_at}
                   </span>
-                  <p className="text-xs font-bold text-[#3D271B] mt-1">
+                  <p className="text-xs font-bold text-[#1a1c1d] mt-1">
                     {new Date(order.ts).toLocaleDateString(currentLocale === "hy" ? "hy-AM" : currentLocale === "ru" ? "ru-RU" : "en-US", {
                       year: "numeric", month: "short", day: "numeric"
                     })}
                   </p>
                 </div>
 
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60 flex flex-col justify-between">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60 flex flex-col justify-between">
                   <div>
-                    <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-capsule-text-muted select-none block">
+                    <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#727784] select-none block">
                       {l.est_ready}
                     </span>
                     <p className="text-xs font-black text-[#ff2300] mt-1 flex items-center gap-1.5">
@@ -848,7 +848,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                     </p>
                   </div>
                   {order.estimatedCompletionUpdatedAt && (
-                    <div className="mt-2 pt-1.5 border-t border-[#3D271B]/5 text-[9px] text-[#78716c] font-sans">
+                    <div className="mt-2 pt-1.5 border-t border-[#1a1c1d]/5 text-[9px] text-[#78716c] font-sans">
                       <span className="font-bold">
                         {currentLocale === "hy" ? "Վերջին թարմացումը:" : currentLocale === "ru" ? "Последнее обновление:" : "Last Update:"}
                       </span>{" "}
@@ -857,26 +857,26 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   )}
                 </div>
 
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60">
-                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-capsule-text-muted select-none block">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60">
+                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#727784] select-none block">
                     {l.product_type}
                   </span>
-                  <p className="text-xs font-bold uppercase tracking-widest text-[#3D271B] mt-1 font-mono">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#1a1c1d] mt-1 font-mono">
                     {order.type}
                   </p>
                 </div>
 
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60">
-                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#3D271B]/60 select-none block">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60">
+                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#1a1c1d]/60 select-none block">
                     {l.qty}
                   </span>
-                  <p className="text-xs font-bold text-[#3D271B] mt-1">
+                  <p className="text-xs font-bold text-[#1a1c1d] mt-1">
                     {order.qty.toLocaleString()} {order.type === "ribbons" ? (currentLocale === "hy" ? "մետր" : "м") : (currentLocale === "hy" ? "հատ" : "шт")}
                   </p>
                 </div>
 
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60">
-                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#3D271B]/60 select-none block">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60">
+                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#1a1c1d]/60 select-none block">
                     {currentLocale === "hy" ? "Պատվերի Կոդ" : currentLocale === "ru" ? "Номер/Код заказа" : "Order / Tracking Code"}
                   </span>
                   <p className="text-xs font-mono font-black text-[#ff2300] mt-1 tracking-wider uppercase">
@@ -884,18 +884,18 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   </p>
                 </div>
 
-                <div className="bg-[#FAF9F6]/85 p-4 rounded-2xl border border-[#E9E4DB]/60">
-                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#3D271B]/60 select-none block">
+                <div className="bg-[#f0f2f5]/85 p-4 rounded-2xl border border-[#d1d9e6]/60">
+                  <span className="text-[9px] uppercase font-mono tracking-wider font-extrabold text-[#1a1c1d]/60 select-none block">
                     {currentLocale === "hy" ? "Մենեջեր" : currentLocale === "ru" ? "Менеджер" : "Resp. Manager"}
                   </span>
-                  <p className="text-xs font-bold text-[#3D271B] mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                  <p className="text-xs font-bold text-[#1a1c1d] mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
                     {order.manager || "Unassigned"}
                   </p>
                 </div>
               </div>
 
               {/* ADVANCED ACTIVE STAGE DETAIL PANEL */}
-              <div className="bg-[#FAF9F6] border border-[#ff2300]/30 rounded-[1.5rem] p-5 sm:p-6 text-left font-sans space-y-3 relative overflow-hidden shadow-xs">
+              <div className="bg-[#f0f2f5] border border-[#ff2300]/30 rounded-[1.5rem] p-5 sm:p-6 text-left font-sans space-y-3 relative overflow-hidden shadow-xs">
                 {/* Decorative glowing brand aura top right */}
                 <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-[#ff2300]/5 blur-xl pointer-events-none" />
                 
@@ -905,13 +905,13 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                     {currentLocale === "hy" ? "ԸՆԹԱՑԻԿ ՓՈՒԼԻ ՄԱՆՐԱՄԱՍՆԵՐ" : currentLocale === "ru" ? "ДЕТАЛЬНЫЙ СТАТУС ТЕКУЩЕГО ЭТАПА" : "CURRENT STAGE DETAIL"}
                   </span>
                   
-                  <span className="text-[9.5px] font-mono font-bold text-[#3D271B]/60 bg-[#EFECE6] px-2.5 py-0.5 rounded uppercase">
+                  <span className="text-[9.5px] font-mono font-bold text-[#1a1c1d]/60 bg-[#e1e6ed] px-2.5 py-0.5 rounded uppercase">
                     Yerevan HQ
                   </span>
                 </div>
 
                 <div className="space-y-1.5">
-                  <h4 className="font-serif text-lg font-extrabold text-[#3D271B] uppercase tracking-wide">
+                  <h4 className="font-serif text-lg font-extrabold text-[#1a1c1d] uppercase tracking-wide">
                     {l[STATUSES.find(s => s.key === order.status)?.labelKey || "stage_new"]}
                   </h4>
                   <p className="text-xs sm:text-sm text-[#5B5B5B] leading-relaxed font-sans">
@@ -940,7 +940,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               {/* Progress Bar Container */}
               <div className="space-y-4 text-left select-none">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-[10px] font-bold text-[#3D271B] uppercase tracking-wider font-mono">
+                  <span className="text-[10px] font-bold text-[#1a1c1d] uppercase tracking-wider font-mono">
                     {l.progress_title}
                   </span>
                   <span className="text-[11px] font-mono font-black text-[#ff2300] bg-[#ff2300]/10 px-2.5 py-1 rounded border border-[#ff2300]/20">
@@ -949,7 +949,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                 </div>
 
                 {/* Progress bar nested container */}
-                <div className="relative w-full h-3.5 bg-[#EFECE6]/70 rounded-full overflow-hidden border border-white/80 shadow-[inset_1.5px_1.5px_3.5px_#D5CEBF]">
+                <div className="relative w-full h-3.5 bg-[#e1e6ed]/70 rounded-full overflow-hidden border border-white/80 shadow-[inset_1.5px_1.5px_3.5px_#D5CEBF]">
                   <div 
                     className="h-full bg-gradient-to-r from-[#ff2300] to-[#d91f00] rounded-full transition-all duration-1000 ease-out shadow-xs"
                     style={{ width: `${getCurrentStatusPercent(order.status)}%` }}
@@ -957,7 +957,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                 </div>
 
                 {/* Premium Percentage Indicator ticks */}
-                <div className="flex justify-between text-[8px] font-mono font-bold text-capsule-text-muted px-1 mt-1">
+                <div className="flex justify-between text-[8px] font-mono font-bold text-[#727784] px-1 mt-1">
                   {["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"].map((pct) => (
                     <div key={pct} className="flex flex-col items-center">
                       <span className="w-[1.5px] h-1.5 bg-[#E2DEC5] mb-0.5" />
@@ -979,8 +979,8 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                           isActive 
                             ? "bg-[#ff2300]/10 border-[#ff2300]/45 text-[#ff2300] scale-[1.04] shadow-xs font-semibold"
                             : isDone
-                              ? "bg-[#FAF9F6] border-[#ff2300]/20 text-[#ff2300]/80"
-                              : "bg-[#FAF9F6]/40 border-[#E9E4DB]/50 text-capsule-text-muted opacity-60"
+                              ? "bg-[#f0f2f5] border-[#ff2300]/20 text-[#ff2300]/80"
+                              : "bg-[#f0f2f5]/40 border-[#d1d9e6]/50 text-[#727784] opacity-60"
                         }`}
                       >
                         <Icon size={15} className={`${isActive ? "animate-pulse stroke-[2.5]" : ""}`} />
@@ -994,16 +994,16 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               </div>
 
               {/* Full Timeline History List */}
-              <div className="bg-white border border-[#E9E4DB] rounded-3xl p-5 text-left font-sans space-y-3">
-                <span className="text-[10px] uppercase font-mono tracking-wider font-extrabold text-[#3D271B] flex items-center gap-1.5 select-none bg-[#EFECE6]/40 px-3 py-1 rounded-full width-fit inline-flex">
+              <div className="bg-white border border-[#d1d9e6] rounded-3xl p-5 text-left font-sans space-y-3">
+                <span className="text-[10px] uppercase font-mono tracking-wider font-extrabold text-[#1a1c1d] flex items-center gap-1.5 select-none bg-[#e1e6ed]/40 px-3 py-1 rounded-full width-fit inline-flex">
                   📜 <span>{currentLocale === "hy" ? "Կատարման Պատմություն" : "Подробный таймлайн производства"}</span>
                 </span>
                 <div className="space-y-4 pt-2.5 pl-1.5">
                   {(order.statusHistory || []).map((step: any, sIdx: number) => (
                     <div key={sIdx} className="relative pl-5 border-l-[2px] border-[#ff2300]/30 last:border-transparent font-sans">
                       <div className="absolute w-2.5 h-2.5 rounded-full bg-[#ff2300] -left-[6px] top-1 border-2 border-white shadow-xs" />
-                      <div className="font-bold text-xs text-[#3D271B]">{step.status}</div>
-                      <div className="text-[9.5px] text-capsule-text-muted font-mono leading-tight mt-0.5 font-mono">
+                      <div className="font-bold text-xs text-[#1a1c1d]">{step.status}</div>
+                      <div className="text-[9.5px] text-[#727784] font-mono leading-tight mt-0.5 font-mono">
                         {new Date(step.timestamp || step.ts).toLocaleString(currentLocale === "hy" ? "hy-AM" : "ru-RU")}
                       </div>
                       {step.manager && step.manager !== "Unassigned" && (
@@ -1016,8 +1016,8 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   {(!order.statusHistory || order.statusHistory.length === 0) && (
                     <div className="relative pl-5 border-l-[2px] border-[#ff2300]/30">
                       <div className="absolute w-2.5 h-2.5 rounded-full bg-[#ff2300] -left-[6px] top-1 border-2 border-white shadow-xs" />
-                      <div className="font-bold text-xs text-[#3D271B]">Заказ создан</div>
-                      <div className="text-[9.5px] text-capsule-text-muted font-mono leading-tight mt-0.5 font-mono">
+                      <div className="font-bold text-xs text-[#1a1c1d]">Заказ создан</div>
+                      <div className="text-[9.5px] text-[#727784] font-mono leading-tight mt-0.5 font-mono">
                         {new Date(order.ts).toLocaleString(currentLocale === "hy" ? "hy-AM" : "ru-RU")}
                       </div>
                     </div>
@@ -1028,14 +1028,14 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               {/* Artwork Design Preview & Approval Widget */}
               {order.artworkUrl && (
                 <div className="bg-white border rounded-2xl p-4 text-left font-sans space-y-3">
-                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-capsule-accent flex items-center gap-1.5">
+                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-[#FF2300] flex items-center gap-1.5">
                     🎨 <span>{currentLocale === "hy" ? "Դիզայնի Մակետի Հաստատում" : "Утверждение макета дизайна"}</span>
                   </span>
                   <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     {order.artworkUrl.match(/\.(jpeg|jpg|gif|png|webp)/i) ? (
                       <img src={order.artworkUrl} alt="Design Proof" className="w-20 h-20 object-cover border rounded-lg bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
                     ) : (
-                      <div className="w-20 h-20 bg-gray-100 border rounded-lg flex flex-col items-center justify-center text-[#3D271B]/60 text-center text-[10px] p-2 shrink-0">
+                      <div className="w-20 h-20 bg-gray-100 border rounded-lg flex flex-col items-center justify-center text-[#1a1c1d]/60 text-center text-[10px] p-2 shrink-0">
                         <span>Preview</span>
                         <a href={order.artworkUrl} target="_blank" rel="noreferrer" className="text-green-800 font-bold underline mt-1">Open File</a>
                       </div>
@@ -1049,7 +1049,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                           "bg-blue-100 text-blue-800"
                         }`}>{order.artworkStatus || "ожидает"}</span>
                       </div>
-                      <p className="text-[11px] text-[#3D271B]/60 leading-relaxed italic select-all font-sans">
+                      <p className="text-[11px] text-[#1a1c1d]/60 leading-relaxed italic select-all font-sans">
                         {order.artworkComment || l.no_comment}
                       </p>
                     </div>
@@ -1089,12 +1089,12 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               {/* Omnichannel notifications config */}
               <div className="bg-white border rounded-2xl p-4 text-left font-sans space-y-2">
                 <div className="flex justify-between items-center select-none">
-                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-capsule-accent flex items-center gap-1.5">
+                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-[#FF2300] flex items-center gap-1.5">
                     🔔 <span>{currentLocale === "hy" ? "Ծանուցումներ" : "Оповещения по статусу заказа"}</span>
                   </span>
                   {notifStatusMsg && <span className="text-[9px] text-green-700 font-bold bg-green-50 px-2 py-0.5 rounded animate-pulse">{notifStatusMsg}</span>}
                 </div>
-                <p className="text-[10px] text-capsule-text-muted leading-relaxed">
+                <p className="text-[10px] text-[#727784] leading-relaxed">
                   {currentLocale === "hy" ? "Ակտիվացրեք փուլերի ավտոմատ իրազեկումը Ձեր հեռախոսին կամ էլփոստին" : "Проинформируем вас в секунду изменения статуса. Выберите удобный канал связи:"}
                 </p>
                 <div className="grid grid-cols-3 gap-2 pt-1 font-mono">
@@ -1116,7 +1116,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               {/* Order Files Center download container */}
               {order.files && order.files.length > 0 && (
                 <div className="bg-white border rounded-2xl p-4 text-left font-sans space-y-2">
-                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-capsule-accent flex items-center gap-1.5 select-none">
+                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold text-[#FF2300] flex items-center gap-1.5 select-none">
                     📁 <span>{currentLocale === "hy" ? "Կցված Փաստաթղթեր" : "Документы и официальные файлы заказа"}</span>
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1126,7 +1126,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                         href={file.fileUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center justify-between p-2.5 rounded-xl border bg-gray-50 hover:bg-[#FAF9F6] border-gray-150 transition-all text-xs group"
+                        className="flex items-center justify-between p-2.5 rounded-xl border bg-gray-50 hover:bg-[#f0f2f5] border-gray-150 transition-all text-xs group"
                       >
                         <div className="truncate pr-1">
                           <span className="font-bold text-[9px] uppercase tracking-wider text-[#ff2300] bg-[#ff2300]/5 px-1.5 py-0.5 rounded border border-[#ff2300]/15 inline-block mb-1">
@@ -1134,7 +1134,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                           </span>
                           <div className="text-gray-700 font-bold truncate text-[11px]">{file.fileName}</div>
                         </div>
-                        <Download size={14} className="text-capsule-accent group-hover:scale-110 transition-transform shrink-0" />
+                        <Download size={14} className="text-[#FF2300] group-hover:scale-110 transition-transform shrink-0" />
                       </a>
                     ))}
                   </div>
@@ -1154,7 +1154,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <p className="text-[10px] text-[#3D271B]/60 leading-relaxed select-none">
+                      <p className="text-[10px] text-[#1a1c1d]/60 leading-relaxed select-none">
                         {currentLocale === "hy" ? "Խնդրում ենք թողնել Ձեր գնահատականը:" : "Пожалуйста, выставите оценку от 1 до 5 звезд и напишите несколько слов о нашем сервисе:"}
                       </p>
                       <div className="flex gap-1.5 select-none">
@@ -1191,18 +1191,18 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
               )}
 
               {/* Manager Comment Block */}
-              <div className="bg-capsule-accent/[0.03] border border-capsule-accent/10 rounded-2xl p-4 text-left font-sans">
-                <span className="text-[9px] uppercase font-mono tracking-wider font-bold text-capsule-accent flex items-center gap-1.5 select-none mb-2">
+              <div className="bg-[#FF2300]/[0.03] border border-[#FF2300]/25/10 rounded-2xl p-4 text-left font-sans">
+                <span className="text-[9px] uppercase font-mono tracking-wider font-bold text-[#FF2300] flex items-center gap-1.5 select-none mb-2">
                   <MessageSquare size={12} />
                   <span>{l.last_comment}</span>
                 </span>
-                <p className="text-xs font-semibold leading-relaxed text-capsule-dark select-all whitespace-pre-line">
+                <p className="text-xs font-semibold leading-relaxed text-[#1a1c1d] select-all whitespace-pre-line">
                   {order.managerComment ? order.managerComment : <i>{l.no_comment}</i>}
                 </p>
               </div>
 
               {/* Client Actions: Downloads & Contact */}
-              <div className="border-t border-capsule-accent/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="border-t border-[#FF2300]/25/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* QR Code Container */}
                 <div className="flex items-center gap-3">
                   <img
@@ -1210,14 +1210,14 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                       window.location.origin + "/track-order?code=" + order.trackingCode + "&phone=" + (phone || order.customerPhone || "")
                     )}`}
                     alt="Order QR Code"
-                    className="w-16 h-16 border border-capsule-accent/10 rounded-md bg-white p-1"
+                    className="w-16 h-16 border border-[#FF2300]/25/10 rounded-md bg-white p-1"
                     referrerPolicy="no-referrer"
                   />
                   <div className="text-left font-sans">
-                    <span className="text-[9px] font-mono font-bold text-capsule-accent uppercase block">
+                    <span className="text-[9px] font-mono font-bold text-[#FF2300] uppercase block">
                       {currentLocale === "hy" ? "ՈՒՂԻՂ ՀՂՈՒՄ" : currentLocale === "ru" ? "Прямая ссылка" : "Direct Tracking URL"}
                     </span>
-                    <span className="text-[10px] text-capsule-text-secondary">
+                    <span className="text-[10px] text-[#414753]">
                       {currentLocale === "hy" ? "Սկանավորել QR" : currentLocale === "ru" ? "Сканируйте QR" : "Scan scan order tracker"}
                     </span>
                   </div>
@@ -1239,7 +1239,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   <button
                     type="button"
                     onClick={() => downloadQuote(order)}
-                    className="flex-1 sm:flex-initial bg-white hover:bg-capsule-accent/5 text-[10px] px-3 py-2 border border-[#E0DCD4] hover:border-capsule-accent/30 text-capsule-accent font-bold uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
+                    className="flex-1 sm:flex-initial bg-white hover:bg-[#FF2300]/5 text-[10px] px-3 py-2 border border-[#d1d9e6] hover:border-[#FF2300]/25/30 text-[#FF2300] font-bold uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
                   >
                     <Download size={12} />
                     <span>Quote PDF</span>
@@ -1248,7 +1248,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                   <button
                     type="button"
                     onClick={() => downloadInvoice(order)}
-                    className="flex-1 sm:flex-initial bg-white hover:bg-capsule-accent/5 text-[10px] px-3 py-2 border border-[#E0DCD4] hover:border-capsule-accent/30 text-capsule-accent font-bold uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
+                    className="flex-1 sm:flex-initial bg-white hover:bg-[#FF2300]/5 text-[10px] px-3 py-2 border border-[#d1d9e6] hover:border-[#FF2300]/25/30 text-[#FF2300] font-bold uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all text-center cursor-pointer"
                   >
                     <Download size={12} />
                     <span>Invoice</span>
@@ -1271,8 +1271,8 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
             </div>
           ) : (
             /* Standby Card when no order is active */
-            <div className="h-full min-h-[300px] border-3 border-dashed border-[#E5E3DF] rounded-[2.5rem] flex flex-col items-center justify-center p-8 text-center select-none">
-              <div className="w-16 h-16 rounded-full bg-capsule-accent/5 text-capsule-accent/60 flex items-center justify-center mb-4">
+            <div className="h-full min-h-[300px] border-3 border-dashed border-[#d1d9e6] rounded-[2.5rem] flex flex-col items-center justify-center p-8 text-center select-none">
+              <div className="w-16 h-16 rounded-full bg-[#FF2300]/5 text-[#FF2300]/60 flex items-center justify-center mb-4">
                 <Compass size={28} className="animate-spin-slow" />
               </div>
               <h4 className="font-serif text-base font-bold text-[#7C8592] uppercase tracking-wider">
@@ -1281,7 +1281,7 @@ export default function OrderTrackPortal({ currentLocale, onBackToHome, onReorde
                  currentLocale === "ar" ? "في انتظار البحث" :
                  "Awaiting search query..."}
               </h4>
-              <p className="text-[10px] text-capsule-text-muted max-w-sm mt-1.5">
+              <p className="text-[10px] text-[#727784] max-w-sm mt-1.5">
                 {currentLocale === "hy" ? "Մուտքագրեք պատվերի հետևման կոդը և հեռախոսահամարը ձախ կողմում՝ արտադրության փուլերը տեսնելու համար։" :
                  currentLocale === "ru" ? "Введите трекинг-код полученный в SMS/Email и ваш телефон слева для отслеживания стадий печати." :
                  currentLocale === "ar" ? "أدخل كود التتبع ورقم الهاتف في اللوحة الجانبية للتحقق من تفاصيل الإنتاج والشحن." :

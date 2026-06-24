@@ -1,6 +1,6 @@
 {
-  "name": "Capsule Concept Packaging Calculator",
-  "description": "Premium full-stack custom bags and boxes calculator featuring design config options, MOQ matrices, and instant order submissions for Capsule Concept.",
+  "name": "CAPSULE PACK Digital Experience",
+  "description": "The world-class digital platform for engineering, customizing, and tracking premium packaging solutions by CAPSULE PACK.",
   "requestFramePermissions": [
     "geolocation",
     "microphone"

@@ -551,7 +551,7 @@ export default function DynamicProductCalculator({
       day: 'numeric' 
     });
 
-    // 1. BRAND DEEP CHOCOLATE BAND (#3D271B - RGB: 61, 39, 27)
+    // 1. BRAND DEEP CHOCOLATE BAND (#1a1c1d - RGB: 61, 39, 27)
     doc.setFillColor(61, 39, 27);
     doc.rect(0, 0, 210, 32, "F");
 
@@ -717,7 +717,7 @@ export default function DynamicProductCalculator({
     
     const termsText = [
       "Please note: The calculated price is generated in real-time based on automated mathematical models.",
-      "The final commercial quotation certificate will be issued by your Capsule Concept manager upon receiving this form.",
+      "The final commercial quotation certificate will be issued by your CAPSULE PACK manager upon receiving this form.",
       "For design customizations, bespoke stamping, foil-blocking or offset requirements, contact design@thecapsulelab.am directly."
     ];
     termsText.forEach((line) => {
@@ -759,10 +759,10 @@ export default function DynamicProductCalculator({
   <style>
     .cut-line { stroke: #D27E53; stroke-width: 2.2; fill: none; }
     .fold-line { stroke: #3182CE; stroke-width: 1.5; stroke-dasharray: 4,4; fill: none; }
-    .text-label { font-family: 'Courier New', monospace; font-size: 11px; fill: #3D271B; font-weight: bold; }
-    .grid-lines { stroke: #E9E4DB; stroke-width: 0.5; stroke-dasharray: 2,2; }
+    .text-label { font-family: 'Courier New', monospace; font-size: 11px; fill: #1a1c1d; font-weight: bold; }
+    .grid-lines { stroke: #d1d9e6; stroke-width: 0.5; stroke-dasharray: 2,2; }
   </style>
-  <rect x="10" y="10" width="${2 * w + 2 * d + 40}" height="${h + d + 65}" rx="5" fill="#FAF9F6" stroke="#E3DECE" stroke-width="1.2"/>
+  <rect x="10" y="10" width="${2 * w + 2 * d + 40}" height="${h + d + 65}" rx="5" fill="#f0f2f5" stroke="#E3DECE" stroke-width="1.2"/>
   
   <!-- Outer Dieline boundary cut contours -->
   <rect class="cut-line" x="30" y="30" width="${2 * w + 2 * d}" height="${h}" />
@@ -818,7 +818,7 @@ export default function DynamicProductCalculator({
 
         {/* 1. INTERACTIVE DESIGNER WALKTHROUGH TOUR GUIDE */}
         {tourStep > 0 && (
-          <div className="bg-[#3D271B] border border-[#2B1B13]/30 text-white p-5 rounded-2xl shadow-xl transition-all relative overflow-hidden">
+          <div className="bg-[#1a1c1d] border border-[#2B1B13]/30 text-white p-5 rounded-2xl shadow-xl transition-all relative overflow-hidden">
             <div className="absolute right-0 top-0 opacity-10 font-black text-6xl select-none pointer-events-none transform translate-x-5 translate-y-[-10px]">
               {tourStep}/5
             </div>
@@ -869,7 +869,7 @@ export default function DynamicProductCalculator({
           <button
             type="button"
             onClick={() => setTourStep(1)}
-            className="w-full py-2 bg-[#F4F2EE] hover:bg-[#EAE5DC] text-[#3D271B] border border-[#E3DECE] hover:border-[#D27E53]/40 rounded-xl text-[10px] uppercase font-extrabold tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+            className="w-full py-2 bg-[#f0f2f5] hover:bg-[#EAE5DC] text-[#1a1c1d] border border-[#E3DECE] hover:border-[#D27E53]/40 rounded-xl text-[10px] uppercase font-extrabold tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
           >
             <Sparkles size={11} className="text-[#D27E53]" />
             {locale === "hy" ? "ՍԿՍԵԼ ԳՆԱՀԱՏՄԱՆ ԻՆՏԵՐԱԿՏԻՎ ՏՈՒՐԸ" : locale === "ru" ? "НАЧАТЬ КРАТКИЙ ИНТЕРАКТИВНЫЙ ТУР" : "START GUIDED SPEC DESIGNER TOUR"}
@@ -877,11 +877,11 @@ export default function DynamicProductCalculator({
         )}
 
         {/* Dynamic Voice-to-Order Assistant Card */}
-        <div className={`p-5 border border-[#E9E4DB] bg-gradient-to-br from-white to-[#FAF9F6] rounded-2xl shadow-sm hover:shadow-md transition-all relative overflow-hidden ${tourStep === 2 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
+        <div className={`p-5 border border-[#d1d9e6] bg-gradient-to-br from-white to-[#f0f2f5] rounded-2xl shadow-sm hover:shadow-md transition-all relative overflow-hidden ${tourStep === 2 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
           {/* Success Flash Highlight Overlay */}
           {isSuccessFlash && (
             <div className="absolute inset-0 bg-[#D27E53]/10 border border-[#D27E53]/30 rounded-2xl flex items-center justify-center z-10">
-              <div className="bg-[#3D271B] text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-md">
+              <div className="bg-[#1a1c1d] text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-md">
                 <Check size={14} className="text-[#E89E78]" />
                 {locale === "hy" ? "ՊԱՐԱՄԵՏՐԵՐԸ ԹԱՐՄԱՑՎԵԼ ԵՆ!" : locale === "ru" ? "ПАРАМЕТРЫ ОБНОВЛЕНЫ!" : "PARAMETERS APPLIED!"}
               </div>
@@ -894,10 +894,10 @@ export default function DynamicProductCalculator({
                 <Mic size={18} className={isRecording ? "animate-pulse" : ""} />
               </div>
               <div>
-                <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-[#3D271B]">
+                <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-[#1a1c1d]">
                   {locale === "hy" ? "Ձայնային Պատվեր (AI)" : locale === "ru" ? "Голосовой заказ (AI)" : "Voice-to-Order Assistant"}
                 </h4>
-                <p className="text-[10px] text-capsule-text-muted">
+                <p className="text-[10px] text-[#727784]">
                   {locale === "hy" ? "Թելադրեք պատվերի մանրամասները" : locale === "ru" ? "Продиктуйте параметры заказа" : "Dictate specifications to auto-fill fields"}
                 </p>
               </div>
@@ -916,7 +916,7 @@ export default function DynamicProductCalculator({
           </div>
 
           {showVoicePanel && (
-            <div className="mt-4 pt-4 border-t border-[#E9E4DB] space-y-3.5">
+            <div className="mt-4 pt-4 border-t border-[#d1d9e6] space-y-3.5">
               {!voiceInputSupported ? (
                 <div className="flex gap-2 p-3 bg-red-50 border border-red-100 rounded-xl text-[10px] text-red-900 leading-relaxed font-semibold">
                   <AlertCircle size={14} className="shrink-0 text-red-500" />
@@ -928,7 +928,7 @@ export default function DynamicProductCalculator({
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between gap-2 bg-[#F4F2EE] p-1.5 rounded-xl border border-[#E3DEC3]/40">
+                  <div className="flex items-center justify-between gap-2 bg-[#f0f2f5] p-1.5 rounded-xl border border-[#E3DEC3]/40">
                     <div className="flex items-center gap-2 pl-2">
                       <div className={`w-2 h-2 rounded-full ${isRecording ? "bg-red-500 animate-ping" : "bg-gray-400"}`} />
                       <span className="font-mono text-[9px] uppercase tracking-wider font-extrabold text-[#5A5245]">
@@ -952,7 +952,7 @@ export default function DynamicProductCalculator({
                         <button
                           type="button"
                           onClick={startRecording}
-                          className="px-3.5 py-1.5 bg-[#3D271B] hover:bg-[#2B1B13] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer"
+                          className="px-3.5 py-1.5 bg-[#1a1c1d] hover:bg-[#2B1B13] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer"
                         >
                           <Mic size={11} className="text-[#E89E78]" />
                           {locale === "hy" ? "Խոսել" : locale === "ru" ? "Говорить" : "Talk"}
@@ -965,9 +965,9 @@ export default function DynamicProductCalculator({
                   {isRecording && (
                     <div className="flex items-center justify-center gap-1 py-1.5 bg-[#FAF5EE] rounded-xl border border-[#F1EAE0]">
                       <span className="w-1 h-3 bg-[#D27E53] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                      <span className="w-1 h-5 bg-[#3D271B] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
+                      <span className="w-1 h-5 bg-[#1a1c1d] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
                       <span className="w-1 h-7 bg-[#D27E53] rounded-full animate-bounce" style={{ animationDelay: '0.5s' }} />
-                      <span className="w-1 h-5 bg-[#3D271B] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      <span className="w-1 h-5 bg-[#1a1c1d] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                       <span className="w-1 h-3 bg-[#D27E53] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
                     </div>
                   )}
@@ -986,7 +986,7 @@ export default function DynamicProductCalculator({
                           ? "Пример: «Хочу заказать 500 пакетов, размеры 25 на 35 на 8, глянцевая ламинация, атласная ручка»"
                           : "Example: \"I want to order 500 bags, dimensions 25 by 35 by 8, gloss lamination with satin handles\""
                       }
-                      className="w-full h-18 bg-white border border-[#E9E4DB] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#D27E53] resize-none font-sans leading-relaxed text-[#403C39]"
+                      className="w-full h-18 bg-white border border-[#d1d9e6] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#D27E53] resize-none font-sans leading-relaxed text-[#414753]"
                     />
                   </div>
 
@@ -1023,10 +1023,10 @@ export default function DynamicProductCalculator({
         
         {/* Dynamic Dimensions Slider/Input Panel */}
         {(category.sizing.showWidth || category.sizing.showHeight || category.sizing.showDepth) && (
-          <div className="p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm transition-all hover:shadow-md">
+          <div className="p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center gap-2 mb-4">
               <Sliders size={18} className="text-[#8B7E66]" />
-              <h3 className="font-sans font-semibold text-sm text-[#403C39] tracking-tight uppercase">
+              <h3 className="font-sans font-semibold text-sm text-[#414753] tracking-tight uppercase">
                 {t("common.dimensions", "Չափսեր")} ({category.sizing.unit || "cm"})
               </h3>
             </div>
@@ -1036,8 +1036,8 @@ export default function DynamicProductCalculator({
               {category.sizing.showWidth && (
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-medium text-[#403C39]">{t("calc.width", "Լայնություն")}</span>
-                    <span className="font-mono font-bold bg-[#F4F2EE] px-2 py-0.5 rounded text-capsule-accent">
+                    <span className="font-medium text-[#414753]">{t("calc.width", "Լայնություն")}</span>
+                    <span className="font-mono font-bold bg-[#f0f2f5] px-2 py-0.5 rounded text-[#FF2300]">
                       {width} {category.sizing.unit || "cm"}
                     </span>
                   </div>
@@ -1048,9 +1048,9 @@ export default function DynamicProductCalculator({
                     step={1}
                     value={width}
                     onChange={(e) => setWidth(Number(e.target.value))}
-                    className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                    className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                   />
-                  <div className="flex justify-between text-[10px] text-capsule-text-muted">
+                  <div className="flex justify-between text-[10px] text-[#727784]">
                     <span>Min {category.sizing.minWidth || 5}</span>
                     <span>Max {category.sizing.maxWidth || 100}</span>
                   </div>
@@ -1061,8 +1061,8 @@ export default function DynamicProductCalculator({
               {category.sizing.showHeight && (
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-medium text-[#403C39]">{t("calc.height", "Բարձրություն")}</span>
-                    <span className="font-mono font-bold bg-[#F4F2EE] px-2 py-0.5 rounded text-capsule-accent">
+                    <span className="font-medium text-[#414753]">{t("calc.height", "Բարձրություն")}</span>
+                    <span className="font-mono font-bold bg-[#f0f2f5] px-2 py-0.5 rounded text-[#FF2300]">
                       {height} {category.sizing.unit || "cm"}
                     </span>
                   </div>
@@ -1073,9 +1073,9 @@ export default function DynamicProductCalculator({
                     step={1}
                     value={height}
                     onChange={(e) => setHeight(Number(e.target.value))}
-                    className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                    className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                   />
-                  <div className="flex justify-between text-[10px] text-capsule-text-muted">
+                  <div className="flex justify-between text-[10px] text-[#727784]">
                     <span>Min {category.sizing.minHeight || 5}</span>
                     <span>Max {category.sizing.maxHeight || 100}</span>
                   </div>
@@ -1086,8 +1086,8 @@ export default function DynamicProductCalculator({
               {category.sizing.showDepth && (
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-medium text-[#403C39]">{t("calc.depth", "Խորություն")}</span>
-                    <span className="font-mono font-bold bg-[#F4F2EE] px-2 py-0.5 rounded text-capsule-accent">
+                    <span className="font-medium text-[#414753]">{t("calc.depth", "Խորություն")}</span>
+                    <span className="font-mono font-bold bg-[#f0f2f5] px-2 py-0.5 rounded text-[#FF2300]">
                       {depth} {category.sizing.unit || "cm"}
                     </span>
                   </div>
@@ -1098,9 +1098,9 @@ export default function DynamicProductCalculator({
                     step={1}
                     value={depth}
                     onChange={(e) => setDepth(Number(e.target.value))}
-                    className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                    className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                   />
-                  <div className="flex justify-between text-[10px] text-capsule-text-muted">
+                  <div className="flex justify-between text-[10px] text-[#727784]">
                     <span>Min {category.sizing.minDepth || 1}</span>
                     <span>Max {category.sizing.maxDepth || 100}</span>
                   </div>
@@ -1113,13 +1113,13 @@ export default function DynamicProductCalculator({
         {/* ────────── PREMIUM INTEGRATED PROFESSIONAL CUSTOMIZATION TOOLS ────────── */}
 
         {/* 2 & 3. Luxury Material Color Preset & Live Pantone Matcher */}
-        <div className={`p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-5 transition-all ${tourStep === 3 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
-          <div className="flex items-center justify-between border-b border-[#F4F2EE] pb-3">
+        <div className={`p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-5 transition-all ${tourStep === 3 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
+          <div className="flex items-center justify-between border-b border-[#f0f2f5] pb-3">
             <div className="flex items-center gap-2">
               <span className="p-1.5 bg-[#FAF5EE] rounded-lg text-[#D27E53] border border-[#F1EAE0]">
                 <Sparkles size={14} className="text-[#D27E53]" />
               </span>
-              <h3 className="font-sans font-semibold text-sm text-[#403C39] uppercase tracking-tight">
+              <h3 className="font-sans font-semibold text-sm text-[#414753] uppercase tracking-tight">
                 {locale === "hy" ? "Թղթի Տոն և Պանտոնային Համապատասխանեցում" : locale === "ru" ? "Тон бумаги и Подбор Pantone" : "Luxury Paper Tone & Pantone Matcher"}
               </h3>
             </div>
@@ -1134,7 +1134,7 @@ export default function DynamicProductCalculator({
             <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
               {[
                 { hex: "#F5EBE1", label: "Pearl Ivory", nameHy: "Մարգարտյա" },
-                { hex: "#FAF9F6", label: "Pure White", nameHy: "Սպիտակ" },
+                { hex: "#f0f2f5", label: "Pure White", nameHy: "Սպիտակ" },
                 { hex: "#111111", label: "Charcoal Black", nameHy: "Սև ածուխ" },
                 { hex: "#C28D58", label: "Pure Kraft", nameHy: "Կրաֆտ" },
                 { hex: "#522222", label: "Burgundy", nameHy: "Բորդո" },
@@ -1150,13 +1150,13 @@ export default function DynamicProductCalculator({
                     setPantoneMatchAlert("");
                   }}
                   className={`relative w-full aspect-square rounded-xl transition-all p-1 flex items-end justify-center group cursor-pointer border ${
-                    selectedColor === sw.hex ? "border-[#D27E53] ring-1 ring-[#D27E53]/30 scale-105 shadow-sm" : "border-[#E9E4DB] hover:scale-105"
+                    selectedColor === sw.hex ? "border-[#D27E53] ring-1 ring-[#D27E53]/30 scale-105 shadow-sm" : "border-[#d1d9e6] hover:scale-105"
                   }`}
                   style={{ backgroundColor: sw.hex }}
                   title={sw.label}
                 >
                   <span className={`text-[8px] font-mono leading-none tracking-tight p-0.5 rounded truncate select-none group-hover:block transition-all ${
-                    sw.hex === "#FFFFFF" || sw.hex === "#FAF9F6" || sw.hex === "#F5EBE1" ? "bg-black/10 text-black" : "bg-white/20 text-white"
+                    sw.hex === "#FFFFFF" || sw.hex === "#f0f2f5" || sw.hex === "#F5EBE1" ? "bg-black/10 text-black" : "bg-white/20 text-white"
                   }`}>
                     {locale === "hy" ? sw.nameHy : locale === "ru" ? sw.label : sw.label.split(" ")[0]}
                   </span>
@@ -1171,12 +1171,12 @@ export default function DynamicProductCalculator({
           </div>
 
           {/* Pantone Selector Option */}
-          <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E9E4DB] space-y-2.5">
+          <div className="bg-[#f0f2f5] p-4 rounded-xl border border-[#d1d9e6] space-y-2.5">
             <div className="flex items-center justify-between text-[10px]">
               <span className="font-mono font-bold uppercase tracking-wider text-[#8C8476]">
                 {locale === "hy" ? "Պանտոնի Լայվ Որոնիչ (Pantone Matching System)" : locale === "ru" ? "Подобрать Pantone кодировку" : "Live Pantone Color Match Engine"}
               </span>
-              <span className="text-[9px] text-[#A39E93] bg-[#EFECE6]/50 px-1.5 py-0.5 rounded font-mono">Formula Solid</span>
+              <span className="text-[9px] text-[#A39E93] bg-[#e1e6ed]/50 px-1.5 py-0.5 rounded font-mono">Formula Solid</span>
             </div>
             
             <div className="flex gap-2">
@@ -1185,13 +1185,13 @@ export default function DynamicProductCalculator({
                 value={pantoneInput}
                 onChange={(e) => setPantoneInput(e.target.value)}
                 placeholder="e.g. PMS 200 C or Pantone Black 6"
-                className="flex-1 bg-white border border-[#E9E4DB] rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-capsule-accent focus:border-capsule-accent focus:outline-none placeholder:text-gray-400 font-sans uppercase font-medium"
+                className="flex-1 bg-white border border-[#d1d9e6] rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF2300] focus:border-[#FF2300]/25 focus:outline-none placeholder:text-gray-400 font-sans uppercase font-medium"
               />
               <button
                 type="button"
                 onClick={handlePantoneMatch}
                 disabled={!pantoneInput.trim()}
-                className="bg-[#3D271B] hover:bg-[#2B1B13] text-white px-4 py-2 rounded-xl text-[10px] font-mono uppercase font-bold tracking-wider transition-all disabled:opacity-40 cursor-pointer"
+                className="bg-[#1a1c1d] hover:bg-[#2B1B13] text-white px-4 py-2 rounded-xl text-[10px] font-mono uppercase font-bold tracking-wider transition-all disabled:opacity-40 cursor-pointer"
               >
                 {locale === "hy" ? "Համապատասխանեցնել" : locale === "ru" ? "Сопоставить" : "Match Code"}
               </button>
@@ -1207,12 +1207,12 @@ export default function DynamicProductCalculator({
         </div>
 
         {/* 4. Foil Stamping Selection */}
-        <div className={`p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-4 transition-all ${tourStep === 4 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
-          <div className="flex items-center gap-2 border-b border-[#F4F2EE] pb-3">
+        <div className={`p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-4 transition-all ${tourStep === 4 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
+          <div className="flex items-center gap-2 border-b border-[#f0f2f5] pb-3">
             <span className="p-1.5 bg-[#FAF5EE] rounded-lg text-[#D27E53] border border-[#F1EAE0]">
               <Layers size={14} className="text-[#D27E53]" />
             </span>
-            <h3 className="font-sans font-semibold text-sm text-[#403C39] uppercase tracking-tight">
+            <h3 className="font-sans font-semibold text-sm text-[#414753] uppercase tracking-tight">
               {locale === "hy" ? "Հատուկ Լյուքս Մետաղական Շերտավորում" : locale === "ru" ? "Люксовое Тиснение Фольгой" : "Hot Foil Foil-Blocking Stamping Finish"}
             </h3>
           </div>
@@ -1234,7 +1234,7 @@ export default function DynamicProductCalculator({
                 className={`py-2 p-2 border text-[10px] rounded-xl text-center transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
                   stampingFinish === stamp.id
                     ? "border-[#D27E53] bg-[#FAF5EE]/50 font-bold scale-[1.03] shadow-xs"
-                    : "border-[#E9E4DB] bg-white hover:bg-[#FAFAF9]"
+                    : "border-[#d1d9e6] bg-white hover:bg-[#f0f2f5]"
                 }`}
               >
                 <div className={`w-4 h-4 rounded-full border border-black/10 ${
@@ -1252,13 +1252,13 @@ export default function DynamicProductCalculator({
         </div>
 
         {/* 5. Custom Artwork Graphic Logo Sandbox & Preview */}
-        <div className={`p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-5 transition-all ${tourStep === 4 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
-          <div className="flex items-center justify-between border-b border-[#F4F2EE] pb-3">
+        <div className={`p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-5 transition-all ${tourStep === 4 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
+          <div className="flex items-center justify-between border-b border-[#f0f2f5] pb-3">
             <div className="flex items-center gap-2">
               <span className="p-1.5 bg-[#FAF5EE] rounded-lg text-[#D27E53] border border-[#F1EAE0]">
                 <Package size={14} className="text-[#D27E53]" />
               </span>
-              <h3 className="font-sans font-semibold text-sm text-[#403C39] uppercase tracking-tight">
+              <h3 className="font-sans font-semibold text-sm text-[#414753] uppercase tracking-tight">
                 {locale === "hy" ? "Լայվ Նախադիտում և Լոգոյի Տեղադրման Սենդբոքս" : locale === "ru" ? "Интерактивная Модель и Логотип" : "Live Visual Mockup & Logo Sandbox"}
               </h3>
             </div>
@@ -1266,22 +1266,22 @@ export default function DynamicProductCalculator({
           </div>
 
           {/* Core Mockup Area representing a shopping bag/box */}
-          <div className="relative w-full aspect-[4/3] rounded-2xl shadow-inner border border-[#E9E4DB] flex items-center justify-center overflow-hidden" 
+          <div className="relative w-full aspect-[4/3] rounded-2xl shadow-inner border border-[#d1d9e6] flex items-center justify-center overflow-hidden" 
                style={{ backgroundColor: "#F7F5F0" }}>
             
             {/* The actual box / shopping bag representation */}
             <div 
-              className="absolute w-52 h-44 rounded-xl border border-black/10 transition-all flex flex-col justify-between p-4 bg-[#FAF9F6] shadow-xl relative animate-fadeIn"
+              className="absolute w-52 h-44 rounded-xl border border-black/10 transition-all flex flex-col justify-between p-4 bg-[#f0f2f5] shadow-xl relative animate-fadeIn"
               style={{ 
                 backgroundColor: selectedColor,
                 boxShadow: stampingFinish === "blind" ? "inset 2px 2px 5px rgba(0,0,0,0.15), 0 10px 15px -3px rgba(0,0,0,0.1)" : "0 10px 15px -3px rgba(0,0,0,0.1)",
-                borderColor: selectedColor === "#FFFFFF" || selectedColor === "#FAF9F6" ? "#E3DEC3" : "transparent"
+                borderColor: selectedColor === "#FFFFFF" || selectedColor === "#f0f2f5" ? "#E3DEC3" : "transparent"
               }}
             >
               {/* Box or Bag Handles Indicator */}
               <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 flex justify-center gap-6">
-                <span className="w-1.5 h-10 bg-black/15 group-hover:bg-[#3D271B]/20 rounded-full" />
-                <span className="w-1.5 h-10 bg-black/15 group-hover:bg-[#3D271B]/20 rounded-full" />
+                <span className="w-1.5 h-10 bg-black/15 group-hover:bg-[#1a1c1d]/20 rounded-full" />
+                <span className="w-1.5 h-10 bg-black/15 group-hover:bg-[#1a1c1d]/20 rounded-full" />
               </div>
 
               {/* Dotted limits for Printing safe boundary */}
@@ -1307,7 +1307,7 @@ export default function DynamicProductCalculator({
                     stampingFinish === "silver" ? "text-slate-500" :
                     stampingFinish === "bronze" ? "text-amber-700" :
                     stampingFinish === "rose_gold" ? "text-rose-400" :
-                    selectedColor === "#111111" ? "text-white/80" : "text-[#3D271B]/80"
+                    selectedColor === "#111111" ? "text-white/80" : "text-[#1a1c1d]/80"
                   }`}>
                     <Sparkles size={22} className={`mb-1 ${
                       stampingFinish !== "none" && stampingFinish !== "blind" ? "animate-pulse" : ""
@@ -1319,14 +1319,14 @@ export default function DynamicProductCalculator({
               </div>
 
               {/* Bottom decorative model stats printed directly onto mock box */}
-              <div className="flex justify-between items-end text-[8px] font-mono tracking-tight text-capsule-text-muted select-none pointer-events-none">
+              <div className="flex justify-between items-end text-[8px] font-mono tracking-tight text-[#727784] select-none pointer-events-none">
                 <span className="font-bold">{category.sizing.showWidth ? `${width}` : "10"}x{category.sizing.showHeight ? `${height}` : "10"}cm</span>
                 <span className="uppercase text-[6px] tracking-widest">{product.name}</span>
               </div>
             </div>
 
             {/* Float Label info scale */}
-            <div className="absolute top-2 left-2 text-[9px] font-mono text-capsule-text-muted bg-white/85 px-2 py-0.5 rounded-md shadow-xs border border-[#F4F2EE] pointer-events-none">
+            <div className="absolute top-2 left-2 text-[9px] font-mono text-[#727784] bg-white/85 px-2 py-0.5 rounded-md shadow-xs border border-[#f0f2f5] pointer-events-none">
               Auto scale: 1:{Math.round(200 / width) || 5}
             </div>
 
@@ -1337,7 +1337,7 @@ export default function DynamicProductCalculator({
           </div>
 
           {/* Sandbox logo control center */}
-          <div className="space-y-3.5 bg-[#FAFAF9]/80 p-4 rounded-xl border border-[#E9E4DB]">
+          <div className="space-y-3.5 bg-[#f0f2f5]/80 p-4 rounded-xl border border-[#d1d9e6]">
             <div className="flex flex-col sm:flex-row gap-3.5 items-center justify-between">
               <div>
                 <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-[#8C8476]">
@@ -1365,7 +1365,7 @@ export default function DynamicProductCalculator({
                 />
                 <label 
                   htmlFor="logo-sandbox-upload"
-                  className="px-3.5 py-2 bg-[#3D271B] hover:bg-[#2B1B13] text-white rounded-xl text-[10px] font-mono uppercase font-bold tracking-wider transition-all cursor-pointer inline-block"
+                  className="px-3.5 py-2 bg-[#1a1c1d] hover:bg-[#2B1B13] text-white rounded-xl text-[10px] font-mono uppercase font-bold tracking-wider transition-all cursor-pointer inline-block"
                 >
                   Upload File
                 </label>
@@ -1382,11 +1382,11 @@ export default function DynamicProductCalculator({
             </div>
 
             {/* Slider Adjustments scale OffsetX, OffsetY */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-3.5 border-t border-[#E9E4DB]/50">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-3.5 border-t border-[#d1d9e6]/50">
               <div className="space-y-1">
                 <span className="flex justify-between text-[9px] font-mono text-[#8C8476]">
                   <span>Artwork Scale</span>
-                  <span className="font-bold text-[#3D271B]">{logoScale}%</span>
+                  <span className="font-bold text-[#1a1c1d]">{logoScale}%</span>
                 </span>
                 <input
                   type="range"
@@ -1394,14 +1394,14 @@ export default function DynamicProductCalculator({
                   max="120"
                   value={logoScale}
                   onChange={(e) => setLogoScale(Number(e.target.value))}
-                  className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                  className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                 />
               </div>
 
               <div className="space-y-1">
                 <span className="flex justify-between text-[9px] font-mono text-[#8C8476]">
                   <span>Horizontal Lock</span>
-                  <span className="font-bold text-[#3D271B]">{logoX > 0 ? `+${logoX}` : logoX}px</span>
+                  <span className="font-bold text-[#1a1c1d]">{logoX > 0 ? `+${logoX}` : logoX}px</span>
                 </span>
                 <input
                   type="range"
@@ -1409,14 +1409,14 @@ export default function DynamicProductCalculator({
                   max="60"
                   value={logoX}
                   onChange={(e) => setLogoX(Number(e.target.value))}
-                  className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                  className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                 />
               </div>
 
               <div className="space-y-1">
                 <span className="flex justify-between text-[9px] font-mono text-[#8C8476]">
                   <span>Vertical Lock</span>
-                  <span className="font-bold text-[#3D271B]">{logoY > 0 ? `+${logoY}` : logoY}px</span>
+                  <span className="font-bold text-[#1a1c1d]">{logoY > 0 ? `+${logoY}` : logoY}px</span>
                 </span>
                 <input
                   type="range"
@@ -1424,7 +1424,7 @@ export default function DynamicProductCalculator({
                   max="50"
                   value={logoY}
                   onChange={(e) => setLogoY(Number(e.target.value))}
-                  className="w-full h-1 bg-[#E9E4DB] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
+                  className="w-full h-1 bg-[#d1d9e6] rounded-lg appearance-none cursor-pointer accent-[#D27E53]"
                 />
               </div>
             </div>
@@ -1433,10 +1433,10 @@ export default function DynamicProductCalculator({
 
         {/* 6 & 7. Dynamic Urgent Logistics Speed Planner & Eco forest scorecard */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5">
-          <div className="p-5 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-3.5">
-            <div className="flex items-center gap-2 border-b border-[#F4F2EE] pb-2.5">
+          <div className="p-5 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-3.5">
+            <div className="flex items-center gap-2 border-b border-[#f0f2f5] pb-2.5">
               <span className="font-mono text-xs text-[#8B7E66] shrink-0">🚚</span>
-              <h3 className="font-sans font-semibold text-xs text-[#403C39] uppercase tracking-wider">
+              <h3 className="font-sans font-semibold text-xs text-[#414753] uppercase tracking-wider">
                 {locale === "hy" ? "Արագացված Լոգիստիկ Պլանավորում" : locale === "ru" ? "Приоритет Срочности и Доставка" : "Dynamic Urgent Logistics Timeline"}
               </h3>
             </div>
@@ -1449,10 +1449,10 @@ export default function DynamicProductCalculator({
               ].map((sp) => (
                 <label
                   key={sp.id}
-                  className={`flex items-center justify-between px-3 py-2 border rounded-xl cursor-pointer transition-all text-[#3D271B] text-[11px] ${
+                  className={`flex items-center justify-between px-3 py-2 border rounded-xl cursor-pointer transition-all text-[#1a1c1d] text-[11px] ${
                     deliverySpeed === sp.id
-                      ? "border-capsule-accent bg-[#FAF5EE]/50 font-bold"
-                      : "border-[#E9E4DB] hover:bg-[#FAFAF9]"
+                      ? "border-[#FF2300]/25 bg-[#FAF5EE]/50 font-bold"
+                      : "border-[#d1d9e6] hover:bg-[#f0f2f5]"
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -1472,10 +1472,10 @@ export default function DynamicProductCalculator({
           </div>
 
           {/* Interactive Carbon Foodprint & Eco-Impact scorecard */}
-          <div className="p-5 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-3.5">
-            <div className="flex items-center gap-2 border-b border-[#F4F2EE] pb-2.5">
+          <div className="p-5 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-3.5">
+            <div className="flex items-center gap-2 border-b border-[#f0f2f5] pb-2.5">
               <span className="font-mono text-xs text-[#8B7E66] shrink-0">☘️</span>
-              <h3 className="font-sans font-semibold text-xs text-[#403C39] uppercase tracking-wider">
+              <h3 className="font-sans font-semibold text-xs text-[#414753] uppercase tracking-wider">
                 Eco-Impact Forest Scorecard
               </h3>
             </div>
@@ -1519,10 +1519,10 @@ export default function DynamicProductCalculator({
 
         {/* Dynamic Category/Product Options */}
         {allProductOptions.length > 0 && (
-          <div className="p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm space-y-6">
-            <div className="flex items-center gap-2 border-b border-[#F4F2EE] pb-3">
+          <div className="p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm space-y-6">
+            <div className="flex items-center gap-2 border-b border-[#f0f2f5] pb-3">
               <Layers size={18} className="text-[#8B7E66]" />
-              <h3 className="font-sans font-semibold text-sm text-[#403C39] uppercase tracking-tight">
+              <h3 className="font-sans font-semibold text-sm text-[#414753] uppercase tracking-tight">
                 {t("calc.options", "Ընտրման Պարամետրեր")}
               </h3>
             </div>
@@ -1533,7 +1533,7 @@ export default function DynamicProductCalculator({
 
                 return (
                   <div key={option.id} className="space-y-2">
-                    <label className="text-xs font-semibold text-[#403C39] flex items-center justify-between">
+                    <label className="text-xs font-semibold text-[#414753] flex items-center justify-between">
                       {option.label}
                       {option.required && <span className="text-red-500 text-[10px] uppercase font-bold">{t("common.required", "Պարտադիր")}</span>}
                     </label>
@@ -1543,7 +1543,7 @@ export default function DynamicProductCalculator({
                       <select
                         value={currentSelected || ""}
                         onChange={(e) => handleOptionChange(option.id, e.target.value)}
-                        className="w-full bg-[#FAFAF9] border border-[#E9E4DB] rounded-xl px-3 py-2.5 text-xs focus:ring-1 focus:ring-capsule-accent focus:border-capsule-accent focus:outline-none text-[#403C39]"
+                        className="w-full bg-[#f0f2f5] border border-[#d1d9e6] rounded-xl px-3 py-2.5 text-xs focus:ring-1 focus:ring-[#FF2300] focus:border-[#FF2300]/25 focus:outline-none text-[#414753]"
                       >
                         {option.values.map((v) => (
                           <option key={v.id} value={v.id}>
@@ -1561,17 +1561,17 @@ export default function DynamicProductCalculator({
                             key={v.id}
                             className={`flex items-center justify-between px-3 py-2 border rounded-xl cursor-pointer transition-all text-xs ${
                               currentSelected === v.id
-                                ? "border-capsule-accent bg-[#EFECE6]/40 text-[#403C39] font-medium"
-                                : "border-[#E9E4DB] bg-[#FAFAF9]/80 text-capsule-text-secondary hover:bg-[#FAFAF9]"
+                                ? "border-[#FF2300]/25 bg-[#e1e6ed]/40 text-[#414753] font-medium"
+                                : "border-[#d1d9e6] bg-[#f0f2f5]/80 text-[#414753] hover:bg-[#f0f2f5]"
                             }`}
                           >
                             <span className="flex items-center gap-2">
-                              <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border ${currentSelected === v.id ? "border-capsule-accent" : "border-gray-300"}`}>
-                                {currentSelected === v.id && <span className="w-1.5 h-1.5 rounded-full bg-capsule-accent" />}
+                              <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border ${currentSelected === v.id ? "border-[#FF2300]/25" : "border-gray-300"}`}>
+                                {currentSelected === v.id && <span className="w-1.5 h-1.5 rounded-full bg-[#FF2300]" />}
                               </span>
                               {v.label}
                             </span>
-                            <span className="font-mono text-[10px] text-capsule-text-muted">
+                            <span className="font-mono text-[10px] text-[#727784]">
                               {v.priceModifier > 0 ? `+${v.priceModifier}${v.modifierType === "percent" ? "%" : " AMD"}` : ""}
                             </span>
                             <input
@@ -1595,17 +1595,17 @@ export default function DynamicProductCalculator({
                             key={v.id}
                             className={`flex items-center justify-between px-3 py-2 border rounded-xl cursor-pointer transition-all text-xs ${
                               currentSelected === v.id
-                                ? "border-capsule-accent bg-[#EFECE6]/40 text-[#403C39] font-medium"
-                                : "border-[#E9E4DB] bg-[#FAFAF9]/80 text-capsule-text-secondary hover:bg-[#FAFAF9]"
+                                ? "border-[#FF2300]/25 bg-[#e1e6ed]/40 text-[#414753] font-medium"
+                                : "border-[#d1d9e6] bg-[#f0f2f5]/80 text-[#414753] hover:bg-[#f0f2f5]"
                             }`}
                           >
                             <span className="flex items-center gap-2">
-                              <span className={`w-3.5 h-3.5 rounded flex items-center justify-center border ${currentSelected === v.id ? "border-capsule-accent bg-[#D27E53]/10" : "border-gray-300"}`}>
-                                {currentSelected === v.id && <Check size={10} className="text-capsule-accent" />}
+                              <span className={`w-3.5 h-3.5 rounded flex items-center justify-center border ${currentSelected === v.id ? "border-[#FF2300]/25 bg-[#D27E53]/10" : "border-gray-300"}`}>
+                                {currentSelected === v.id && <Check size={10} className="text-[#FF2300]" />}
                               </span>
                               {v.label}
                             </span>
-                            <span className="font-mono text-[10px] text-capsule-text-muted">
+                            <span className="font-mono text-[10px] text-[#727784]">
                               {v.priceModifier > 0 ? `+${v.priceModifier}${v.modifierType === "percent" ? "%" : " AMD"}` : ""}
                             </span>
                             <input
@@ -1627,10 +1627,10 @@ export default function DynamicProductCalculator({
 
         {/* Dynamic Quantity Selector */}
         {category.showQuantitySelector && (
-          <div className="p-6 border border-[#E9E4DB] bg-white rounded-2xl shadow-sm">
+          <div className="p-6 border border-[#d1d9e6] bg-white rounded-2xl shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <Package size={18} className="text-[#8B7E66]" />
-              <h3 className="font-sans font-semibold text-sm text-[#403C39] uppercase tracking-tight">
+              <h3 className="font-sans font-semibold text-sm text-[#414753] uppercase tracking-tight">
                 {t("common.quantity", "Տպաքանակ")}
               </h3>
             </div>
@@ -1644,8 +1644,8 @@ export default function DynamicProductCalculator({
                   onClick={() => handlePresetQty(preset)}
                   className={`py-2 px-3 text-xs rounded-xl border transition-all text-center ${
                     quantity === preset && !isCustomQty
-                      ? "border-capsule-accent bg-[#EFECE6]/60 text-[#403C39] font-bold shadow-sm"
-                      : "border-[#E9E4DB] bg-[#FAFAF9]/60 text-capsule-text-secondary hover:bg-[#EFECE6]/20"
+                      ? "border-[#FF2300]/25 bg-[#e1e6ed]/60 text-[#414753] font-bold shadow-sm"
+                      : "border-[#d1d9e6] bg-[#f0f2f5]/60 text-[#414753] hover:bg-[#e1e6ed]/20"
                   }`}
                 >
                   {preset}
@@ -1656,8 +1656,8 @@ export default function DynamicProductCalculator({
                 onClick={() => setIsCustomQty(true)}
                 className={`py-2 px-3 text-xs rounded-xl border transition-all text-center ${
                   isCustomQty
-                    ? "border-capsule-accent bg-[#EFECE6]/60 text-[#403C39] font-bold shadow-sm"
-                    : "border-[#E9E4DB] bg-[#FAFAF9]/60 text-capsule-text-secondary hover:bg-[#EFECE6]/20"
+                    ? "border-[#FF2300]/25 bg-[#e1e6ed]/60 text-[#414753] font-bold shadow-sm"
+                    : "border-[#d1d9e6] bg-[#f0f2f5]/60 text-[#414753] hover:bg-[#e1e6ed]/20"
                 }`}
               >
                 {t("calc.custom_quantity", "Այլ")}
@@ -1673,9 +1673,9 @@ export default function DynamicProductCalculator({
                   placeholder={`Min ${defaultMinQty}`}
                   value={customQtyInput}
                   onChange={(e) => handleCustomQtyChange(e.target.value)}
-                  className="w-full max-w-[150px] bg-[#FAFAF9] border border-[#E9E4DB] rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-capsule-accent focus:border-capsule-accent focus:outline-none"
+                  className="w-full max-w-[150px] bg-[#f0f2f5] border border-[#d1d9e6] rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF2300] focus:border-[#FF2300]/25 focus:outline-none"
                 />
-                <span className="text-[11px] text-capsule-text-muted">
+                <span className="text-[11px] text-[#727784]">
                   ({t("calc.min_qty_notice", "Նվազագույն քանակը")}: {defaultMinQty})
                 </span>
               </div>
@@ -1686,10 +1686,10 @@ export default function DynamicProductCalculator({
 
       {/* RIGHT COLUMN: Instant Price Summary & Checkout Action */}
       <div className={`lg:col-span-5 transition-all ${tourStep === 5 ? "ring-2 ring-[#D27E53] shadow-md scale-[1.01]" : ""}`}>
-        <div className="bg-[#EFECE6]/40 border border-[#E9E4DB] rounded-3xl p-6.5 sticky top-28 shadow-sm space-y-6">
+        <div className="bg-[#e1e6ed]/40 border border-[#d1d9e6] rounded-3xl p-6.5 sticky top-28 shadow-sm space-y-6">
           <div>
             <div className="flex justify-between items-start mb-2">
-              <span className="text-[10px] font-bold text-capsule-accent uppercase tracking-widest block">
+              <span className="text-[10px] font-bold text-[#FF2300] uppercase tracking-widest block">
                 {category.name}
               </span>
               
@@ -1702,8 +1702,8 @@ export default function DynamicProductCalculator({
                     onClick={() => setCurrency(cur)}
                     className={`px-2 py-0.5 text-[8px] font-mono uppercase font-bold rounded transition-all cursor-pointer ${
                       currency === cur 
-                        ? "bg-[#3D271B] text-white shadow-xs" 
-                        : "text-capsule-text-muted hover:text-[#3D271B]"
+                        ? "bg-[#1a1c1d] text-white shadow-xs" 
+                        : "text-[#727784] hover:text-[#1a1c1d]"
                     }`}
                   >
                     {cur}
@@ -1712,35 +1712,35 @@ export default function DynamicProductCalculator({
               </div>
             </div>
 
-            <h2 className="font-sans font-bold text-xl text-capsule-dark leading-snug">
+            <h2 className="font-sans font-bold text-xl text-[#1a1c1d] leading-snug">
               {product.name}
             </h2>
             {product.desc && (
-              <p className="text-xs text-capsule-text-muted mt-2 leading-relaxed">
+              <p className="text-xs text-[#727784] mt-2 leading-relaxed">
                 {product.desc}
               </p>
             )}
           </div>
 
-          <div className="border-t border-[#E9E4DB]/80 pt-5 space-y-4">
+          <div className="border-t border-[#d1d9e6]/80 pt-5 space-y-4">
             {/* Specs Breakdown */}
-            <div className="bg-white/75 border border-[#E9E4DB]/60 rounded-2xl p-4.5 space-y-2.5">
-              <span className="text-[9px] uppercase font-bold text-capsule-text-muted block border-b border-[#F4F2EE] pb-2">
+            <div className="bg-white/75 border border-[#d1d9e6]/60 rounded-2xl p-4.5 space-y-2.5">
+              <span className="text-[9px] uppercase font-bold text-[#727784] block border-b border-[#f0f2f5] pb-2">
                 {t("calc.specifications", "Տեխնիկական բնութագիր")}
               </span>
-              <div className="space-y-2 text-xs text-[#403C39]">
+              <div className="space-y-2 text-xs text-[#414753]">
                 <div className="flex justify-between">
-                  <span className="text-capsule-text-secondary">{t("common.dimensions", "Չափսեր")}:</span>
+                  <span className="text-[#414753]">{t("common.dimensions", "Չափսեր")}:</span>
                   <span className="font-semibold font-mono">{pricingResult.dimText}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-capsule-text-secondary">{t("common.quantity", "Քանակ")}:</span>
+                  <span className="text-[#414753]">{t("common.quantity", "Քանակ")}:</span>
                   <span className="font-semibold font-mono">{quantity} {t("common.units.pcs", "հատ")}</span>
                 </div>
                 
                 {/* Visual extra parameters in specs */}
                 <div className="flex justify-between">
-                  <span className="text-capsule-text-secondary">Base Paper Color:</span>
+                  <span className="text-[#414753]">Base Paper Color:</span>
                   <span className="font-semibold flex items-center gap-1">
                     <span className="w-2.5 h-2.5 rounded-full border border-black/10 inline-block" style={{ backgroundColor: selectedColor }} />
                     {selectedColor}
@@ -1748,15 +1748,15 @@ export default function DynamicProductCalculator({
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-capsule-text-secondary">Foil Hotstamping:</span>
+                  <span className="text-[#414753]">Foil Hotstamping:</span>
                   <span className="font-bold underline uppercase text-[10px] text-amber-800">
                     {stampingFinish === "none" ? "None" : stampingFinish}
                   </span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-capsule-text-secondary">Delivery Priority:</span>
-                  <span className="font-sans font-semibold text-capsule-accent uppercase text-[10px]">
+                  <span className="text-[#414753]">Delivery Priority:</span>
+                  <span className="font-sans font-semibold text-[#FF2300] uppercase text-[10px]">
                     {deliverySpeed}
                   </span>
                 </div>
@@ -1765,7 +1765,7 @@ export default function DynamicProductCalculator({
                   const [label, val] = summary.split(": ");
                   return (
                     <div key={idx} className="flex justify-between">
-                      <span className="text-capsule-text-secondary">{label}:</span>
+                      <span className="text-[#414753]">{label}:</span>
                       <span className="font-semibold text-right">{val}</span>
                     </div>
                   );
@@ -1774,22 +1774,22 @@ export default function DynamicProductCalculator({
             </div>
 
             {/* Dynamic 9. MOQ Bulk Savings Matrix tracker bar */}
-            <div className="bg-white/75 border border-[#E9E4DB]/60 rounded-2xl p-4.5 space-y-2.5">
-              <span className="text-[9px] uppercase font-bold text-[#8C8476] font-mono block border-b border-[#F4F2EE] pb-1.5 flex justify-between">
+            <div className="bg-white/75 border border-[#d1d9e6]/60 rounded-2xl p-4.5 space-y-2.5">
+              <span className="text-[9px] uppercase font-bold text-[#8C8476] font-mono block border-b border-[#f0f2f5] pb-1.5 flex justify-between">
                 <span>MOQ BULK DISCOUNTS</span>
                 <span className="text-[8px] text-green-700 bg-green-50 px-1 py-0.2 rounded font-bold">FSC Solid</span>
               </span>
               <div className="space-y-1.5">
                 <div className="relative flex justify-between text-[8.5px] font-mono text-[#8C8476] font-semibold">
-                  <span className={quantity >= 100 && quantity < 250 ? "text-[#D27E53] font-bold" : ""}>100 units</span>
-                  <span className={quantity >= 250 && quantity < 500 ? "text-[#D27E53] font-bold" : ""}>250+ (-5%)</span>
-                  <span className={quantity >= 500 && quantity < 1000 ? "text-[#D27E53] font-bold" : ""}>500+ (-10%)</span>
-                  <span className={quantity >= 1000 && quantity < 2500 ? "text-[#D27E53] font-bold" : ""}>1000+ (-18%)</span>
-                  <span className={quantity >= 2500 ? "text-[#D27E53] font-bold" : ""}>2500+ (-25%)</span>
+                  <span className={quantity >= 100 && quantity < 250 ? "text-[#FF2300] font-bold" : ""}>100 units</span>
+                  <span className={quantity >= 250 && quantity < 500 ? "text-[#FF2300] font-bold" : ""}>250+ (-5%)</span>
+                  <span className={quantity >= 500 && quantity < 1000 ? "text-[#FF2300] font-bold" : ""}>500+ (-10%)</span>
+                  <span className={quantity >= 1000 && quantity < 2500 ? "text-[#FF2300] font-bold" : ""}>1000+ (-18%)</span>
+                  <span className={quantity >= 2500 ? "text-[#FF2300] font-bold" : ""}>2500+ (-25%)</span>
                 </div>
                 <div className="w-full h-1.5 bg-gray-150 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-[#D27E53] to-[#A85832] rounded-full transition-all"
+                    className="h-full bg-gradient-to-r from-[#FF2300] to-[#CC1C00] rounded-full transition-all"
                     style={{ 
                       width: quantity < 250 ? "18%" :
                              quantity < 500 ? "35%" :
@@ -1811,7 +1811,7 @@ export default function DynamicProductCalculator({
             {/* Instant Pricing Display */}
             <div className="bg-capsule-dark text-[#FDFDFD] rounded-2xl p-5 space-y-4 relative overflow-hidden">
               {pricingResult.tierDiscountPercent > 0 && (
-                <div className="absolute top-0 right-0 bg-[#E89E78] text-capsule-dark text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-sm">
+                <div className="absolute top-0 right-0 bg-[#FF2300] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-sm">
                   {pricingResult.tierDiscountPercent}% {t("calc.discount", "ԶԵՂՉ")}
                 </div>
               )}
@@ -1820,7 +1820,7 @@ export default function DynamicProductCalculator({
                 <span className="text-[10px] uppercase tracking-wider text-gray-400">
                   {t("calc.unit_price", "Մեկ միավորի արժեքը")}
                 </span>
-                <p className="text-2xl font-black font-sans text-[#E89E78] transition-all">
+                <p className="text-2xl font-black font-sans text-[#FF2300] transition-all">
                   {convertPrice(pricingResult.unitPrice)}
                 </p>
               </div>
@@ -1846,7 +1846,7 @@ export default function DynamicProductCalculator({
             <button
               type="button"
               onClick={submitInquiry}
-              className="w-full bg-[#D27E53] hover:bg-[#BE6C42] text-white py-4 rounded-2xl text-xs uppercase font-bold tracking-widest shadow-md transition-all active:scale-[0.98] duration-150 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-[#FF2300] hover:bg-[#CC1C00] text-white py-4 rounded-2xl text-xs uppercase font-bold tracking-widest shadow-md transition-all active:scale-[0.98] duration-150 flex items-center justify-center gap-2 cursor-pointer"
             >
               <RefreshCw size={14} className="animate-spin-slow animate-pulse" />
               {t("calc.inquire", "ՈՒՂԱՐԿԵԼ ՀԱՐՑՈՒՄ")}
@@ -1855,9 +1855,9 @@ export default function DynamicProductCalculator({
             <button
               type="button"
               onClick={handleDownloadPDFQuote}
-              className="w-full bg-white border border-[#E9E4DB] hover:bg-[#FAFAF9] text-[#3D271B] py-3.5 rounded-2xl text-xs uppercase font-extrabold tracking-wider shadow-sm transition-all active:scale-[0.98] duration-150 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-white border border-[#d1d9e6] hover:bg-[#f0f2f5] text-[#1a1c1d] py-3.5 rounded-2xl text-xs uppercase font-extrabold tracking-wider shadow-sm transition-all active:scale-[0.98] duration-150 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Download size={14} className="text-[#D27E53]" />
+              <Download size={14} className="text-[#FF2300]" />
               {locale === "hy" ? "ՆԵՐԲԵՌՆԵԼ ԳՆԱՌԱՋԱՐԿԸ (PDF)" : locale === "ru" ? "СКАЧАТЬ КП (PDF)" : "DOWNLOAD QUOTATION (PDF)"}
             </button>
 
@@ -1865,9 +1865,9 @@ export default function DynamicProductCalculator({
             <button
               type="button"
               onClick={handleDownloadDielineSVG}
-              className="w-full bg-[#FAF9F6] border border-dashed border-[#8B7E66]/40 hover:bg-[#F3ECE0] text-[#3D271B] py-2.5 rounded-xl text-[10px] uppercase font-bold tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-[#f0f2f5] border border-dashed border-[#8B7E66]/40 hover:bg-[#F3ECE0] text-[#1a1c1d] py-2.5 rounded-xl text-[10px] uppercase font-bold tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <FileDown size={12} className="text-[#D27E53]" />
+              <FileDown size={12} className="text-[#FF2300]" />
               {locale === "hy" ? "ՆԵՐԲԵՌՆԵԼ CAD ՓԱԹԵԹԸ (SVG)" : locale === "ru" ? "СКАЧАТЬ ВЕКТОРНУЮ ВЫРУБКУ (SVG)" : "EXPORT CAD DIELINE TEMPLATE (SVG)"}
             </button>
           </div>
@@ -1876,7 +1876,7 @@ export default function DynamicProductCalculator({
           <div className="flex gap-2 p-3 bg-amber-50/50 border border-amber-100 rounded-2xl text-[10px] text-amber-900/80 leading-relaxed shadow-[inset_-1px_-1px_0px_#FFFFFF]">
             <Info size={14} className="flex-shrink-0 mt-0.5 text-amber-800" />
             <span>
-              {t("calc.dynamic_engine_notice", "Այս գինը հաշվարկված է ավտոմատացված գնագոյացման համակարգի կողմից։ Վերջնական արժեքը կհաստատվի Capsule Concept մենեջերի կողմից՝ հարցումն ստանալուց հետո։")}
+              {t("calc.dynamic_engine_notice", "Այս գինը հաշվարկված է ավտոմատացված գնագոյացման համակարգի կողմից։ Վերջնական արժեքը կհաստատվի CAPSULE PACK մենեջերի կողմից՝ հարցումն ստանալուց հետո։")}
             </span>
           </div>
         </div>

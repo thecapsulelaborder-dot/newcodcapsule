@@ -737,13 +737,13 @@ export default function ClientCabinet({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-md bg-[#F8F6F1] p-6 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] relative my-auto text-[#1A1A1A]"
+          className="w-full max-w-md bg-[#f0f2f5] p-6 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#d1d9e6,_-12px_-12px_24px_#FFFFFF] relative my-auto text-[#1A1A1A]"
         >
           {/* Close button on the top right of the auth container */}
           <button 
             type="button" 
             onClick={onClose}
-            className="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] transition-all duration-200 cursor-pointer outline-none"
+            className="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] transition-all duration-200 cursor-pointer outline-none"
             title="Close"
           >
             <X size={14} strokeWidth={2.5} />
@@ -757,9 +757,9 @@ export default function ClientCabinet({
           )}
 
           {successMsg && (
-            <div className="mb-4 p-3.5 bg-[#1A3F25]/5 border-l-4 border-capsule-accent rounded-xl text-xs font-bold text-capsule-accent flex justify-between items-center shadow-xs">
+            <div className="mb-4 p-3.5 bg-[#1A3F25]/5 border-l-4 border-[#FF2300]/25 rounded-xl text-xs font-bold text-[#FF2300] flex justify-between items-center shadow-xs">
               <span className="break-all leading-snug">{successMsg}</span>
-              <button type="button" onClick={() => setSuccessMsg(null)} className="text-capsule-accent/60 hover:text-capsule-accent font-extrabold text-sm pl-2">×</button>
+              <button type="button" onClick={() => setSuccessMsg(null)} className="text-[#FF2300]/60 hover:text-[#FF2300] font-extrabold text-sm pl-2">×</button>
             </div>
           )}
 
@@ -771,7 +771,7 @@ export default function ClientCabinet({
                 onClick={() => { setErrorMsg(null); setActiveTab("login"); }}
                 className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
                   activeTab === "login" 
-                    ? "text-capsule-accent scale-105 font-black" 
+                    ? "text-[#FF2300] scale-105 font-black" 
                     : "text-[#7C8797] hover:text-[#5A6578]"
                 }`}
               >
@@ -779,7 +779,7 @@ export default function ClientCabinet({
                   {currentLocale === "hy" ? "ՄՈՒՏՔ" : currentLocale === "ru" ? "ВХОД" : "SIGN IN"}
                   {activeTab === "login" && (
                     <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                      <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                       </svg>
                     </span>
@@ -791,7 +791,7 @@ export default function ClientCabinet({
                 onClick={() => { setErrorMsg(null); setActiveTab("register"); }}
                 className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
                   activeTab === "register" 
-                    ? "text-capsule-accent scale-105 font-black" 
+                    ? "text-[#FF2300] scale-105 font-black" 
                     : "text-[#7C8797] hover:text-[#5A6578]"
                 }`}
               >
@@ -799,7 +799,7 @@ export default function ClientCabinet({
                   {currentLocale === "hy" ? "ԳՐԱՆՑՈՒՄ" : currentLocale === "ru" ? "РЕГИСТРАЦИЯ" : "SIGN UP"}
                   {activeTab === "register" && (
                     <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                      <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                       </svg>
                     </span>
@@ -813,7 +813,7 @@ export default function ClientCabinet({
             <form onSubmit={handleLogin} className="space-y-4">
               {/* Concave Neumorphic Email Input */}
               <div className="w-full">
-                <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                   <input 
                     type="email" 
                     value={emailInput}
@@ -827,7 +827,7 @@ export default function ClientCabinet({
 
               {/* Concave Neumorphic Password Input */}
               <div className="w-full">
-                <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                   <input 
                     type="password" 
                     value={passwordInput}
@@ -852,7 +852,7 @@ export default function ClientCabinet({
                 <button 
                   type="button"
                   onClick={() => setActiveTab("recovery")}
-                  className="font-bold text-[#C59B6D] hover:text-capsule-accent hover:underline cursor-pointer outline-none"
+                  className="font-bold text-[#C59B6D] hover:text-[#FF2300] hover:underline cursor-pointer outline-none"
                 >
                   {t("auth.forgot_password")}
                 </button>
@@ -863,9 +863,9 @@ export default function ClientCabinet({
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-3.5 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                  className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-3.5 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                 >
-                  <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                  <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                   <span>
                     {isLoading ? (currentLocale === "hy" ? "Խնդրում ենք սպասել..." : "Please wait...") : "Log in"}
                   </span>
@@ -877,7 +877,7 @@ export default function ClientCabinet({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title={currentLocale === "ru" ? "Закрыть Кабинет" : "Close Cabinet"}
                 >
                   <ArrowLeft size={16} strokeWidth={2.2} />
@@ -886,7 +886,7 @@ export default function ClientCabinet({
                 <button
                   type="button"
                   onClick={handleGoogleMockLogin}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title="Google Sign In"
                 >
                   <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="google" />
@@ -899,7 +899,7 @@ export default function ClientCabinet({
                     sound.volume = 0.2;
                     sound.play().catch(() => {});
                   }}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title="Play click"
                 >
                   <Settings size={16} strokeWidth={2.2} className="hover:rotate-45 transition-transform duration-300" />
@@ -912,7 +912,7 @@ export default function ClientCabinet({
             <form onSubmit={handleRegister} className="space-y-3.5">
               {/* First & Last Name Concave Inputs */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-4 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-4 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                   <input 
                     type="text" 
                     value={nameInput}
@@ -922,7 +922,7 @@ export default function ClientCabinet({
                     placeholder={currentLocale === "hy" ? "Անուն" : currentLocale === "ru" ? "Имя" : "First Name"} 
                   />
                 </div>
-                <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-4 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-4 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                   <input 
                     type="text" 
                     value={lastNameInput}
@@ -935,7 +935,7 @@ export default function ClientCabinet({
               </div>
 
               {/* Company (optional) Concave Input */}
-              <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+              <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                 <input 
                   type="text" 
                   value={companyInput}
@@ -946,7 +946,7 @@ export default function ClientCabinet({
               </div>
 
               {/* Phone Concave Input */}
-              <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+              <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                 <input 
                   type="tel" 
                   value={phoneInput}
@@ -958,7 +958,7 @@ export default function ClientCabinet({
               </div>
 
               {/* Email Concave Input */}
-              <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+              <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                 <input 
                   type="email" 
                   value={emailInput}
@@ -970,7 +970,7 @@ export default function ClientCabinet({
               </div>
 
               {/* Password Concave Input */}
-              <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+              <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                 <input 
                   type="password" 
                   value={passwordInput}
@@ -989,8 +989,8 @@ export default function ClientCabinet({
                     onClick={() => setRoleSelect("Client")}
                     className={`py-2.5 px-3 rounded-xl text-[9px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
                       roleSelect === "Client"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:text-[#5A6578]"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:text-[#5A6578]"
                     }`}
                   >
                     <User size={11} />
@@ -1001,8 +1001,8 @@ export default function ClientCabinet({
                     onClick={() => setRoleSelect("Partner")}
                     className={`py-2.5 px-3 rounded-xl text-[9px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
                       roleSelect === "Partner"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:text-[#5A6578]"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:text-[#5A6578]"
                     }`}
                   >
                     <Briefcase size={11} />
@@ -1028,9 +1028,9 @@ export default function ClientCabinet({
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-3.5 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                  className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-3.5 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                 >
-                  <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                  <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                   <span>
                     {isLoading ? (currentLocale === "hy" ? "Ստեղծվում է..." : "Please wait...") : "Sign Up"}
                   </span>
@@ -1042,7 +1042,7 @@ export default function ClientCabinet({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title={currentLocale === "ru" ? "Закрыть Кабинет" : "Close Cabinet"}
                 >
                   <ArrowLeft size={16} strokeWidth={2.2} />
@@ -1051,7 +1051,7 @@ export default function ClientCabinet({
                 <button
                   type="button"
                   onClick={handleGoogleMockLogin}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title="Google Sign In"
                 >
                   <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="google" />
@@ -1064,7 +1064,7 @@ export default function ClientCabinet({
                     sound.volume = 0.2;
                     sound.play().catch(() => {});
                   }}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                   title="Play click"
                 >
                   <Settings size={16} strokeWidth={2.2} className="hover:rotate-45 transition-transform duration-300" />
@@ -1078,7 +1078,7 @@ export default function ClientCabinet({
               <button 
                 type="button"
                 onClick={() => setActiveTab("login")}
-                className="inline-flex items-center gap-1.5 text-xs font-black text-[#7C8797] hover:text-capsule-accent hover:underline mb-2 cursor-pointer outline-none"
+                className="inline-flex items-center gap-1.5 text-xs font-black text-[#7C8797] hover:text-[#FF2300] hover:underline mb-2 cursor-pointer outline-none"
               >
                 <ArrowLeft size={14} strokeWidth={2.5} />
                 <span>Back to login</span>
@@ -1091,7 +1091,7 @@ export default function ClientCabinet({
 
               <form onSubmit={handleRequestRecovery} className="space-y-4">
                 <div className="w-full">
-                  <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                  <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                     <input 
                       type="email" 
                       value={emailInput}
@@ -1107,9 +1107,9 @@ export default function ClientCabinet({
                   <button 
                     type="submit" 
                     disabled={isLoading}
-                    className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-3.5 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                    className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-3.5 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                   >
-                    <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                    <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                     <span>
                       {isLoading ? "Dispatching..." : getT("sendOtp")}
                     </span>
@@ -1126,14 +1126,14 @@ export default function ClientCabinet({
                 <p className="text-[10px] font-mono uppercase tracking-widest text-[#7C8797] mt-1">Simulated secure OTP reset token</p>
               </div>
 
-              <div className="mb-4 p-3 bg-[#F8F6F1] border-none rounded-2xl text-center shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF]">
-                <span className="text-[8px] uppercase font-bold text-capsule-accent block mb-0.5 tracking-widest">Simulated Reset Code Received</span>
+              <div className="mb-4 p-3 bg-[#f0f2f5] border-none rounded-2xl text-center shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF]">
+                <span className="text-[8px] uppercase font-bold text-[#FF2300] block mb-0.5 tracking-widest">Simulated Reset Code Received</span>
                 <span className="text-xl font-black text-[#1A3F25] font-mono tracking-widest">{simulatedOtp}</span>
               </div>
 
               <form onSubmit={handleResetPassword} className="space-y-3.5">
                 <div className="w-full">
-                  <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                  <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                     <input 
                       type="text" 
                       value={enteredOtp}
@@ -1146,7 +1146,7 @@ export default function ClientCabinet({
                 </div>
 
                 <div className="w-full">
-                  <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                  <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                     <input 
                       type="password" 
                       value={newPassword}
@@ -1162,9 +1162,9 @@ export default function ClientCabinet({
                   <button 
                     type="submit" 
                     disabled={isLoading}
-                    className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-3.5 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                    className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-3.5 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                   >
-                    <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                    <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                     <span>
                       {isLoading ? "Saving..." : getT("resetPass")}
                     </span>
@@ -1185,44 +1185,44 @@ export default function ClientCabinet({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.94 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
-        className="w-full max-w-6xl h-[90vh] bg-[#F8F6F1] rounded-[2.5rem] shadow-[12px_12px_36px_#C4BDB1,_-12px_-12px_36px_#FFFFFF] flex flex-col overflow-hidden text-[#1A1A1A] border-2 border-white"
+        className="w-full max-w-6xl h-[90vh] bg-[#f0f2f5] rounded-[2.5rem] shadow-[12px_12px_36px_#C4BDB1,_-12px_-12px_36px_#FFFFFF] flex flex-col overflow-hidden text-[#1A1A1A] border-2 border-white"
       >
         {/* Top Premium Brand Header bar - Replaced with polished Neumorphic bar */}
-        <div className="bg-[#F8F6F1] px-6 py-4.5 flex items-center justify-between border-b border-white/50 shadow-[0_4px_10px_-4px_rgba(211,205,191,0.5)] shrink-0 z-10 select-none">
+        <div className="bg-[#f0f2f5] px-6 py-4.5 flex items-center justify-between border-b border-white/50 shadow-[0_4px_10px_-4px_rgba(211,205,191,0.5)] shrink-0 z-10 select-none">
           <div className="flex items-center gap-3.5">
-            <div className="p-2.5 bg-[#F8F6F1] rounded-2xl shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border border-white/40 leading-none">
+            <div className="p-2.5 bg-[#f0f2f5] rounded-2xl shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border border-white/40 leading-none">
               <User size={18} className="text-[#1A3F25]" />
             </div>
             <div>
               <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-[#1A3F25] uppercase flex items-center gap-2">
                 <span>{user ? user.name : t("auth.profile_btn")}</span>
                 {user && (
-                  <span className="text-[9px] font-black bg-[#F8F6F1] text-capsule-accent shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20 px-2.5 py-0.5 rounded-full font-mono">
+                  <span className="text-[9px] font-black bg-[#f0f2f5] text-[#FF2300] shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20 px-2.5 py-0.5 rounded-full font-mono">
                     {user.role}
                   </span>
                 )}
               </h1>
               <p className="text-[10px] text-[#7C8797] font-bold mt-0.5">
-                {user ? `${user.email} ${user.company ? `• ${user.company}` : ""}` : "Capsule Concept Premium Customer Workspace"}
+                {user ? `${user.email} ${user.company ? `• ${user.company}` : ""}` : "CAPSULE PACK Premium Customer Workspace"}
               </p>
             </div>
           </div>
           <button 
             type="button"
             onClick={onClose} 
-            className="p-2.5 px-4 bg-[#F8F6F1] text-[#7C8797] hover:text-capsule-accent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] text-[11px] font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer outline-none border-none"
+            className="p-2.5 px-4 bg-[#f0f2f5] text-[#7C8797] hover:text-[#FF2300] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] text-[11px] font-extrabold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer outline-none border-none"
           >
-            <X size={13} className="text-capsule-accent stroke-[2.5]" />
+            <X size={13} className="text-[#FF2300] stroke-[2.5]" />
             <span>{currentLocale === "ru" ? "Закрыть" : "Close"}</span>
           </button>
         </div>
 
         {/* Outer content scrollable window */}
-        <div className="flex-1 flex overflow-hidden bg-[#F8F6F1]">
+        <div className="flex-1 flex overflow-hidden bg-[#f0f2f5]">
           
           {/* LOGGED IN SIDEBAR NAVIGATION */}
           {activeTab === "dashboard" && user && (
-            <div className="hidden md:flex w-64 bg-[#F8F6F1] border-r-2 border-white/40 flex-col justify-between p-5 pr-4 whitespace-nowrap shrink-0 select-none z-10 shadow-[4px_0_12px_-4px_rgba(211,205,191,0.4)]">
+            <div className="hidden md:flex w-64 bg-[#f0f2f5] border-r-2 border-white/40 flex-col justify-between p-5 pr-4 whitespace-nowrap shrink-0 select-none z-10 shadow-[4px_0_12px_-4px_rgba(211,205,191,0.4)]">
               <div className="space-y-1.5">
                 <span className="text-[9px] font-black text-[#7C8797]/70 uppercase tracking-widest px-4 block mb-4">Workspace</span>
                 
@@ -1231,11 +1231,11 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("overview"); setOrderStatusFilter(null); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "overview" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Layers size={14} className={dashboardTab === "overview" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <Layers size={14} className={dashboardTab === "overview" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{currentLocale === "hy" ? "Գլխավոր" : currentLocale === "ru" ? "Главная" : "Overview"}</span>
                 </button>
 
@@ -1244,14 +1244,14 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("orders"); setOrderStatusFilter(null); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "orders" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <FileText size={14} className={dashboardTab === "orders" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <FileText size={14} className={dashboardTab === "orders" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_orders")}</span>
                   {activeOrders.length > 0 && (
-                    <span className="ml-auto bg-[#F8F6F1] text-capsule-accent text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{activeOrders.length}</span>
+                    <span className="ml-auto bg-[#f0f2f5] text-[#FF2300] text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{activeOrders.length}</span>
                   )}
                 </button>
 
@@ -1260,11 +1260,11 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("tracking"); setOrderStatusFilter(null); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "tracking" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Truck size={14} className={dashboardTab === "tracking" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <Truck size={14} className={dashboardTab === "tracking" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_track")}</span>
                 </button>
 
@@ -1273,11 +1273,11 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("quotes"); setOrderStatusFilter(null); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "quotes" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Briefcase size={14} className={dashboardTab === "quotes" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <Briefcase size={14} className={dashboardTab === "quotes" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_quotes")}</span>
                 </button>
 
@@ -1286,11 +1286,11 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("invoices"); setOrderStatusFilter(null); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "invoices" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Download size={14} className={dashboardTab === "invoices" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <Download size={14} className={dashboardTab === "invoices" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_invoices")}</span>
                 </button>
 
@@ -1299,14 +1299,14 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("calculations"); fetchSavedCalculations(user.email); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "calculations" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <QrCode size={14} className={dashboardTab === "calculations" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <QrCode size={14} className={dashboardTab === "calculations" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_saved_calcs")}</span>
                   {savedCalculations.length > 0 && (
-                    <span className="ml-auto bg-[#F8F6F1] text-[#7C8797] text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{savedCalculations.length}</span>
+                    <span className="ml-auto bg-[#f0f2f5] text-[#7C8797] text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{savedCalculations.length}</span>
                   )}
                 </button>
 
@@ -1315,14 +1315,14 @@ export default function ClientCabinet({
                   onClick={() => { setDashboardTab("favorites"); }}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "favorites" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Star size={14} className={dashboardTab === "favorites" ? "text-capsule-accent fill-capsule-accent" : "text-[#7C8797]"} />
+                  <Star size={14} className={dashboardTab === "favorites" ? "text-[#FF2300] fill-capsule-accent" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_favorites")}</span>
                   {favoritesList.length > 0 && (
-                    <span className="ml-auto bg-[#F8F6F1] text-[#C59B6D] text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{favoritesList.length}</span>
+                    <span className="ml-auto bg-[#f0f2f5] text-[#C59B6D] text-[9px] px-2 py-0.5 font-bold rounded-full shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/20">{favoritesList.length}</span>
                   )}
                 </button>
 
@@ -1331,11 +1331,11 @@ export default function ClientCabinet({
                   onClick={() => setDashboardTab("profile")}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "profile" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
-                  <Users size={14} className={dashboardTab === "profile" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                  <Users size={14} className={dashboardTab === "profile" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                   <span>{t("auth.sec_profile")}</span>
                 </button>
 
@@ -1344,8 +1344,8 @@ export default function ClientCabinet({
                   onClick={() => setDashboardTab("settings")}
                   className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                     dashboardTab === "settings" 
-                      ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                      : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                      ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                      : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                   }`}
                 >
                   <Settings size={14} className={dashboardTab === "settings" ? "text-[#1A3F25]" : "text-[#7C8797]"} />
@@ -1358,11 +1358,11 @@ export default function ClientCabinet({
                     onClick={() => setDashboardTab("partner")}
                     className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold transition-all duration-200 flex items-center gap-3 border ${
                       dashboardTab === "partner" 
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
-                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] border-transparent"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black" 
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] border-transparent"
                     }`}
                   >
-                    <Briefcase size={14} className={dashboardTab === "partner" ? "text-capsule-accent" : "text-[#7C8797]"} />
+                    <Briefcase size={14} className={dashboardTab === "partner" ? "text-[#FF2300]" : "text-[#7C8797]"} />
                     <span>{currentLocale === "hy" ? "Պարտնյոր Զոնա" : "Партнерам (15%)"}</span>
                   </button>
                 )}
@@ -1372,7 +1372,7 @@ export default function ClientCabinet({
                 <button
                   type="button"
                   onClick={handleSignout}
-                  className="w-full text-left px-4.5 py-3 rounded-2xl text-xs font-black text-[#7C8797] hover:text-[#D11A2A] hover:shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] flex items-center gap-3 transition-all duration-200 cursor-pointer outline-none border-none"
+                  className="w-full text-left px-4.5 py-3 rounded-2xl text-xs font-black text-[#7C8797] hover:text-[#D11A2A] hover:shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] flex items-center gap-3 transition-all duration-200 cursor-pointer outline-none border-none"
                 >
                   <Lock size={13} className="stroke-[2.5]" />
                   <span>{getT("logout")}</span>
@@ -1382,7 +1382,7 @@ export default function ClientCabinet({
           )}
 
           {/* MAIN CONTAINER WINDOW RENDER */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-[#F8F6F1]">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-[#f0f2f5]">
             
             {errorMsg && (
               <div className="mb-4 p-3.5 bg-red-50 border-l-4 border-red-650 rounded-xl text-xs font-bold text-red-700 flex justify-between items-center shadow-xs">
@@ -1415,7 +1415,7 @@ export default function ClientCabinet({
 
             {/* ── CENTRAL PREMIUM AUTHENTICATION TABS LAYOUT ── */}
             {((activeTab as string) === "login" || (activeTab as string) === "register") && (
-              <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
+              <div className="max-w-md mx-auto my-6 bg-[#f0f2f5] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#d1d9e6,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 
                 {/* WIDGET TABS HEAD */}
                 <div className="flex pb-4 mb-8 justify-center gap-10 select-none">
@@ -1424,7 +1424,7 @@ export default function ClientCabinet({
                     onClick={() => { setErrorMsg(null); setActiveTab("login"); }}
                     className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
                       (activeTab as any) === "login" 
-                        ? "text-capsule-accent scale-105 font-black" 
+                        ? "text-[#FF2300] scale-105 font-black" 
                         : "text-[#7C8797] hover:text-[#5A6578]"
                     }`}
                   >
@@ -1432,7 +1432,7 @@ export default function ClientCabinet({
                       {currentLocale === "hy" ? "ՄՈՒՏՔ" : currentLocale === "ru" ? "ВХОД" : "SIGN IN"}
                       {(activeTab as any) === "login" && (
                         <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                          <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                           </svg>
                         </span>
@@ -1444,7 +1444,7 @@ export default function ClientCabinet({
                     onClick={() => { setErrorMsg(null); setActiveTab("register"); }}
                     className={`text-xl font-bold tracking-widest uppercase pb-2 transition-all duration-300 relative cursor-pointer outline-none ${
                       (activeTab as any) === "register" 
-                        ? "text-capsule-accent scale-105 font-black" 
+                        ? "text-[#FF2300] scale-105 font-black" 
                         : "text-[#7C8797] hover:text-[#5A6578]"
                     }`}
                   >
@@ -1452,7 +1452,7 @@ export default function ClientCabinet({
                       {currentLocale === "hy" ? "ԳՐԱՆՑՈՒՄ" : currentLocale === "ru" ? "РЕГИСТРАЦИЯ" : "SIGN UP"}
                       {(activeTab as any) === "register" && (
                         <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                          <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                           </svg>
                         </span>
@@ -1466,7 +1466,7 @@ export default function ClientCabinet({
                   <form onSubmit={handleLogin} className="space-y-5">
                     {/* Concave Neumorphic Email Input */}
                     <div className="w-full">
-                      <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                      <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                         <input 
                           type="email" 
                           value={emailInput}
@@ -1480,7 +1480,7 @@ export default function ClientCabinet({
 
                     {/* Concave Neumorphic Password Input */}
                     <div className="w-full">
-                      <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                      <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                         <input 
                           type="password" 
                           value={passwordInput}
@@ -1505,7 +1505,7 @@ export default function ClientCabinet({
                       <button 
                         type="button"
                         onClick={() => setActiveTab("recovery")}
-                        className="font-bold text-[#C59B6D] hover:text-capsule-accent hover:underline cursor-pointer outline-none"
+                        className="font-bold text-[#C59B6D] hover:text-[#FF2300] hover:underline cursor-pointer outline-none"
                       >
                         {t("auth.forgot_password")}
                       </button>
@@ -1516,9 +1516,9 @@ export default function ClientCabinet({
                       <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-4 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                        className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-4 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                       >
-                        <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                        <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                         <span>
                           {isLoading ? (currentLocale === "hy" ? "Խնդրում ենք սպասել..." : "Please wait...") : "Log in"}
                         </span>
@@ -1530,7 +1530,7 @@ export default function ClientCabinet({
                       <button
                         type="button"
                         onClick={onClose}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title={currentLocale === "ru" ? "Закрыть Кабинет" : "Close Cabinet"}
                       >
                         <ArrowLeft size={16} strokeWidth={2.2} />
@@ -1539,7 +1539,7 @@ export default function ClientCabinet({
                       <button
                         type="button"
                         onClick={handleGoogleMockLogin}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title="Google Sign In"
                       >
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="google" />
@@ -1552,7 +1552,7 @@ export default function ClientCabinet({
                           sound.volume = 0.2;
                           sound.play().catch(() => {});
                         }}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title="Play click"
                       >
                         <Settings size={16} strokeWidth={2.2} className="hover:rotate-45 transition-transform duration-300" />
@@ -1566,7 +1566,7 @@ export default function ClientCabinet({
                   <form onSubmit={handleRegister} className="space-y-4">
                     {/* First & Last Name Concave Inputs */}
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                      <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                         <input 
                           type="text" 
                           value={nameInput}
@@ -1576,7 +1576,7 @@ export default function ClientCabinet({
                           placeholder={currentLocale === "hy" ? "Անուն" : currentLocale === "ru" ? "Имя" : "First Name"} 
                         />
                       </div>
-                      <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                      <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-5 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                         <input 
                           type="text" 
                           value={lastNameInput}
@@ -1589,7 +1589,7 @@ export default function ClientCabinet({
                     </div>
 
                     {/* Company (optional) Concave Input */}
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="text" 
                         value={companyInput}
@@ -1600,7 +1600,7 @@ export default function ClientCabinet({
                     </div>
 
                     {/* Phone Concave Input */}
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="tel" 
                         value={phoneInput}
@@ -1612,7 +1612,7 @@ export default function ClientCabinet({
                     </div>
 
                     {/* Email Concave Input */}
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="email" 
                         value={emailInput}
@@ -1624,7 +1624,7 @@ export default function ClientCabinet({
                     </div>
 
                     {/* Password Concave Input */}
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-3.5 shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="password" 
                         value={passwordInput}
@@ -1643,8 +1643,8 @@ export default function ClientCabinet({
                           onClick={() => setRoleSelect("Client")}
                           className={`py-3 px-4 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
                             roleSelect === "Client"
-                              ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] font-black"
-                              : "bg-[#F8F6F1] text-[#7C8797] shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
+                              ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] font-black"
+                              : "bg-[#f0f2f5] text-[#7C8797] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
                           }`}
                         >
                           <User size={12} />
@@ -1655,8 +1655,8 @@ export default function ClientCabinet({
                           onClick={() => setRoleSelect("Partner")}
                           className={`py-3 px-4 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
                             roleSelect === "Partner"
-                              ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] font-black"
-                              : "bg-[#F8F6F1] text-[#7C8797] shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
+                              ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] font-black"
+                              : "bg-[#f0f2f5] text-[#7C8797] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
                           }`}
                         >
                           <Briefcase size={12} />
@@ -1682,9 +1682,9 @@ export default function ClientCabinet({
                       <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-4 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                        className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-4 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                       >
-                        <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                        <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                         <span>
                           {isLoading ? (currentLocale === "hy" ? "Ստեղծվում է..." : "Please wait...") : "Sign Up"}
                         </span>
@@ -1696,7 +1696,7 @@ export default function ClientCabinet({
                       <button
                         type="button"
                         onClick={onClose}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title={currentLocale === "ru" ? "Закрыть Кабинет" : "Close Cabinet"}
                       >
                         <ArrowLeft size={16} strokeWidth={2.2} />
@@ -1705,7 +1705,7 @@ export default function ClientCabinet({
                       <button
                         type="button"
                         onClick={handleGoogleMockLogin}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title="Google Sign In"
                       >
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="google" />
@@ -1718,7 +1718,7 @@ export default function ClientCabinet({
                           sound.volume = 0.2;
                           sound.play().catch(() => {});
                         }}
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#F8F6F1] border-none text-[#7C8797] hover:text-capsule-accent shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#f0f2f5] border-none text-[#7C8797] hover:text-[#FF2300] shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96] transition-all duration-300 cursor-pointer"
                         title="Play click"
                       >
                         <Settings size={16} strokeWidth={2.2} className="hover:rotate-45 transition-transform duration-300" />
@@ -1731,11 +1731,11 @@ export default function ClientCabinet({
 
             {/* ── PASSWORD RECOVERY VIEW ────────────────── */}
             {(activeTab as string) === "recovery" && (
-              <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
+              <div className="max-w-md mx-auto my-6 bg-[#f0f2f5] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#d1d9e6,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 <button 
                   type="button"
                   onClick={() => setActiveTab("login")}
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-[#7C8797] hover:text-capsule-accent hover:underline mb-6 cursor-pointer outline-none"
+                  className="inline-flex items-center gap-1.5 text-xs font-black text-[#7C8797] hover:text-[#FF2300] hover:underline mb-6 cursor-pointer outline-none"
                 >
                   <ArrowLeft size={14} strokeWidth={2.5} />
                   <span>Back to login</span>
@@ -1748,7 +1748,7 @@ export default function ClientCabinet({
 
                 <form onSubmit={handleRequestRecovery} className="space-y-5">
                   <div className="w-full">
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="email" 
                         value={emailInput}
@@ -1764,9 +1764,9 @@ export default function ClientCabinet({
                     <button 
                       type="submit" 
                       disabled={isLoading}
-                      className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-4 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                      className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-4 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                     >
-                      <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                      <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                       <span>
                         {isLoading ? "Dispatching..." : getT("sendOtp")}
                       </span>
@@ -1778,20 +1778,20 @@ export default function ClientCabinet({
 
             {/* ── RESET PASSWORD VIEW FROM OTP ────────────────── */}
             {(activeTab as string) === "reset" && (
-              <div className="max-w-md mx-auto my-6 bg-[#F8F6F1] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#D3CDBF,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
+              <div className="max-w-md mx-auto my-6 bg-[#f0f2f5] p-8 sm:p-10 rounded-[2.5rem] border-2 border-white shadow-[12px_12px_24px_#d1d9e6,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
                 <div className="text-center mb-6">
                   <h2 className="text-xl font-black text-[#1A3F25] tracking-tight">{getT("enterOtp")}</h2>
                   <p className="text-[10px] font-mono uppercase tracking-widest text-[#7C8797] mt-1">Simulated secure OTP reset token</p>
                 </div>
 
-                <div className="mb-5 p-4 bg-[#F8F6F1] border-none rounded-2xl text-center shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF]">
-                  <span className="text-[9px] uppercase font-bold text-capsule-accent block mb-1 tracking-widest">Simulated Reset Code Received</span>
+                <div className="mb-5 p-4 bg-[#f0f2f5] border-none rounded-2xl text-center shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF]">
+                  <span className="text-[9px] uppercase font-bold text-[#FF2300] block mb-1 tracking-widest">Simulated Reset Code Received</span>
                   <span className="text-2xl font-black text-[#1A3F25] font-mono tracking-widest">{simulatedOtp}</span>
                 </div>
 
                 <form onSubmit={handleResetPassword} className="space-y-4">
                   <div className="w-full">
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="text" 
                         value={enteredOtp}
@@ -1804,7 +1804,7 @@ export default function ClientCabinet({
                   </div>
 
                   <div className="w-full">
-                    <div className="w-full flex items-center bg-[#F8F6F1] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#D3CDBF,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
+                    <div className="w-full flex items-center bg-[#f0f2f5] rounded-full px-6 py-4 shadow-[inset_5px_5px_10px_#d1d9e6,_inset_-5px_-5px_10px_#FFFFFF] border-none focus-within:ring-2 focus-within:ring-capsule-accent/15 transition-all duration-200">
                       <input 
                         type="password" 
                         value={newPassword}
@@ -1820,9 +1820,9 @@ export default function ClientCabinet({
                     <button 
                       type="submit" 
                       disabled={isLoading}
-                      className="group w-full flex items-center justify-center gap-2.5 bg-[#F8F6F1] rounded-full py-4 text-capsule-accent font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#D3CDBF,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+                      className="group w-full flex items-center justify-center gap-2.5 bg-[#f0f2f5] rounded-full py-4 text-[#FF2300] font-sans font-extrabold text-sm tracking-wide shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#d1d9e6,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
                     >
-                      <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+                      <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
                       <span>
                         {isLoading ? "Saving..." : getT("resetPass")}
                       </span>
@@ -1843,13 +1843,13 @@ export default function ClientCabinet({
                      <div className="bg-gradient-to-r from-[#1A3F25] to-[#255C34] p-6.5 sm:p-8 rounded-[2.5rem] text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-5 border border-white/10 select-none">
                        <div>
                          <h2 className="text-xl md:text-2xl font-black">{t("auth.welcome_msg")}, {user.name}!</h2>
-                         <p className="text-xs text-[#F8F6F1]/80 mt-1 font-semibold leading-relaxed">
+                         <p className="text-xs text-[#f0f2f5]/80 mt-1 font-semibold leading-relaxed">
                            {user.company ? `Brand Campaign Agency: ${user.company}` : "Managing individual premium layouts."} • Yerevan Premium Packaging OS.
                          </p>
                        </div>
                        <button
                          onClick={onClose}
-                         className="bg-[#F8F6F1] text-capsule-accent hover:text-[#1A3F25] text-xs font-black uppercase px-5 py-3 rounded-xl shadow-[4px_4px_10px_rgba(26,63,37,0.35)] hover:shadow-[5px_5px_12px_rgba(26,63,37,0.45)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 border-none outline-none cursor-pointer"
+                         className="bg-[#f0f2f5] text-[#FF2300] hover:text-[#1A3F25] text-xs font-black uppercase px-5 py-3 rounded-xl shadow-[4px_4px_10px_rgba(26,63,37,0.35)] hover:shadow-[5px_5px_12px_rgba(26,63,37,0.45)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 border-none outline-none cursor-pointer"
                        >
                          <ShoppingBag size={13} />
                          <span>{currentLocale === "hy" ? "Նոր Հաշվարկ" : currentLocale === "ru" ? "Новый Расчёт" : "New Estimate"}</span>
@@ -1860,9 +1860,9 @@ export default function ClientCabinet({
                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                        <div 
                          onClick={() => { setDashboardTab("orders"); setOrderStatusFilter("active"); }}
-                         className="bg-[#F8F6F1] p-5 rounded-3xl shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
+                         className="bg-[#f0f2f5] p-5 rounded-3xl shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
                        >
-                         <div className="p-3 bg-[#F8F6F1] text-[#1A3F25] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
+                         <div className="p-3 bg-[#f0f2f5] text-[#1A3F25] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
                            <Clock size={16} />
                          </div>
                          <div>
@@ -1873,9 +1873,9 @@ export default function ClientCabinet({
  
                        <div 
                          onClick={() => { setDashboardTab("invoices"); setOrderStatusFilter("pending_pay"); }}
-                         className="bg-[#F8F6F1] p-5 rounded-3xl shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
+                         className="bg-[#f0f2f5] p-5 rounded-3xl shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
                        >
-                         <div className="p-3 bg-[#F8F6F1] text-[#D11A2A] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
+                         <div className="p-3 bg-[#f0f2f5] text-[#D11A2A] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
                            <CreditCard size={16} />
                          </div>
                          <div>
@@ -1886,9 +1886,9 @@ export default function ClientCabinet({
  
                        <div 
                          onClick={() => { setDashboardTab("tracking"); }}
-                         className="bg-[#F8F6F1] p-5 rounded-3xl shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
+                         className="bg-[#f0f2f5] p-5 rounded-3xl shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
                        >
-                         <div className="p-3 bg-[#F8F6F1] text-[#C59B6D] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
+                         <div className="p-3 bg-[#f0f2f5] text-[#C59B6D] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
                            <RefreshCw size={16} className="text-[#C59B6D]" />
                          </div>
                          <div>
@@ -1899,9 +1899,9 @@ export default function ClientCabinet({
  
                        <div 
                          onClick={() => { setDashboardTab("orders"); setOrderStatusFilter("ready"); }}
-                         className="bg-[#F8F6F1] p-5 rounded-3xl shadow-[5px_5px_10px_#D3CDBF,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#D3CDBF,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
+                         className="bg-[#f0f2f5] p-5 rounded-3xl shadow-[5px_5px_10px_#d1d9e6,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#FFFFFF] hover:scale-[1.01] active:shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer flex items-center gap-3.5 border border-white/20 select-none"
                        >
-                         <div className="p-3 bg-[#F8F6F1] text-green-700 rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
+                         <div className="p-3 bg-[#f0f2f5] text-green-700 rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF]">
                            <Truck size={16} />
                          </div>
                          <div>
@@ -1913,16 +1913,16 @@ export default function ClientCabinet({
  
                      {/* Quick Highlights – Neumorphic Panels */}
                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                       <div className="bg-[#F8F6F1] rounded-[2.5rem] border border-white/30 p-6 shadow-[8px_8px_16px_#D3CDBF,_-8px_-8px_16px_#FFFFFF] lg:col-span-2 flex flex-col justify-between">
+                       <div className="bg-[#f0f2f5] rounded-[2.5rem] border border-white/30 p-6 shadow-[8px_8px_16px_#d1d9e6,_-8px_-8px_16px_#FFFFFF] lg:col-span-2 flex flex-col justify-between">
                          <div>
                            <h3 className="text-xs font-black uppercase tracking-widest text-[#1A3F25] mb-4.5">Live Dispatch Codes</h3>
                            {orders.slice(0, 3).map(o => (
-                             <div key={o.id} className="py-3 px-4 mb-3 bg-[#F8F6F1] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] flex justify-between items-center text-xs select-none">
+                             <div key={o.id} className="py-3 px-4 mb-3 bg-[#f0f2f5] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] flex justify-between items-center text-xs select-none">
                                <div>
                                  <span className="font-extrabold text-[#1A3F25]">#{getShortId(o.id)}</span>
                                  <span className="text-[#7C8797]/75 font-semibold ml-2 font-mono">({o.trackingCode || "TRK-PENDING"})</span>
                                </div>
-                               <span className="px-3 py-1 bg-[#F8F6F1] text-capsule-accent font-black shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] rounded-lg text-[9px] uppercase border border-white/20">{getStatusText(o.status)}</span>
+                               <span className="px-3 py-1 bg-[#f0f2f5] text-[#FF2300] font-black shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] rounded-lg text-[9px] uppercase border border-white/20">{getStatusText(o.status)}</span>
                              </div>
                            ))}
                            {orders.length === 0 && (
@@ -1938,12 +1938,12 @@ export default function ClientCabinet({
                          </button>
                        </div>
  
-                      <div className="bg-[#F8F6F1] rounded-[2.5rem] border border-white/30 p-6 shadow-[8px_8px_16px_#D3CDBF,_-8px_-8px_16px_#FFFFFF] flex flex-col justify-between">
+                      <div className="bg-[#f0f2f5] rounded-[2.5rem] border border-white/30 p-6 shadow-[8px_8px_16px_#d1d9e6,_-8px_-8px_16px_#FFFFFF] flex flex-col justify-between">
                         <div>
                           <h3 className="text-xs font-black uppercase tracking-widest text-[#1A3F25] mb-4.5">{t("auth.sec_favorites")}</h3>
                           <div className="space-y-3.5 max-h-48 overflow-y-auto pr-1">
                             {favoritedCalculationsList.map((sc: any) => (
-                              <div key={sc.id} className="text-xs py-3 px-4 bg-[#F8F6F1] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] flex justify-between items-center select-none">
+                              <div key={sc.id} className="text-xs py-3 px-4 bg-[#f0f2f5] rounded-2xl shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] flex justify-between items-center select-none">
                                 <span className="font-bold text-gray-800 truncate pr-2">{sc.name}</span>
                                 <span className="text-[#1A3F25] font-black shrink-0">{sc.calcResult?.totalPrice?.toLocaleString()} ֏</span>
                               </div>
@@ -1974,7 +1974,7 @@ export default function ClientCabinet({
                       <button 
                         type="button"
                         onClick={() => fetchOrders(user.email, user.role)}
-                        className="px-3 py-1.5 bg-[#F8F6F1] border border-[#C59B6D]/30 hover:bg-white rounded-xl text-xs font-bold text-[#1A3F25] flex items-center gap-1 cursor-pointer transition-all"
+                        className="px-3 py-1.5 bg-[#f0f2f5] border border-[#C59B6D]/30 hover:bg-white rounded-xl text-xs font-bold text-[#1A3F25] flex items-center gap-1 cursor-pointer transition-all"
                       >
                         <RefreshCw size={12} className="text-[#C59B6D]" />
                         <span>Refresh</span>
@@ -1988,7 +1988,7 @@ export default function ClientCabinet({
                     ) : (
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-xs min-w-[700px]">
-                          <thead className="bg-[#F8F6F1] uppercase text-[9px] tracking-widest text-[#1A3F25] font-black border-b border-[#C59B6D]/15">
+                          <thead className="bg-[#f0f2f5] uppercase text-[9px] tracking-widest text-[#1A3F25] font-black border-b border-[#C59B6D]/15">
                             <tr>
                               <th className="py-3.5 px-4">{t("auth.order_num")}</th>
                               <th className="py-3.5 px-4">{t("auth.order_tracking")}</th>
@@ -2002,7 +2002,7 @@ export default function ClientCabinet({
                           </thead>
                           <tbody className="divide-y divide-gray-100 font-semibold text-[#1A1A1A]/90">
                             {filteredOrdersList.map((o) => (
-                              <tr key={o.id} className="hover:bg-[#F8F6F1]/40 transition-colors">
+                              <tr key={o.id} className="hover:bg-[#f0f2f5]/40 transition-colors">
                                 <td className="py-4 px-4 text-[#1A3F25] font-black font-mono">
                                   #{getShortId(o.id)}
                                 </td>
@@ -2188,7 +2188,7 @@ export default function ClientCabinet({
                     </h3>
 
                     {orders.length === 0 ? (
-                      <p className="text-xs text-gray-400 font-semibold py-8 text-center bg-[#F8F6F1] rounded-xl border border-dashed">No accounting items active.</p>
+                      <p className="text-xs text-gray-400 font-semibold py-8 text-center bg-[#f0f2f5] rounded-xl border border-dashed">No accounting items active.</p>
                     ) : (
                       <div className="space-y-3">
                         {orders.map((invoiceOrder) => (
@@ -2239,7 +2239,7 @@ export default function ClientCabinet({
                       <h2 className="text-xs sm:text-sm font-extrabold text-[#1A3F25] uppercase tracking-wider">{t("auth.sec_saved_calcs")}</h2>
                       <button 
                         onClick={() => fetchSavedCalculations(user.email)}
-                        className="px-2.5 py-1 bg-[#F8F6F1] border border-[#C59B6D]/30 text-[10px] font-bold text-[#1A3F25] rounded-md hover:bg-white cursor-pointer"
+                        className="px-2.5 py-1 bg-[#f0f2f5] border border-[#C59B6D]/30 text-[10px] font-bold text-[#1A3F25] rounded-md hover:bg-white cursor-pointer"
                       >
                         Reload
                       </button>
@@ -2265,7 +2265,7 @@ export default function ClientCabinet({
                                   >
                                     <Star size={14} className={favoritesList.includes(sc.id) ? "fill-[#C59B6D] text-[#C59B6D]" : "text-gray-350"} />
                                   </button>
-                                  <span className="text-[8px] tracking-wider font-mono uppercase py-0.5 px-2 bg-[#F8F6F1] border border-[#C59B6D]/20 text-[#1A3F25] font-black rounded-sm">
+                                  <span className="text-[8px] tracking-wider font-mono uppercase py-0.5 px-2 bg-[#f0f2f5] border border-[#C59B6D]/20 text-[#1A3F25] font-black rounded-sm">
                                     {sc.categoryId}
                                   </span>
                                 </div>
@@ -2317,7 +2317,7 @@ export default function ClientCabinet({
                     </h3>
 
                     {favoritedCalculationsList.length === 0 ? (
-                      <div className="py-12 text-center text-xs text-gray-400 font-semibold bg-[#F8F6F1] rounded-xl border border-dashed border-[#C59B6D]/35">
+                      <div className="py-12 text-center text-xs text-gray-400 font-semibold bg-[#f0f2f5] rounded-xl border border-dashed border-[#C59B6D]/35">
                         Please star configurations from the Calculations tab to highlight your major brand configurations.
                       </div>
                     ) : (
@@ -2448,7 +2448,7 @@ export default function ClientCabinet({
                         />
                       </div>
 
-                      <div className="p-4 bg-[#F8F6F1] rounded-2xl border border-[#C59B6D]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <div className="p-4 bg-[#f0f2f5] rounded-2xl border border-[#C59B6D]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
                           <span className="text-[11px] font-black text-[#1A3F25] block">Workspace Language Preference</span>
                           <span className="text-[10px] text-gray-500">Allows changing the interface translation system locale instantly.</span>
@@ -2492,12 +2492,12 @@ export default function ClientCabinet({
                           <h3 className="text-xs font-bold text-gray-200 mt-2">Deducted Campaign Margin</h3>
                         </div>
                         <div className="text-3xl font-black text-[#C59B6D]">{partnerDiscountActive}% Off</div>
-                        <p className="text-[9px] text-[#F8F6F1]/80 mt-1">Applied instantly dynamically to any custom package layouts.</p>
+                        <p className="text-[9px] text-[#f0f2f5]/80 mt-1">Applied instantly dynamically to any custom package layouts.</p>
                       </div>
 
                       <div className="bg-white rounded-2xl p-5 border border-[#C59B6D]/20 shadow-xs flex flex-col justify-between h-40">
                         <div>
-                          <span className="text-[9px] font-black tracking-widest text-[#1A3F25] uppercase bg-[#F8F6F1] px-2 py-1 rounded">AGENCY RUNS</span>
+                          <span className="text-[9px] font-black tracking-widest text-[#1A3F25] uppercase bg-[#f0f2f5] px-2 py-1 rounded">AGENCY RUNS</span>
                           <h2 className="text-xl font-black mt-3 text-[#1A1A1A]">{totalVolume} Inquiries</h2>
                         </div>
                         <div>
@@ -2520,7 +2520,7 @@ export default function ClientCabinet({
 
                     {/* Chart */}
                     <div className="bg-white p-5 rounded-2xl border border-[#C59B6D]/15 shadow-sm">
-                      <div className="flex items-center gap-2 mb-4 border-b border-[#F8F6F1] pb-3">
+                      <div className="flex items-center gap-2 mb-4 border-b border-[#f0f2f5] pb-3">
                         <TrendingUp size={16} className="text-[#C59B6D]" />
                         <h3 className="text-xs font-black text-[#1A3F25] uppercase tracking-wider">{getT("aggregate")}</h3>
                       </div>
@@ -2551,7 +2551,7 @@ export default function ClientCabinet({
                               type="text"
                               value={subClientName}
                               onChange={(e) => setSubClientName(e.target.value)}
-                              className="w-full text-xs font-bold px-3 py-2 bg-[#F8F6F1]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
+                              className="w-full text-xs font-bold px-3 py-2 bg-[#f0f2f5]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
                               placeholder="e.g. Armenia Food LLC"
                             />
                           </div>
@@ -2561,7 +2561,7 @@ export default function ClientCabinet({
                               type="email"
                               value={subClientEmail}
                               onChange={(e) => setSubClientEmail(e.target.value)}
-                              className="w-full text-xs font-bold px-3 py-2 bg-[#F8F6F1]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
+                              className="w-full text-xs font-bold px-3 py-2 bg-[#f0f2f5]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
                               placeholder="e.g. food@mail.am"
                             />
                           </div>
@@ -2571,7 +2571,7 @@ export default function ClientCabinet({
                               type="text"
                               value={subClientPhone}
                               onChange={(e) => setSubClientPhone(e.target.value)}
-                              className="w-full text-xs font-bold px-3 py-2 bg-[#F8F6F1]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
+                              className="w-full text-xs font-bold px-3 py-2 bg-[#f0f2f5]/50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#1A3F25]"
                               placeholder="e.g. +374 77 777 777"
                             />
                           </div>
@@ -2650,7 +2650,7 @@ export default function ClientCabinet({
                 </button>
               </div>
 
-              <div className="p-5 space-y-5 bg-[#F8F6F1]">
+              <div className="p-5 space-y-5 bg-[#f0f2f5]">
                 
                 {/* Bill Card */}
                 <div className="bg-white border border-[#C59B6D]/20 p-4 rounded-2xl flex justify-between items-center font-semibold text-xs shadow-xs">
@@ -2736,7 +2736,7 @@ export default function ClientCabinet({
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25 }}
-              className="w-full max-w-sm bg-[#F8F6F1] h-full shadow-2xl flex flex-col justify-between overflow-hidden border-l border-[#C59B6D]/20"
+              className="w-full max-w-sm bg-[#f0f2f5] h-full shadow-2xl flex flex-col justify-between overflow-hidden border-l border-[#C59B6D]/20"
             >
               {/* Head order overlay */}
               <div className="p-4 border-b border-[#C59B6D]/20 flex justify-between items-center bg-white shrink-0">
@@ -2778,7 +2778,7 @@ export default function ClientCabinet({
                     </div>
                   </div>
                   
-                  <p className="text-[9px] text-[#F8F6F1]/80 mt-1.5 font-medium">Drag to examine simulated print layout, custom textures, and folding vectors.</p>
+                  <p className="text-[9px] text-[#f0f2f5]/80 mt-1.5 font-medium">Drag to examine simulated print layout, custom textures, and folding vectors.</p>
                 </div>
 
                 {/* Specifications Parameters Card */}
@@ -2801,7 +2801,7 @@ export default function ClientCabinet({
                     <span>Direct chat with coordinator</span>
                   </h4>
 
-                  <div className="h-40 overflow-y-auto bg-[#F8F6F1]/50 p-2.5 rounded-lg border border-gray-150 flex flex-col gap-2">
+                  <div className="h-40 overflow-y-auto bg-[#f0f2f5]/50 p-2.5 rounded-lg border border-gray-150 flex flex-col gap-2">
                     {(orderChats[selectedOrderDetails.id] || []).map((msg, idx) => (
                       <div key={idx} className={`max-w-[85%] text-xs p-2.5 rounded-xl leading-normal ${msg.sender === "user" ? "bg-[#1A3F25] text-white self-end text-right" : "bg-white border border-gray-150 text-[#1A1A1A] self-start text-left"}`}>
                         <p className="font-semibold whitespace-pre-line">{msg.text}</p>
@@ -2835,7 +2835,7 @@ export default function ClientCabinet({
                   href={`/api/submissions/${selectedOrderDetails.id}/invoice-pdf`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 py-3 bg-white hover:bg-[#F8F6F1] text-gray-700 font-bold text-xs rounded-xl border border-gray-250 flex items-center justify-center gap-1.5 transition active:scale-95"
+                  className="flex-1 py-3 bg-white hover:bg-[#f0f2f5] text-gray-700 font-bold text-xs rounded-xl border border-gray-250 flex items-center justify-center gap-1.5 transition active:scale-95"
                 >
                   <Download size={13} />
                   <span>Invoice PDF</span>

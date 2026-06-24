@@ -1,34 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Noto+Serif+Armenian:wght@300;400;500;600;700&family=Noto+Sans+Armenian:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Noto+Serif+Armenian:wght@300;400;500;600;700&family=Noto+Sans+Armenian:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --font-sans-family: system-ui, -apple-system, sans-serif;
-  --font-heading-family: system-ui, -apple-system, serif;
+  --font-sans-family: "Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-heading-family: "Inter Tight", system-ui, -apple-system, sans-serif;
   --font-mono-family: "JetBrains Mono", monospace;
+
+  /* Together AI Colors */
+  --color-obsidian: #000000;
+  --color-paper-white: #ffffff;
+  --color-slate: #4d4d4d;
+  --color-hairline: #d6d6d6;
+  --color-midnight-ink: #010120;
+  --color-periwinkle: #bdbbff;
+  --color-mint-cyan: #c8f6f9;
+  --color-sky: #c1dff9;
+  --color-blush: #fde3f6;
+  --color-peach: #ffdccd;
 }
 
 /* Multilingual Typography Auto-switching System */
 html[lang="hy"], :root[lang="hy"] {
-  --font-sans-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
-  --font-mono-family: "JetBrains Mono", monospace;
+  --font-sans-family: "Noto Sans Armenian", "Inter Tight", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading-family: "Noto Serif Armenian", "Noto Sans Armenian", "Inter Tight", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono-family: "JetBrains Mono", "Noto Sans Armenian", monospace;
 }
 
 html[lang="en"], :root[lang="en"] {
-  --font-sans-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-heading-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans-family: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading-family: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono-family: "JetBrains Mono", monospace;
 }
 
 html[lang="ru"], :root[lang="ru"] {
-  --font-sans-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-heading-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans-family: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading-family: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono-family: "JetBrains Mono", monospace;
 }
 
 html[lang="ar"], :root[lang="ar"] {
-  --font-sans-family: system-ui, -apple-system, sans-serif;
-  --font-heading-family: system-ui, -apple-system, serif;
+  --font-sans-family: "Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-heading-family: "Inter Tight", system-ui, -apple-system, sans-serif;
   --font-mono-family: "JetBrains Mono", monospace;
 }
 
@@ -79,19 +91,31 @@ html[lang="ar"] .font-mono {
   --font-mono: var(--font-mono-family);
   --font-arial: "Arial", sans-serif;
   
-  --color-capsule-bg: #F4F2EE;
-  --color-capsule-surf: #FAFAF8;
-  --color-capsule-surf2: #FAFAF8;
-  --color-capsule-border: #D5D0C8;
-  --color-capsule-dark: #3D271B;
-  --color-capsule-accent: #ff2300;
-  --color-capsule-accent-light: #ff3b1a;
+  --color-capsule-bg: #f0f2f5;
+  --color-capsule-surf: #f0f2f5;
+  --color-capsule-surf2: #f3f5f8;
+  --color-capsule-border: rgba(255, 255, 255, 0.45);
+  --color-capsule-dark: #1a1c1d;
+  --color-capsule-accent: #FF2300;
+  --color-capsule-accent-light: #ff4d33;
   --color-capsule-accent-active: #cc1c00;
   --color-capsule-accent-dim: rgba(255, 35, 0, 0.08);
-  --color-capsule-text-secondary: #6B7280;
-  --color-capsule-text-muted: #9CA3AF;
+  --color-capsule-text-secondary: #414753;
+  --color-capsule-text-muted: #727784;
   --color-capsule-success: #166534;
   --color-capsule-warning: #C2410C;
+
+  /* Together AI Custom Color Tokens */
+  --color-obsidian: #000000;
+  --color-paper-white: #ffffff;
+  --color-slate: #4d4d4d;
+  --color-hairline: #d6d6d6;
+  --color-midnight-ink: #010120;
+  --color-periwinkle: #bdbbff;
+  --color-mint-cyan: #c8f6f9;
+  --color-sky: #c1dff9;
+  --color-blush: #fde3f6;
+  --color-peach: #ffdccd;
 
   --animate-slide-left: slide-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in-quick: fade-in-quick 0.2s ease-out;
@@ -112,12 +136,86 @@ html[lang="ar"] .font-mono {
 }
 
 body {
-  background: var(--color-capsule-bg);
-  color: var(--color-capsule-dark);
+  background: #f0f2f5 !important;
+  color: #1a1c1d !important;
   font-family: var(--font-sans);
   min-height: 100vh;
   position: relative;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ─────────────────────────────────────────────────────────
+   💎 SOFT UI NEUMORPHIC UTILITIES (CAPSULE PACK STYLE)
+   ───────────────────────────────────────────────────────── */
+.soft-ui-card {
+  background: #f0f2f5 !important;
+  box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+}
+
+.soft-ui-card-inset {
+  background: #f0f2f5 !important;
+  box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.soft-ui-button {
+  background: #f0f2f5 !important;
+  box-shadow: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.soft-ui-button:hover {
+  box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.soft-ui-button:active {
+  box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #ffffff !important;
+  transform: scale(0.98);
+}
+
+.soft-ui-button-primary {
+  background: #FF2300 !important;
+  color: #ffffff !important;
+  box-shadow: 6px 6px 12px rgba(255, 35, 0, 0.25), -6px -6px 12px #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.soft-ui-button-primary:hover {
+  box-shadow: 4px 4px 8px rgba(255, 35, 0, 0.25), -4px -4px 8px #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.soft-ui-button-primary:active {
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transform: scale(0.98);
+}
+
+/* Symmetrical elegant lines and active underlines with periwinkle highlight */
+.border-active-accent {
+  border-bottom: 2px solid #bdbbff !important;
+}
+
+/* Sticky Navigation Shadow: soft navy-tinted horizontal glow */
+header, nav.sticky-nav, .sticky-nav {
+  box-shadow: rgba(1, 1, 32, 0.1) -10px 0px 75px 0px !important;
+  border-radius: 0px !important;
+  background-color: #ffffff !important;
+}
+
+/* Force all buttons, indicators, and small text labels to be Monospace per style guide */
+button, select, .badge, .label, .btn, .mono-label, .text-mono, .font-mono {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+/* Ensure headings have aggressive negative tracking and tight line heights */
+h1, h2, h3, h4, h5, h6, .display-text {
+  font-family: "Inter Tight", sans-serif !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
 }
 
 /* Global utility to disable ugly default browser tap highlight colors and focus outlines on all platforms */
@@ -165,7 +263,7 @@ body::before {
 /* Print optimization styles */
 @media print {
   /* Hide entire application shell and modal layers */
-  #root, .fixed, .modal, header, footer, button, nav, .bg-capsule-bg {
+  #root, .fixed, .modal, header, footer, button, nav, .bg-[#f0f2f5] {
     display: none !important;
   }
   
@@ -225,14 +323,14 @@ button, [role="button"], a, select, input {
 /* 1. Convex (Raised) Neumorphic Containers & Buttons */
 .neu-convex-bg {
   background: var(--color-capsule-bg);
-  box-shadow: 4px 4px 10px #D5D0C8, -4px -4px 10px #FFFFFF;
+  box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.6);
   will-change: transform, box-shadow;
 }
 
 .neu-convex-surf {
   background: var(--color-capsule-surf);
-  box-shadow: 4px 4px 10px #D5D0C8, -4px -4px 10px #FFFFFF;
+  box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.85);
   will-change: transform, box-shadow;
 }
@@ -250,30 +348,30 @@ button, [role="button"], a, select, input {
 }
 .neu-convex-hover:active {
   transform: scale(0.98) !important;
-  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+  box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #FFFFFF !important;
 }
 
 /* 2. Inset (Sunken / Inner Shadow) for inputs and containers */
 .neu-inset-bg {
   background: var(--color-capsule-bg);
-  box-shadow: inset 3px 3px 6px #D5D0C8, inset -3px -3px 6px #FFFFFF;
+  box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .neu-inset-surf {
   background: var(--color-capsule-surf);
-  box-shadow: inset 3px 3px 6px #D5D0C8, inset -3px -3px 6px #FFFFFF;
+  box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* Active Pressed state for buttons */
 .neu-pressed {
-  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+  box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .neu-pressed-surf {
-  box-shadow: inset 2px 2px 5px #D5D0C8, inset -2px -2px 5px #FFFFFF !important;
+  box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
@@ -452,6 +550,126 @@ input[type="number"] {
     0 0 12px rgba(255, 35, 0, 0.12),
     inset 1px 1px 3px rgba(213, 208, 200, 0.1),
     inset -1px -1px 2px rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+/* Custom modern scrollbar for scrolled settings */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(26, 28, 29, 0.1);
+  border-radius: 99px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 28, 29, 0.25);
+}
+
+/* Neumorphic range slider inputs */
+input[type="range"].neu-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+input[type="range"].neu-slider::-webkit-slider-runnable-track {
+  background: #e0e1e6;
+  height: 8px;
+  border-radius: 99px;
+  box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #ffffff;
+}
+input[type="range"].neu-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  background-color: #FF2300;
+  height: 20px;
+  width: 20px;
+  border-radius: 99px;
+  box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #ffffff;
+  transition: transform 0.1s ease;
+}
+input[type="range"].neu-slider::-webkit-slider-thumb:active {
+  transform: scale(1.25);
+}
+input[type="range"].neu-slider::-moz-range-track {
+  background: #e0e1e6;
+  height: 8px;
+  border-radius: 99px;
+  box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #ffffff;
+}
+input[type="range"].neu-slider::-moz-range-thumb {
+  background-color: #FF2300;
+  height: 20px;
+  width: 20px;
+  border-radius: 99px;
+  border: none;
+  box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #ffffff;
+  transition: transform 0.1s ease;
+}
+input[type="range"].neu-slider::-moz-range-thumb:active {
+  transform: scale(1.25);
+}
+
+/* ─────────────────────────────────────────────────────────
+   💎 HIGH PRECEDENCE MULTILINGUAL TYPOGRAPHY ACCENTS (PERFECT SYMMETRY)
+   ───────────────────────────────────────────────────────── */
+html[lang="hy"] body,
+html[lang="hy"] button,
+html[lang="hy"] select,
+html[lang="hy"] input,
+html[lang="hy"] textarea,
+html[lang="hy"] div,
+html[lang="hy"] span,
+html[lang="hy"] p,
+html[lang="hy"] label,
+html[lang="hy"] h1,
+html[lang="hy"] h2,
+html[lang="hy"] h3,
+html[lang="hy"] h4,
+html[lang="hy"] h5,
+html[lang="hy"] h6,
+html[lang="hy"] .font-sans {
+  font-family: var(--font-sans-family) !important;
+}
+
+html[lang="hy"] h1,
+html[lang="hy"] h2,
+html[lang="hy"] h3,
+html[lang="hy"] h4,
+html[lang="hy"] h5,
+html[lang="hy"] h6,
+html[lang="hy"] .font-serif {
+  font-family: var(--font-heading-family) !important;
+}
+
+html[lang="hy"] .font-mono,
+html[lang="hy"] .mono-label,
+html[lang="hy"] .text-mono,
+html[lang="hy"] code,
+html[lang="hy"] pre {
+  font-family: var(--font-mono-family) !important;
+}
+
+/* English and Russian Clean Typography Enforcement */
+html[lang="en"] body, html[lang="en"] button, html[lang="en"] select, html[lang="en"] input, html[lang="en"] textarea, html[lang="en"] div, html[lang="en"] span, html[lang="en"] p {
+  font-family: var(--font-sans-family) !important;
+}
+html[lang="ru"] body, html[lang="ru"] button, html[lang="ru"] select, html[lang="ru"] input, html[lang="ru"] textarea, html[lang="ru"] div, html[lang="ru"] span, html[lang="ru"] p {
+  font-family: var(--font-sans-family) !important;
 }
 
 

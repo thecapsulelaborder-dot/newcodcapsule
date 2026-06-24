@@ -321,10 +321,10 @@ export default function EnterpriseAdminSections({
     } catch (e) {
       return [
         { id: "hero", type: "Hero Banner Section", title: "պատվիրված պրեմիում փաթեթավորում", desc: "Ընտրեք ցանկալի արտադրանքի տեսակը՝ հաշվարկը և 3D ֆիզիկական մոդելավորումը սկսելու համար։", active: true },
-        { id: "features", type: "Core Corporate Features Blueprint", title: "ինչու՞ ընտրել capsule concept", desc: "Բարձրագույն ստանդարտներ, օֆսեթ ռիթմեր, արագ արտադրություն, անվճար 3D էսքիզներ", active: true },
+        { id: "features", type: "Core Corporate Features Blueprint", title: "ինչու՞ ընտրել CAPSULE PACK", desc: "Բարձրագույն ստանդարտներ, օֆսեթ ռիթմեր, արագ արտադրություն, անվճար 3D էսքիզներ", active: true },
         { id: "calculator", type: "Live Inquiry Rate Calculator", title: "իրական ժամանակում գնահատող սարք", desc: "Հաշվարկեք Ձեր պատվերի արժեքը վայրկյանների ընթացքում զեղչային մոդելով", active: true },
         { id: "faq", type: "Frequently Asked Questions Accordeon", title: "հաճախ տրվող հարցեր", desc: "Ամեն ինչ պատվիրման ընթացակարգի, MOQ-ների, լամինացիայի և առաքման մասին", active: true },
-        { id: "reviews", type: "Verified Customer Reviews Slider", title: "կարծիքներ մեր մասին", desc: "Ինչ են ասում Capsule Concept ընկերության պայմանագրերի մասին մեր հաճախորդները", active: false }
+        { id: "reviews", type: "Verified Customer Reviews Slider", title: "կարծիքներ մեր մասին", desc: "Ինչ են ասում CAPSULE PACK ընկերության պայմանագրերի մասին մեր հաճախորդները", active: false }
       ];
     }
   }, [editSiteTexts]);
@@ -518,12 +518,12 @@ export default function EnterpriseAdminSections({
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
         {/* Header Grid */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-capsule-accent/10 pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#FF2300]/25/10 pb-4">
           <div>
             <span className="text-xs uppercase tracking-widest text-[#1A3F25] font-extrabold flex items-center gap-1">
               <Sparkles size={11} className="text-[#C59B6D]" /> COMMAND CENTER
             </span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Enterprise Dashboard Workspace</h2>
+            <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Enterprise Dashboard Workspace</h2>
           </div>
           <div className="flex gap-2 mt-2 sm:mt-0">
             <button onClick={handleSaveAll} className="px-3.5 py-2 bg-[#1A3F25] text-white text-xs font-bold rounded-lg shadow-md hover:bg-opacity-90 flex items-center gap-1.5 transition-all cursor-pointer">
@@ -534,37 +534,37 @@ export default function EnterpriseAdminSections({
 
         {/* 4 Scorecards Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-[#7C9082] tracking-wider block">Orders Today</span>
-              <span className="text-2xl font-extrabold text-capsule-accent font-mono block mt-1">{stats.todayOrdersCount > 0 ? stats.todayOrdersCount : 8}</span>
+              <span className="text-2xl font-extrabold text-[#FF2300] font-mono block mt-1">{stats.todayOrdersCount > 0 ? stats.todayOrdersCount : 8}</span>
               <span className="text-[9px] text-[#1A3F25] font-semibold mt-1 inline-block bg-[#1A3F25]/5 px-2 py-0.5 rounded-full font-serif">⚡ Live Analytics</span>
             </div>
             <div className="p-3 bg-[#1A3F25]/5 text-[#1A3F25] rounded-xl"><ShoppingCart size={20} /></div>
           </div>
 
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-[#7C9082] tracking-wider block">Total Revenue</span>
-              <span className="text-2xl font-extrabold text-capsule-accent font-mono block mt-1">{(stats.totalRev || 2450000).toLocaleString()} ֏</span>
+              <span className="text-2xl font-extrabold text-[#FF2300] font-mono block mt-1">{(stats.totalRev || 2450000).toLocaleString()} ֏</span>
               <span className="text-[9px] text-[#C59B6D] font-semibold mt-1 inline-block bg-[#C59B6D]/10 px-2 py-0.5 rounded-full font-serif">📈 Direct Client Sales</span>
             </div>
             <div className="p-3 bg-[#C59B6D]/10 text-[#C59B6D] rounded-xl"><DollarSign size={20} /></div>
           </div>
 
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-[#7C9082] tracking-wider block">Average Check</span>
-              <span className="text-2xl font-extrabold text-capsule-accent font-mono block mt-1">{(stats.avgCheck || 125000).toLocaleString()} ֏</span>
+              <span className="text-2xl font-extrabold text-[#FF2300] font-mono block mt-1">{(stats.avgCheck || 125000).toLocaleString()} ֏</span>
               <span className="text-[9px] text-teal-700 font-semibold mt-1 inline-block bg-teal-50 px-2 py-0.5 rounded-full">✦ High Margin Order Value</span>
             </div>
             <div className="p-3 bg-teal-50 text-teal-800 rounded-xl"><TrendingUp size={20} /></div>
           </div>
 
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-4 rounded-2xl shadow-[0_4px_12px_rgba(26,63,37,0.02)] flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-[#7C9082] tracking-wider block">AI Assistant Conversations</span>
-              <span className="text-2xl font-extrabold text-capsule-accent font-mono block mt-1">94%</span>
+              <span className="text-2xl font-extrabold text-[#FF2300] font-mono block mt-1">94%</span>
               <span className="text-[9px] text-purple-700 font-semibold mt-1 inline-block bg-purple-50 px-2 py-0.5 rounded-full">🤖 AI Conversion Success</span>
             </div>
             <div className="p-3 bg-purple-50 text-purple-800 rounded-xl"><MessageSquare size={20} /></div>
@@ -642,8 +642,8 @@ export default function EnterpriseAdminSections({
         {/* Charts & Graphs block */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Revenue Area Chart */}
-          <div className="bg-white border border-capsule-accent/10 p-4 rounded-3xl shadow-sm lg:col-span-2">
-            <h3 className="font-serif text-sm font-semibold text-capsule-accent mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
+          <div className="bg-white border border-[#FF2300]/25/10 p-4 rounded-3xl shadow-sm lg:col-span-2">
+            <h3 className="font-serif text-sm font-semibold text-[#FF2300] mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
               <Activity size={14} className="text-[#C59B6D]" /> Real-time Volatility & Hourly Revenue Stream
             </h3>
             <div className="h-64">
@@ -666,8 +666,8 @@ export default function EnterpriseAdminSections({
           </div>
 
           {/* Popular Categories Pie */}
-          <div className="bg-white border border-capsule-accent/10 p-4 rounded-3xl shadow-sm">
-            <h3 className="font-serif text-sm font-semibold text-capsule-accent mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
+          <div className="bg-white border border-[#FF2300]/25/10 p-4 rounded-3xl shadow-sm">
+            <h3 className="font-serif text-sm font-semibold text-[#FF2300] mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
               <Layers size={14} className="text-[#C59B6D]" /> Categories Shares
             </h3>
             <div className="h-48 flex items-center justify-center">
@@ -684,7 +684,7 @@ export default function EnterpriseAdminSections({
             </div>
             <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2">
               {catData.map((item, index) => (
-                <div key={item.name} className="flex items-center gap-1.5 text-[9px] font-bold text-capsule-text-secondary truncate animate-fadeIn">
+                <div key={item.name} className="flex items-center gap-1.5 text-[9px] font-bold text-[#414753] truncate animate-fadeIn">
                   <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0" style={{ backgroundColor: COLORS_PALETTE[index % COLORS_PALETTE.length] }} />
                   <span className="truncate">{item.name} ({item.value})</span>
                 </div>
@@ -696,8 +696,8 @@ export default function EnterpriseAdminSections({
         {/* Popular Materials Chart & Recent Events */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* horizontal Material shares and weights */}
-          <div className="bg-white border border-capsule-accent/10 p-5 rounded-3xl shadow-sm">
-            <h3 className="font-serif text-sm font-semibold text-capsule-accent mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
+          <div className="bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl shadow-sm">
+            <h3 className="font-serif text-sm font-semibold text-[#FF2300] mb-4 uppercase tracking-widest flex items-center gap-1.5 border-b border-gray-100 pb-2">
               <Database size={14} className="text-[#C59B6D]" /> Material Preferences / Stock Index
             </h3>
             <div className="h-56">
@@ -714,8 +714,8 @@ export default function EnterpriseAdminSections({
           </div>
 
           {/* User Live Sessions & AI logs */}
-          <div className="bg-white border border-capsule-accent/10 p-5 rounded-3xl shadow-sm">
-            <h3 className="font-serif text-sm font-semibold text-capsule-accent mb-3 uppercase tracking-widest flex items-center justify-between border-b border-gray-100 pb-2">
+          <div className="bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl shadow-sm">
+            <h3 className="font-serif text-sm font-semibold text-[#FF2300] mb-3 uppercase tracking-widest flex items-center justify-between border-b border-gray-100 pb-2">
               <span className="flex items-center gap-1.5"><Activity size={14} className="text-red-500" /> Active Visitor Engagement</span>
               <span className="text-[10px] bg-red-100 text-red-800 font-extrabold px-2 py-0.5 rounded-full animate-pulse">● 4 ONLINE NOW</span>
             </h3>
@@ -727,14 +727,14 @@ export default function EnterpriseAdminSections({
                 { time: "1 hour ago", user: "Visitor #2210", action: "applied coupon 'PROMO10' in cart", extra: "10% off validated" },
                 { time: "3 hours ago", user: "Lilit Grigoryan", action: "sent manual bulk box files request via Contact Form", extra: "Assigned to Manager Arman" }
               ].map((ev, i) => (
-                <div key={i} className="flex items-start gap-2.5 p-2 rounded-xl bg-capsule-surf2/30 hover:bg-capsule-surf2/65 transition-all text-xs border border-transparent hover:border-capsule-accent/5">
-                  <div className="w-2 h-2 rounded-full bg-capsule-accent mt-1.5 shrink-0" />
+                <div key={i} className="flex items-start gap-2.5 p-2 rounded-xl bg-[#f0f2f5]/30 hover:bg-[#f0f2f5]/65 transition-all text-xs border border-transparent hover:border-[#FF2300]/25/5">
+                  <div className="w-2 h-2 rounded-full bg-[#FF2300] mt-1.5 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-capsule-accent truncate">{ev.user}</span>
-                      <span className="text-[9px] font-bold text-capsule-text-muted">{ev.time}</span>
+                      <span className="font-bold text-[#FF2300] truncate">{ev.user}</span>
+                      <span className="text-[9px] font-bold text-[#727784]">{ev.time}</span>
                     </div>
-                    <p className="text-capsule-text-secondary mt-0.5">{ev.action}</p>
+                    <p className="text-[#414753] mt-0.5">{ev.action}</p>
                     <p className="text-[10px] text-[#C59B6D] font-medium italic mt-1">{ev.extra}</p>
                   </div>
                 </div>
@@ -744,8 +744,8 @@ export default function EnterpriseAdminSections({
         </div>
 
         {/* Recent Order Logs Quick view */}
-        <div className="bg-white border border-capsule-accent/10 p-5 rounded-3xl shadow-sm">
-          <h3 className="font-serif text-sm font-semibold text-capsule-accent mb-4 uppercase tracking-widest flex items-center justify-between border-b border-gray-100 pb-2">
+        <div className="bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl shadow-sm">
+          <h3 className="font-serif text-sm font-semibold text-[#FF2300] mb-4 uppercase tracking-widest flex items-center justify-between border-b border-gray-100 pb-2">
             <span>📋 Last Submissions & Order Stream</span>
           </h3>
           <div className="overflow-x-auto">
@@ -765,11 +765,11 @@ export default function EnterpriseAdminSections({
                   <tr key={index} className="hover:bg-gray-50/50">
                     <td className="py-3 font-mono font-bold text-[#1A3F25]">#CC-{s.id || 1000 + index}</td>
                     <td className="py-3 capitalize text-[#C59B6D] font-semibold">{s.type}</td>
-                    <td className="py-3 font-medium text-capsule-dark">{s.customerName || "Anonymous User"}</td>
-                    <td className="py-3 text-capsule-text-secondary">{s.customerPhone || "---"}</td>
+                    <td className="py-3 font-medium text-[#1a1c1d]">{s.customerName || "Anonymous User"}</td>
+                    <td className="py-3 text-[#414753]">{s.customerPhone || "---"}</td>
                     <td className="py-3 font-mono font-bold text-[#1A3F25]">{(s.totalPrice || 0).toLocaleString()} ֏</td>
                     <td className="py-3">
-                      <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1A3F25]/5 text-capsule-accent border border-capsule-accent/10 uppercase">
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1A3F25]/5 text-[#FF2300] border border-[#FF2300]/25/10 uppercase">
                         Registered
                       </span>
                     </td>
@@ -777,7 +777,7 @@ export default function EnterpriseAdminSections({
                 ))}
                 {submissions.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center font-serif text-capsule-text-muted italic">
+                    <td colSpan={6} className="py-8 text-center font-serif text-[#727784] italic">
                       No customer submissions recorded. Waiting for new client orders.
                     </td>
                   </tr>
@@ -887,14 +887,14 @@ export default function EnterpriseAdminSections({
   const renderProductBuilder = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">CATALOG MANAGER (CMS)</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Product Configuration Suite (No-Code Builder)</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Quickly construct visual products, modify minimum order quantities (MOQ), and inject parameters without restarting code containers.</p>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">CATALOG MANAGER (CMS)</span>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Product Configuration Suite (No-Code Builder)</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Quickly construct visual products, modify minimum order quantities (MOQ), and inject parameters without restarting code containers.</p>
         </div>
 
         {/* Sub-Tabs Selector */}
-        <div className="flex border-b border-capsule-accent/10 gap-2 pb-2">
+        <div className="flex border-b border-[#FF2300]/25/10 gap-2 pb-2">
           {[
             { key: "catalog", label: "📦 Inventory Catalog" },
             { key: "schemas", label: "🏷️ Dynamic Schema Builder" },
@@ -907,7 +907,7 @@ export default function EnterpriseAdminSections({
               className={`py-1.5 px-3 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all cursor-pointer ${
                 prodBuilderSubTab === tab.key
                   ? "bg-[#1A3F25] text-white"
-                  : "bg-capsule-surf2/50 text-capsule-text-muted hover:bg-capsule-surf2"
+                  : "bg-[#f0f2f5]/50 text-[#727784] hover:bg-[#f0f2f5]"
               }`}
             >
               {tab.label}
@@ -916,7 +916,7 @@ export default function EnterpriseAdminSections({
         </div>
 
         {productSuccess && (
-          <div className="bg-[#1A3F25]/5 border border-capsule-accent/20 p-3 rounded-xl flex items-center gap-2 text-xs text-capsule-accent font-semibold animate-pulse">
+          <div className="bg-[#1A3F25]/5 border border-[#FF2300]/25/20 p-3 rounded-xl flex items-center gap-2 text-xs text-[#FF2300] font-semibold animate-pulse">
             <Check size={14} className="text-[#C59B6D]" />
             <span>{productSuccess}</span>
           </div>
@@ -926,29 +926,29 @@ export default function EnterpriseAdminSections({
         {prodBuilderSubTab === "catalog" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* New product visual form */}
-            <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-12 xl:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
                 <Plus size={14} className="text-[#C59B6D]" /> Create a New Packaging Product
               </h3>
               
               <div className="space-y-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Product Model / Title *</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Product Model / Title *</label>
                   <input 
                     type="text" 
                     value={newProdName}
                     onChange={(e) => setNewProdName(e.target.value)}
                     placeholder="e.g. Rigid Magnetic Flap Cosmetic Box" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-medium"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Assigned Parent Category</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Assigned Parent Category</label>
                   <select 
                     value={newProdCat}
                     onChange={(e) => setNewProdCat(e.target.value)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                   >
                     {editCategories.map(c => (
                       <option key={c.id} value={c.id}>{c.name}</option>
@@ -957,23 +957,23 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Shorthand Description / Blueprint</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Shorthand Description / Blueprint</label>
                   <textarea 
                     value={newProdDesc}
                     onChange={(e) => setNewProdDesc(e.target.value)}
                     placeholder="Luxury dual magnet custom interior divider slot..." 
                     rows={2}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Starting Base Unit Price (֏)</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Starting Base Unit Price (֏)</label>
                   <input 
                     type="number" 
                     value={newProdPrice}
                     onChange={(e) => setNewProdPrice(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-mono font-bold"
+                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-mono font-bold"
                   />
                 </div>
 
@@ -989,23 +989,23 @@ export default function EnterpriseAdminSections({
             </div>
 
             {/* Catalog grid database sync */}
-            <div className="lg:col-span-12 xl:col-span-7 bg-white border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
+            <div className="lg:col-span-12 xl:col-span-7 bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
                 <span> Live Core Inventory Assets ({editProducts.length})</span>
                 <span className="text-[10px] text-teal-700 font-extrabold px-2 py-0.5 rounded-full bg-teal-50">Fully Managed</span>
               </h3>
 
               <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
                 {editProducts.map((p, idx) => (
-                  <div key={p.id || idx} className="flex items-center justify-between p-3 rounded-2xl bg-capsule-surf2/30 border border-[#1A3F25]/5 hover:bg-capsule-surf2/65 transition-all animate-fadeIn">
+                  <div key={p.id || idx} className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f2f5]/30 border border-[#1A3F25]/5 hover:bg-[#f0f2f5]/65 transition-all animate-fadeIn">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-9 h-9 rounded-xl bg-capsule-accent/5 border border-capsule-accent/10 flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-[#FF2300]/5 border border-[#FF2300]/25/10 flex items-center justify-center shrink-0">
                         <Database size={16} className="text-[#1A3F25]" />
                       </div>
                       <div className="min-w-0">
-                        <span className="text-xs font-bold text-capsule-accent block truncate">{p.name}</span>
-                        <div className="flex gap-2 items-center text-[10px] font-semibold text-capsule-text-muted uppercase mt-0.5">
-                          <span className="bg-[#C59B6D]/10 text-capsule-text-secondary px-1.5 py-0.2 rounded-md">{p.categoryId}</span>
+                        <span className="text-xs font-bold text-[#FF2300] block truncate">{p.name}</span>
+                        <div className="flex gap-2 items-center text-[10px] font-semibold text-[#727784] uppercase mt-0.5">
+                          <span className="bg-[#C59B6D]/10 text-[#414753] px-1.5 py-0.2 rounded-md">{p.categoryId}</span>
                         </div>
                       </div>
                     </div>
@@ -1034,63 +1034,63 @@ export default function EnterpriseAdminSections({
         {/* SUB TAB 2: SCHEMAS BUILDER */}
         {prodBuilderSubTab === "schemas" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
                 <Plus size={14} className="text-[#C59B6D]" /> Build Custom Schema Entity
               </h3>
               
               <div className="space-y-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Category Code / ID *</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Category Code / ID *</label>
                   <input 
                     type="text" 
                     value={newCatId}
                     onChange={(e) => setNewCatId(e.target.value)}
                     placeholder="e.g. customized_jars" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-mono font-bold"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-mono font-bold"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Human Readable Title *</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Human Readable Title *</label>
                   <input 
                     type="text" 
                     value={newCatName}
                     onChange={(e) => setNewCatName(e.target.value)}
                     placeholder="e.g. Glass & Clay Jars" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-medium"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Minimum Order Qty (MOQ)</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Minimum Order Qty (MOQ)</label>
                   <input 
                     type="number" 
                     value={newCatMoq}
                     onChange={(e) => setNewCatMoq(Number(e.target.value) || 300)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-mono"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Landing page Hero header text</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Landing page Hero header text</label>
                   <input 
                     type="text" 
                     value={newCatHeroTitle}
                     onChange={(e) => setNewCatHeroTitle(e.target.value)}
                     placeholder="Premium custom craft jars" 
-                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-capsule-dark"
+                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Hero Description / Pitch</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Hero Description / Pitch</label>
                   <textarea 
                     value={newCatHeroDesc}
                     onChange={(e) => setNewCatHeroDesc(e.target.value)}
                     placeholder="Custom hot gold stamp embossed branding directly on your premium glass container assets..." 
                     rows={2}
-                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-capsule-dark"
+                    className="w-full bg-white border border-[#1A3F25]/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d]"
                   />
                 </div>
 
@@ -1105,16 +1105,16 @@ export default function EnterpriseAdminSections({
               </div>
             </div>
 
-            <div className="lg:col-span-7 bg-white border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-7 bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest">
                 ⚙️ Schema Entities Matrix ({editCategories.length})
               </h3>
 
               <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
                 {editCategories.map((c, idx) => (
-                  <div key={c.id || idx} className="p-3.5 rounded-2xl bg-capsule-surf2/30 border border-[#1A3F25]/5 hover:bg-capsule-surf2/65 transition-all animate-fadeIn flex items-center justify-between">
+                  <div key={c.id || idx} className="p-3.5 rounded-2xl bg-[#f0f2f5]/30 border border-[#1A3F25]/5 hover:bg-[#f0f2f5]/65 transition-all animate-fadeIn flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-capsule-accent block">{c.name}</span>
+                      <span className="text-xs font-bold text-[#FF2300] block">{c.name}</span>
                       <span className="font-mono text-[9px] uppercase font-bold text-gray-400">ID: {c.id} | MOQ: {c.minQty}</span>
                     </div>
                     <button
@@ -1138,29 +1138,29 @@ export default function EnterpriseAdminSections({
         {/* SUB TAB 3: DYNAMIC FIELD BUILDER */}
         {prodBuilderSubTab === "fields" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
                 <Plus size={14} className="text-[#C59B6D]" /> Construct Custom Field Selector
               </h3>
               
               <div className="space-y-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Human Field Label *</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Human Field Label *</label>
                   <input 
                     type="text" 
                     value={newFieldLabel}
                     onChange={(e) => setNewFieldLabel(e.target.value)}
                     placeholder="e.g. Ribbon Thickness Width" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-medium"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Control Property Type</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Control Property Type</label>
                   <select 
                     value={newFieldType}
                     onChange={(e) => setNewFieldType(e.target.value)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                   >
                     <option value="list">Dropdown choice selection menu list</option>
                     <option value="text">Human text parameter comment area</option>
@@ -1172,11 +1172,11 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Assigned Target Category</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Assigned Target Category</label>
                   <select 
                     value={newFieldTarget}
                     onChange={(e) => setNewFieldTarget(e.target.value)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                   >
                     <option value="all">Apply to ALL catalog ranges</option>
                     {editCategories.map(c => (
@@ -1186,24 +1186,24 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Comma-separated Choice List (Dropdowns only)</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Comma-separated Choice List (Dropdowns only)</label>
                   <input 
                     type="text" 
                     value={newFieldOptions}
                     onChange={(e) => setNewFieldOptions(e.target.value)}
                     placeholder="No Divider, 2 slots divider, 4 slots divider" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark text-xs"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] text-xs"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Choice Custom AMD Surcharge offsets (comma-separated)</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Choice Custom AMD Surcharge offsets (comma-separated)</label>
                   <input 
                     type="text" 
                     value={newFieldSurcharges}
                     onChange={(e) => setNewFieldSurcharges(e.target.value)}
                     placeholder="0, 500, 1200" 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-[#1A3F25] font-mono"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1A3F25] font-mono"
                   />
                 </div>
 
@@ -1218,19 +1218,19 @@ export default function EnterpriseAdminSections({
               </div>
             </div>
 
-            <div className="lg:col-span-7 bg-white border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-7 bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest">
                 📦 Dynamic Customized Properties Array ({customFields.length})
               </h3>
 
               <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
                 {customFields.length === 0 ? (
-                  <p className="text-[10px] text-capsule-text-muted">No custom dynamic property fields established yet. Define properties to assign them dynamically.</p>
+                  <p className="text-[10px] text-[#727784]">No custom dynamic property fields established yet. Define properties to assign them dynamically.</p>
                 ) : (
                   customFields.map((f: any, idx: number) => (
-                    <div key={f.id || idx} className="p-3.5 rounded-2xl bg-capsule-surf2/30 border border-[#1A3F25]/5 hover:bg-capsule-surf2/65 transition-all animate-fadeIn flex items-center justify-between">
+                    <div key={f.id || idx} className="p-3.5 rounded-2xl bg-[#f0f2f5]/30 border border-[#1A3F25]/5 hover:bg-[#f0f2f5]/65 transition-all animate-fadeIn flex items-center justify-between">
                       <div>
-                        <span className="text-xs font-bold text-capsule-accent block">{f.label}</span>
+                        <span className="text-xs font-bold text-[#FF2300] block">{f.label}</span>
                         <span className="block text-[9px] font-semibold text-gray-500 uppercase mt-0.5">Type: {f.type} | Target: {f.target}</span>
                         {f.options && f.options.length > 0 && (
                           <span className="block text-[9px] italic text-[#C59B6D] mt-0.5">Choices: {f.options.join(", ")} surcharged: {f.surcharges.join("֏, ")}֏</span>
@@ -1330,14 +1330,14 @@ export default function EnterpriseAdminSections({
   const renderCalculatorBuilder = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">OPTION BUILDER</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Interactive Calculator Customizer</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Visually inject materials, thickness levels, lamination blocks, or accessories dropdown elements into the frontend widgets.</p>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">OPTION BUILDER</span>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Interactive Calculator Customizer</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Visually inject materials, thickness levels, lamination blocks, or accessories dropdown elements into the frontend widgets.</p>
         </div>
 
         {/* Sub-Tabs Selector */}
-        <div className="flex border-b border-capsule-accent/10 gap-2 pb-2">
+        <div className="flex border-b border-[#FF2300]/25/10 gap-2 pb-2">
           {[
             { key: "options", label: "📄 Stock Materials" },
             { key: "calculator_schema", label: "🧮 Calculator Schema Builder" },
@@ -1349,7 +1349,7 @@ export default function EnterpriseAdminSections({
               className={`py-1.5 px-3 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all cursor-pointer ${
                 calcSubTab === tab.key
                   ? "bg-[#1A3F25] text-white"
-                  : "bg-capsule-surf2/50 text-capsule-text-muted hover:bg-capsule-surf2"
+                  : "bg-[#f0f2f5]/50 text-[#727784] hover:bg-[#f0f2f5]"
               }`}
             >
               {tab.label}
@@ -1358,7 +1358,7 @@ export default function EnterpriseAdminSections({
         </div>
 
         {calcSuccess && (
-          <div className="p-3 bg-[#1A3F25]/5 border border-capsule-accent/15 text-capsule-accent font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
+          <div className="p-3 bg-[#1A3F25]/5 border border-[#FF2300]/25/15 text-[#FF2300] font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
             <Check size={14} className="text-[#C59B6D]" />
             <span>{calcSuccess}</span>
           </div>
@@ -1376,7 +1376,7 @@ export default function EnterpriseAdminSections({
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 cursor-pointer ${
                     selectedCalcCategory === c.id 
                       ? "bg-[#1A3F25] text-white" 
-                      : "bg-capsule-surf2/45 text-capsule-text-muted hover:bg-[#1A3F25]/5"
+                      : "bg-[#f0f2f5]/45 text-[#727784] hover:bg-[#1A3F25]/5"
                   }`}
                 >
                   {c.name} Options
@@ -1386,40 +1386,40 @@ export default function EnterpriseAdminSections({
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Quick injection form */}
-              <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-                <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+              <div className="lg:col-span-12 xl:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+                <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
                   <Plus size={14} className="text-[#C59B6D]" /> Add Custom Material / Paper stock
                 </h3>
 
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Paper Material Label</label>
+                    <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Paper Material Label</label>
                     <input 
                       type="text" 
                       value={newPaperLabel}
                       onChange={(e) => setNewPaperLabel(e.target.value)}
                       placeholder="e.g. Ivory Art Board Smooth"
-                      className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-capsule-dark font-medium"
+                      className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1a1c1d] font-medium"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Density / Weight (GSM)</label>
+                      <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Density / Weight (GSM)</label>
                       <input 
                         type="number" 
                         value={newPaperWeight}
                         onChange={(e) => setNewPaperWeight(parseInt(e.target.value) || 200)}
-                        className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none"
+                        className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Surcharge Cost (֏ / sq.m.)</label>
+                      <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Surcharge Cost (֏ / sq.m.)</label>
                       <input 
                         type="number" 
                         value={newPaperSurcharge}
                         onChange={(e) => setNewPaperSurcharge(parseFloat(e.target.value) || 0)}
-                        className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 font-mono font-semibold outline-none"
+                        className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 font-mono font-semibold outline-none"
                       />
                     </div>
                   </div>
@@ -1435,19 +1435,19 @@ export default function EnterpriseAdminSections({
 
               {/* Current options listing */}
               <div className="lg:col-span-12 xl:col-span-7 bg-white border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4 font-sans text-xs">
-                <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
+                <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
                   <span>📄 Active Materials Library ({editPapers.length})</span>
-                  <span className="text-[10px] font-semibold text-capsule-text-muted">Dynamic Dropdown Synced</span>
+                  <span className="text-[10px] font-semibold text-[#727784]">Dynamic Dropdown Synced</span>
                 </h3>
 
                 <div className="space-y-2 max-h-[320px] overflow-y-auto pr-1">
                   {editPapers.map((paper, idx) => (
-                    <div key={paper.id || idx} className="p-3 bg-[#FAF9F6] border border-capsule-accent/5 hover:bg-opacity-95 transition-all flex items-center justify-between rounded-lg">
+                    <div key={paper.id || idx} className="p-3 bg-[#f0f2f5] border border-[#FF2300]/25/5 hover:bg-opacity-95 transition-all flex items-center justify-between rounded-lg">
                       <div className="min-w-0">
-                        <span className="font-bold text-capsule-accent text-xs block">{paper.name} ({paper.gsm} GSM)</span>
+                        <span className="font-bold text-[#FF2300] text-xs block">{paper.name} ({paper.gsm} GSM)</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs font-bold text-capsule-accent whitespace-nowrap bg-white px-2 py-1 rounded-lg border border-[#1A3F25]/10">+{paper.pricePerSqm} ֏/m²</span>
+                        <span className="font-mono text-xs font-bold text-[#FF2300] whitespace-nowrap bg-white px-2 py-1 rounded-lg border border-[#1A3F25]/10">+{paper.pricePerSqm} ֏/m²</span>
                         <button 
                           onClick={() => {
                             const verified = confirm(`Are you sure you want to remove "${paper.name}"?`);
@@ -1470,7 +1470,7 @@ export default function EnterpriseAdminSections({
 
         {/* SUB TAB 2: CALCULATOR SCHEMA BUILDER */}
         {calcSubTab === "calculator_schema" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white border border-capsule-accent/5 p-6 rounded-3xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white border border-[#FF2300]/25/5 p-6 rounded-3xl">
             <div className="lg:col-span-4 space-y-3 border-r border-gray-100 pr-5">
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Choose Target Calculator</span>
               <div className="space-y-1">
@@ -1500,23 +1500,23 @@ export default function EnterpriseAdminSections({
                 <div className="space-y-3">
                   <span className="text-[10px] font-black uppercase text-[#C59B6D] tracking-widest block">🔀 Step Controls / Visibility</span>
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-capsule-dark">
+                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-[#1a1c1d]">
                       <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#1A3F25] focus:ring-[#1A3F25]" />
                       <span>Custom Dimensions (W, H, D in millimeters)</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-capsule-dark">
+                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-[#1a1c1d]">
                       <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#1A3F25] focus:ring-[#1A3F25]" />
                       <span>Stock paper / material dropdown selectors</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-capsule-dark">
+                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-[#1a1c1d]">
                       <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#1A3F25] focus:ring-[#1A3F25]" />
                       <span>Foil Stamp & Spot UV high-end premium finish toggles</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-capsule-dark">
+                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-[#1a1c1d]">
                       <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#1A3F25] focus:ring-[#1A3F25]" />
                       <span>Sided print configuration (1-Sided, 2-Sided offset)</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-capsule-dark">
+                    <label className="flex items-center gap-2 cursor-pointer font-semibold text-[#1a1c1d]">
                       <input type="checkbox" defaultChecked className="rounded border-gray-300 text-[#1A3F25] focus:ring-[#1A3F25]" />
                       <span>Ribbon bows or handles accessories lists</span>
                     </label>
@@ -1528,15 +1528,15 @@ export default function EnterpriseAdminSections({
                   <div className="space-y-2">
                     <div>
                       <label className="text-[9px] font-bold text-gray-400 uppercase">Starting Setup Fixed Die Cost (֏)</label>
-                      <input type="number" defaultValue="25000" className="w-full bg-[#FAF9F6] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
+                      <input type="number" defaultValue="25000" className="w-full bg-[#f0f2f5] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
                     </div>
                     <div>
                       <label className="text-[9px] font-bold text-gray-400 uppercase">Lamination cost offset base (֏ / sq.m.)</label>
-                      <input type="number" defaultValue="150" className="w-full bg-[#FAF9F6] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
+                      <input type="number" defaultValue="150" className="w-full bg-[#f0f2f5] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
                     </div>
                     <div>
                       <label className="text-[9px] font-bold text-gray-400 uppercase">Waste multiplier coefficient factor</label>
-                      <input type="number" step="0.05" defaultValue="1.15" className="w-full bg-[#FAF9F6] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
+                      <input type="number" step="0.05" defaultValue="1.15" className="w-full bg-[#f0f2f5] border border-gray-100 rounded-lg p-2 font-mono text-xs font-bold" />
                     </div>
                   </div>
                 </div>
@@ -1560,18 +1560,18 @@ export default function EnterpriseAdminSections({
         {/* SUB TAB 3: WORKFLOW AUTOMATION */}
         {calcSubTab === "automation" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-[#1A3F25]/10 pb-1 flex items-center gap-1.5 uppercase tracking-widest">
                 <Plus size={14} className="text-[#C59B6D]" /> Add Automation Rule
               </h3>
 
               <div className="space-y-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Event Trigger</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Event Trigger</label>
                   <select 
                     value={newAutoTrigger} 
                     onChange={(e) => setNewAutoTrigger(e.target.value)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                   >
                     <option value="order_created">⚡ When new Order Submission is registered</option>
                     <option value="crm_vip_tagged">👤 When CRM contact is marked as High-Priority VIP</option>
@@ -1581,11 +1581,11 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Action Destination</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Action Destination</label>
                   <select 
                     value={newAutoAction} 
                     onChange={(e) => setNewAutoAction(e.target.value)}
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                   >
                     <option value="telegram_alert">💬 Broadcast instant Alert to unified Telegram group bot</option>
                     <option value="whatsapp_template">📱 Send WhatsApp Business template to user phone</option>
@@ -1595,12 +1595,12 @@ export default function EnterpriseAdminSections({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Alert content template markup</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Alert content template markup</label>
                   <textarea 
                     value={newAutoTemplate} 
                     onChange={(e) => setNewAutoTemplate(e.target.value)}
                     rows={3} 
-                    className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-3 outline-none text-[#1A3F25] font-mono text-xs"
+                    className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-3 outline-none text-[#1A3F25] font-mono text-xs"
                   />
                   <span className="text-[9px] text-gray-400 leading-tight block">Use variables: {'{{customerName}}'}, {'{{customerPhone}}'}, {'{{totalPrice}}'}, {'{{type}}'}</span>
                 </div>
@@ -1616,14 +1616,14 @@ export default function EnterpriseAdminSections({
               </div>
             </div>
 
-            <div className="lg:col-span-7 bg-white border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest">
+            <div className="lg:col-span-7 bg-white border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest">
                 ⚡ Registered Active Visual Workflows ({automationWorkflows.length})
               </h3>
 
               <div className="space-y-3.5 max-h-[380px] overflow-y-auto pr-1">
                 {automationWorkflows.map((wf: any) => (
-                  <div key={wf.id} className="p-4 bg-capsule-surf2/30 border border-[#1A3F25]/5 hover:bg-capsule-surf2/65 transition-all rounded-2xl flex flex-col gap-2">
+                  <div key={wf.id} className="p-4 bg-[#f0f2f5]/30 border border-[#1A3F25]/5 hover:bg-[#f0f2f5]/65 transition-all rounded-2xl flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                       <span className="px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-150 text-[9px] font-bold uppercase tracking-wider">
                         Trigger: {wf.trigger}
@@ -1797,11 +1797,11 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="border-b border-[#FF2300]/25/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase">DYNAMIC MATHEMATICAL CALCULATIONS</span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Visual Formula Builder & Calculator Studio</h2>
-            <p className="text-xs text-capsule-text-muted mt-0.5">Define arbitrary mathematical price formulas through visual tokens, custom coefficients, and conditions entirely codeless.</p>
+            <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Visual Formula Builder & Calculator Studio</h2>
+            <p className="text-xs text-[#727784] mt-0.5">Define arbitrary mathematical price formulas through visual tokens, custom coefficients, and conditions entirely codeless.</p>
           </div>
           <span className="text-[10px] bg-teal-50 text-teal-800 border border-teal-200 px-3 py-1 rounded-full font-bold uppercase">
             Active Engine: PostgreSQL Runtime Evaluator
@@ -1811,8 +1811,8 @@ export default function EnterpriseAdminSections({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left list of active product formulas */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-4 rounded-3xl">
-              <h3 className="font-serif text-xs font-bold text-capsule-accent tracking-widest uppercase mb-3 flex items-center gap-1.5 pb-1 border-b border-capsule-accent/5">
+            <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-4 rounded-3xl">
+              <h3 className="font-serif text-xs font-bold text-[#FF2300] tracking-widest uppercase mb-3 flex items-center gap-1.5 pb-1 border-b border-[#FF2300]/25/5">
                 <Database size={12} className="text-[#C59B6D]" /> PostgreSQL Formula Registry ({dbFormulas.length})
               </h3>
               
@@ -1830,17 +1830,17 @@ export default function EnterpriseAdminSections({
                       onClick={() => handleSelectFormula(form)}
                       className={`w-full text-left p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1 ${
                         isSel 
-                          ? "border-capsule-accent bg-white shadow-md ring-2 ring-capsule-accent/10" 
-                          : "border-capsule-accent/10 bg-white hover:bg-gray-50/50"
+                          ? "border-[#FF2300]/25 bg-white shadow-md ring-2 ring-capsule-accent/10" 
+                          : "border-[#FF2300]/25/10 bg-white hover:bg-gray-50/50"
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <span className="font-extrabold text-capsule-accent text-xs">{form.name}</span>
+                        <span className="font-extrabold text-[#FF2300] text-xs">{form.name}</span>
                         <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${targetColors[form.target] || "border-gray-500 text-gray-500 bg-gray-50"}`}>
                           {form.target}
                         </span>
                       </div>
-                      <span className="font-mono text-[9px] text-capsule-text-muted truncate mt-1 bg-gray-50 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[9px] text-[#727784] truncate mt-1 bg-gray-50 px-1.5 py-0.5 rounded">
                         {form.expression}
                       </span>
                     </button>
@@ -1851,14 +1851,14 @@ export default function EnterpriseAdminSections({
 
             {/* Formula Syntax Variable Cheat Sheet */}
             <div className="bg-white border border-[#1A3F25]/10 p-5 rounded-3xl space-y-3">
-              <h4 className="font-serif text-xs font-bold text-capsule-accent uppercase tracking-widest border-b border-gray-50 pb-1.5">Expression Tokens</h4>
-              <ul className="space-y-1.5 text-[10px] text-capsule-text-muted font-medium">
-                <li><strong className="text-capsule-accent font-mono font-bold">w, h, d</strong> — Width, height, and depth from client interface (cm)</li>
-                <li><strong className="text-capsule-accent font-mono font-bold">qty</strong> — Inquiry volume quantity entered by customer</li>
-                <li><strong className="text-capsule-accent font-mono font-bold">finish_sum_price</strong> — Sum cost of selected lamination, foil, ribbons</li>
-                <li><strong className="text-capsule-accent font-mono font-bold">surface_area_m2</strong> — Computed flat surface square meters</li>
-                <li><strong className="text-capsule-accent font-mono font-bold">volume_box</strong> — Calculated box interior cubic capacity</li>
-                <li><strong className="text-capsule-accent font-mono font-bold">Any variables defined in edited formula catalog below...</strong></li>
+              <h4 className="font-serif text-xs font-bold text-[#FF2300] uppercase tracking-widest border-b border-gray-50 pb-1.5">Expression Tokens</h4>
+              <ul className="space-y-1.5 text-[10px] text-[#727784] font-medium">
+                <li><strong className="text-[#FF2300] font-mono font-bold">w, h, d</strong> — Width, height, and depth from client interface (cm)</li>
+                <li><strong className="text-[#FF2300] font-mono font-bold">qty</strong> — Inquiry volume quantity entered by customer</li>
+                <li><strong className="text-[#FF2300] font-mono font-bold">finish_sum_price</strong> — Sum cost of selected lamination, foil, ribbons</li>
+                <li><strong className="text-[#FF2300] font-mono font-bold">surface_area_m2</strong> — Computed flat surface square meters</li>
+                <li><strong className="text-[#FF2300] font-mono font-bold">volume_box</strong> — Calculated box interior cubic capacity</li>
+                <li><strong className="text-[#FF2300] font-mono font-bold">Any variables defined in edited formula catalog below...</strong></li>
               </ul>
             </div>
           </div>
@@ -1870,15 +1870,15 @@ export default function EnterpriseAdminSections({
                 <div className="flex justify-between items-center border-b border-gray-150 pb-3">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-[#C59B6D]">ACTIVE FORMULA STUDIO</span>
-                    <h3 className="font-serif text-base font-bold text-capsule-accent mt-0.5">{selectedFormula.id}</h3>
+                    <h3 className="font-serif text-base font-bold text-[#FF2300] mt-0.5">{selectedFormula.id}</h3>
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="flex items-center gap-1.5 text-xs font-bold text-capsule-accent">
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-[#FF2300]">
                       <input 
                         type="checkbox" 
                         checked={formulaActive} 
                         onChange={(e) => setFormulaActive(e.target.checked)}
-                        className="rounded border-gray-300 text-capsule-accent focus:ring-capsule-accent"
+                        className="rounded border-gray-300 text-[#FF2300] focus:ring-[#FF2300]"
                       />
                       Active Formula
                     </label>
@@ -1892,7 +1892,7 @@ export default function EnterpriseAdminSections({
                     type="text"
                     value={formulaName}
                     onChange={(e) => setFormulaName(e.target.value)}
-                    className="w-full bg-[#FAF9F6] border border-capsule-accent/10 rounded-xl px-3 py-2 text-xs font-bold text-capsule-accent outline-none focus:border-capsule-accent/30"
+                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-xl px-3 py-2 text-xs font-bold text-[#FF2300] outline-none focus:border-[#FF2300]/25/30"
                   />
                 </div>
 
@@ -1903,17 +1903,17 @@ export default function EnterpriseAdminSections({
                     value={formulaExpression}
                     onChange={(e) => setFormulaExpression(e.target.value)}
                     rows={2}
-                    className="w-full bg-[#FAF9F6] border border-capsule-accent/15 rounded-xl p-3 text-xs font-mono font-bold text-[#1A3F25] outline-none focus:border-capsule-accent/30"
+                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-xl p-3 text-xs font-mono font-bold text-[#1A3F25] outline-none focus:border-[#FF2300]/25/30"
                   />
                 </div>
 
                 {/* Custom system defined Variables */}
-                <div className="space-y-3 bg-[#FAF9F6] p-4 rounded-2xl border border-capsule-accent/5">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/5 pb-2">
-                    <span className="text-[10px] font-extrabold uppercase text-capsule-accent">Formula-specific static variables values</span>
+                <div className="space-y-3 bg-[#f0f2f5] p-4 rounded-2xl border border-[#FF2300]/25/5">
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/5 pb-2">
+                    <span className="text-[10px] font-extrabold uppercase text-[#FF2300]">Formula-specific static variables values</span>
                     <button 
                       onClick={handleAddVariable}
-                      className="px-2.5 py-1 bg-capsule-accent/10 text-capsule-accent hover:bg-capsule-accent/20 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                      className="px-2.5 py-1 bg-[#FF2300]/10 text-[#FF2300] hover:bg-[#FF2300]/20 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer"
                     >
                       <Plus size={10} /> Add Variable
                     </button>
@@ -1921,13 +1921,13 @@ export default function EnterpriseAdminSections({
 
                   <div className="space-y-2">
                     {formulaVariables.map((v, i) => (
-                      <div key={i} className="flex gap-2 items-center bg-white p-2 rounded-xl border border-capsule-accent/5">
+                      <div key={i} className="flex gap-2 items-center bg-white p-2 rounded-xl border border-[#FF2300]/25/5">
                         <input
                           type="text"
                           value={v?.name || ""}
                           placeholder="variable_name"
                           onChange={(e) => handleUpdateVar(i, "name", e.target.value)}
-                          className="w-40 bg-[#FAF9F6] border border-capsule-accent/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
+                          className="w-40 bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
                         />
                         <span className="text-gray-400 font-bold">=</span>
                         <input
@@ -1935,9 +1935,9 @@ export default function EnterpriseAdminSections({
                           step="0.01"
                           value={v?.value === undefined ? "" : v.value}
                           onChange={(e) => handleUpdateVar(i, "value", parseFloat(e.target.value) || 0)}
-                          className="w-32 bg-[#FAF9F6] border border-capsule-accent/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black text-right"
+                          className="w-32 bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black text-right"
                         />
-                        <span className="text-[10px] text-capsule-text-muted italic flex-1 truncate pl-2">Constant fallback coefficient setting</span>
+                        <span className="text-[10px] text-[#727784] italic flex-1 truncate pl-2">Constant fallback coefficient setting</span>
                         <button 
                           onClick={() => handleRemoveVariable(i)}
                           className="p-1 text-red-700 bg-red-50 hover:bg-red-100 rounded-lg cursor-pointer"
@@ -1947,18 +1947,18 @@ export default function EnterpriseAdminSections({
                       </div>
                     ))}
                     {formulaVariables.length === 0 && (
-                      <p className="text-[10px] text-capsule-text-muted italic text-center py-2">No custom variables configured. Use standard math parameters above.</p>
+                      <p className="text-[10px] text-[#727784] italic text-center py-2">No custom variables configured. Use standard math parameters above.</p>
                     )}
                   </div>
                 </div>
 
                 {/* Logical conditionals (e.g. quantity tiers discount) */}
-                <div className="space-y-3 bg-[#FAF9F6] p-4 rounded-2xl border border-capsule-accent/5">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/5 pb-2">
-                    <span className="text-[10px] font-extrabold uppercase text-capsule-accent">Multi-Tier Conditional Logic (Overrides Variable States)</span>
+                <div className="space-y-3 bg-[#f0f2f5] p-4 rounded-2xl border border-[#FF2300]/25/5">
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/5 pb-2">
+                    <span className="text-[10px] font-extrabold uppercase text-[#FF2300]">Multi-Tier Conditional Logic (Overrides Variable States)</span>
                     <button 
                       onClick={handleAddCondition}
-                      className="px-2.5 py-1 bg-capsule-accent/10 text-capsule-accent hover:bg-capsule-accent/20 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                      className="px-2.5 py-1 bg-[#FF2300]/10 text-[#FF2300] hover:bg-[#FF2300]/20 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer"
                     >
                       <Plus size={10} /> Add Condition
                     </button>
@@ -1966,14 +1966,14 @@ export default function EnterpriseAdminSections({
 
                   <div className="space-y-2">
                     {formulaConditions.map((c, i) => (
-                      <div key={i} className="flex gap-2 items-center bg-white p-2.5 rounded-xl border border-capsule-accent/10">
+                      <div key={i} className="flex gap-2 items-center bg-white p-2.5 rounded-xl border border-[#FF2300]/25/10">
                         <span className="text-[10px] font-black uppercase text-[#C59B6D] shrink-0">IF (Expression)</span>
                         <input
                           type="text"
                           value={c?.if || ""}
                           placeholder="qty >= 500 && qty < 1000"
                           onChange={(e) => handleUpdateCond(i, "if", e.target.value)}
-                          className="flex-1 bg-[#FAF9F6] border border-capsule-accent/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
+                          className="flex-1 bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
                         />
                         <span className="text-[10px] font-black uppercase text-teal-800 shrink-0">THEN SET</span>
                         <input
@@ -1981,7 +1981,7 @@ export default function EnterpriseAdminSections({
                           value={c?.then || ""}
                           placeholder="volume_discount = 0.82"
                           onChange={(e) => handleUpdateCond(i, "then", e.target.value)}
-                          className="w-48 bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
+                          className="w-48 bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-lg px-2 py-1 text-[11px] font-mono font-black"
                         />
                         <button 
                           onClick={() => handleRemoveCondition(i)}
@@ -1992,14 +1992,14 @@ export default function EnterpriseAdminSections({
                       </div>
                     ))}
                     {formulaConditions.length === 0 && (
-                      <p className="text-[10px] text-capsule-text-muted italic text-center py-2">No custom quantity discount steps. Prices will scale on variables strictly.</p>
+                      <p className="text-[10px] text-[#727784] italic text-center py-2">No custom quantity discount steps. Prices will scale on variables strictly.</p>
                     )}
                   </div>
                 </div>
 
                 {/* Live Formula math evaluation console */}
-                <div className="bg-[#FAF9F6] border border-dashed border-capsule-accent/20 p-5 rounded-3xl space-y-4">
-                  <h4 className="font-serif text-xs font-bold text-capsule-accent border-b border-capsule-accent/5 pb-1 flex items-center gap-1">
+                <div className="bg-[#f0f2f5] border border-dashed border-[#FF2300]/25/20 p-5 rounded-3xl space-y-4">
+                  <h4 className="font-serif text-xs font-bold text-[#FF2300] border-b border-[#FF2300]/25/5 pb-1 flex items-center gap-1">
                     <Activity size={12} className="text-[#C59B6D]" /> Interactive Calculator Simulator Terminal No-Code Guard
                   </h4>
 
@@ -2010,7 +2010,7 @@ export default function EnterpriseAdminSections({
                         type="number" 
                         value={simWidth} 
                         onChange={(e) => setSimWidth(parseFloat(e.target.value) || 0)} 
-                        className="w-full bg-white border border-capsule-accent/10 px-2 py-1 rounded text-xs font-mono font-black" 
+                        className="w-full bg-white border border-[#FF2300]/25/10 px-2 py-1 rounded text-xs font-mono font-black" 
                       />
                     </div>
                     <div>
@@ -2019,7 +2019,7 @@ export default function EnterpriseAdminSections({
                         type="number" 
                         value={simHeight} 
                         onChange={(e) => setSimHeight(parseFloat(e.target.value) || 0)} 
-                        className="w-full bg-white border border-capsule-accent/10 px-2 py-1 rounded text-xs font-mono font-black" 
+                        className="w-full bg-white border border-[#FF2300]/25/10 px-2 py-1 rounded text-xs font-mono font-black" 
                       />
                     </div>
                     <div>
@@ -2028,7 +2028,7 @@ export default function EnterpriseAdminSections({
                         type="number" 
                         value={simDepth} 
                         onChange={(e) => setSimDepth(parseFloat(e.target.value) || 0)} 
-                        className="w-full bg-white border border-capsule-accent/10 px-2 py-1 rounded text-xs font-mono font-black" 
+                        className="w-full bg-white border border-[#FF2300]/25/10 px-2 py-1 rounded text-xs font-mono font-black" 
                       />
                     </div>
                     <div>
@@ -2037,7 +2037,7 @@ export default function EnterpriseAdminSections({
                         type="number" 
                         value={simQty} 
                         onChange={(e) => setSimQty(parseFloat(e.target.value) || 0)} 
-                        className="w-full bg-white border border-capsule-accent/10 px-2 py-1 rounded text-xs font-mono font-black" 
+                        className="w-full bg-white border border-[#FF2300]/25/10 px-2 py-1 rounded text-xs font-mono font-black" 
                       />
                     </div>
                     <div>
@@ -2046,7 +2046,7 @@ export default function EnterpriseAdminSections({
                         type="number" 
                         value={simFinishesSum} 
                         onChange={(e) => setSimFinishesSum(parseFloat(e.target.value) || 0)} 
-                        className="w-full bg-white border border-capsule-accent/10 px-2 py-1 rounded text-xs font-mono font-black" 
+                        className="w-full bg-white border border-[#FF2300]/25/10 px-2 py-1 rounded text-xs font-mono font-black" 
                       />
                     </div>
                   </div>
@@ -2054,28 +2054,28 @@ export default function EnterpriseAdminSections({
                   <div className="flex gap-4 items-center">
                     <button
                       onClick={handleEvaluateSimulation}
-                      className="px-4 py-2 bg-capsule-accent text-white font-bold rounded-xl hover:bg-opacity-95 transition-all uppercase tracking-wider text-[10px] flex items-center gap-1 bg-gradient-to-r from-capsule-accent to-[#1A3F25]"
+                      className="px-4 py-2 bg-[#FF2300] text-white font-bold rounded-xl hover:bg-opacity-95 transition-all uppercase tracking-wider text-[10px] flex items-center gap-1 bg-gradient-to-r from-capsule-accent to-[#1A3F25]"
                     >
                       <Sparkles size={11} /> Simulate Expression Math
                     </button>
-                    <span className="text-[10px] text-capsule-text-muted">Queries dynamic server parser sandbox</span>
+                    <span className="text-[10px] text-[#727784]">Queries dynamic server parser sandbox</span>
                   </div>
 
                   {simulationResult && (
-                    <div className="bg-[#1A3F25]/5 border border-capsule-accent/15 p-4 rounded-2xl space-y-2 animate-fadeIn">
+                    <div className="bg-[#1A3F25]/5 border border-[#FF2300]/25/15 p-4 rounded-2xl space-y-2 animate-fadeIn">
                       <div className="flex justify-between items-center">
-                        <span className="font-bold text-capsule-accent text-xs uppercase tracking-wider block">Simulator Output</span>
+                        <span className="font-bold text-[#FF2300] text-xs uppercase tracking-wider block">Simulator Output</span>
                         <div className="text-right">
-                          <span className="text-[9px] font-bold text-capsule-text-muted block uppercase">TOTAL EVALUATED PRICE</span>
+                          <span className="text-[9px] font-bold text-[#727784] block uppercase">TOTAL EVALUATED PRICE</span>
                           <span className="font-mono text-[#1A3F25] font-black text-sm">{simulationResult.evaluatedPrice.toLocaleString()} ֏ AMD</span>
-                          <span className="text-[9px] block text-capsule-text-muted font-bold font-mono">
+                          <span className="text-[9px] block text-[#727784] font-bold font-mono">
                             ~ {(Math.round(simulationResult.evaluatedPrice / simQty * 10) / 10).toLocaleString()} ֏ per unit
                           </span>
                         </div>
                       </div>
 
                       {simulationLogs.length > 0 && (
-                        <div className="bg-white border border-capsule-accent/5 p-2 rounded-xl">
+                        <div className="bg-white border border-[#FF2300]/25/5 p-2 rounded-xl">
                           <span className="block text-[8px] font-extrabold uppercase text-[#C59B6D] mb-1">Evaluated Logic Steps:</span>
                           <div className="space-y-0.5 text-[9px] font-mono text-emerald-800">
                             {simulationLogs.map((logStr, lIdx) => (
@@ -2085,7 +2085,7 @@ export default function EnterpriseAdminSections({
                         </div>
                       )}
 
-                      <div className="text-[8px] font-mono text-capsule-text-muted overflow-x-auto whitespace-pre bg-white/50 p-2 rounded-xl">
+                      <div className="text-[8px] font-mono text-[#727784] overflow-x-auto whitespace-pre bg-white/50 p-2 rounded-xl">
                         Compiled variables frame: {JSON.stringify(simulationResult.context)}
                       </div>
                     </div>
@@ -2107,8 +2107,8 @@ export default function EnterpriseAdminSections({
                 <div className="w-10 h-10 rounded-full bg-amber-50 text-[#C59B6D] flex items-center justify-center">
                   <Sliders size={18} />
                 </div>
-                <h4 className="font-serif text-sm font-bold text-capsule-accent uppercase mt-2">No Pricing Formula Selected</h4>
-                <p className="text-capsule-text-muted text-xs max-w-sm">Choose an active pricing container from the left registry directory to modify live coefficients, variables, conditions, or syntax rules visually.</p>
+                <h4 className="font-serif text-sm font-bold text-[#FF2300] uppercase mt-2">No Pricing Formula Selected</h4>
+                <p className="text-[#727784] text-xs max-w-sm">Choose an active pricing container from the left registry directory to modify live coefficients, variables, conditions, or syntax rules visually.</p>
               </div>
             )}
           </div>
@@ -2207,11 +2207,11 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-capsule-accent/10 pb-4 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#FF2300]/25/10 pb-4 gap-2">
           <div>
             <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase">INTERNATIONALIZATION COOPERATIVE</span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Multi-lang Database Translation Center</h2>
-            <p className="text-xs text-capsule-text-muted mt-0.5">Control site labels and localized product descriptors completely through PostgreSQL without code change dependencies.</p>
+            <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Multi-lang Database Translation Center</h2>
+            <p className="text-xs text-[#727784] mt-0.5">Control site labels and localized product descriptors completely through PostgreSQL without code change dependencies.</p>
           </div>
           <button 
             onClick={handleCreateKey}
@@ -2229,7 +2229,7 @@ export default function EnterpriseAdminSections({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left panel index registry */}
-          <div className="lg:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
+          <div className="lg:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
             <div className="flex flex-col md:flex-row gap-2.5">
               <div className="relative flex-1">
                 <Search size={12} className="absolute left-2.5 top-2.5 text-[#7C9082]" />
@@ -2238,13 +2238,13 @@ export default function EnterpriseAdminSections({
                   placeholder="Filter keys, values..."
                   value={translationSearch}
                   onChange={(e) => setTranslationSearch(e.target.value)}
-                  className="w-full bg-white border border-capsule-accent/10 rounded-xl pl-8 pr-3 py-2 text-xs text-capsule-accent placeholder-capsule-text-muted outline-none"
+                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-xl pl-8 pr-3 py-2 text-xs text-[#FF2300] placeholder-capsule-text-muted outline-none"
                 />
               </div>
               <select
                 value={translationFilterCategory}
                 onChange={(e) => setTranslationFilterCategory(e.target.value)}
-                className="bg-white border border-capsule-accent/10 rounded-xl px-2.5 py-2 text-xs text-capsule-accent outline-none font-bold"
+                className="bg-white border border-[#FF2300]/25/10 rounded-xl px-2.5 py-2 text-xs text-[#FF2300] outline-none font-bold"
               >
                 <option value="all">All Modules</option>
                 <option value="general">General UI</option>
@@ -2263,27 +2263,27 @@ export default function EnterpriseAdminSections({
                     onClick={() => handleSelectTranslation(item)}
                     className={`w-full text-left p-3 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1 ${
                       isSel 
-                        ? "border-capsule-accent bg-white shadow-md ring-2 ring-capsule-accent/10" 
-                        : "border-capsule-accent/10 bg-white hover:bg-gray-50/50"
+                        ? "border-[#FF2300]/25 bg-white shadow-md ring-2 ring-capsule-accent/10" 
+                        : "border-[#FF2300]/25/10 bg-white hover:bg-gray-50/50"
                     }`}
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-extrabold text-capsule-accent text-xs truncate break-all">{item.key}</span>
+                      <span className="font-extrabold text-[#FF2300] text-xs truncate break-all">{item.key}</span>
                       <span className="px-1.5 py-0.5 rounded bg-gray-100 text-[8px] font-bold uppercase text-gray-500">
                         {item.category}
                       </span>
                     </div>
-                    <span className="text-[10px] text-capsule-text-muted truncate mt-0.5">
+                    <span className="text-[10px] text-[#727784] truncate mt-0.5">
                       🇬🇧 {item.en || "not translated"}
                     </span>
                   </button>
                 );
               })}
               {filteredDbTrans.length === 0 && (
-                <p className="text-[10px] text-capsule-text-muted italic text-center py-6">No matching keys found.</p>
+                <p className="text-[10px] text-[#727784] italic text-center py-6">No matching keys found.</p>
               )}
               {filteredDbTrans.length > 75 && (
-                <p className="text-[9px] text-capsule-text-muted italic text-center pt-2">Showing top 75 entries...</p>
+                <p className="text-[9px] text-[#727784] italic text-center pt-2">Showing top 75 entries...</p>
               )}
             </div>
           </div>
@@ -2293,10 +2293,10 @@ export default function EnterpriseAdminSections({
             {selectedTranslation ? (
               <div className="bg-white border border-[#1A3F25]/10 p-6 rounded-3xl space-y-5">
                 <div className="flex justify-between items-center border-b border-gray-100 pb-2.5">
-                  <h3 className="font-serif text-sm font-bold text-capsule-accent uppercase tracking-widest flex items-center gap-1">
+                  <h3 className="font-serif text-sm font-bold text-[#FF2300] uppercase tracking-widest flex items-center gap-1">
                     <Globe size={13} className="text-[#C59B6D]" /> Translation Key Editor
                   </h3>
-                  <span className="px-2 py-0.5 bg-capsule-accent/10 text-capsule-accent text-[9px] font-extrabold uppercase rounded-full">
+                  <span className="px-2 py-0.5 bg-[#FF2300]/10 text-[#FF2300] text-[9px] font-extrabold uppercase rounded-full">
                     PostgreSQL Record
                   </span>
                 </div>
@@ -2311,7 +2311,7 @@ export default function EnterpriseAdminSections({
                       onChange={(e) => setNewTransKey(e.target.value)}
                       className={`w-full border rounded-xl px-3 py-2 text-xs font-mono font-black ${
                         selectedTranslation.isNew 
-                          ? "bg-[#FAF9F6] border-[#1A3F25]/15 text-[#1A3F25]" 
+                          ? "bg-[#f0f2f5] border-[#1A3F25]/15 text-[#1A3F25]" 
                           : "bg-gray-50 border-gray-100 text-gray-400 cursor-not-allowed"
                       }`}
                     />
@@ -2324,7 +2324,7 @@ export default function EnterpriseAdminSections({
                       onChange={(e) => {
                         setSelectedTranslation({ ...selectedTranslation, category: e.target.value });
                       }}
-                      className="w-full bg-[#FAF9F6] border border-capsule-accent/15 rounded-xl px-3 py-2 text-xs font-bold text-capsule-accent outline-none"
+                      className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-xl px-3 py-2 text-xs font-bold text-[#FF2300] outline-none"
                     >
                       <option value="general">General UI</option>
                       <option value="bags">Paper Bags</option>
@@ -2345,7 +2345,7 @@ export default function EnterpriseAdminSections({
                       value={newTransEn}
                       onChange={(e) => setNewTransEn(e.target.value)}
                       rows={2}
-                      className="w-full bg-[#FAF9F6] border border-capsule-accent/10 rounded-xl p-2.5 text-xs text-capsule-accent font-bold outline-none"
+                      className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-xl p-2.5 text-xs text-[#FF2300] font-bold outline-none"
                     />
                   </div>
 
@@ -2359,7 +2359,7 @@ export default function EnterpriseAdminSections({
                       value={newTransHy}
                       onChange={(e) => setNewTransHy(e.target.value)}
                       rows={2}
-                      className="w-full bg-[#FAF9F6] border border-capsule-accent/10 rounded-xl p-2.5 text-xs text-capsule-accent font-bold outline-none"
+                      className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-xl p-2.5 text-xs text-[#FF2300] font-bold outline-none"
                     />
                   </div>
 
@@ -2373,7 +2373,7 @@ export default function EnterpriseAdminSections({
                       value={newTransRu}
                       onChange={(e) => setNewTransRu(e.target.value)}
                       rows={2}
-                      className="w-full bg-[#FAF9F6] border border-capsule-accent/10 rounded-xl p-2.5 text-xs text-capsule-accent font-bold outline-none"
+                      className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-xl p-2.5 text-xs text-[#FF2300] font-bold outline-none"
                     />
                   </div>
 
@@ -2387,7 +2387,7 @@ export default function EnterpriseAdminSections({
                       value={newTransAr}
                       onChange={(e) => setNewTransAr(e.target.value)}
                       rows={2}
-                      className="w-full bg-[#FAF9F6] border border-capsule-accent/10 rounded-xl p-2.5 text-xs text-capsule-accent font-bold outline-none text-right placeholder:text-left"
+                      className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-xl p-2.5 text-xs text-[#FF2300] font-bold outline-none text-right placeholder:text-left"
                       dir="rtl"
                     />
                   </div>
@@ -2407,8 +2407,8 @@ export default function EnterpriseAdminSections({
                 <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center">
                   <Globe size={18} />
                 </div>
-                <h4 className="font-serif text-sm font-bold text-capsule-accent uppercase mt-2">No Translation Key Selected</h4>
-                <p className="text-capsule-text-muted text-xs max-w-sm font-medium">Choose an active localized key identifier from the left catalog roster to edit live Armenian, Russian, English, or Arabic texts concurrently on-the-fly.</p>
+                <h4 className="font-serif text-sm font-bold text-[#FF2300] uppercase mt-2">No Translation Key Selected</h4>
+                <p className="text-[#727784] text-xs max-w-sm font-medium">Choose an active localized key identifier from the left catalog roster to edit live Armenian, Russian, English, or Arabic texts concurrently on-the-fly.</p>
               </div>
             )}
           </div>
@@ -2446,22 +2446,22 @@ export default function EnterpriseAdminSections({
   const renderMediaLibrary = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">STORAGE & CDN VIRTUAL STORAGE</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">S3-Compatible Media Asset library</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Manage product illustrations, SVG icons, PDF order briefs, and interactive 3D WebGL assets safely from this visual dashboard.</p>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">STORAGE & CDN VIRTUAL STORAGE</span>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">S3-Compatible Media Asset library</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Manage product illustrations, SVG icons, PDF order briefs, and interactive 3D WebGL assets safely from this visual dashboard.</p>
         </div>
 
         {/* Upload banner */}
         <div 
           onClick={handleSimulatedImageUpload}
-          className="border-2 border-dashed border-capsule-accent/15 hover:border-capsule-accent/40 rounded-3xl p-6 text-center cursor-pointer bg-[#FAF9F6] hover:bg-opacity-95 transition-all duration-350"
+          className="border-2 border-dashed border-[#FF2300]/25/15 hover:border-[#FF2300]/25/40 rounded-3xl p-6 text-center cursor-pointer bg-[#f0f2f5] hover:bg-opacity-95 transition-all duration-350"
         >
           <div className="p-3 bg-[#1A3F25]/5 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2 text-[#1A3F25]">
             <Upload size={18} />
           </div>
-          <span className="block font-bold text-capsule-accent text-xs">Drag and Drop media files to sync library</span>
-          <span className="block text-[10px] text-capsule-text-muted mt-0.5">Support JPEG, PNG, SVG, PDF, or GLB assets up to 45MB</span>
+          <span className="block font-bold text-[#FF2300] text-xs">Drag and Drop media files to sync library</span>
+          <span className="block text-[10px] text-[#727784] mt-0.5">Support JPEG, PNG, SVG, PDF, or GLB assets up to 45MB</span>
           {uploadProgress && <span className="block text-xs font-bold text-teal-700 mt-2 animate-pulse">{uploadProgress}</span>}
         </div>
 
@@ -2475,13 +2475,13 @@ export default function EnterpriseAdminSections({
                 {m.type === "model" && <BoxIcon size={28} className="text-purple-700" />}
                 {m.type === "pdf" && <FileText size={28} className="text-red-700" />}
                 
-                <span className="absolute top-2 left-2 bg-white border border-gray-100 rounded-full px-1.5 py-0.2 text-[8px] font-extrabold uppercase text-capsule-text-secondary shadow-sm">
+                <span className="absolute top-2 left-2 bg-white border border-gray-100 rounded-full px-1.5 py-0.2 text-[8px] font-extrabold uppercase text-[#414753] shadow-sm">
                   {m.type}
                 </span>
               </div>
               <div className="p-2.5 border-t border-gray-100">
-                <span className="block font-bold text-capsule-accent text-[10px] truncate" title={m.name}>{m.name}</span>
-                <div className="flex justify-between items-center text-[9px] text-capsule-text-muted mt-1 font-semibold">
+                <span className="block font-bold text-[#FF2300] text-[10px] truncate" title={m.name}>{m.name}</span>
+                <div className="flex justify-between items-center text-[9px] text-[#727784] mt-1 font-semibold">
                   <span>{m.size}</span>
                   <span>{m.date}</span>
                 </div>
@@ -2539,14 +2539,14 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase font-bold">USER INTERFACE PREFERENCES (UI CONFIG)</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Interactive Theme & Styles Customizer</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Toggle site accents, colors, button roundnesses, typography weights, or banner layouts visually from this panel without modification of raw CSS files.</p>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase font-bold">USER INTERFACE PREFERENCES (UI CONFIG)</span>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Interactive Theme & Styles Customizer</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Toggle site accents, colors, button roundnesses, typography weights, or banner layouts visually from this panel without modification of raw CSS files.</p>
         </div>
 
         {themeSuccess && (
-          <div className="p-3 bg-[#1A3F25]/5 border border-capsule-accent/15 text-capsule-accent font-bold rounded-xl flex items-center gap-2">
+          <div className="p-3 bg-[#1A3F25]/5 border border-[#FF2300]/25/15 text-[#FF2300] font-bold rounded-xl flex items-center gap-2">
             <Check size={14} className="text-[#C59B6D]" />
             <span>{themeSuccess}</span>
           </div>
@@ -2554,8 +2554,8 @@ export default function EnterpriseAdminSections({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Presets and manual hex override form */}
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+            <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
               <Palette size={14} className="text-[#C59B6D]" /> Palette Accent Config
             </h3>
 
@@ -2580,10 +2580,10 @@ export default function EnterpriseAdminSections({
                   className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                     selectedThemePreset === p.id 
                       ? "bg-white border-[#1A3F25] shadow-md" 
-                      : "bg-white/40 border-gray-100 hover:border-capsule-accent/10 hover:bg-white"
+                      : "bg-white/40 border-gray-100 hover:border-[#FF2300]/25/10 hover:bg-white"
                   }`}
                 >
-                  <span className="block font-bold text-capsule-accent text-xs">{p.name}</span>
+                  <span className="block font-bold text-[#FF2300] text-xs">{p.name}</span>
                   <div className="flex gap-1.5 mt-2">
                     <span className="w-5 h-5 rounded-full inline-block border border-gray-200" style={{ backgroundColor: p.prim }} />
                     <span className="w-5 h-5 rounded-full inline-block border border-gray-200" style={{ backgroundColor: p.sec }} />
@@ -2595,7 +2595,7 @@ export default function EnterpriseAdminSections({
             <div className="space-y-3 pt-2">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Primary Color HEX</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Primary Color HEX</label>
                   <div className="flex items-center gap-1.5 bg-white border border-[#1A3F25]/15 rounded-lg px-2 py-1.5">
                     <input 
                       type="color" 
@@ -2618,7 +2618,7 @@ export default function EnterpriseAdminSections({
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Secondary Accent HEX</label>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Secondary Accent HEX</label>
                   <div className="flex items-center gap-1.5 bg-white border border-[#1A3F25]/15 rounded-lg px-2 py-1.5">
                     <input 
                       type="color" 
@@ -2646,15 +2646,15 @@ export default function EnterpriseAdminSections({
 
           {/* Typography and geometry variables parameters */}
           <div className="bg-white border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4 font-sans text-xs">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+            <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
               <Sliders size={14} className="text-[#C59B6D]" /> Geometry & Details
             </h3>
 
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted">Global CSS Border Radius</label>
-                  <span className="font-mono font-bold text-capsule-accent">{borderRadiusPx}px</span>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784]">Global CSS Border Radius</label>
+                  <span className="font-mono font-bold text-[#FF2300]">{borderRadiusPx}px</span>
                 </div>
                 <input 
                   type="range" 
@@ -2671,11 +2671,11 @@ export default function EnterpriseAdminSections({
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Primary Display Typography Font</label>
+                <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Primary Display Typography Font</label>
                 <select
                   value={activeTheme.font || "Modern Sans (Inter)"}
                   onChange={(e) => handleApplyThemeChange("font", e.target.value)}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                 >
                   <option value="Modern Sans (Inter)">Modern Clean Sans — Inter & outfit</option>
                   <option value="Tech Minimalist (Grotesk)">Swiss Avant-Garde — Space Grotesk & Space Mono</option>
@@ -2684,11 +2684,11 @@ export default function EnterpriseAdminSections({
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Elevated Card Shadow Style</label>
+                <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Elevated Card Shadow Style</label>
                 <select
                   value={activeTheme.shadow || "Professional Corporate"}
                   onChange={(e) => handleApplyThemeChange("shadow", e.target.value)}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 rounded-lg py-2 px-2 outline-none text-capsule-dark"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 rounded-lg py-2 px-2 outline-none text-[#1a1c1d]"
                 >
                   <option value="Professional Corporate">Discreet flat micro-shadow borders</option>
                   <option value="Deep Ambient Luxury">Ambient soft diffused gold shadows</option>
@@ -2702,7 +2702,7 @@ export default function EnterpriseAdminSections({
                     <span className="font-bold text-[10px] block text-[#1A3F25]">Preset: {activeTheme.preset || "emerald"}</span>
                     <span className="text-[9px] text-gray-400 block mt-0.5">Font Style: {activeTheme.font || "Modern Sans"}</span>
                   </div>
-                  <button className="px-3 py-1 text-[9px] font-bold text-white bg-capsule-accent cursor-pointer" style={{ borderRadius: `${borderRadiusPx}px`, backgroundColor: primaryHex }}>
+                  <button className="px-3 py-1 text-[9px] font-bold text-white bg-[#FF2300] cursor-pointer" style={{ borderRadius: `${borderRadiusPx}px`, backgroundColor: primaryHex }}>
                     Accent test
                   </button>
                 </div>
@@ -2815,28 +2815,28 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase font-bold">LANDING DESIGN BUILDER & MARKETPLACE (CMS)</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Modular Page Blocks Canvas (No-Code CMS)</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Control the structure, section ordering, FAQ items, or marketing banners of the landing pages visually without modifying any HTML.</p>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase font-bold">LANDING DESIGN BUILDER & MARKETPLACE (CMS)</span>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Modular Page Blocks Canvas (No-Code CMS)</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Control the structure, section ordering, FAQ items, or marketing banners of the landing pages visually without modifying any HTML.</p>
         </div>
 
         {layoutSuccess && (
-          <div className="p-3 bg-[#1A3F25]/5 border border-capsule-accent/15 text-capsule-accent font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
+          <div className="p-3 bg-[#1A3F25]/5 border border-[#FF2300]/25/15 text-[#FF2300] font-bold rounded-xl flex items-center gap-1.5 animate-pulse">
             <Check size={14} className="text-[#C59B6D]" />
             <span>{layoutSuccess}</span>
           </div>
         )}
 
         {/* PREMIUM HOMEPAGE SLIDER PRODUCT PHOTO MANAGER (Requested by User) */}
-        <div className="bg-[#FAFAF8] border border-[#E5E1D8]/65 rounded-3xl p-6 lg:p-8 space-y-6 shadow-sm">
-          <div className="border-b border-[#E5E1D8]/45 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#f0f2f5] border border-[#d1d9e6]/65 rounded-3xl p-6 lg:p-8 space-y-6 shadow-sm">
+          <div className="border-b border-[#d1d9e6]/45 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="text-[9px] font-black uppercase text-[#ff2300] tracking-widest bg-red-50 border border-red-150 px-2.5 py-1 rounded-full">
                 🎠 SLIDER MANAGER
               </span>
-              <h3 className="font-serif text-base font-bold text-[#3D271B] mt-2">Homepage Slider Product Photos</h3>
-              <p className="text-[11px] text-[#3D271B]/70 leading-normal mt-1">
+              <h3 className="font-serif text-base font-bold text-[#1a1c1d] mt-2">Homepage Slider Product Photos</h3>
+              <p className="text-[11px] text-[#1a1c1d]/70 leading-normal mt-1">
                 Assign customized high-quality photography for each of the 4 interactive homepage slices. Upload local image files, paste external URLs, or restore original premium presets.
               </p>
             </div>
@@ -2865,11 +2865,11 @@ export default function EnterpriseAdminSections({
               return (
                 <div 
                   key={idx} 
-                  className="bg-white border border-[#E5E1D8]/45 rounded-2xl p-4 flex flex-col justify-between space-y-4 hover:shadow-md transition-all duration-300"
+                  className="bg-white border border-[#d1d9e6]/45 rounded-2xl p-4 flex flex-col justify-between space-y-4 hover:shadow-md transition-all duration-300"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-black tracking-widest text-[#3D271B]/50 font-mono">
+                      <span className="text-[10px] uppercase font-black tracking-widest text-[#1a1c1d]/50 font-mono">
                         SLIDE 0{idx + 1}
                       </span>
                       <span className="text-[10px] font-bold text-[#ff2300] bg-red-50/60 px-2 py-0.5 rounded-md">
@@ -2877,7 +2877,7 @@ export default function EnterpriseAdminSections({
                       </span>
                     </div>
 
-                    <h4 className="text-[11.5px] font-serif font-bold text-[#3D271B] truncate">
+                    <h4 className="text-[11.5px] font-serif font-bold text-[#1a1c1d] truncate">
                       {slideTitles[idx]}
                     </h4>
 
@@ -2889,7 +2889,7 @@ export default function EnterpriseAdminSections({
                         className="w-full h-full object-cover rounded-lg"
                         referrerPolicy="no-referrer"
                       />
-                      <div className="absolute inset-0 bg-[#3D271B]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-[#1a1c1d]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <span className="text-[9.5px] uppercase font-bold tracking-wider text-white">
                           Change Image
                         </span>
@@ -2911,7 +2911,7 @@ export default function EnterpriseAdminSections({
                           }));
                         }}
                         placeholder="Paste image link here"
-                        className="w-full border border-gray-200 rounded-lg p-1.5 text-[10.5px] text-[#3D271B] outline-none placeholder-gray-300"
+                        className="w-full border border-gray-200 rounded-lg p-1.5 text-[10.5px] text-[#1a1c1d] outline-none placeholder-gray-300"
                       />
                     </div>
 
@@ -2920,7 +2920,7 @@ export default function EnterpriseAdminSections({
                       <label className="block text-[8px] font-black uppercase text-gray-400 tracking-wider">
                         Upload Local File (Base64)
                       </label>
-                      <div className="relative border border-dashed border-[#E5E1D8] hover:border-[#ff2300]/50 rounded-lg p-2.5 text-center transition-all cursor-pointer bg-gray-55/40 text-gray-55">
+                      <div className="relative border border-dashed border-[#d1d9e6] hover:border-[#ff2300]/50 rounded-lg p-2.5 text-center transition-all cursor-pointer bg-gray-55/40 text-gray-55">
                         <input 
                           type="file" 
                           accept="image/*"
@@ -2928,8 +2928,8 @@ export default function EnterpriseAdminSections({
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
                         <div className="flex flex-col items-center justify-center space-y-1">
-                          <Upload size={14} className="text-[#3D271B]/50" />
-                          <span className="text-[9.5px] font-bold text-[#3D271B]/60">
+                          <Upload size={14} className="text-[#1a1c1d]/50" />
+                          <span className="text-[9.5px] font-bold text-[#1a1c1d]/60">
                             Drag or click
                           </span>
                         </div>
@@ -2947,7 +2947,7 @@ export default function EnterpriseAdminSections({
                           [customKey]: samplePresets[idx]
                         }));
                       }}
-                      className="text-[9.5px] font-bold text-[#3D271B]/60 hover:text-[#ff2300] transition-colors"
+                      className="text-[9.5px] font-bold text-[#1a1c1d]/60 hover:text-[#ff2300] transition-colors"
                     >
                       Use Studio Preset
                     </button>
@@ -2976,24 +2976,24 @@ export default function EnterpriseAdminSections({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Active outline tree with editors */}
           <div className="lg:col-span-8 bg-white border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
+            <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center justify-between">
               <span>🥞 Live Layout Canvas Blocks ({pageLayoutBlocks.length})</span>
               <span className="text-[10px] text-teal-700 font-extrabold px-2 py-0.5 rounded-full bg-teal-50">Fully Reorderable</span>
             </h3>
 
             <div className="space-y-3">
               {pageLayoutBlocks.map((b: any, idx: number) => (
-                <div key={b.id || idx} className="p-4 rounded-2xl bg-[#FAF9F6] border border-gray-100 hover:bg-opacity-95 transition-all animate-fadeIn space-y-2">
+                <div key={b.id || idx} className="p-4 rounded-2xl bg-[#f0f2f5] border border-gray-100 hover:bg-opacity-95 transition-all animate-fadeIn space-y-2">
                   <div className="flex items-center justify-between border-b border-gray-100/50 pb-2">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs font-black text-capsule-accent/40 w-4 select-none">0{idx+1}</span>
-                      <span className="font-bold text-capsule-accent text-xs block truncate max-w-[200px]">{b.type}</span>
+                      <span className="font-mono text-xs font-black text-[#FF2300]/40 w-4 select-none">0{idx+1}</span>
+                      <span className="font-bold text-[#FF2300] text-xs block truncate max-w-[200px]">{b.type}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => handleBlockMoveUp(idx)}
                         disabled={idx === 0}
-                        className="p-1 px-1.5 bg-white border rounded text-[10px] hover:bg-gray-55 disabled:opacity-30 cursor-pointer text-capsule-dark font-mono font-bold"
+                        className="p-1 px-1.5 bg-white border rounded text-[10px] hover:bg-gray-55 disabled:opacity-30 cursor-pointer text-[#1a1c1d] font-mono font-bold"
                         title="Move Up"
                       >
                         ▲
@@ -3001,7 +3001,7 @@ export default function EnterpriseAdminSections({
                       <button 
                         onClick={() => handleBlockMoveDown(idx)}
                         disabled={idx === pageLayoutBlocks.length - 1}
-                        className="p-1 px-1.5 bg-white border rounded text-[10px] hover:bg-gray-55 disabled:opacity-30 cursor-pointer text-capsule-dark font-mono font-bold"
+                        className="p-1 px-1.5 bg-white border rounded text-[10px] hover:bg-gray-55 disabled:opacity-30 cursor-pointer text-[#1a1c1d] font-mono font-bold"
                         title="Move Down"
                       >
                         ▼
@@ -3064,9 +3064,9 @@ export default function EnterpriseAdminSections({
           </div>
 
           {/* Component Marketplace Sidecard for block additions */}
-          <div className="lg:col-span-4 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
+          <div className="lg:col-span-4 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
             <div className="border-b border-gray-150 pb-2">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent uppercase tracking-widest flex items-center gap-1.5">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] uppercase tracking-widest flex items-center gap-1.5">
                 🛒 Component Marketplace & Additions
               </h3>
               <p className="text-[9px] text-gray-400 leading-normal mt-0.5">Visually deploy reusable UI components straight from the local library stack with a single click.</p>
@@ -3074,11 +3074,11 @@ export default function EnterpriseAdminSections({
 
             <div className="space-y-3">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Component block Template</label>
+                <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Component block Template</label>
                 <select
                   value={newMarketplaceBlockType}
                   onChange={(e) => setNewMarketplaceBlockType(e.target.value)}
-                  className="w-full bg-white border border-capsule-accent/15 rounded-lg py-2 px-2 outline-none text-capsule-dark font-sans"
+                  className="w-full bg-white border border-[#FF2300]/25/15 rounded-lg py-2 px-2 outline-none text-[#1a1c1d] font-sans"
                 >
                   <option value="banner">📢 CTA Marketing Action Banner with Form</option>
                   <option value="carousel">🎠 Panoramic Slider Carousel of physical goods</option>
@@ -3089,7 +3089,7 @@ export default function EnterpriseAdminSections({
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Assigned block visual Title</label>
+                <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Assigned block visual Title</label>
                 <input 
                   type="text"
                   value={newMarketplaceBlockTitle}
@@ -3194,7 +3194,7 @@ export default function EnterpriseAdminSections({
             <Users size={11} className="text-[#C59B6D]" /> MULTI-CLIENT CRM PORTAL
           </span>
           <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Loyalty Tier & LTV Manager</h2>
-          <p className="text-xs text-capsule-text-secondary mt-0.5">Manage customer statistics, track aggregate Lifetime Value (LTV), record manager remarks, and target VIP clients dynamically stored in PostgreSQL.</p>
+          <p className="text-xs text-[#414753] mt-0.5">Manage customer statistics, track aggregate Lifetime Value (LTV), record manager remarks, and target VIP clients dynamically stored in PostgreSQL.</p>
         </div>
 
         {crmSuccess && (
@@ -3210,9 +3210,9 @@ export default function EnterpriseAdminSections({
             value={crmSearch}
             onChange={(e) => setCrmSearch(e.target.value)}
             placeholder="Search clients by name, company, or Armenian phone coordinate..."
-            className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl py-2.5 pl-9 pr-4 outline-none text-capsule-dark font-medium font-sans"
+            className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl py-2.5 pl-9 pr-4 outline-none text-[#1a1c1d] font-medium font-sans"
           />
-          <Search size={14} className="absolute left-3 top-3.5 text-capsule-text-muted" />
+          <Search size={14} className="absolute left-3 top-3.5 text-[#727784]" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 font-sans text-xs">
@@ -3239,7 +3239,7 @@ export default function EnterpriseAdminSections({
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between animate-fadeIn ${
                       selectedClient?.phone === c.phone 
                         ? "bg-[#C59B6D]/15 border-[#1A3F25]/30 shadow-sm" 
-                        : "bg-[#FAF9F6] border-transparent hover:bg-opacity-95 hover:border-[#1A3F25]/5"
+                        : "bg-[#f0f2f5] border-transparent hover:bg-opacity-95 hover:border-[#1A3F25]/5"
                     }`}
                   >
                     <div className="min-w-0">
@@ -3249,7 +3249,7 @@ export default function EnterpriseAdminSections({
                           <span className="bg-yellow-50 text-yellow-700 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">VIP</span>
                         )}
                       </div>
-                      <span className="text-[10px] text-capsule-text-muted font-sans font-medium block mt-0.5">{c.phone}</span>
+                      <span className="text-[10px] text-[#727784] font-sans font-medium block mt-0.5">{c.phone}</span>
                     </div>
                     <div className="text-right">
                       <span className="block font-mono font-bold text-[11px] text-[#1A3F25]">{spending.toLocaleString()} ֏</span>
@@ -3261,13 +3261,13 @@ export default function EnterpriseAdminSections({
                 );
               })}
               {clients.length === 0 && (
-                <p className="text-center italic text-capsule-text-muted py-8 font-serif">No customer directory matched query options.</p>
+                <p className="text-center italic text-[#727784] py-8 font-serif">No customer directory matched query options.</p>
               )}
             </div>
           </div>
 
           {/* Manager notes ledger info panel */}
-          <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF9F6] border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
+          <div className="lg:col-span-12 xl:col-span-5 bg-[#f0f2f5] border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
             <h3 className="font-serif text-sm font-bold text-[#1A3F25] border-b border-gray-150 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
               <Plus size={14} className="text-[#C59B6D]" /> Client Ledger Card
             </h3>
@@ -3275,18 +3275,18 @@ export default function EnterpriseAdminSections({
             {selectedClient ? (
               <div className="space-y-3 animate-fadeIn">
                 <div className="space-y-1">
-                  <span className="block text-[10px] font-bold uppercase text-capsule-text-muted">Target customer</span>
+                  <span className="block text-[10px] font-bold uppercase text-[#727784]">Target customer</span>
                   <span className="text-sm font-bold text-[#1A3F25] block">{selectedClient.name}</span>
                   <span className="text-xs text-[#7C9082] block font-sans font-semibold">{selectedClient.phone}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm col-span-1">
                   <div>
-                    <span className="block text-[9px] font-bold uppercase text-capsule-text-muted">Orders & Avg ticket</span>
+                    <span className="block text-[9px] font-bold uppercase text-[#727784]">Orders & Avg ticket</span>
                     <span className="text-xs font-mono font-bold text-[#1A3F25] mt-0.5 block">{selectedClient.ordersCount || 0} bills (avg {(Number(selectedClient.avgCheck) || 0).toLocaleString()} ֏)</span>
                   </div>
                   <div>
-                    <span className="block text-[9px] font-bold uppercase text-capsule-text-muted">VIP COORDINATE</span>
+                    <span className="block text-[9px] font-bold uppercase text-[#727784]">VIP COORDINATE</span>
                     <button
                       onClick={() => handleUpdateClientNote(!selectedClient.isVip)}
                       className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase mt-1 block tracking-wider cursor-pointer ${selectedClient.isVip ? "bg-yellow-600 text-white" : "bg-gray-200 text-gray-750"}`}
@@ -3315,7 +3315,7 @@ export default function EnterpriseAdminSections({
                 </button>
               </div>
             ) : (
-              <div className="py-12 text-center text-capsule-text-muted italic border border-[#1A3F25]/5 p-4 rounded-2xl bg-white/40">
+              <div className="py-12 text-center text-[#727784] italic border border-[#1A3F25]/5 p-4 rounded-2xl bg-white/40">
                 Please click on any client card coordinate on the left to review ledger profile, remarks, and aggregate purchases history.
               </div>
             )}
@@ -3339,10 +3339,10 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
           <span className="text-[10px] font-bold text-[#1A3F25] tracking-widest uppercase font-bold">CONVERSION METRICS ENGINE</span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Executive Analytics Portal</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Review general conversion percentages, customer traffic levels, chat assistance volumes, card triggers, and print inquiry pipelines in high visibility charts.</p>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Executive Analytics Portal</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Review general conversion percentages, customer traffic levels, chat assistance volumes, card triggers, and print inquiry pipelines in high visibility charts.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -3371,7 +3371,7 @@ export default function EnterpriseAdminSections({
           </div>
 
           {/* Conversions bar */}
-          <div className="bg-white border border-capsule-accent/10 p-4 rounded-3xl shadow-sm">
+          <div className="bg-white border border-[#FF2300]/25/10 p-4 rounded-3xl shadow-sm">
             <h3 className="font-serif text-xs font-bold text-[#1A3F25] mb-3 uppercase tracking-widest border-b border-gray-100 pb-1.5 font-bold">
               📊 Conversion Percentage by scale day
             </h3>
@@ -3432,16 +3432,16 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">TEAM DECK SEGREGATION</span>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">TEAM DECK SEGREGATION</span>
           <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Administrative Scopes & Permissions</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Define corporate managers usernames, restrict translation workspace panels, lock financial coefficients, and configure sales credentials safely.</p>
+          <p className="text-xs text-[#727784] mt-0.5">Define corporate managers usernames, restrict translation workspace panels, lock financial coefficients, and configure sales credentials safely.</p>
         </div>
 
         <div className="bg-white border border-[#1A3F25]/10 rounded-3xl overflow-hidden shadow-sm">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-[#FAF9F6] border-b border-capsule-accent/10 text-[10px] uppercase font-bold text-[#7C9082] font-bold">
+              <tr className="bg-[#f0f2f5] border-b border-[#FF2300]/25/10 text-[10px] uppercase font-bold text-[#7C9082] font-bold">
                 <th className="py-2.5 px-4 font-bold">Username Code</th>
                 <th className="py-2.5 px-4 font-bold">Assigned corporate Role</th>
                 <th className="py-2.5 px-4 font-bold">Active operational Scope</th>
@@ -3451,13 +3451,13 @@ export default function EnterpriseAdminSections({
             <tbody className="divide-y divide-gray-100 font-sans text-xs">
               {listToRender.map((usr) => (
                 <tr key={usr.id} className="hover:bg-gray-50/50">
-                  <td className="py-3 px-4 font-mono font-bold text-capsule-accent">{usr.user}</td>
+                  <td className="py-3 px-4 font-mono font-bold text-[#FF2300]">{usr.user}</td>
                   <td className="py-3 px-4 font-semibold text-[#C59B6D]">
                     {usr.uid && !usr.uid.startsWith("mock_") ? (
                       <select
                         value={usr.role}
                         onChange={(e) => handleUpdateUserRole(usr.uid, e.target.value)}
-                        className="bg-capsule-surf2 border border-capsule-accent/10 rounded py-1 px-2 font-bold select-none cursor-pointer text-xs"
+                        className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-bold select-none cursor-pointer text-xs"
                       >
                         {["Super Admin", "Manager", "Sales", "Production", "Translator"].map((r) => (
                           <option key={r} value={r}>{r}</option>
@@ -3467,9 +3467,9 @@ export default function EnterpriseAdminSections({
                       <span>{usr.role}</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-xs font-semibold text-capsule-text-secondary">{usr.scope}</td>
+                  <td className="py-3 px-4 text-xs font-semibold text-[#414753]">{usr.scope}</td>
                   <td className="py-3 px-4">
-                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1A3F25]/5 text-capsule-accent border border-capsule-accent/10 uppercase">
+                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1A3F25]/5 text-[#FF2300] border border-[#FF2300]/25/10 uppercase">
                       Access Granted
                     </span>
                   </td>
@@ -3486,17 +3486,17 @@ export default function EnterpriseAdminSections({
   const renderAuditLog = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">COMPLIANCE LEDGER CONTROL</span>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">COMPLIANCE LEDGER CONTROL</span>
           <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Audit Ledger & Administrative Trace</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">An immutable log of every administrative operation. Monitor setting updates, price adjustments, or synchronization operations carried out by corporate profiles.</p>
+          <p className="text-xs text-[#727784] mt-0.5">An immutable log of every administrative operation. Monitor setting updates, price adjustments, or synchronization operations carried out by corporate profiles.</p>
         </div>
 
         <div className="bg-white border border-[#1A3F25]/10 rounded-3xl overflow-hidden shadow-sm">
           <div className="max-h-[360px] overflow-y-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-[#FAF9F6] border-b border-capsule-accent/10 text-[10px] uppercase font-bold text-[#7C9082] font-bold">
+                <tr className="bg-[#f0f2f5] border-b border-[#FF2300]/25/10 text-[10px] uppercase font-bold text-[#7C9082] font-bold">
                   <th className="py-2.5 px-4 font-bold">Timestamp stamp</th>
                   <th className="py-2.5 px-4 font-bold">Operator profile</th>
                   <th className="py-2.5 px-4 font-bold">Action parameters details</th>
@@ -3513,8 +3513,8 @@ export default function EnterpriseAdminSections({
                 ].map((item, index) => (
                   <tr key={index} className="hover:bg-gray-50/50">
                     <td className="py-3 px-4 font-mono font-bold text-[#7C9082]">{item.ts}</td>
-                    <td className="py-3 px-4 font-bold text-capsule-accent">{item.user}</td>
-                    <td className="py-2.5 px-4 text-xs font-medium text-capsule-text-secondary">{item.act}</td>
+                    <td className="py-3 px-4 font-bold text-[#FF2300]">{item.user}</td>
+                    <td className="py-2.5 px-4 text-xs font-medium text-[#414753]">{item.act}</td>
                     <td className="py-3 px-4 font-mono text-[9px] text-teal-700 font-bold bg-teal-50/40">{item.hash}</td>
                   </tr>
                 ))}
@@ -3551,15 +3551,15 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
           <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase">LOW-LEVEL MEMORY VIEW</span>
           <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Core Database Manager</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Read JSON data sheets directly, copy schemas into third-party integrations, and examine structural integrity variables instantly.</p>
+          <p className="text-xs text-[#727784] mt-0.5">Read JSON data sheets directly, copy schemas into third-party integrations, and examine structural integrity variables instantly.</p>
         </div>
 
-        <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
+        <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
           <div className="flex justify-between items-center border-b border-gray-100 pb-2">
-            <span className="font-bold text-capsule-accent uppercase tracking-wider text-[10px] font-bold">📟 Active Database Stats Outline</span>
+            <span className="font-bold text-[#FF2300] uppercase tracking-wider text-[10px] font-bold">📟 Active Database Stats Outline</span>
             <button 
               onClick={handleCopyRawSchemaJSON}
               className="px-3 py-1 bg-[#ff2300] hover:bg-[#e61f00] text-white rounded-lg shadow font-bold text-[10px] cursor-pointer"
@@ -3568,7 +3568,7 @@ export default function EnterpriseAdminSections({
             </button>
           </div>
 
-          <pre className="font-mono text-[10px] text-capsule-accent p-4 bg-white border border-gray-150 rounded-2xl overflow-x-auto shadow-inner leading-relaxed">
+          <pre className="font-mono text-[10px] text-[#FF2300] p-4 bg-white border border-gray-150 rounded-2xl overflow-x-auto shadow-inner leading-relaxed">
             {serializedDb}
           </pre>
         </div>
@@ -3594,27 +3594,27 @@ export default function EnterpriseAdminSections({
   const renderImportExport = () => {
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="border-b border-capsule-accent/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase">BULK TRANSACT EXCELES</span>
+        <div className="border-b border-[#FF2300]/25/10 pb-4">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase">BULK TRANSACT EXCELES</span>
           <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Bulk Excel, CSV, & Raw JSON sync</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Export operational metrics, coupon rules, client lists, or full product configurations to spreadsheets formats with a single click.</p>
+          <p className="text-xs text-[#727784] mt-0.5">Export operational metrics, coupon rules, client lists, or full product configurations to spreadsheets formats with a single click.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="p-5 rounded-3xl border border-[#1A3F25]/10 bg-white shadow-sm flex flex-col justify-between h-40">
             <div>
-              <span className="block font-bold text-capsule-accent text-xs">Export Products Catalog (CSV / Excel)</span>
-              <span className="block text-[10px] text-capsule-text-muted mt-1 leading-relaxed">Generate spreadsheet rows containing active products names, allocated criteria categories, minimum order metrics, and visual mock links.</span>
+              <span className="block font-bold text-[#FF2300] text-xs">Export Products Catalog (CSV / Excel)</span>
+              <span className="block text-[10px] text-[#727784] mt-1 leading-relaxed">Generate spreadsheet rows containing active products names, allocated criteria categories, minimum order metrics, and visual mock links.</span>
             </div>
             <button 
               onClick={handleExportCSVFile}
-              className="mt-3 py-2 bg-capsule-accent text-white font-bold hover:bg-opacity-95 rounded-xl uppercase tracking-wider text-[10px] shadow flex items-center justify-center gap-1.5 cursor-pointer max-w-[200px]"
+              className="mt-3 py-2 bg-[#FF2300] text-white font-bold hover:bg-opacity-95 rounded-xl uppercase tracking-wider text-[10px] shadow flex items-center justify-center gap-1.5 cursor-pointer max-w-[200px]"
             >
               <FileSpreadsheet size={12} /> Download CSV layout
             </button>
           </div>
 
-          <div className="p-5 rounded-3xl border border-capsule-accent/10 bg-white/40 shadow-sm flex flex-col justify-between h-40">
+          <div className="p-5 rounded-3xl border border-[#FF2300]/25/10 bg-white/40 shadow-sm flex flex-col justify-between h-40">
             <div>
               <span className="block font-bold text-[#1A3F25] text-xs">Bulk State Import Manager</span>
               <span className="block text-[10px] text-[#7C9082] mt-1 leading-relaxed">Bulk load translation arrays, clients logs datasets, price multipliers matrices, or catalog additions via Drag & Drop visual validation zones safely.</span>
@@ -3724,11 +3724,11 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-capsule-accent/10 pb-4 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#FF2300]/25/10 pb-4 gap-2">
           <div>
             <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase">AUTOMATION DISPATCH ENGINE</span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Workflow Automation Builder</h2>
-            <p className="text-xs text-capsule-text-muted mt-0.5">Visually orchestrate messaging protocols, CRM webhooks, and AI events when data changes in PostgreSQL.</p>
+            <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Workflow Automation Builder</h2>
+            <p className="text-xs text-[#727784] mt-0.5">Visually orchestrate messaging protocols, CRM webhooks, and AI events when data changes in PostgreSQL.</p>
           </div>
           <button
             onClick={handleCreateWorkflow}
@@ -3740,7 +3740,7 @@ export default function EnterpriseAdminSections({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Workflows List Grid */}
-          <div className="lg:col-span-5 bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
+          <div className="lg:col-span-5 bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
             <h3 className="font-serif text-xs font-bold text-[#1A3F25] uppercase tracking-widest pb-1 border-b border-gray-200">
               ⚡ Decoupled Workflows ({dbWorkflows.length})
             </h3>
@@ -3787,7 +3787,7 @@ export default function EnterpriseAdminSections({
             </div>
 
             {/* Simulated Live Console Logs */}
-            <div className="border border-capsule-accent/10 p-4 rounded-2xl bg-[#1A3F25] text-emerald-400 font-mono text-[10px] space-y-1.5 h-[160px] overflow-y-auto">
+            <div className="border border-[#FF2300]/25/10 p-4 rounded-2xl bg-[#1A3F25] text-emerald-400 font-mono text-[10px] space-y-1.5 h-[160px] overflow-y-auto">
               <span className="text-gray-400 font-bold block text-[9px] pb-1 border-b border-emerald-900 uppercase">Automation Event Receiver Log</span>
               {wfConsoleLogs.map((logStr, i) => (
                 <div key={i} className="leading-5">➜ {logStr}</div>
@@ -3802,7 +3802,7 @@ export default function EnterpriseAdminSections({
           <div className="lg:col-span-7">
             {selectedWorkflow ? (
               <div className="bg-white border border-[#1A3F25]/10 p-6 rounded-3xl space-y-5">
-                <h3 className="font-serif text-sm font-bold text-capsule-accent uppercase tracking-widest pb-2 border-b border-gray-100">
+                <h3 className="font-serif text-sm font-bold text-[#FF2300] uppercase tracking-widest pb-2 border-b border-gray-100">
                   🛠️ Interactive action builder Workspace
                 </h3>
 
@@ -3811,7 +3811,7 @@ export default function EnterpriseAdminSections({
                     <label className="block text-[10px] font-extrabold uppercase text-[#7C9082] mb-1">Workflow Rule Label</label>
                     <input 
                       type="text"
-                      className="w-full bg-[#FAF9F6] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-capsule-accent outline-none"
+                      className="w-full bg-[#f0f2f5] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-[#FF2300] outline-none"
                       value={newWfName}
                       onChange={(e) => setNewWfName(e.target.value)}
                       placeholder="e.g. Notify Production on High Volume orders"
@@ -3822,7 +3822,7 @@ export default function EnterpriseAdminSections({
                     <div>
                       <label className="block text-[10px] font-extrabold uppercase text-[#7C9082] mb-1">PostgreSQL Trigger Event</label>
                       <select
-                        className="w-full bg-[#FAF9F6] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-capsule-accent outline-none"
+                        className="w-full bg-[#f0f2f5] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-[#FF2300] outline-none"
                         value={newWfEvent}
                         onChange={(e) => setNewWfEvent(e.target.value)}
                       >
@@ -3836,7 +3836,7 @@ export default function EnterpriseAdminSections({
                     <div>
                       <label className="block text-[10px] font-extrabold uppercase text-[#7C9082] mb-1">Target Action Protocol</label>
                       <select
-                        className="w-full bg-[#FAF9F6] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-capsule-accent outline-none"
+                        className="w-full bg-[#f0f2f5] border border-gray-150 rounded-xl px-3.5 py-2 text-xs font-bold text-[#FF2300] outline-none"
                         value={newWfActionType}
                         onChange={(e) => setNewWfActionType(e.target.value)}
                       >
@@ -3849,7 +3849,7 @@ export default function EnterpriseAdminSections({
                     </div>
                   </div>
 
-                  <div className="border border-gray-100 p-4 bg-[#FAF9F6] rounded-2.5xl space-y-3.5">
+                  <div className="border border-gray-100 p-4 bg-[#f0f2f5] rounded-2.5xl space-y-3.5">
                     <span className="text-[10px] font-black uppercase text-[#C59B6D]">Channel specific properties</span>
 
                     {newWfActionType === "email" && (
@@ -3957,8 +3957,8 @@ export default function EnterpriseAdminSections({
                 <div className="w-10 h-10 rounded-full bg-amber-50 text-[#C59B6D] flex items-center justify-center">
                   <Sliders size={18} />
                 </div>
-                <h4 className="font-serif text-sm font-bold text-capsule-accent uppercase mt-2">No Workflow Event Selected</h4>
-                <p className="text-capsule-text-muted text-xs max-w-sm">Choose an orchestration statement from the left dashboard, or configure custom hooks to link checkout forms to Twilio, Telegram, or custom REST APIs.</p>
+                <h4 className="font-serif text-sm font-bold text-[#FF2300] uppercase mt-2">No Workflow Event Selected</h4>
+                <p className="text-[#727784] text-xs max-w-sm">Choose an orchestration statement from the left dashboard, or configure custom hooks to link checkout forms to Twilio, Telegram, or custom REST APIs.</p>
               </div>
             )}
           </div>
@@ -4025,11 +4025,11 @@ export default function EnterpriseAdminSections({
 
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-capsule-accent/10 pb-4 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#FF2300]/25/10 pb-4 gap-2">
           <div>
             <span className="text-[10px] font-bold text-[#C59B6D] tracking-widest uppercase">TRANSACTIONAL RESTORATION VAULT</span>
-            <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">Version Snapshot History Core</h2>
-            <p className="text-xs text-capsule-text-muted mt-0.5">Control disaster recovery, compare schema revisions, and initiate instantaneous rollback points without programming.</p>
+            <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">Version Snapshot History Core</h2>
+            <p className="text-xs text-[#727784] mt-0.5">Control disaster recovery, compare schema revisions, and initiate instantaneous rollback points without programming.</p>
           </div>
           <button 
             onClick={handleCreateSnapshot}
@@ -4040,7 +4040,7 @@ export default function EnterpriseAdminSections({
         </div>
 
         {snapshotAlert && (
-          <div className="bg-[#1A3F25]/5 border border-capsule-accent/15 text-capsule-accent p-4 rounded-2.5xl animate-slideIn">
+          <div className="bg-[#1A3F25]/5 border border-[#FF2300]/25/15 text-[#FF2300] p-4 rounded-2.5xl animate-slideIn">
             🛡️ <span className="font-extrabold">{snapshotAlert}</span>
           </div>
         )}
@@ -4061,7 +4061,7 @@ export default function EnterpriseAdminSections({
                 return (
                   <div 
                     key={item.id} 
-                    className={`p-3.5 bg-[#FAF9F6] border rounded-2xl flex flex-col gap-2 transition-all ${
+                    className={`p-3.5 bg-[#f0f2f5] border rounded-2xl flex flex-col gap-2 transition-all ${
                       isSel ? "border-[#C59B6D] ring-2 ring-[#C59B6D]/15" : "border-gray-50 hover:bg-gray-50/50"
                     }`}
                   >
@@ -4102,17 +4102,17 @@ export default function EnterpriseAdminSections({
           </div>
 
           {/* Snapshot Comparison Visual Panel */}
-          <div className="bg-[#FAF9F6] border border-capsule-accent/10 p-5 rounded-3xl space-y-4">
-            <h3 className="font-serif text-xs font-bold text-capsule-accent border-b border-gray-150 pb-1.5 uppercase tracking-widest">
+          <div className="bg-[#f0f2f5] border border-[#FF2300]/25/10 p-5 rounded-3xl space-y-4">
+            <h3 className="font-serif text-xs font-bold text-[#FF2300] border-b border-gray-150 pb-1.5 uppercase tracking-widest">
               🔍 Version snapshot inspector
             </h3>
 
             {selectedSnapshotComp ? (
-              <div className="space-y-4 text-xs font-medium text-capsule-accent leading-relaxed animate-fadeIn">
+              <div className="space-y-4 text-xs font-medium text-[#FF2300] leading-relaxed animate-fadeIn">
                 <div className="p-3 bg-white border border-gray-150 rounded-2xl">
                   <span className="text-[9px] text-[#7C9082] block font-bold uppercase">ARCHIVE METADATA</span>
-                  <span className="text-xs font-serif font-bold text-capsule-accent mt-0.5 block">{selectedSnapshotComp.tag}</span>
-                  <span className="text-[10px] text-capsule-text-muted mt-0.5 block">Captured: {new Date(selectedSnapshotComp.created_at).toLocaleString()}</span>
+                  <span className="text-xs font-serif font-bold text-[#FF2300] mt-0.5 block">{selectedSnapshotComp.tag}</span>
+                  <span className="text-[10px] text-[#727784] mt-0.5 block">Captured: {new Date(selectedSnapshotComp.created_at).toLocaleString()}</span>
                 </div>
 
                 <div className="space-y-2">
@@ -4202,20 +4202,20 @@ export default function EnterpriseAdminSections({
                 onChange={(e) => setAiPromptInput(e.target.value)}
                 placeholder="Coordinate assistant with Capsule corporate personality..."
                 rows={10}
-                className="w-full bg-[#FAF9F6] border border-gray-150 rounded-2xl p-3 font-mono text-[10px] text-[#1D3557] outline-none leading-relaxed"
+                className="w-full bg-[#f0f2f5] border border-gray-150 rounded-2xl p-3 font-mono text-[10px] text-[#1D3557] outline-none leading-relaxed"
               />
             </div>
           </div>
 
           {/* Model presets hyper-parameters */}
-          <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF9F6] border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
-            <h3 className="font-serif text-xs font-bold text-capsule-accent border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+          <div className="lg:col-span-12 xl:col-span-5 bg-[#f0f2f5] border border-[#1A3F25]/10 p-5 rounded-3xl space-y-4">
+            <h3 className="font-serif text-xs font-bold text-[#FF2300] border-b border-gray-100 pb-1.5 uppercase tracking-widest flex items-center gap-1.5 font-bold">
               <Key size={14} className="text-[#C59B6D]" /> LLM Model Options & Parameters
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-capsule-text-muted mb-1">Target Core Model Engine</label>
+                <label className="block text-[10px] font-bold uppercase text-[#727784] mb-1">Target Core Model Engine</label>
                 <select 
                   value={aiModel}
                   onChange={(e) => setAiModel(e.target.value)}
@@ -4228,8 +4228,8 @@ export default function EnterpriseAdminSections({
 
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="block text-[10px] font-bold uppercase text-capsule-text-muted">Temperature</label>
-                  <span className="font-mono font-bold text-capsule-accent">{aiTemp}</span>
+                  <label className="block text-[10px] font-bold uppercase text-[#727784]">Temperature</label>
+                  <span className="font-mono font-bold text-[#FF2300]">{aiTemp}</span>
                 </div>
                 <input 
                   type="range" 
@@ -4478,7 +4478,7 @@ export default function EnterpriseAdminSections({
               .info-box { background: #fdfdfd; padding: 15px; border: 1px solid #f0f0f0; border-radius: 8px; }
               .tbl { width: 100%; border-collapse: collapse; margin: 30px 0; }
               .tbl th, .tbl td { border: 1px solid #eee; padding: 12px; text-align: left; }
-              .tbl th { background: #fafaf9; color: #1a3f25; font-weight: bold; }
+              .tbl th { background: #f0f2f5; color: #1a3f25; font-weight: bold; }
               .total-row { font-size: 18px; font-weight: bold; color: #1a3f25; text-align: right; padding-top: 20px; }
               .footer { text-align: center; font-size: 11px; color: #777; margin-top: 80px; border-top: 1px solid #eee; padding-top: 20px; }
             </style>
@@ -4639,7 +4639,7 @@ export default function EnterpriseAdminSections({
               💼 ENTERPRISE WORKSPACE
             </span>
             <h2 className="text-xl font-serif text-[#1A3F25] font-bold mt-1">Order Solutions Center & Production Board</h2>
-            <p className="text-xs text-capsule-text-secondary mt-0.5">Control pipeline routing, monitor 10 technical production stages live, create invoices, and dispatch WhatsApp metrics.</p>
+            <p className="text-xs text-[#414753] mt-0.5">Control pipeline routing, monitor 10 technical production stages live, create invoices, and dispatch WhatsApp metrics.</p>
           </div>
           
           <div className="flex flex-wrap gap-2">
@@ -4675,7 +4675,7 @@ export default function EnterpriseAdminSections({
               value={orderSearch}
               onChange={(e) => setOrderSearch(e.target.value)}
               placeholder="ID, Client name or phone ID..."
-              className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none"
+              className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none"
             />
           </div>
 
@@ -4684,7 +4684,7 @@ export default function EnterpriseAdminSections({
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
+              className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
             >
               <option value="all">All Stages</option>
               {kanbanStatuses.map(st => (
@@ -4698,7 +4698,7 @@ export default function EnterpriseAdminSections({
             <select
               value={managerFilter}
               onChange={(e) => setManagerFilter(e.target.value)}
-              className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
+              className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
             >
               <option value="all">All Operators</option>
               <option value="Corporate Sales Desk">Corporate Sales Desk</option>
@@ -4712,7 +4712,7 @@ export default function EnterpriseAdminSections({
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
-              className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
+              className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl px-3 py-2 outline-none text-[11px]"
             >
               <option value="all">All Channels</option>
               <option value="Interactive Landing Page">Interactive Landing Page</option>
@@ -4727,7 +4727,7 @@ export default function EnterpriseAdminSections({
               <select
                 value={orderSortBy}
                 onChange={(e) => setOrderSortBy(e.target.value)}
-                className="w-full bg-[#FAF9F6] border border-[#1A3F25]/15 rounded-xl px-2 py-2 outline-none text-[10px]"
+                className="w-full bg-[#f0f2f5] border border-[#1A3F25]/15 rounded-xl px-2 py-2 outline-none text-[10px]"
               >
                 <option value="ts">Registration Date</option>
                 <option value="totalPrice">Financial LTV Amount</option>
@@ -4746,8 +4746,8 @@ export default function EnterpriseAdminSections({
 
         {/* MANUAL ADDITION DRAWER POPUP */}
         {isAddingOrder && (
-          <div className="bg-[#FAF9F6] border-2 border-dashed border-[#1A3F25]/20 p-5 rounded-3xl animate-slideUp text-xs space-y-4">
-            <h3 className="font-serif text-sm font-bold text-capsule-accent uppercase tracking-wider flex items-center justify-between">
+          <div className="bg-[#f0f2f5] border-2 border-dashed border-[#1A3F25]/20 p-5 rounded-3xl animate-slideUp text-xs space-y-4">
+            <h3 className="font-serif text-sm font-bold text-[#FF2300] uppercase tracking-wider flex items-center justify-between">
               <span>Register New Custom Client Contract (Real-time PostgreSQL)</span>
               <button onClick={() => setIsAddingOrder(false)} className="text-red-700 font-bold">Close X</button>
             </h3>
@@ -4823,7 +4823,7 @@ export default function EnterpriseAdminSections({
 
             <button
               onClick={handleCreateCustomOrder}
-              className="py-2.5 px-6 bg-capsule-accent text-white font-bold rounded-xl shadow tracking-widest hover:bg-opacity-95 uppercase"
+              className="py-2.5 px-6 bg-[#FF2300] text-white font-bold rounded-xl shadow tracking-widest hover:bg-opacity-95 uppercase"
             >
               Commit Order into PostgreSQL & Route Workflow Actions
             </button>
@@ -4835,8 +4835,8 @@ export default function EnterpriseAdminSections({
           /* TABLE LIST VIEW */
           <div className="bg-white border border-[#1A3F25]/10 rounded-3xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-xs text-capsule-dark select-none">
-                <thead className="bg-[#FAF9F6] border-b border-[#1A3F25]/10 text-[#1A3F25] font-bold">
+              <table className="w-full border-collapse text-left text-xs text-[#1a1c1d] select-none">
+                <thead className="bg-[#f0f2f5] border-b border-[#1A3F25]/10 text-[#1A3F25] font-bold">
                   <tr>
                     <th className="p-3 text-[10px] uppercase">ID & Reg Date</th>
                     <th className="p-3 text-[10px] uppercase">Client Details</th>
@@ -4856,7 +4856,7 @@ export default function EnterpriseAdminSections({
                     >
                       <td className="p-3">
                         <span className="font-serif font-black block text-[#1A3F25]">#CAPS-{o.id}</span>
-                        <span className="text-[10px] text-capsule-text-muted mt-0.5 block">{new Date(o.ts || Date.now()).toLocaleDateString()}</span>
+                        <span className="text-[10px] text-[#727784] mt-0.5 block">{new Date(o.ts || Date.now()).toLocaleDateString()}</span>
                       </td>
                       <td className="p-3">
                         <span className="font-bold block text-[#1A3F25]">{o.customerName}</span>
@@ -4910,14 +4910,14 @@ export default function EnterpriseAdminSections({
                           );
                         })()}
                       </td>
-                      <td className="p-3 text-capsule-text-muted font-sans font-medium">{o.manager || "Standard Desk"}</td>
+                      <td className="p-3 text-[#727784] font-sans font-medium">{o.manager || "Standard Desk"}</td>
                       <td className="p-3 text-right">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedOrder(o);
                           }}
-                          className="px-2.5 py-1 bg-[#FAF9F6] border border-gray-200 hover:border-[#1A3F25]/30 rounded text-[10px] font-bold text-[#1A3F25]"
+                          className="px-2.5 py-1 bg-[#f0f2f5] border border-gray-200 hover:border-[#1A3F25]/30 rounded text-[10px] font-bold text-[#1A3F25]"
                         >
                           Modify / Invoice
                         </button>
@@ -4926,7 +4926,7 @@ export default function EnterpriseAdminSections({
                   ))}
                   {filteredOrders.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="p-12 text-center italic text-capsule-text-muted font-serif bg-gray-50/20">
+                      <td colSpan={7} className="p-12 text-center italic text-[#727784] font-serif bg-gray-50/20">
                         No orders recorded match configured directory filters.
                       </td>
                     </tr>
@@ -4942,7 +4942,7 @@ export default function EnterpriseAdminSections({
               const columnOrders = filteredOrders.filter((o: any) => (o.status || "Новый") === st);
 
               return (
-                <div key={st} className="bg-[#FAF9F6] border border-[#1A3F25]/10 p-2 rounded-2xl min-w-[155px] space-y-2 flex flex-col justify-start">
+                <div key={st} className="bg-[#f0f2f5] border border-[#1A3F25]/10 p-2 rounded-2xl min-w-[155px] space-y-2 flex flex-col justify-start">
                   <div className="font-sans font-extrabold text-[9px] tracking-wider text-[#1A3F25] border-b border-[#C59B6D]/25 pb-1 uppercase text-center truncate">
                     {st} <span className="text-[#C59B6D]">({columnOrders.length})</span>
                   </div>
@@ -4956,7 +4956,7 @@ export default function EnterpriseAdminSections({
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-[#1A3F25]">#CAPS-{co.id}</span>
-                          <span className="text-[8px] text-capsule-text-muted">{new Date(co.ts || Date.now()).toLocaleDateString()}</span>
+                          <span className="text-[8px] text-[#727784]">{new Date(co.ts || Date.now()).toLocaleDateString()}</span>
                         </div>
                         <div className="font-bold text-[#1A3F25] truncate">{co.customerName}</div>
                         <div className="text-[9px] text-[#7C9082] truncate">{co.customerPhone}</div>
@@ -5056,7 +5056,7 @@ export default function EnterpriseAdminSections({
                   type="text"
                   value={selectedOrder.customerName || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, customerName: e.target.value })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none"
                 />
               </div>
 
@@ -5066,7 +5066,7 @@ export default function EnterpriseAdminSections({
                   type="text"
                   value={selectedOrder.customerPhone || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, customerPhone: e.target.value })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none"
                 />
               </div>
 
@@ -5076,7 +5076,7 @@ export default function EnterpriseAdminSections({
                   type="text"
                   value={selectedOrder.whatsapp || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, whatsapp: e.target.value })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none"
                 />
               </div>
 
@@ -5086,7 +5086,7 @@ export default function EnterpriseAdminSections({
                   type="text"
                   value={selectedOrder.email || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, email: e.target.value })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none"
                 />
               </div>
 
@@ -5096,7 +5096,7 @@ export default function EnterpriseAdminSections({
                   value={selectedOrder.items || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, items: e.target.value })}
                   rows={3}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none resize-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none resize-none"
                 />
               </div>
 
@@ -5106,7 +5106,7 @@ export default function EnterpriseAdminSections({
                   type="number"
                   value={selectedOrder.totalPrice || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, totalPrice: Number(e.target.value) })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none"
                 />
               </div>
 
@@ -5116,7 +5116,7 @@ export default function EnterpriseAdminSections({
                   <select
                     value={selectedOrder.manager || "Corporate Sales Desk"}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, manager: e.target.value })}
-                    className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   >
                     <option value="Corporate Sales Desk">Corporate Sales Desk</option>
                     <option value="Senior Designer Team">Senior Designer Team</option>
@@ -5129,7 +5129,7 @@ export default function EnterpriseAdminSections({
                   <select
                     value={selectedOrder.status || "Новый"}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, status: e.target.value })}
-                    className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   >
                     {kanbanStatuses.map(st => (
                       <option key={st} value={st}>{st}</option>
@@ -5147,7 +5147,7 @@ export default function EnterpriseAdminSections({
                     disabled={managerMe && !["Super Admin", "Manager", "Production Manager"].includes(managerMe.role)}
                     value={selectedOrder.estimatedCompletionDate || ""}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, estimatedCompletionDate: e.target.value })}
-                    className="w-full bg-[#FAF9F6] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   />
                 </div>
 
@@ -5158,7 +5158,7 @@ export default function EnterpriseAdminSections({
                     disabled={managerMe && !["Super Admin", "Manager", "Production Manager"].includes(managerMe.role)}
                     value={selectedOrder.productionDeadline || ""}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, productionDeadline: e.target.value })}
-                    className="w-full bg-[#FAF9F6] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   />
                 </div>
               </div>
@@ -5171,7 +5171,7 @@ export default function EnterpriseAdminSections({
                     disabled={managerMe && !["Super Admin", "Manager", "Production Manager"].includes(managerMe.role)}
                     value={selectedOrder.actualCompletionDate || ""}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, actualCompletionDate: e.target.value })}
-                    className="w-full bg-[#FAF9F6] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] disabled:opacity-50 border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   />
                 </div>
 
@@ -5181,7 +5181,7 @@ export default function EnterpriseAdminSections({
                     type="number"
                     value={selectedOrder.productionDays || 5}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, productionDays: Number(e.target.value) })}
-                    className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-lg outline-none text-[10px]"
                   />
                 </div>
               </div>
@@ -5199,7 +5199,7 @@ export default function EnterpriseAdminSections({
                   <select
                     value={selectedOrder.artworkStatus || "нет макета"}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, artworkStatus: e.target.value })}
-                    className="w-full bg-[#FAF9F6] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
                   >
                     <option value="нет макета">Нет макета</option>
                     <option value="ожидает">Ожидает</option>
@@ -5211,7 +5211,7 @@ export default function EnterpriseAdminSections({
                     placeholder="URL макета"
                     value={selectedOrder.artworkUrl || ""}
                     onChange={(e) => setSelectedOrder({ ...selectedOrder, artworkUrl: e.target.value })}
-                    className="w-full bg-[#FAF9F6] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
+                    className="w-full bg-[#f0f2f5] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
                   />
                 </div>
                 <input
@@ -5219,7 +5219,7 @@ export default function EnterpriseAdminSections({
                   placeholder="Review comments on artwork..."
                   value={selectedOrder.artworkComment || ""}
                   onChange={(e) => setSelectedOrder({ ...selectedOrder, artworkComment: e.target.value })}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-1.5 rounded-lg outline-none text-[10px]"
                 />
               </div>
 
@@ -5256,20 +5256,20 @@ export default function EnterpriseAdminSections({
 
               <button
                 type="submit"
-                className="w-full py-2 bg-capsule-accent text-white font-bold rounded-xl tracking-wider select-none uppercase hover:bg-opacity-95"
+                className="w-full py-2 bg-[#FF2300] text-white font-bold rounded-xl tracking-wider select-none uppercase hover:bg-opacity-95"
               >
                 Sync Data to PostgreSQL
               </button>
             </form>
 
             {/* MID COMPILER: INVOICES EXCHANGE & PDF BILL COMPILER */}
-            <div className="xl:col-span-4 space-y-4 bg-[#FAF9F6] p-4 rounded-2xl border border-gray-100">
-              <h3 className="font-serif text-sm font-bold text-capsule-accent border-b pb-1 uppercase tracking-widest select-none">
+            <div className="xl:col-span-4 space-y-4 bg-[#f0f2f5] p-4 rounded-2xl border border-gray-100">
+              <h3 className="font-serif text-sm font-bold text-[#FF2300] border-b pb-1 uppercase tracking-widest select-none">
                 🧾 INVOICE & PDF QUOTE CALCULATOR
               </h3>
 
               <div className="bg-white p-3 rounded-xl border border-gray-200 space-y-3">
-                <p className="text-[10px] text-capsule-text-muted leading-relaxed">
+                <p className="text-[10px] text-[#727784] leading-relaxed">
                   Generate professional physical documents by selecting a currency rate. Real foreign exchange coordinates are updated dynamically.
                 </p>
 
@@ -5316,7 +5316,7 @@ export default function EnterpriseAdminSections({
 
               {/* TIMELINE OF CHANGES FROM PG */}
               <div className="space-y-2">
-                <span className="block text-[9px] uppercase font-bold text-capsule-text-muted select-none">Timeline of Changes & Audit Stages</span>
+                <span className="block text-[9px] uppercase font-bold text-[#727784] select-none">Timeline of Changes & Audit Stages</span>
                 <div className="bg-white border rounded-xl p-2.5 space-y-2 max-h-[140px] overflow-y-auto">
                   {(selectedOrder.statusHistory || []).map((ht: any, hIdx: number) => (
                     <div key={hIdx} className="border-l-2 border-[#1A3F25] pl-2 text-[10px] space-y-0.5 animate-fadeIn">
@@ -5349,7 +5349,7 @@ export default function EnterpriseAdminSections({
                   {(selectedOrder.files || []).map((fl: any) => (
                     <div key={fl.id} className="flex justify-between items-center bg-white border p-1.5 rounded-lg text-[10px]">
                       <div className="truncate pr-2">
-                        <span className="font-bold text-capsule-accent">[{fl.fileType}]</span> {fl.fileName}
+                        <span className="font-bold text-[#FF2300]">[{fl.fileType}]</span> {fl.fileName}
                       </div>
                       <div className="flex gap-2 items-center shrink-0">
                         <a href={fl.fileUrl} target="_blank" rel="noopener noreferrer" className="text-[#1A3F25] font-bold underline hover:text-black">Open</a>
@@ -5388,17 +5388,17 @@ export default function EnterpriseAdminSections({
                 {/* Attach a File form */}
                 <div className="bg-white p-2 rounded-xl border space-y-2 mt-1.5">
                   <div className="grid grid-cols-2 gap-1.5">
-                    <select id="new-file-type" className="bg-[#FAF9F6] border text-[9px] p-1 rounded outline-none w-full">
+                    <select id="new-file-type" className="bg-[#f0f2f5] border text-[9px] p-1 rounded outline-none w-full">
                       <option value="PDF Quote">PDF Quote</option>
                       <option value="Invoice">Invoice</option>
                       <option value="Approved Artwork">Approved Artwork</option>
                       <option value="Production Preview">Production Preview</option>
                       <option value="Technical Specification">Technical Spec</option>
                     </select>
-                    <input id="new-file-name" type="text" placeholder="File name label" className="bg-[#FAF9F6] border text-[9px] p-1 rounded outline-none w-full" />
+                    <input id="new-file-name" type="text" placeholder="File name label" className="bg-[#f0f2f5] border text-[9px] p-1 rounded outline-none w-full" />
                   </div>
                   <div className="flex gap-1.5">
-                    <input id="new-file-url" type="text" placeholder="https://drive.google.com/url" className="flex-1 bg-[#FAF9F6] border text-[9px] p-1 rounded outline-none" />
+                    <input id="new-file-url" type="text" placeholder="https://drive.google.com/url" className="flex-1 bg-[#f0f2f5] border text-[9px] p-1 rounded outline-none" />
                     <button
                       type="button"
                       onClick={async () => {
@@ -5427,7 +5427,7 @@ export default function EnterpriseAdminSections({
                           console.error("Failed adding file", err);
                         }
                       }}
-                      className="bg-capsule-accent hover:bg-opacity-90 text-white font-bold px-2 py-1 rounded text-[9px]"
+                      className="bg-[#FF2300] hover:bg-opacity-90 text-white font-bold px-2 py-1 rounded text-[9px]"
                     >
                       Attach
                     </button>
@@ -5463,7 +5463,7 @@ export default function EnterpriseAdminSections({
                   onChange={(e) => setWhatsappDraftText(e.target.value)}
                   placeholder={`e.g. Բարև Ձեզ ${selectedOrder.customerName}, Ձեր պատվերը #CAPS-${selectedOrder.id} հաստատված է և գտնվում է արտադրական "${selectedOrder.status || "Новый"}" փուլում:`}
                   rows={4}
-                  className="w-full bg-[#FAF9F6] border border-gray-200 p-2 rounded-xl outline-none"
+                  className="w-full bg-[#f0f2f5] border border-gray-200 p-2 rounded-xl outline-none"
                 />
               </div>
 
@@ -5490,17 +5490,17 @@ export default function EnterpriseAdminSections({
     return (
       <div className="space-y-6 animate-fadeIn font-sans text-xs">
         <div className="border-b border-[#1A3F25]/10 pb-4">
-          <span className="text-[10px] font-bold text-capsule-accent/80 tracking-widest uppercase font-extrabold flex items-center gap-1">
+          <span className="text-[10px] font-bold text-[#FF2300]/80 tracking-widest uppercase font-extrabold flex items-center gap-1">
             💬 COGNITIVE INTEGRATIONS HUB
           </span>
-          <h2 className="text-xl font-serif text-capsule-accent font-bold mt-1">WhatsApp Integration Tracking Monitor</h2>
-          <p className="text-xs text-capsule-text-muted mt-0.5">Maintain audit logs of outgoing messages, monitor delivery structures, and run triggered sequence engines.</p>
+          <h2 className="text-xl font-serif text-[#FF2300] font-bold mt-1">WhatsApp Integration Tracking Monitor</h2>
+          <p className="text-xs text-[#727784] mt-0.5">Maintain audit logs of outgoing messages, monitor delivery structures, and run triggered sequence engines.</p>
         </div>
 
         <div className="bg-white border border-[#1A3F25]/10 rounded-3xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-xs select-none">
-              <thead className="bg-[#FAF9F6] border-b border-[#1A3F25]/10 text-capsule-dark font-bold">
+              <thead className="bg-[#f0f2f5] border-b border-[#1A3F25]/10 text-[#1a1c1d] font-bold">
                 <tr>
                   <th className="p-3 text-[10px] uppercase">ID & Timestamp</th>
                   <th className="p-3 text-[10px] uppercase">Destination Phone</th>
@@ -5511,12 +5511,12 @@ export default function EnterpriseAdminSections({
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {whatsappLogsList.map((log: any) => (
-                  <tr key={log.id} className="hover:bg-[#FAF9F6] transition-all">
+                  <tr key={log.id} className="hover:bg-[#f0f2f5] transition-all">
                     <td className="p-3">
                       <span className="font-mono text-[#1A3F25] font-bold">#WA-{log.id}</span>
                       <span className="text-[9px] text-[#7C9082] block mt-0.5">{new Date(log.ts || Date.now()).toLocaleString()}</span>
                     </td>
-                    <td className="p-3 font-bold text-capsule-accent">
+                    <td className="p-3 font-bold text-[#FF2300]">
                       {log.phone || "---"}
                     </td>
                     <td className="p-3">

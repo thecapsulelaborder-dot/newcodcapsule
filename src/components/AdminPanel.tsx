@@ -440,8 +440,8 @@ export default function AdminPanel({
         </div>
         
         <div style="text-align: center; margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 15px; font-size: 9pt; color: #555;">
-          Շնորհակալություն Capsule Concept-ին դիմելու համար:<br/>
-          <span style="font-family: monospace; font-size: 8pt; color: #888;">www.capsule.am | order@capsule.am</span>
+          Շնորհակալություն CAPSULE PACK-ին դիմելու համար:<br/>
+          <span style="font-family: monospace; font-size: 8pt; color: #888;">www.capsulepack.am | order@capsulepack.am</span>
         </div>
       </div>
     `;
@@ -837,15 +837,15 @@ export default function AdminPanel({
 
   return (
     <div className="fixed inset-0 bg-capsule-dark/70 backdrop-blur-md z-[2000] flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-capsule-surf border border-[#C59B6D]/30 w-full max-w-[96vw] xl:max-w-[1450px] h-[92vh] md:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
+      <div className="bg-[#f0f2f5] border border-[#C59B6D]/30 w-full max-w-[96vw] xl:max-w-[1450px] h-[92vh] md:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
         
         {/* Header bar - Premium Dark Green & Delicate Bronze styling */}
         <div className="px-6 py-4 bg-[#1A3F25] text-white flex items-center justify-between border-b border-[#C59B6D]/30 shrink-0">
           <div className="flex items-center gap-2.5">
             <Settings size={20} className="text-[#C59B6D] animate-spin-slow" />
             <div>
-              <h2 className="font-serif font-light text-xl tracking-wider uppercase text-[#FAF9F6]">{getHeaderTitleTr()}</h2>
-              <p className="text-[9px] uppercase tracking-widest text-[#C59B6D] font-bold">Capsule Concept CMS Platform & Production Control</p>
+              <h2 className="font-serif font-light text-xl tracking-wider uppercase text-[#f0f2f5]">{getHeaderTitleTr()}</h2>
+              <p className="text-[9px] uppercase tracking-widest text-[#C59B6D] font-bold">CAPSULE PACK CMS Platform & Production Control</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -875,7 +875,7 @@ export default function AdminPanel({
 
             <button 
               onClick={onClose}
-              className="p-2 bg-white/10 hover:bg-[#C59B6D] hover:text-[#1A3F25] text-[#FAF9F6] hover:scale-105 transition-all text-xs border border-white/25 rounded-full cursor-pointer flex items-center justify-center h-8 w-8"
+              className="p-2 bg-white/10 hover:bg-[#C59B6D] hover:text-[#1A3F25] text-[#f0f2f5] hover:scale-105 transition-all text-xs border border-white/25 rounded-full cursor-pointer flex items-center justify-center h-8 w-8"
             >
               <X size={15} />
             </button>
@@ -885,33 +885,33 @@ export default function AdminPanel({
         {/* Secure login gate */}
         {!adminToken ? (
           <div className="p-10 flex-1 flex flex-col items-center justify-center max-w-sm mx-auto text-center gap-4">
-            <Lock size={36} className="text-capsule-accent" />
-            <h3 className="font-serif text-lg text-capsule-accent font-semibold">Անվտանգ Լոգին</h3>
-            <p className="text-xs text-capsule-text-secondary leading-relaxed">
+            <Lock size={36} className="text-[#FF2300]" />
+            <h3 className="font-serif text-lg text-[#FF2300] font-semibold">Անվտանգ Լոգին</h3>
+            <p className="text-xs text-[#414753] leading-relaxed">
               Մուտքագրեք Ձեր ադմինիստրատորի տվյալները` վահանակը բացելու համար։
             </p>
             
             <form onSubmit={handleLoginSubmit} className="w-full space-y-3 text-left">
               <div className="space-y-1">
-                <label className="block text-[9px] font-bold text-capsule-text-muted uppercase tracking-wider">Օգտանուն</label>
+                <label className="block text-[9px] font-bold text-[#727784] uppercase tracking-wider">Օգտանուն</label>
                 <input
                   type="text"
                   required
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
                   placeholder="admin"
-                  className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs font-semibold outline-none focus:border-capsule-accent text-capsule-dark transition-all"
+                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs font-semibold outline-none focus:border-[#FF2300]/25 text-[#1a1c1d] transition-all"
                 />
               </div>
               <div className="space-y-1">
-                <label className="block text-[9px] font-bold text-capsule-text-muted uppercase tracking-wider">Գաղտնաբառ</label>
+                <label className="block text-[9px] font-bold text-[#727784] uppercase tracking-wider">Գաղտնաբառ</label>
                 <input
                   type="password"
                   required
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs font-semibold outline-none focus:border-capsule-accent text-capsule-dark transition-all"
+                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs font-semibold outline-none focus:border-[#FF2300]/25 text-[#1a1c1d] transition-all"
                 />
               </div>
               {loginError && (
@@ -919,14 +919,14 @@ export default function AdminPanel({
               )}
               <button
                 type="submit"
-                className="w-full bg-capsule-accent hover:bg-capsule-accent-light text-capsule-surf py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all cursor-pointer shadow-md mt-2"
+                className="w-full bg-[#FF2300] hover:bg-[#FF2300]-light text-capsule-surf py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all cursor-pointer shadow-md mt-2"
               >
                 Մուտք
               </button>
             </form>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col md:flex-row h-full overflow-hidden bg-[#FAFAF8]">
+          <div className="flex-1 flex flex-col md:flex-row h-full overflow-hidden bg-[#f0f2f5]">
             
             {/* Sidebar navigation tabs - Luxurious layout */}
             <div className="w-full md:w-64 bg-[#F5F2EB] border-r border-[#C59B6D]/20 flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible md:overflow-y-auto shrink-0 divide-x md:divide-x-0 divide-[#C59B6D]/15 scrollbar-thin">
@@ -1021,7 +1021,7 @@ export default function AdminPanel({
                             className={`py-2 px-3 text-[10px] font-bold uppercase tracking-wider text-left transition-all shrink-0 cursor-pointer rounded-lg flex items-center justify-between border-b-2 md:border-b-0 ${
                               isAct 
                                 ? "bg-[#1A3F25] text-white shadow-md border-l-4 border-[#C59B6D]" 
-                                : "text-[#3D271B]/80 hover:bg-[#1A3F25]/5 hover:text-[#1A3F25] border-l-4 border-transparent"
+                                : "text-[#1a1c1d]/80 hover:bg-[#1A3F25]/5 hover:text-[#1A3F25] border-l-4 border-transparent"
                             }`}
                           >
                             <span>{getTabTr(adTab.key, adTab.lbl)}</span>
@@ -1083,13 +1083,13 @@ export default function AdminPanel({
 
               {/* TAB: DYNAMIC CATEGORY CREATOR/BUILDER */}
               {activeTab === "dynamic_category_builder" && (
-                <div className="space-y-6 bg-white p-6 rounded-2xl border border-capsule-accent/10 shadow-xs">
-                  <div className="border-b border-capsule-accent/10 pb-4 mb-3">
-                    <h3 className="font-serif text-lg text-capsule-accent font-semibold flex items-center gap-2">
+                <div className="space-y-6 bg-white p-6 rounded-2xl border border-[#FF2300]/25/10 shadow-xs">
+                  <div className="border-b border-[#FF2300]/25/10 pb-4 mb-3">
+                    <h3 className="font-serif text-lg text-[#FF2300] font-semibold flex items-center gap-2">
                       <Sparkles size={18} className="text-[#D27E53]" />
                       <span>Ավելացնել Դինամիկ Բաժին / Create Dynamic Product Category</span>
                     </h3>
-                    <p className="text-xs text-capsule-text-muted mt-1">
+                    <p className="text-xs text-[#727784] mt-1">
                       Սահմանեք անհատական չափսերի, նյութերի, հավելյալ տարբերակների և գների բանաձևերի կանոններ նոր բաժնի համար։
                     </p>
                   </div>
@@ -1100,59 +1100,59 @@ export default function AdminPanel({
               {/* TAB: STANDARD BAGS PRICING */}
               {activeTab === "pricing_standard" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">🛍️ Տոպրակներ (Standard) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">🛍️ Տոպրակներ (Standard) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Թղթի և Լամինացիայի Բազային Գներ (֏ / քմ)</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Թղթի և Լամինացիայի Բազային Գներ (֏ / քմ)</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">210 Gsm (մեկ քմ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">210 Gsm (մեկ քմ)</label>
                         <input
                           type="number"
                           value={editPricingRules.pp210}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, pp210: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">300 Gsm (մեկ քմ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">300 Gsm (մեկ քմ)</label>
                         <input
                           type="number"
                           value={editPricingRules.pp300}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, pp300: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent pt-2">Աքսեսուարներ & Բռնակներ</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300] pt-2">Աքսեսուարներ & Բռնակներ</h4>
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Ամրակում (Fixed Setup)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Ամրակում (Fixed Setup)</label>
                         <input
                           type="number"
                           value={editPricingRules.fixed}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, fixed: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Լամինացիա (հատ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Լամինացիա (հատ)</label>
                         <input
                           type="number"
                           value={editPricingRules.lam}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, lam: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Բռնակ (Շնուր / հատ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Բռնակ (Շնուր / հատ)</label>
                         <input
                           type="number"
                           value={editPricingRules.cord}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, cord: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
@@ -1163,59 +1163,59 @@ export default function AdminPanel({
               {/* TAB: DECORATIVE BAGS PRICING */}
               {activeTab === "pricing_decorative" && editDecPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">✨ Տոպրակներ (Decorative) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">✨ Տոպրակներ (Decorative) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Դեկորատիվ Թղթի Բազային Գներ (֏ / քմ)</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Դեկորատիվ Թղթի Բազային Գներ (֏ / քմ)</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">210 Gsm (մեկ քմ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">210 Gsm (մեկ քմ)</label>
                         <input
                           type="number"
                           value={editDecPricingRules.pp210}
                           onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, pp210: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">300 Gsm (մեկ քմ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">300 Gsm (մեկ քմ)</label>
                         <input
                           type="number"
                           value={editDecPricingRules.pp300}
                           onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, pp300: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent pt-2">Աքսեսուարներ & Ժապավեններ</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300] pt-2">Աքսեսուարներ & Ժապավեններ</h4>
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Ամրակում (Fixed Setup)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Ամրակում (Fixed Setup)</label>
                         <input
                           type="number"
                           value={editDecPricingRules.fixed}
                           onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, fixed: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Լամինացիա (հատ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Լամինացիա (հատ)</label>
                         <input
                           type="number"
                           value={editDecPricingRules.lam}
                           onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, lam: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Բռնակ (Շնուր / հատ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Բռնակ (Շնուր / հատ)</label>
                         <input
                           type="number"
                           value={editDecPricingRules.cord}
                           onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, cord: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1.5 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
@@ -1226,98 +1226,98 @@ export default function AdminPanel({
               {/* TAB: RIBBONS PRICING */}
               {activeTab === "pricing_ribbons" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">🎗️ Ժապավեններ (Ribbons) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">🎗️ Ժապավեններ (Ribbons) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Ժապավենի Գնային Գործակիցներ</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Ժապավենի Գնային Գործակիցներ</h4>
                     <div className="grid grid-cols-4 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Satin 2cm Base (1մ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Satin 2cm Base (1մ)</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_satin_base_2cm ?? 80}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_satin_base_2cm: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Satin 2.5cm Base (1մ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Satin 2.5cm Base (1մ)</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_satin_base_2_5cm ?? 100}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_satin_base_2_5cm: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Satin 3cm Base (1մ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Satin 3cm Base (1մ)</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_satin_base_3cm ?? 130}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_satin_base_3cm: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Satin 4cm Base (1մ)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Satin 4cm Base (1մ)</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_satin_base_4cm ?? 150}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_satin_base_4cm: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Reps Material Multiplier</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Reps Material Multiplier</label>
                         <input
                           type="number"
                           step="0.1"
                           value={editPricingRules.ribbon_reps_mult ?? 1.4}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_reps_mult: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Setup Fixed Fee (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Setup Fixed Fee (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_setup ?? 6000}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_setup: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Min Meters Limit</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Min Meters Limit</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_min_meters ?? 85}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_min_meters: parseInt(e.target.value) || 85 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Foil Print Extra Rate/Meter</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Foil Print Extra Rate/Meter</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_foil_per_meter ?? 25}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_foil_per_meter: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Silkscreen Extra Rate/Meter</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Silkscreen Extra Rate/Meter</label>
                         <input
                           type="number"
                           value={editPricingRules.ribbon_screen_per_meter ?? 15}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, ribbon_screen_per_meter: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
@@ -1328,70 +1328,70 @@ export default function AdminPanel({
               {/* TAB: STICKERS PRICING */}
               {activeTab === "pricing_stickers" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">🏷️ Սթիքերներ (Stickers) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">🏷️ Սթիքերներ (Stickers) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Սթիքերների Բազային Սակագներ (Լամինացված / 1քմ համարժեք)</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Սթիքերների Բազային Սակագներ (Լամինացված / 1քմ համարժեք)</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Glossy Paper Base</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Glossy Paper Base</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_paper_gloss ?? 10}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_paper_gloss: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Matte Paper Base</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Matte Paper Base</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_paper_matte ?? 12}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_paper_matte: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">White Vinyl</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">White Vinyl</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_vinyl_white ?? 18}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_vinyl_white: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Transparent Vinyl</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Transparent Vinyl</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_vinyl_transparent ?? 20}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_vinyl_transparent: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Contour Die Setup Fee (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Contour Die Setup Fee (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_contour_setup ?? 3000}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_contour_setup: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Minimum order Qty</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Minimum order Qty</label>
                         <input
                           type="number"
                           value={editPricingRules.sticker_min_qty ?? 300}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, sticker_min_qty: parseInt(e.target.value) || 300 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
@@ -1402,97 +1402,97 @@ export default function AdminPanel({
               {/* TAB: GIFTCARDS PRICING */}
               {activeTab === "pricing_giftcards" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">🎁 Նվեր Քարտեր (Gift Cards) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">🎁 Նվեր Քարտեր (Gift Cards) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Նվեր Քարտերի և Ծրարների Սակագներ</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Նվեր Քարտերի և Ծրարների Սակագներ</h4>
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">A6 Card Base (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">A6 Card Base (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_a6_base ?? 85}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_a6_base: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Mini Card Base (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Mini Card Base (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_mini_base ?? 50}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_mini_base: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Euro Card Base (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Euro Card Base (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_euro_base ?? 110}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_euro_base: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">White Envelope (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">White Envelope (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_env_standard ?? 100}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_env_standard: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Kraft Envelope (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Kraft Envelope (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_env_kraft ?? 150}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_env_kraft: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Colored Premium (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Colored Premium (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_env_colored ?? 380}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_env_colored: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Paper Soft-Touch Extra</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Paper Soft-Touch Extra</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_paper_softtouch ?? 75}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_paper_softtouch: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Paper Textured Extra</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Paper Textured Extra</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_paper_textured ?? 120}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_paper_textured: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Min Card Order Qty</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Min Card Order Qty</label>
                         <input
                           type="number"
                           value={editPricingRules.giftcard_min_qty ?? 30}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, giftcard_min_qty: parseInt(e.target.value) || 30 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
@@ -1503,91 +1503,91 @@ export default function AdminPanel({
               {/* TAB: BUSINESSCARDS PRICING */}
               {activeTab === "pricing_businesscards" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-2 mb-4">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">🪪 Այցեքարտեր (Business Cards) — Rules & Pricing</h3>
+                  <div className="border-b border-[#FF2300]/25/10 pb-2 mb-4">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">🪪 Այցեքարտեր (Business Cards) — Rules & Pricing</h3>
                   </div>
                   <div className="space-y-4">
-                    <h4 className="font-serif text-sm font-semibold text-capsule-accent">Այցեքարտերի Գնային Գործակիցներ</h4>
+                    <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Այցեքարտերի Գնային Գործակիցներ</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Std Size (9x5) Base (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Std Size (9x5) Base (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_std_base ?? 40}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_std_base: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Euro Size (8.5x5.5) Base (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Euro Size (8.5x5.5) Base (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_euro_base ?? 45}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_euro_base: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Soft-touch paper extra (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Soft-touch paper extra (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_paper_softtouch ?? 35}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_paper_softtouch: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Textured paper extra (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Textured paper extra (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_paper_textured ?? 70}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_paper_textured: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Double-side multiplier</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Double-side multiplier</label>
                         <input
                           type="number"
                           step="0.1"
                           value={editPricingRules.businesscard_double_sided_mult ?? 1.5}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_double_sided_mult: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Corners rounded extra (֏)</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Corners rounded extra (֏)</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_corners_rounded ?? 10}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_corners_rounded: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Min Card order qty</label>
+                        <label className="block text-[10px] text-[#727784] uppercase font-bold">Min Card order qty</label>
                         <input
                           type="number"
                           value={editPricingRules.businesscard_min_qty ?? 100}
                           onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_min_qty: parseInt(e.target.value) || 100 })}
-                          className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Custom stamp setup fee (֏)</label>
+                      <label className="block text-[10px] text-[#727784] uppercase font-bold">Custom stamp setup fee (֏)</label>
                       <input
                         type="number"
                         value={editPricingRules.businesscard_foil_setup ?? 5000}
                         onChange={(e) => setEditPricingRules({ ...editPricingRules, businesscard_foil_setup: parseFloat(e.target.value) || 0 })}
-                        className="w-full bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-2 px-3 text-xs outline-none text-capsule-dark"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-2 px-3 text-xs outline-none text-[#1a1c1d]"
                       />
                     </div>
                   </div>
@@ -1597,8 +1597,8 @@ export default function AdminPanel({
               {/* TAB 2: PAPERS */}
               {activeTab === "papers" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Պահեստավորված Թղթեր</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Պահեստավորված Թղթեր</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -1612,7 +1612,7 @@ export default function AdminPanel({
                         };
                         setEditPapers([...editPapers, newP]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Ավելացնել
                     </button>
@@ -1620,7 +1620,7 @@ export default function AdminPanel({
 
                   <div className="space-y-3">
                     {editPapers.map((paper, idx) => (
-                      <div key={paper.id} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-3 rounded-xl flex flex-col gap-2">
+                      <div key={paper.id} className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 p-3 rounded-xl flex flex-col gap-2">
                         <div className="flex justify-between items-center font-sans">
                           <input
                             type="text"
@@ -1630,7 +1630,7 @@ export default function AdminPanel({
                               updated[idx] = { ...paper, name: e.target.value };
                               setEditPapers(updated);
                             }}
-                            className="bg-transparent font-bold border-b border-capsule-accent/15 text-xs outline-none flex-1 font-sans"
+                            className="bg-transparent font-bold border-b border-[#FF2300]/25/15 text-xs outline-none flex-1 font-sans"
                           />
                           <button
                             type="button"
@@ -1642,7 +1642,7 @@ export default function AdminPanel({
                         </div>
                         <div className="grid grid-cols-2 gap-3 text-xs">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">GSM</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">GSM</span>
                             <input
                               type="number"
                               value={paper.gsm}
@@ -1651,11 +1651,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...paper, gsm: parseInt(e.target.value, 10) || 0 };
                                 setEditPapers(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 font-mono text-center w-full"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-mono text-center w-full"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Գին (֏ / քմ)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Գին (֏ / քմ)</span>
                             <input
                               type="number"
                               value={paper.pricePerSqm}
@@ -1664,7 +1664,7 @@ export default function AdminPanel({
                                 updated[idx] = { ...paper, pricePerSqm: parseInt(e.target.value, 10) || 0 };
                                 setEditPapers(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 font-mono text-center w-full"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-mono text-center w-full"
                             />
                           </div>
                         </div>
@@ -1677,24 +1677,24 @@ export default function AdminPanel({
               {/* TAB 3: CONTACTS */}
               {activeTab === "contact" && (
                 <div className="space-y-4">
-                  <h3 className="font-serif text-base text-capsule-accent font-semibold">Պատվերների Ստացման Ալիքներ</h3>
-                  <div className="space-y-3 bg-capsule-surf2/30 border border-capsule-accent/10 p-4 rounded-xl">
+                  <h3 className="font-serif text-base text-[#FF2300] font-semibold">Պատվերների Ստացման Ալիքներ</h3>
+                  <div className="space-y-3 bg-[#f0f2f5]/30 border border-[#FF2300]/25/10 p-4 rounded-xl">
                     <div>
-                      <label className="block text-[10px] font-bold text-capsule-text-muted uppercase">WhatsApp հեռախոսահամար</label>
+                      <label className="block text-[10px] font-bold text-[#727784] uppercase">WhatsApp հեռախոսահամար</label>
                       <input
                         type="text"
                         value={editContact.whatsapp}
                         onChange={(e) => setEditContact({ ...editContact, whatsapp: e.target.value.replace(/[^0-9]/g, "") })}
-                        className="w-full bg-capsule-surf border border-capsule-accent/10 rounded py-2 px-3 text-xs text-capsule-dark font-mono font-bold outline-none"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-2 px-3 text-xs text-[#1a1c1d] font-mono font-bold outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-capsule-text-muted uppercase">Email Address</label>
+                      <label className="block text-[10px] font-bold text-[#727784] uppercase">Email Address</label>
                       <input
                         type="email"
                         value={editContact.email}
                         onChange={(e) => setEditContact({ ...editContact, email: e.target.value })}
-                        className="w-full bg-capsule-surf border border-capsule-accent/10 rounded py-2 px-3 text-xs text-capsule-dark font-mono font-bold outline-none"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-2 px-3 text-xs text-[#1a1c1d] font-mono font-bold outline-none"
                       />
                     </div>
                   </div>
@@ -1706,15 +1706,15 @@ export default function AdminPanel({
                 <div className="space-y-6 animate-fade-in" id="categories-and-storefront-manager">
                   
                   {/* Master Sub-Tabs Header */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-capsule-accent/15 pb-2">
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#FF2300]/25/15 pb-2">
                     <div className="flex gap-2">
                       <button
                         type="button"
                         onClick={() => setCategorySubTab("portal")}
                         className={`px-4 py-2 text-xs font-bold uppercase transition-all tracking-wider rounded-t-xl ${
                           categorySubTab === "portal" 
-                            ? "bg-capsule-accent text-white shadow" 
-                            : "bg-capsule-surf border border-transparent hover:bg-capsule-accent/5 text-capsule-accent"
+                            ? "bg-[#FF2300] text-white shadow" 
+                            : "bg-[#f0f2f5] border border-transparent hover:bg-[#FF2300]/5 text-[#FF2300]"
                         }`}
                       >
                         🏷️ Բաժինների Կառավարում / Category Portal
@@ -1730,8 +1730,8 @@ export default function AdminPanel({
                         }}
                         className={`px-4 py-2 text-xs font-bold uppercase transition-all tracking-wider rounded-t-xl ${
                           categorySubTab === "dashboard" 
-                            ? "bg-capsule-accent text-white shadow" 
-                            : "bg-capsule-surf border border-transparent hover:bg-capsule-accent/5 text-capsule-accent"
+                            ? "bg-[#FF2300] text-white shadow" 
+                            : "bg-[#f0f2f5] border border-transparent hover:bg-[#FF2300]/5 text-[#FF2300]"
                         }`}
                       >
                         🛍️ Ցուցափեղկ և Դասավորություն / Product Sorting
@@ -1753,60 +1753,60 @@ export default function AdminPanel({
                     <div className="space-y-6">
                       
                       {/* Main Homepage Hero Text Editor */}
-                      <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-4 md:p-5 space-y-4 shadow-sm">
-                        <div className="flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                          <Sparkles className="text-capsule-accent" size={16} />
-                          <h4 className="font-serif text-sm font-semibold text-capsule-accent">Գլխավոր էջի տեքստեր / Homepage Hero Texts</h4>
+                      <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-4 md:p-5 space-y-4 shadow-sm">
+                        <div className="flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                          <Sparkles className="text-[#FF2300]" size={16} />
+                          <h4 className="font-serif text-sm font-semibold text-[#FF2300]">Գլխավոր էջի տեքստեր / Homepage Hero Texts</h4>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գովազդային Բեյջ (Hero Badge)</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1 font-mono">Գովազդային Բեյջ (Hero Badge)</label>
                             <input
                               type="text"
                               value={editSiteTexts.home_hero_badge || ""}
                               onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_badge: e.target.value })}
                               placeholder="Premium Customizer"
-                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Արտադրամասի Գլխագիր (Hero Title)</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1 font-mono">Արտադրամասի Գլխագիր (Hero Title)</label>
                             <input
                               type="text"
                               value={editSiteTexts.home_hero_title || ""}
                               onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_title: e.target.value })}
                               placeholder="The Capsule Lab"
-                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
                           </div>
                           <div className="md:col-span-2">
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Հակիրճ Բացատրություն (Hero Description)</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1 font-mono">Հակիրճ Բացատրություն (Hero Description)</label>
                             <textarea
                               value={editSiteTexts.home_hero_desc || ""}
                               onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_desc: e.target.value })}
                               placeholder="Ընտրեք ցանկալի արտադրանքի տեսակը՝ հաշвարկը և 3D ֆիզիկական մոդելավորումը սկսելու համար։"
-                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent h-16 resize-none"
+                              className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 text-[#1a1c1d] outline-none focus:border-[#FF2300]/25 h-16 resize-none"
                             />
                           </div>
                           <div className="md:col-span-2">
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1 font-mono">Գործողության հրահանգ (Action line)</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1 font-mono">Գործողության հրահանգ (Action line)</label>
                             <input
                               type="text"
                               value={editSiteTexts.home_hero_action || ""}
                               onChange={(e) => setEditSiteTexts({ ...editSiteTexts, home_hero_action: e.target.value })}
                               placeholder="Խնդրում ենք ընտրել ստորև՝"
-                              className="w-full bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
                           </div>
                         </div>
                       </div>
 
                       {/* Header bar */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-capsule-accent/10 pb-3">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#FF2300]/25/10 pb-3">
                         <div>
-                          <h3 className="font-serif text-base text-capsule-accent font-semibold">Բաժինների Կառավարման Պորտալ / Edit and Add Categories</h3>
-                          <p className="text-[11px] text-capsule-text-muted">Ավելացրեք նոր բաժիններ, սահմանեք լեզուներ (Հայերեն/Русский/English), պատկերակներ, սորտավորում և MOQ քանակներ։</p>
+                          <h3 className="font-serif text-base text-[#FF2300] font-semibold">Բաժինների Կառավարման Պորտալ / Edit and Add Categories</h3>
+                          <p className="text-[11px] text-[#727784]">Ավելացրեք նոր բաժիններ, սահմանեք լեզուներ (Հայերեն/Русский/English), պատկերակներ, սորտավորում և MOQ քանակներ։</p>
                         </div>
                         <div className="flex gap-2">
                           <button
@@ -1835,7 +1835,7 @@ export default function AdminPanel({
                               };
                               setEditCategories([...editCategories, newCat]);
                             }}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-capsule-accent text-capsule-surf hover:bg-capsule-accent/90 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#FF2300] text-capsule-surf hover:bg-[#FF2300]/90 text-xs font-bold transition-all shadow-sm cursor-pointer"
                           >
                             <Plus size={14} className="stroke-[2.5]" />
                             Ավելացնել Բաժին
@@ -1855,18 +1855,18 @@ export default function AdminPanel({
                       {/* Part C: Categories List Grid */}
                   <div className="space-y-4">
                     {(editCategories || []).map((cat, idx) => (
-                      <div key={cat.id} className="p-4 bg-capsule-surf border border-capsule-accent/10 hover:border-capsule-accent/25 rounded-2xl space-y-4 shadow-sm transition-all relative group/catcard">
+                      <div key={cat.id} className="p-4 bg-[#f0f2f5] border border-[#FF2300]/25/10 hover:border-[#FF2300]/25/25 rounded-2xl space-y-4 shadow-sm transition-all relative group/catcard">
                         
                         {/* Upper action bar inside card */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 bg-capsule-surf2/20 -mx-4 -mt-4 p-3 rounded-t-2xl border-b border-capsule-accent/5">
+                        <div className="flex flex-wrap items-center justify-between gap-2 bg-[#f0f2f5]/20 -mx-4 -mt-4 p-3 rounded-t-2xl border-b border-[#FF2300]/25/5">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-md bg-capsule-accent/10 text-capsule-accent text-[11px] font-bold flex items-center justify-center font-mono">
+                            <span className="w-5 h-5 rounded-md bg-[#FF2300]/10 text-[#FF2300] text-[11px] font-bold flex items-center justify-center font-mono">
                               {idx + 1}
                             </span>
-                            <span className="font-bold text-xs text-capsule-accent truncate max-w-[150px] sm:max-w-[240px]">
+                            <span className="font-bold text-xs text-[#FF2300] truncate max-w-[150px] sm:max-w-[240px]">
                               {cat.name}
                             </span>
-                            <span className="text-[10px] font-mono bg-capsule-accent/5 text-capsule-text-muted px-1.5 py-0.5 rounded uppercase">
+                            <span className="text-[10px] font-mono bg-[#FF2300]/5 text-[#727784] px-1.5 py-0.5 rounded uppercase">
                               ID: {cat.id}
                             </span>
                           </div>
@@ -1883,7 +1883,7 @@ export default function AdminPanel({
                                 updated[idx - 1] = temp;
                                 setEditCategories(updated);
                               }}
-                              className="p-1.5 rounded-lg border border-capsule-accent/5 hover:border-capsule-accent hover:text-capsule-accent hover:bg-capsule-accent/5 transition-all text-capsule-text-muted disabled:opacity-30 disabled:pointer-events-none"
+                              className="p-1.5 rounded-lg border border-[#FF2300]/25/5 hover:border-[#FF2300]/25 hover:text-[#FF2300] hover:bg-[#FF2300]/5 transition-all text-[#727784] disabled:opacity-30 disabled:pointer-events-none"
                               title="Տեղափոխել վերև"
                             >
                               <ChevronUp size={13} />
@@ -1899,14 +1899,14 @@ export default function AdminPanel({
                                 updated[idx + 1] = temp;
                                 setEditCategories(updated);
                               }}
-                              className="p-1.5 rounded-lg border border-capsule-accent/5 hover:border-capsule-accent hover:text-capsule-accent hover:bg-capsule-accent/5 transition-all text-capsule-text-muted disabled:opacity-30 disabled:pointer-events-none"
+                              className="p-1.5 rounded-lg border border-[#FF2300]/25/5 hover:border-[#FF2300]/25 hover:text-[#FF2300] hover:bg-[#FF2300]/5 transition-all text-[#727784] disabled:opacity-30 disabled:pointer-events-none"
                               title="Տեղափոխել ներքև"
                             >
                               <ChevronDown size={13} />
                             </button>
-                            <span className="mx-1 h-3 w-px bg-capsule-accent/10" />
+                            <span className="mx-1 h-3 w-px bg-[#FF2300]/10" />
                             {/* Is Active Checkbox */}
-                            <label className="inline-flex items-center gap-1.5 text-[11px] font-sans text-capsule-text-muted mr-2 cursor-pointer select-none">
+                            <label className="inline-flex items-center gap-1.5 text-[11px] font-sans text-[#727784] mr-2 cursor-pointer select-none">
                               <input
                                 type="checkbox"
                                 checked={cat.active}
@@ -1927,7 +1927,7 @@ export default function AdminPanel({
                                   setEditCategories(editCategories.filter((_, cIdx) => cIdx !== idx));
                                 }
                               }}
-                              className="p-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 text-capsule-text-muted transition-all"
+                              className="p-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 text-[#727784] transition-all"
                               title="Ջնջել բաժինը"
                             >
                               <Trash2 size={13} />
@@ -1938,7 +1938,7 @@ export default function AdminPanel({
                         {/* Core settings form fields */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
                           <div className="md:col-span-2">
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Բաժնի Անուն (անգլերեն/ներքին)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Բաժնի Անուն (անգլերեն/ներքին)</span>
                             <input
                               type="text"
                               value={cat.name}
@@ -1948,11 +1948,11 @@ export default function AdminPanel({
                                 setEditCategories(updated);
                               }}
                               placeholder="Standard Bags"
-                              className="bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Կոճակի Անուն (Nav Label)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Կոճակի Անուն (Nav Label)</span>
                             <input
                               type="text"
                               value={cat.navLabel || ""}
@@ -1962,11 +1962,11 @@ export default function AdminPanel({
                                 setEditCategories(updated);
                               }}
                               placeholder="Տոպրակներ"
-                              className="bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Ձևանմուշ (Template Layout)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Ձևանմուշ (Template Layout)</span>
                             <select
                               value={cat.template || cat.id}
                               onChange={(e) => {
@@ -1974,7 +1974,7 @@ export default function AdminPanel({
                                 updated[idx] = { ...cat, template: e.target.value };
                                 setEditCategories(updated);
                               }}
-                              className="bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 w-full text-capsule-dark outline-none focus:border-capsule-accent font-bold"
+                              className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25 font-bold"
                             >
                               <option value="bags">Bags / Տոպրակներ</option>
                               <option value="boxes">Boxes / Տուփեր</option>
@@ -1989,14 +1989,14 @@ export default function AdminPanel({
                         </div>
 
                         {/* Interactive Icon Selector Section */}
-                        <div className="bg-capsule-surf2/10 border border-capsule-accent/5 rounded-2xl p-3 space-y-2">
-                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 pb-1 border-b border-capsule-accent/5">
-                            <span className="text-[10px] text-capsule-accent uppercase font-bold font-mono">Ընտրել Պատկերակ կամ Կցել սեփականը (Pick/Upload Custom Icon)</span>
-                            <span className="text-[9px] text-capsule-text-muted">Ընտրեք Lucide, Emoji, կամ կցեք սեփական պատկերակը (Image file / PNG / JPG / SVG)</span>
+                        <div className="bg-[#f0f2f5]/10 border border-[#FF2300]/25/5 rounded-2xl p-3 space-y-2">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 pb-1 border-b border-[#FF2300]/25/5">
+                            <span className="text-[10px] text-[#FF2300] uppercase font-bold font-mono">Ընտրել Պատկերակ կամ Կցել սեփականը (Pick/Upload Custom Icon)</span>
+                            <span className="text-[9px] text-[#727784]">Ընտրեք Lucide, Emoji, կամ կցեք սեփական պատկերակը (Image file / PNG / JPG / SVG)</span>
                           </div>
                           <div className="flex flex-col sm:flex-row items-center gap-3">
                             {/* Current icon show */}
-                            <div className="w-20 h-20 rounded-2xl bg-capsule-accent/5 border border-capsule-accent/10 flex items-center justify-center text-3xl text-capsule-accent shrink-0 overflow-hidden">
+                            <div className="w-20 h-20 rounded-2xl bg-[#FF2300]/5 border border-[#FF2300]/25/10 flex items-center justify-center text-3xl text-[#FF2300] shrink-0 overflow-hidden">
                               {cat.icon && (cat.icon.startsWith("http") || cat.icon.startsWith("/") || cat.icon.startsWith("data:image")) ? (
                                 <div 
                                   style={{
@@ -2040,7 +2040,7 @@ export default function AdminPanel({
                                     setEditCategories(updated);
                                   }}
                                   className={`px-2 py-1 rounded-lg border text-[10px] font-sans font-bold transition-all cursor-pointer ${
-                                    cat.icon === preset.val ? "bg-capsule-accent text-capsule-surf border-capsule-accent" : "bg-capsule-surf border-capsule-accent/10 hover:border-capsule-accent/25"
+                                    cat.icon === preset.val ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25" : "bg-[#f0f2f5] border-[#FF2300]/25/10 hover:border-[#FF2300]/25/25"
                                   }`}
                                 >
                                   {preset.label}
@@ -2050,7 +2050,7 @@ export default function AdminPanel({
 
                             {/* Uploader Input */}
                             <div className="shrink-0 flex items-center">
-                              <label className="px-2.5 py-1.5 rounded-xl border text-[10px] font-sans font-bold transition-all cursor-pointer bg-capsule-accent/10 border-capsule-accent/20 text-capsule-accent hover:bg-capsule-accent hover:text-capsule-surf select-none flex items-center justify-center gap-1">
+                              <label className="px-2.5 py-1.5 rounded-xl border text-[10px] font-sans font-bold transition-all cursor-pointer bg-[#FF2300]/10 border-[#FF2300]/25/20 text-[#FF2300] hover:bg-[#FF2300] hover:text-capsule-surf select-none flex items-center justify-center gap-1">
                                 <Upload size={12} className="stroke-[2.5]" />
                                 <span>Կցել Նկար</span>
                                 <input
@@ -2086,7 +2086,7 @@ export default function AdminPanel({
                                   setEditCategories(updated);
                                 }}
                                 placeholder="Icon, URL or emoji..."
-                                className="w-full bg-capsule-surf border border-capsule-accent/15 rounded-lg py-1 px-2 text-[10px] text-capsule-dark outline-none font-mono focus:border-capsule-accent text-center"
+                                className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1 px-2 text-[10px] text-[#1a1c1d] outline-none font-mono focus:border-[#FF2300]/25 text-center"
                               />
                             </div>
                           </div>
@@ -2095,7 +2095,7 @@ export default function AdminPanel({
                         {/* Minimum quantities & Presets settings */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Նվազագույն Քանակ (MOQ Limit)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Նվազագույն Քանակ (MOQ Limit)</span>
                             <input
                               type="number"
                               value={cat.minQty}
@@ -2104,11 +2104,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...cat, minQty: parseInt(e.target.value, 10) || 1 };
                                 setEditCategories(updated);
                               }}
-                              className="bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 w-full font-mono font-bold text-capsule-accent focus:border-capsule-accent outline-none"
+                              className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 w-full font-mono font-bold text-[#FF2300] focus:border-[#FF2300]/25 outline-none"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Քանակի Արագ Կոճակներ (Comma separated presets)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Քանակի Արագ Կոճակներ (Comma separated presets)</span>
                             <input
                               type="text"
                               value={(cat.qtyPresets || []).join(", ")}
@@ -2121,18 +2121,18 @@ export default function AdminPanel({
                                 setEditCategories(updated);
                               }}
                               placeholder="100, 300, 500, 1000"
-                              className="bg-capsule-surf2/40 border border-capsule-accent/15 rounded-xl py-1.5 px-3 w-full font-mono text-capsule-dark focus:border-capsule-accent outline-none"
+                              className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/15 rounded-xl py-1.5 px-3 w-full font-mono text-[#1a1c1d] focus:border-[#FF2300]/25 outline-none"
                             />
                           </div>
                         </div>
 
                         {/* Detailed Texts (Hero title / Badge / Desc) */}
-                        <div className="bg-capsule-surf2/10 rounded-2xl p-3 border border-capsule-accent/5 text-xs space-y-3">
-                          <span className="text-[10px] text-capsule-text-muted uppercase font-extrabold tracking-wider block font-mono border-b border-capsule-accent/5 pb-1">👀 Բաժնի վերնագրեր և գովազդներ / Hero Section Customizer</span>
+                        <div className="bg-[#f0f2f5]/10 rounded-2xl p-3 border border-[#FF2300]/25/5 text-xs space-y-3">
+                          <span className="text-[10px] text-[#727784] uppercase font-extrabold tracking-wider block font-mono border-b border-[#FF2300]/25/5 pb-1">👀 Բաժնի վերնագրեր և գովազդներ / Hero Section Customizer</span>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                              <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Գործակալի Վերնագիր (Hero Banner Title)</span>
+                              <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Գործակալի Վերնագիր (Hero Banner Title)</span>
                               <input
                                 type="text"
                                 value={cat.heroTitle || ""}
@@ -2142,11 +2142,11 @@ export default function AdminPanel({
                                   setEditCategories(updated);
                                 }}
                                 placeholder="Թղթե Տոպրակներ"
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                               />
                             </div>
                             <div>
-                              <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Գովազդի Բեյջ (Hero Badge Text)</span>
+                              <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Գովազդի Բեյջ (Hero Badge Text)</span>
                               <input
                                 type="text"
                                 value={cat.heroBadge || ""}
@@ -2156,11 +2156,11 @@ export default function AdminPanel({
                                   setEditCategories(updated);
                                 }}
                                 placeholder="CUSTOM PRINT"
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                               />
                             </div>
                             <div>
-                              <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Բաժնի Քարտի Բեյջ (Home Card Badge)</span>
+                              <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Բաժնի Քարտի Բեյջ (Home Card Badge)</span>
                               <input
                                 type="text"
                                 value={cat.heroSmall || ""}
@@ -2170,14 +2170,14 @@ export default function AdminPanel({
                                   setEditCategories(updated);
                                 }}
                                 placeholder="Պատվիրել անհատական"
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                               />
                             </div>
                           </div>
 
                           <div className="grid grid-cols-1 sm:grid-cols-1 gap-2">
                             <div>
-                              <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Խորհրդատվական Չիպեր (Recommendation Chips separated with |)</span>
+                              <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Խորհրդատվական Չիպեր (Recommendation Chips separated with |)</span>
                               <input
                                 type="text"
                                 value={cat.ruleChips || ""}
@@ -2187,13 +2187,13 @@ export default function AdminPanel({
                                   setEditCategories(updated);
                                 }}
                                 placeholder="e.g. 100% Էկո թուղթ | Ոսկեփայլ տպագրություն | Մետաքսատիպ"
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 w-full text-capsule-dark outline-none focus:border-capsule-accent"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 w-full text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                               />
                             </div>
                           </div>
 
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Մանրամասն Նկարագրություն (Hero Banner Description)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold font-mono">Մանրամասն Նկարագրություն (Hero Banner Description)</span>
                             <textarea
                               value={cat.heroDesc || ""}
                               onChange={(e) => {
@@ -2202,7 +2202,7 @@ export default function AdminPanel({
                                 setEditCategories(updated);
                               }}
                               placeholder="Կրաֆտ և կավճապատ թղթերից պայուսակների պատրաստում..."
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 w-full h-12 text-capsule-dark outline-none focus:border-capsule-accent resize-none font-sans"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 w-full h-12 text-[#1a1c1d] outline-none focus:border-[#FF2300]/25 resize-none font-sans"
                             />
                           </div>
                         </div>
@@ -2218,8 +2218,8 @@ export default function AdminPanel({
               {/* TAB 6S: PROMO */}
               {activeTab === "promo" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Զեղչի Կտրոնների Կառավարում</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Զեղչի Կտրոնների Կառավարում</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -2232,14 +2232,14 @@ export default function AdminPanel({
                         };
                         setEditDiscountCodes([...editDiscountCodes, newC]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Կտրոն
                     </button>
                   </div>
 
                   {editDiscountCodes.map((dc, idx) => (
-                    <div key={dc.code + idx} className="bg-capsule-surf2/30 border border-capsule-accent/10 p-3 rounded-xl space-y-2">
+                    <div key={dc.code + idx} className="bg-[#f0f2f5]/30 border border-[#FF2300]/25/10 p-3 rounded-xl space-y-2">
                       <div className="flex justify-between items-center">
                         <input
                           type="text"
@@ -2250,7 +2250,7 @@ export default function AdminPanel({
                             updated[idx] = { ...dc, code: val };
                             setEditDiscountCodes(updated);
                           }}
-                          className="bg-transparent border-b border-capsule-accent/15 font-bold text-xs text-capsule-dark uppercase outline-none"
+                          className="bg-transparent border-b border-[#FF2300]/25/15 font-bold text-xs text-[#1a1c1d] uppercase outline-none"
                         />
                         <button
                           type="button"
@@ -2263,7 +2263,7 @@ export default function AdminPanel({
 
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
-                          <span className="text-[9px] text-capsule-text-muted font-bold block uppercase">Type</span>
+                          <span className="text-[9px] text-[#727784] font-bold block uppercase">Type</span>
                           <select
                             value={dc.type}
                             onChange={(e) => {
@@ -2271,14 +2271,14 @@ export default function AdminPanel({
                               updated[idx] = { ...dc, type: e.target.value as any };
                               setEditDiscountCodes(updated);
                             }}
-                            className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full"
+                            className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full"
                           >
                             <option value="percentage">Percentage (%)</option>
                             <option value="fixed">Fixed (֏)</option>
                           </select>
                         </div>
                         <div>
-                          <span className="text-[9px] text-capsule-text-muted font-bold block uppercase">Value</span>
+                          <span className="text-[9px] text-[#727784] font-bold block uppercase">Value</span>
                           <input
                             type="number"
                             value={dc.value}
@@ -2287,7 +2287,7 @@ export default function AdminPanel({
                               updated[idx] = { ...dc, value: parseInt(e.target.value, 10) || 0 };
                               setEditDiscountCodes(updated);
                             }}
-                            className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full text-center font-mono"
+                            className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full text-center font-mono"
                           />
                         </div>
                       </div>
@@ -2299,10 +2299,10 @@ export default function AdminPanel({
               {/* TAB: PAYMENT METHODS */}
               {activeTab === "payment_methods" && (
                 <div className="space-y-6">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-capsule-accent/10 pb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#FF2300]/25/10 pb-4">
                     <div>
-                      <h3 className="font-serif text-lg text-capsule-accent font-bold">💳 Վճարման Մեթոդներ (Payment Methods)</h3>
-                      <p className="text-xs text-capsule-text-muted mt-1">Ավելացրեք, խմբագրեք կամ հեռացրեք կայքում ցուցադրվող վճարման համակարգերը։</p>
+                      <h3 className="font-serif text-lg text-[#FF2300] font-bold">💳 Վճարման Մեթոդներ (Payment Methods)</h3>
+                      <p className="text-xs text-[#727784] mt-1">Ավելացրեք, խմբագրեք կամ հեռացրեք կայքում ցուցադրվող վճարման համակարգերը։</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -2389,7 +2389,7 @@ export default function AdminPanel({
                           };
                           setEditPaymentMethods([...editPaymentMethods, newM]);
                         }}
-                        className="bg-capsule-accent hover:bg-capsule-accent-hover text-capsule-surf px-4 py-1.5 rounded-lg text-xs font-bold uppercase cursor-pointer tracking-tight flex items-center gap-1 transition-colors"
+                        className="bg-[#FF2300] hover:bg-[#FF2300]-hover text-capsule-surf px-4 py-1.5 rounded-lg text-xs font-bold uppercase cursor-pointer tracking-tight flex items-center gap-1 transition-colors"
                       >
                         <Plus size={12} />
                         <span>Ավելացնել (Add New)</span>
@@ -2399,15 +2399,15 @@ export default function AdminPanel({
 
                   <div className="space-y-4 max-h-[62vh] overflow-y-auto pr-1">
                     {editPaymentMethods.map((pm, idx) => (
-                      <div key={pm.id} className="bg-capsule-surf2/30 border border-capsule-accent/10 p-4 rounded-2xl space-y-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all">
+                      <div key={pm.id} className="bg-[#f0f2f5]/30 border border-[#FF2300]/25/10 p-4 rounded-2xl space-y-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all">
                         {/* Upper Row: Status, Order, ID, Delete */}
-                        <div className="flex flex-wrap justify-between items-center gap-3 border-b border-capsule-accent/5 pb-3">
+                        <div className="flex flex-wrap justify-between items-center gap-3 border-b border-[#FF2300]/25/5 pb-3">
                           <div className="flex items-center gap-3">
-                            <span className="font-mono text-[10px] bg-capsule-accent/10 text-capsule-accent py-0.5 px-2 rounded-md font-bold">
+                            <span className="font-mono text-[10px] bg-[#FF2300]/10 text-[#FF2300] py-0.5 px-2 rounded-md font-bold">
                               ID: {pm.id}
                             </span>
                             <div className="flex items-center gap-1">
-                              <label className="text-xs text-capsule-dark/80 cursor-pointer font-bold select-none">
+                              <label className="text-xs text-[#1a1c1d]/80 cursor-pointer font-bold select-none">
                                 <input
                                   type="checkbox"
                                   checked={pm.active}
@@ -2425,7 +2425,7 @@ export default function AdminPanel({
 
                           <div className="flex items-center gap-3">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] text-capsule-text-muted font-bold uppercase">Հերթականություն:</span>
+                              <span className="text-[10px] text-[#727784] font-bold uppercase">Հերթականություն:</span>
                               <input
                                 type="number"
                                 value={pm.sortOrder}
@@ -2434,7 +2434,7 @@ export default function AdminPanel({
                                   updated[idx] = { ...pm, sortOrder: parseInt(e.target.value, 10) || 0 };
                                   setEditPaymentMethods(updated);
                                 }}
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded py-0.5 px-2 w-14 text-center text-xs font-mono font-bold"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-0.5 px-2 w-14 text-center text-xs font-mono font-bold"
                               />
                             </div>
                             <button
@@ -2456,7 +2456,7 @@ export default function AdminPanel({
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                           {/* Machine name */}
                           <div className="md:col-span-3">
-                            <label className="text-[9px] text-capsule-text-muted font-black uppercase tracking-wider block mb-1">Կոդային Անուն (Machine Name)</label>
+                            <label className="text-[9px] text-[#727784] font-black uppercase tracking-wider block mb-1">Կոդային Անուն (Machine Name)</label>
                             <input
                               type="text"
                               value={pm.name}
@@ -2466,35 +2466,35 @@ export default function AdminPanel({
                                 updated[idx] = { ...pm, name: e.target.value.toLowerCase().replace(/\s+/g, "_") };
                                 setEditPaymentMethods(updated);
                               }}
-                              className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-3 text-xs text-capsule-dark font-mono font-bold outline-none"
+                              className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-3 text-xs text-[#1a1c1d] font-mono font-bold outline-none"
                             />
                           </div>
 
                           {/* Live Preview Box */}
                           <div className="md:col-span-9 flex flex-col items-start gap-1 pb-1">
-                            <span className="text-[9px] text-capsule-text-muted font-black uppercase tracking-wider block mb-1">Վիզուալ Տեսքի Նախադիտում (Visual Preview)</span>
+                            <span className="text-[9px] text-[#727784] font-black uppercase tracking-wider block mb-1">Վիզուալ Տեսքի Նախադիտում (Visual Preview)</span>
                             <div className="flex items-center gap-4">
                               <div 
                                 className="bg-white border border-[#E8E7E9] rounded-xl px-4 h-11 w-28 flex items-center justify-center shadow-[0_1px_2px_rgba(0,0,0,0.01)] hover:scale-[1.03] hover:border-[#C59B6D]/35 hover:shadow-[0_4px_12px_rgba(197,155,109,0.06)] transition-all duration-300 ease-out cursor-pointer"
                                 title={`${pm.title[locale as keyof typeof pm.title] || pm.title.en} Preview`}
                                 dangerouslySetInnerHTML={{ __html: pm.iconSvg }}
                               />
-                              <div className="text-[10px] text-capsule-text-muted leading-tight">
-                                <span className="text-capsule-accent font-bold block">112x44px badge-view</span>
-                                SVG-ն պետք է ունենա <code className="bg-capsule-surf2 px-1 rounded font-mono text-[9px]">h-[12px] h-[20px]</code> կամ <code className="bg-capsule-surf2 px-1 rounded font-mono text-[9px]">h-auto max-h-[22px]</code> դասեր:
+                              <div className="text-[10px] text-[#727784] leading-tight">
+                                <span className="text-[#FF2300] font-bold block">112x44px badge-view</span>
+                                SVG-ն պետք է ունենա <code className="bg-[#f0f2f5] px-1 rounded font-mono text-[9px]">h-[12px] h-[20px]</code> կամ <code className="bg-[#f0f2f5] px-1 rounded font-mono text-[9px]">h-auto max-h-[22px]</code> դասեր:
                               </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Language blocks: Titles & Descriptions */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/5 pb-4 p-3 rounded-xl border border-dashed border-capsule-accent/5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/5 pb-4 p-3 rounded-xl border border-dashed border-[#FF2300]/25/5">
                           {/* Left: Titles in 4 Languages */}
                           <div className="space-y-2">
-                            <span className="text-[10px] text-capsule-accent font-extrabold uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">🔤 Անվանումներ (Localized Titles)</span>
+                            <span className="text-[10px] text-[#FF2300] font-extrabold uppercase tracking-wider block border-b border-[#FF2300]/25/5 pb-1">🔤 Անվանումներ (Localized Titles)</span>
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇦🇲 Armenian (hy)</span>
+                                <span className="text-[9px] text-[#727784] font-bold block mb-1">🇦🇲 Armenian (hy)</span>
                                 <input
                                   type="text"
                                   value={pm.title.hy}
@@ -2503,11 +2503,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...pm, title: { ...pm.title, hy: e.target.value } };
                                     setEditPaymentMethods(updated);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 text-xs text-[#1a1c1d] font-semibold outline-none"
                                 />
                               </div>
                               <div>
-                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇬🇧 English (en)</span>
+                                <span className="text-[9px] text-[#727784] font-bold block mb-1">🇬🇧 English (en)</span>
                                 <input
                                   type="text"
                                   value={pm.title.en}
@@ -2516,11 +2516,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...pm, title: { ...pm.title, en: e.target.value } };
                                     setEditPaymentMethods(updated);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 text-xs text-[#1a1c1d] font-semibold outline-none"
                                 />
                               </div>
                               <div>
-                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇷🇺 Russian (ru)</span>
+                                <span className="text-[9px] text-[#727784] font-bold block mb-1">🇷🇺 Russian (ru)</span>
                                 <input
                                   type="text"
                                   value={pm.title.ru}
@@ -2529,11 +2529,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...pm, title: { ...pm.title, ru: e.target.value } };
                                     setEditPaymentMethods(updated);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 text-xs text-[#1a1c1d] font-semibold outline-none"
                                 />
                               </div>
                               <div>
-                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-1">🇦🇪 Arabic (ar)</span>
+                                <span className="text-[9px] text-[#727784] font-bold block mb-1">🇦🇪 Arabic (ar)</span>
                                 <input
                                   type="text"
                                   value={pm.title.ar}
@@ -2542,7 +2542,7 @@ export default function AdminPanel({
                                     updated[idx] = { ...pm, title: { ...pm.title, ar: e.target.value } };
                                     setEditPaymentMethods(updated);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-semibold outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2.5 text-xs text-[#1a1c1d] font-semibold outline-none"
                                 />
                               </div>
                             </div>
@@ -2550,10 +2550,10 @@ export default function AdminPanel({
 
                           {/* Right: Descriptions in 4 Languages */}
                           <div className="space-y-2">
-                            <span className="text-[10px] text-[#C59B6D] font-extrabold uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">💬 Նկարագրություններ (Localized Descriptions)</span>
+                            <span className="text-[10px] text-[#C59B6D] font-extrabold uppercase tracking-wider block border-b border-[#FF2300]/25/5 pb-1">💬 Նկարագրություններ (Localized Descriptions)</span>
                             <div className="space-y-2">
                               <div>
-                                <span className="text-[9px] text-capsule-text-muted font-bold block mb-0.5">Անգլերեն, Հայերեն, Ռուսերեն, Արաբերեն  (hy/en/ru/ar)</span>
+                                <span className="text-[9px] text-[#727784] font-bold block mb-0.5">Անգլերեն, Հայերեն, Ռուսերեն, Արաբերեն  (hy/en/ru/ar)</span>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   <input
                                     type="text"
@@ -2564,7 +2564,7 @@ export default function AdminPanel({
                                       updated[idx] = { ...pm, description: { ...pm.description, hy: e.target.value } };
                                       setEditPaymentMethods(updated);
                                     }}
-                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2 text-xs text-[#1a1c1d] outline-none"
                                   />
                                   <input
                                     type="text"
@@ -2575,7 +2575,7 @@ export default function AdminPanel({
                                       updated[idx] = { ...pm, description: { ...pm.description, en: e.target.value } };
                                       setEditPaymentMethods(updated);
                                     }}
-                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2 text-xs text-[#1a1c1d] outline-none"
                                   />
                                   <input
                                     type="text"
@@ -2586,7 +2586,7 @@ export default function AdminPanel({
                                       updated[idx] = { ...pm, description: { ...pm.description, ru: e.target.value } };
                                       setEditPaymentMethods(updated);
                                     }}
-                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none"
+                                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2 text-xs text-[#1a1c1d] outline-none"
                                   />
                                   <input
                                     type="text"
@@ -2597,7 +2597,7 @@ export default function AdminPanel({
                                       updated[idx] = { ...pm, description: { ...pm.description, ar: e.target.value } };
                                       setEditPaymentMethods(updated);
                                     }}
-                                    className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1 px-2 text-xs text-capsule-dark outline-none font-sans"
+                                    className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1 px-2 text-xs text-[#1a1c1d] outline-none font-sans"
                                   />
                                 </div>
                               </div>
@@ -2606,14 +2606,14 @@ export default function AdminPanel({
                         </div>
 
                         {/* Payment Method Logo Manager (Uploader and Preset Library Selector) */}
-                        <div className="bg-capsule-accent/5 p-4 rounded-xl border border-dashed border-capsule-accent/10 space-y-4">
-                          <span className="text-[10px] text-capsule-accent font-black uppercase tracking-wider block border-b border-capsule-accent/5 pb-1">🛡️ Լոգոտիպի Կառավարիչ (Logo Manager)</span>
+                        <div className="bg-[#FF2300]/5 p-4 rounded-xl border border-dashed border-[#FF2300]/25/10 space-y-4">
+                          <span className="text-[10px] text-[#FF2300] font-black uppercase tracking-wider block border-b border-[#FF2300]/25/5 pb-1">🛡️ Լոգոտիպի Կառավարիչ (Logo Manager)</span>
                           
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Left Column: Upload custom image logo button + raw code edit textarea */}
                             <div className="space-y-4">
                               <div className="space-y-2">
-                                <span className="text-[10px] text-capsule-dark font-bold block">1. Բեռնել Սեփական Լոգոն (Upload Custom Logo File)</span>
+                                <span className="text-[10px] text-[#1a1c1d] font-bold block">1. Բեռնել Սեփական Լոգոն (Upload Custom Logo File)</span>
                                 <div className="flex flex-wrap items-center gap-3">
                                   <input
                                     type="file"
@@ -2637,7 +2637,7 @@ export default function AdminPanel({
                                   />
                                   <label
                                     htmlFor={`logo_upload_${pm.id}`}
-                                    className="flex items-center gap-1.5 px-3 py-2 bg-capsule-accent text-capsule-surf hover:bg-capsule-accent-hover cursor-pointer rounded-lg text-xs font-bold transition-all shadow-[0_2px_6px_rgba(197,155,109,0.15)] hover:shadow-[0_4px_10px_rgba(197,155,109,0.25)] select-none"
+                                    className="flex items-center gap-1.5 px-3 py-2 bg-[#FF2300] text-capsule-surf hover:bg-[#FF2300]-hover cursor-pointer rounded-lg text-xs font-bold transition-all shadow-[0_2px_6px_rgba(197,155,109,0.15)] hover:shadow-[0_4px_10px_rgba(197,155,109,0.25)] select-none"
                                   >
                                     <Upload size={14} />
                                     <span>📁 Ընտրել Լոգո Ֆայլ (Select Logo Image)</span>
@@ -2657,11 +2657,11 @@ export default function AdminPanel({
                                     </button>
                                   )}
                                 </div>
-                                <p className="text-[10px] text-capsule-text-muted">Աջակցում է PNG, JPG, JPEG, SVG կամ WebP ձևաչափերին։ Ֆայլն ավտոմատ կերպով կվերածվի Base64 կոդի։</p>
+                                <p className="text-[10px] text-[#727784]">Աջակցում է PNG, JPG, JPEG, SVG կամ WebP ձևաչափերին։ Ֆայլն ավտոմատ կերպով կվերածվի Base64 կոդի։</p>
                               </div>
 
                               <div className="space-y-1">
-                                <label className="text-[9px] text-capsule-text-muted font-bold uppercase tracking-wider block">Կամ խմբագրել կոդը ձեռքով (Or Modify Raw HTML/SVG Code):</label>
+                                <label className="text-[9px] text-[#727784] font-bold uppercase tracking-wider block">Կամ խմբագրել կոդը ձեռքով (Or Modify Raw HTML/SVG Code):</label>
                                 <textarea
                                   rows={2}
                                   value={pm.iconSvg}
@@ -2671,7 +2671,7 @@ export default function AdminPanel({
                                     updated[idx] = { ...pm, iconSvg: e.target.value };
                                     setEditPaymentMethods(updated);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1.5 px-3 text-[10px] text-capsule-dark font-mono outline-none resize-y min-h-[50px]"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1.5 px-3 text-[10px] text-[#1a1c1d] font-mono outline-none resize-y min-h-[50px]"
                                 />
                               </div>
                             </div>
@@ -2679,9 +2679,9 @@ export default function AdminPanel({
                             {/* Right Column: Premium Quick-Apply Logo Presets Library */}
                             <div className="space-y-2">
                               <span className="text-[10px] text-[#C59B6D] font-extrabold uppercase tracking-wider block">2. 💡 Պատրաստի Լոգոների Գրադարան (Ready-to-use Preset Logos)</span>
-                              <p className="text-[10px] text-capsule-text-muted">Սեղմեք ցանկացած լոգոյի վրա՝ այն ակնթարթորեն այս վճարման համակարգին կցելու համար։</p>
+                              <p className="text-[10px] text-[#727784]">Սեղմեք ցանկացած լոգոյի վրա՝ այն ակնթարթորեն այս վճարման համակարգին կցելու համար։</p>
                               
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[165px] overflow-y-auto p-2 border border-dashed border-capsule-accent/15 rounded-xl bg-black/5">
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[165px] overflow-y-auto p-2 border border-dashed border-[#FF2300]/25/15 rounded-xl bg-black/5">
                                 {[
                                   {
                                     label: "Visa",
@@ -2725,11 +2725,11 @@ export default function AdminPanel({
                                   },
                                   {
                                     label: "Credit Card",
-                                    icon: `<svg class="h-[18px] w-auto text-capsule-accent inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="15" x2="6" y2="15"/></svg>`
+                                    icon: `<svg class="h-[18px] w-auto text-[#FF2300] inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="15" x2="6" y2="15"/></svg>`
                                   },
                                   {
                                     label: "Bank Transfer",
-                                    icon: `<svg class="h-[18px] w-auto text-capsule-accent inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><polyline points="6 18 6 11 10 11 10 18"/><polyline points="14 18 14 11 18 11 18 18"/><polygon points="12 2 20 7 4 7"/></svg>`
+                                    icon: `<svg class="h-[18px] w-auto text-[#FF2300] inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><polyline points="6 18 6 11 10 11 10 18"/><polyline points="14 18 14 11 18 11 18 18"/><polygon points="12 2 20 7 4 7"/></svg>`
                                   }
                                 ].map((preset, pIdx) => (
                                   <button
@@ -2740,14 +2740,14 @@ export default function AdminPanel({
                                       updated[idx] = { ...pm, iconSvg: preset.icon };
                                       setEditPaymentMethods(updated);
                                     }}
-                                    className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-[#E8E7E9] hover:border-capsule-accent/50 hover:bg-capsule-accent/5 cursor-pointer text-center text-[10px] font-sans transition-all group shadow-[0_1px_2px_rgba(0,0,0,0.01)] h-[68px]"
+                                    className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-[#E8E7E9] hover:border-[#FF2300]/25/50 hover:bg-[#FF2300]/5 cursor-pointer text-center text-[10px] font-sans transition-all group shadow-[0_1px_2px_rgba(0,0,0,0.01)] h-[68px]"
                                     title={`Apply ${preset.label} Logo`}
                                   >
                                     <div 
                                       className="h-8 flex items-center justify-center max-w-full overflow-hidden mb-1 transform group-hover:scale-105 transition-transform" 
                                       dangerouslySetInnerHTML={{ __html: preset.icon }}
                                     />
-                                    <span className="text-[9px] text-capsule-dark/80 font-black tracking-tight group-hover:text-capsule-accent">{preset.label}</span>
+                                    <span className="text-[9px] text-[#1a1c1d]/80 font-black tracking-tight group-hover:text-[#FF2300]">{preset.label}</span>
                                   </button>
                                 ))}
                               </div>
@@ -2759,15 +2759,15 @@ export default function AdminPanel({
                     ))}
 
                     {editPaymentMethods.length === 0 && (
-                      <div className="text-center py-12 border-2 border-dashed border-capsule-accent/15 rounded-2xl bg-capsule-surf2/10">
-                        <p className="text-sm font-semibold text-capsule-text-muted">Ոչ մի վճարման մեթոդ գտնված չէ։</p>
-                        <p className="text-xs text-capsule-text-muted/70 mt-1">Ավելացրեք նոր մեթոդ կամ սեղմեք հրապարակված Presets-ի վերականգնման վրա։</p>
+                      <div className="text-center py-12 border-2 border-dashed border-[#FF2300]/25/15 rounded-2xl bg-[#f0f2f5]/10">
+                        <p className="text-sm font-semibold text-[#727784]">Ոչ մի վճարման մեթոդ գտնված չէ։</p>
+                        <p className="text-xs text-[#727784]/70 mt-1">Ավելացրեք նոր մեթոդ կամ սեղմեք հրապարակված Presets-ի վերականգնման վրա։</p>
                       </div>
                     )}
                   </div>
 
                   {/* Save button at the bottom of the tab */}
-                  <div className="flex justify-end pt-4 border-t border-capsule-accent/10 mt-6">
+                  <div className="flex justify-end pt-4 border-t border-[#FF2300]/25/10 mt-6">
                     <button
                       type="button"
                       onClick={handleSaveAll}
@@ -2783,8 +2783,8 @@ export default function AdminPanel({
               {/* TAB: HANDLES (RIBBON WIDTHS & SIZES) */}
               {activeTab === "handles" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Սատինե Ժապավենների Չափսեր և Գներ</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Սատինե Ժապավենների Չափսեր և Գներ</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -2797,22 +2797,22 @@ export default function AdminPanel({
                         };
                         setEditBagRibbonHandles([...editBagRibbonHandles, newH]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Ավելացնել Ժապավեն
                     </button>
                   </div>
 
-                  <p className="text-xs text-capsule-text-muted italic leading-relaxed">
+                  <p className="text-xs text-[#727784] italic leading-relaxed">
                     Այստեղ կարող եք կարգավորել ժապավենների լայնությունները (սմ) և դրանց ինդիվիդուալ գները (֏)։ 
                     3D մոդելում ժապավենի հաստությունը ավտոմատ կերպով կփոխվի՝ համապատասխան ընտրված սանտիմետրին։
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {editBagRibbonHandles.map((hCode, idx) => (
-                      <div key={hCode.id || idx} className="bg-capsule-surf2/30 border border-capsule-accent/10 p-3 rounded-xl space-y-3 relative group">
-                        <div className="flex justify-between items-center border-b border-capsule-accent/5 pb-1">
-                          <span className="font-bold text-xs text-capsule-accent">Ժապավեն #{idx + 1}</span>
+                      <div key={hCode.id || idx} className="bg-[#f0f2f5]/30 border border-[#FF2300]/25/10 p-3 rounded-xl space-y-3 relative group">
+                        <div className="flex justify-between items-center border-b border-[#FF2300]/25/5 pb-1">
+                          <span className="font-bold text-xs text-[#FF2300]">Ժապավեն #{idx + 1}</span>
                           <button
                             type="button"
                             onClick={() => setEditBagRibbonHandles(editBagRibbonHandles.filter((_, i) => i !== idx))}
@@ -2824,7 +2824,7 @@ export default function AdminPanel({
 
                         <div className="grid grid-cols-2 gap-3 text-xs">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted font-bold block uppercase">Լայնություն (սմ)</span>
+                            <span className="text-[9px] text-[#727784] font-bold block uppercase">Լայնություն (սմ)</span>
                             <input
                               type="number"
                               step="0.1"
@@ -2839,12 +2839,12 @@ export default function AdminPanel({
                                 };
                                 setEditBagRibbonHandles(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full outline-none font-mono"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full outline-none font-mono"
                             />
                           </div>
 
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted font-bold block uppercase font-serif">Անվանում (Հայերեն)</span>
+                            <span className="text-[9px] text-[#727784] font-bold block uppercase font-serif">Անվանում (Հայերեն)</span>
                             <input
                               type="text"
                               value={hCode.label}
@@ -2853,14 +2853,14 @@ export default function AdminPanel({
                                 updated[idx] = { ...hCode, label: e.target.value };
                                 setEditBagRibbonHandles(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full outline-none"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full outline-none"
                             />
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 text-xs font-mono">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted font-bold block uppercase font-serif">Հավելյալ Գին (֏)</span>
+                            <span className="text-[9px] text-[#727784] font-bold block uppercase font-serif">Հավելյալ Գին (֏)</span>
                             <input
                               type="number"
                               value={hCode.price}
@@ -2870,12 +2870,12 @@ export default function AdminPanel({
                                 updated[idx] = { ...hCode, price: val };
                                 setEditBagRibbonHandles(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full outline-none font-mono"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full outline-none font-mono"
                             />
                           </div>
 
                           <div className="font-serif">
-                            <span className="text-[9px] text-capsule-text-muted font-bold block uppercase">Կարգավիճակ</span>
+                            <span className="text-[9px] text-[#727784] font-bold block uppercase">Կարգավիճակ</span>
                             <label className="flex items-center gap-2 mt-1.5 cursor-pointer">
                               <input
                                 type="checkbox"
@@ -2885,9 +2885,9 @@ export default function AdminPanel({
                                   updated[idx] = { ...hCode, active: e.target.checked };
                                   setEditBagRibbonHandles(updated);
                                 }}
-                                className="rounded text-capsule-accent border-capsule-accent/20 cursor-pointer"
+                                className="rounded text-[#FF2300] border-[#FF2300]/25/20 cursor-pointer"
                               />
-                              <span className="text-[11px] font-semibold text-capsule-dark">Ակտիվ</span>
+                              <span className="text-[11px] font-semibold text-[#1a1c1d]">Ակտիվ</span>
                             </label>
                           </div>
                         </div>
@@ -2896,12 +2896,12 @@ export default function AdminPanel({
                   </div>
 
                   {editBagRibbonHandles.length === 0 && (
-                    <div className="p-8 text-center bg-capsule-surf2/20 border border-dashed border-capsule-accent/10 rounded-xl">
-                      <p className="text-xs text-capsule-text-muted">Ժապավեններ չկան։ Ավելացրեք նորը:</p>
+                    <div className="p-8 text-center bg-[#f0f2f5]/20 border border-dashed border-[#FF2300]/25/10 rounded-xl">
+                      <p className="text-xs text-[#727784]">Ժապավեններ չկան։ Ավելացրեք նորը:</p>
                     </div>
                   )}
 
-                  <div className="flex justify-end pt-4 border-t border-capsule-accent/5">
+                  <div className="flex justify-end pt-4 border-t border-[#FF2300]/25/5">
                     <button
                       type="button"
                       onClick={handleSaveAll}
@@ -2916,8 +2916,8 @@ export default function AdminPanel({
               {/* TAB 7S: FINISHES */}
               {activeTab === "finishes" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Հավելյալ Մշակումներ</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Հավելյալ Մշակումներ</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -2930,7 +2930,7 @@ export default function AdminPanel({
                         };
                         setEditFinishes([...editFinishes, newF]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Ավելացնել
                     </button>
@@ -2938,7 +2938,7 @@ export default function AdminPanel({
 
                   <div className="space-y-3">
                     {editFinishes.map((f, idx) => (
-                      <div key={f.key} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-3 rounded-xl flex flex-col gap-2">
+                      <div key={f.key} className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 p-3 rounded-xl flex flex-col gap-2">
                         <div className="flex justify-between items-center">
                           <input
                             type="text"
@@ -2948,7 +2948,7 @@ export default function AdminPanel({
                               updated[idx] = { ...f, label: e.target.value };
                               setEditFinishes(updated);
                             }}
-                            className="bg-transparent font-bold border-b border-capsule-accent/15 text-xs outline-none flex-1 font-sans"
+                            className="bg-transparent font-bold border-b border-[#FF2300]/25/15 text-xs outline-none flex-1 font-sans"
                           />
                           <button
                             type="button"
@@ -2960,7 +2960,7 @@ export default function AdminPanel({
                         </div>
                         <div className="grid grid-cols-2 gap-3 text-xs">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Իկոն</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Իկոն</span>
                             <input
                               type="text"
                               value={f.icon}
@@ -2969,11 +2969,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...f, icon: e.target.value };
                                 setEditFinishes(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 text-center w-full"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 text-center w-full"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Գին (֏ / հատ)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Գին (֏ / հատ)</span>
                             <input
                               type="number"
                               value={f.price}
@@ -2982,7 +2982,7 @@ export default function AdminPanel({
                                 updated[idx] = { ...f, price: parseInt(e.target.value, 10) || 0 };
                                 setEditFinishes(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 font-mono text-center w-full"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-mono text-center w-full"
                             />
                           </div>
                         </div>
@@ -2995,10 +2995,10 @@ export default function AdminPanel({
               {/* TAB 8S: OTHER PRODUCTS */}
               {activeTab === "products" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-3 flex-wrap gap-2">
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-3 flex-wrap gap-2">
                     <div>
-                      <h3 className="font-serif text-base text-capsule-accent font-semibold">📦 Ապրանքների և Տեսակների Կառավարում</h3>
-                      <p className="text-[11px] text-capsule-text-muted mt-1">Այստեղ կարող եք ավելացնել նոր արտադրատեսակներ և փոփոխել նրանց գները։</p>
+                      <h3 className="font-serif text-base text-[#FF2300] font-semibold">📦 Ապրանքների և Տեսակների Կառավարում</h3>
+                      <p className="text-[11px] text-[#727784] mt-1">Այստեղ կարող եք ավելացնել նոր արտադրատեսակներ և փոփոխել նրանց գները։</p>
                     </div>
                     <button
                       type="button"
@@ -3020,7 +3020,7 @@ export default function AdminPanel({
                         };
                         setEditProducts([...editProducts, newProd]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf text-xs font-bold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf text-xs font-bold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition cursor-pointer"
                     >
                       + Ավելացնել Նոր Խումբ
                     </button>
@@ -3028,11 +3028,11 @@ export default function AdminPanel({
 
                   <div className="space-y-6">
                     {editProducts.map((prod, pIdx) => (
-                      <div key={prod.id} className="p-4 bg-capsule-surf2/20 border border-capsule-accent/10 rounded-2xl space-y-4 shadow-sm">
+                      <div key={prod.id} className="p-4 bg-[#f0f2f5]/20 border border-[#FF2300]/25/10 rounded-2xl space-y-4 shadow-sm">
                         {/* Header of product group details */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                           <div className="col-span-1">
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Բաժին (Category)</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Բաժին (Category)</label>
                             <select
                               value={prod.categoryId}
                               onChange={(e) => {
@@ -3040,7 +3040,7 @@ export default function AdminPanel({
                                 updated[pIdx] = { ...prod, categoryId: e.target.value };
                                 setEditProducts(updated);
                               }}
-                              className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-semibold"
+                              className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-semibold"
                             >
                               <option value="qr_matrix">QR և Data Matrix Կոդեր</option>
                               <option value="other_products">Այլ Տպագրություն</option>
@@ -3053,7 +3053,7 @@ export default function AdminPanel({
                           </div>
                           
                           <div className="col-span-2">
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Խմբի Անվանում</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Խմբի Անվանում</label>
                             <input
                               type="text"
                               value={prod.name}
@@ -3062,7 +3062,7 @@ export default function AdminPanel({
                                 updated[pIdx] = { ...prod, name: e.target.value };
                                 setEditProducts(updated);
                               }}
-                              className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-bold"
+                              className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-bold"
                             />
                           </div>
                           
@@ -3080,7 +3080,7 @@ export default function AdminPanel({
                                 updated[pIdx] = { ...prod, items: [...prod.items, newIt] };
                                 setEditProducts(updated);
                               }}
-                              className="text-[10px] bg-capsule-accent text-capsule-surf px-2.5 py-1.5 rounded-lg active:scale-95 transition font-bold cursor-pointer"
+                              className="text-[10px] bg-[#FF2300] text-capsule-surf px-2.5 py-1.5 rounded-lg active:scale-95 transition font-bold cursor-pointer"
                             >
                               + Ավելացնել Ապրանք
                             </button>
@@ -3101,7 +3101,7 @@ export default function AdminPanel({
                         </div>
 
                         <div>
-                          <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Հակիրճ Նկարագրություն</label>
+                          <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Հակիրճ Նկարագրություն</label>
                           <input
                             type="text"
                             value={prod.desc || ""}
@@ -3110,18 +3110,18 @@ export default function AdminPanel({
                               updated[pIdx] = { ...prod, desc: e.target.value };
                               setEditProducts(updated);
                             }}
-                            className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                            className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                             placeholder="Օրինակ` A5, A6 և DL չափսեր..."
                           />
                         </div>
 
                         {/* Items Sub-table */}
-                        <div className="space-y-2 border-t border-capsule-accent/5 pt-3">
-                          <label className="block text-[9px] text-capsule-text-muted uppercase font-bold font-mono">Ապրանքների Ցուցակ և Գներ</label>
+                        <div className="space-y-2 border-t border-[#FF2300]/25/5 pt-3">
+                          <label className="block text-[9px] text-[#727784] uppercase font-bold font-mono">Ապրանքների Ցուցակ և Գներ</label>
                           {prod.items.map((it, itIdx) => (
-                            <div key={it.id} className="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-xl border border-capsule-accent/5 text-xs">
+                            <div key={it.id} className="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-xl border border-[#FF2300]/25/5 text-xs">
                               <div className="col-span-5">
-                                <label className="text-[8px] text-capsule-text-muted block mb-0.5">Անուն (Չափս, Տեսակ)</label>
+                                <label className="text-[8px] text-[#727784] block mb-0.5">Անուն (Չափս, Տեսակ)</label>
                                 <input
                                   type="text"
                                   value={it.name}
@@ -3132,11 +3132,11 @@ export default function AdminPanel({
                                     updated[pIdx] = { ...prod, items: updatedItems };
                                     setEditProducts(updated);
                                   }}
-                                  className="w-full bg-capsule-surf/50 rounded-lg py-1 px-2 border border-capsule-accent/5 outline-none font-sans font-bold"
+                                  className="w-full bg-[#f0f2f5]/50 rounded-lg py-1 px-2 border border-[#FF2300]/25/5 outline-none font-sans font-bold"
                                 />
                               </div>
                               <div className="col-span-3">
-                                <label className="text-[8px] text-capsule-text-muted block mb-0.5">Միավորի Գին (֏)</label>
+                                <label className="text-[8px] text-[#727784] block mb-0.5">Միավորի Գին (֏)</label>
                                 <input
                                   type="number"
                                   value={it.price}
@@ -3147,11 +3147,11 @@ export default function AdminPanel({
                                     updated[pIdx] = { ...prod, items: updatedItems };
                                     setEditProducts(updated);
                                   }}
-                                  className="w-full bg-capsule-surf/50 rounded-lg py-1 px-2 border border-capsule-accent/5 outline-none text-center font-mono font-bold"
+                                  className="w-full bg-[#f0f2f5]/50 rounded-lg py-1 px-2 border border-[#FF2300]/25/5 outline-none text-center font-mono font-bold"
                                 />
                               </div>
                               <div className="col-span-3">
-                                <label className="text-[8px] text-capsule-text-muted block mb-0.5">Միավոր (հատ/մետր)</label>
+                                <label className="text-[8px] text-[#727784] block mb-0.5">Միավոր (հատ/մետր)</label>
                                 <input
                                   type="text"
                                   value={it.unit || "հատ"}
@@ -3162,7 +3162,7 @@ export default function AdminPanel({
                                     updated[pIdx] = { ...prod, items: updatedItems };
                                     setEditProducts(updated);
                                   }}
-                                  className="w-full bg-capsule-surf/50 rounded-lg py-1 px-2 border border-capsule-accent/5 outline-none text-center font-mono"
+                                  className="w-full bg-[#f0f2f5]/50 rounded-lg py-1 px-2 border border-[#FF2300]/25/5 outline-none text-center font-mono"
                                 />
                               </div>
                               <div className="col-span-1 flex justify-center pt-3 font-bold">
@@ -3190,10 +3190,10 @@ export default function AdminPanel({
               {/* TAB: FEATURED PRODUCTS / HOME PAGE HIGHLIGHTS */}
               {activeTab === "featured_products" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-3 flex-wrap gap-2">
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-3 flex-wrap gap-2">
                     <div>
-                      <h3 className="font-serif text-base text-capsule-accent font-semibold">🌟 Գլխավոր Էջի Ապրանքներ (Main Page Featured Cards)</h3>
-                      <p className="text-[11px] text-capsule-text-muted mt-1">Այստեղ կարող եք ավելացնել և կառավարել գլխավոր էջում ցուցադրվող ապրանքների քարտերը՝ կապելով դրանք կոնկրետ կալկուլյատորի բաժինների հետ։</p>
+                      <h3 className="font-serif text-base text-[#FF2300] font-semibold">🌟 Գլխավոր Էջի Ապրանքներ (Main Page Featured Cards)</h3>
+                      <p className="text-[11px] text-[#727784] mt-1">Այստեղ կարող եք ավելացնել և կառավարել գլխավոր էջում ցուցադրվող ապրանքների քարտերը՝ կապելով դրանք կոնկրետ կալկուլյատորի բաժինների հետ։</p>
                     </div>
                     <button
                       type="button"
@@ -3218,7 +3218,7 @@ export default function AdminPanel({
                         };
                         setEditFeaturedProducts([...editFeaturedProducts, newFP]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf text-xs font-bold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                      className="bg-[#FF2300] text-capsule-surf text-xs font-bold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                     >
                       + Ավելացնել Ապրանք Գլխավոր Էջում
                     </button>
@@ -3226,7 +3226,7 @@ export default function AdminPanel({
 
                   <div className="space-y-6">
                     {editFeaturedProducts.map((fp, fIdx) => (
-                      <div key={fp.id} className="p-4 bg-capsule-surf2/20 border border-capsule-accent/10 rounded-2xl space-y-4 shadow-sm relative group">
+                      <div key={fp.id} className="p-4 bg-[#f0f2f5]/20 border border-[#FF2300]/25/10 rounded-2xl space-y-4 shadow-sm relative group">
                         
                         {/* Control buttons */}
                         <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -3260,10 +3260,10 @@ export default function AdminPanel({
                           {/* Left Column: Image Preview, Upload button & URL input */}
                           <div className="col-span-1 md:col-span-3 flex flex-col justify-between space-y-2">
                             <div>
-                              <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">
+                              <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">
                                 {locale === "hy" ? "Ապրանքի Նկար" : locale === "ru" ? "Изображение товара" : "Product Image"}
                               </label>
-                              <div className="w-full h-32 rounded-xl border border-capsule-accent/10 bg-white overflow-hidden shadow-inner flex flex-col items-center justify-center relative group">
+                              <div className="w-full h-32 rounded-xl border border-[#FF2300]/25/10 bg-white overflow-hidden shadow-inner flex flex-col items-center justify-center relative group">
                                 {fp.image ? (
                                   <img 
                                     src={fp.image} 
@@ -3273,7 +3273,7 @@ export default function AdminPanel({
                                     onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} 
                                   />
                                 ) : (
-                                  <span className="text-xs text-capsule-text-muted font-sans text-center px-2">
+                                  <span className="text-xs text-[#727784] font-sans text-center px-2">
                                     {locale === "hy" ? "Պատկեր չկա" : locale === "ru" ? "Нет изображения" : "No Image"}
                                   </span>
                                 )}
@@ -3303,7 +3303,7 @@ export default function AdminPanel({
                               />
                               <label
                                 htmlFor={`fp_upload_${fp.id}`}
-                                className="flex items-center justify-center gap-1.5 w-full py-1.5 bg-capsule-accent text-capsule-surf hover:bg-opacity-95 cursor-pointer rounded-lg text-[10px] font-bold transition-all shadow-sm select-none"
+                                className="flex items-center justify-center gap-1.5 w-full py-1.5 bg-[#FF2300] text-capsule-surf hover:bg-opacity-95 cursor-pointer rounded-lg text-[10px] font-bold transition-all shadow-sm select-none"
                               >
                                 <Upload size={11} className="stroke-[2.5]" />
                                 <span>
@@ -3320,7 +3320,7 @@ export default function AdminPanel({
                                               setEditFeaturedProducts(updated);
                                 }}
                                 placeholder={locale === "hy" ? "Կամ տեղադրեք CDN հղումը..." : locale === "ru" ? "Или вставьте ссылку..." : "Or paste CDN URL..."}
-                                className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-[10px] outline-none focus:border-capsule-accent font-mono"
+                                className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-[10px] outline-none focus:border-[#FF2300]/25 font-mono"
                               />
                             </div>
                           </div>
@@ -3331,7 +3331,7 @@ export default function AdminPanel({
                             {/* Names Translation */}
                             <div className="col-span-2 grid grid-cols-3 gap-2">
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (Հայերեն)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Անվանում (Հայերեն)</label>
                                 <input
                                   type="text"
                                   value={fp.nameHy}
@@ -3340,11 +3340,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, nameHy: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-bold"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-bold"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (Русский)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Անվանում (Русский)</label>
                                 <input
                                   type="text"
                                   value={fp.nameRu}
@@ -3353,11 +3353,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, nameRu: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-semibold"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-semibold"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Անվանում (English)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Անվանում (English)</label>
                                 <input
                                   type="text"
                                   value={fp.nameEn}
@@ -3366,7 +3366,7 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, nameEn: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-semibold"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-semibold"
                                 />
                               </div>
                             </div>
@@ -3374,7 +3374,7 @@ export default function AdminPanel({
                             {/* Min Qty text Translations */}
                             <div className="col-span-2 grid grid-cols-3 gap-2">
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (Հայերեն)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Մին. Քանակ (Հայերեն)</label>
                                 <input
                                   type="text"
                                   value={fp.minQtyTextHy}
@@ -3383,11 +3383,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, minQtyTextHy: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (Русский)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Մին. Քանակ (Русский)</label>
                                 <input
                                   type="text"
                                   value={fp.minQtyTextRu}
@@ -3396,11 +3396,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, minQtyTextRu: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Մին. Քանակ (English)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Մին. Քանակ (English)</label>
                                 <input
                                   type="text"
                                   value={fp.minQtyTextEn}
@@ -3409,7 +3409,7 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, minQtyTextEn: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                             </div>
@@ -3417,7 +3417,7 @@ export default function AdminPanel({
                             {/* Tags Translation */}
                             <div className="col-span-2 grid grid-cols-3 gap-2">
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Հայերեն)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Հայերեն)</label>
                                 <input
                                   type="text"
                                   value={fp.tagHy}
@@ -3426,11 +3426,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, tagHy: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Русский)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (Русский)</label>
                                 <input
                                   type="text"
                                   value={fp.tagRu}
@@ -3439,11 +3439,11 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, tagRu: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (English)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Թեգ/Պիտակ (English)</label>
                                 <input
                                   type="text"
                                   value={fp.tagEn}
@@ -3452,7 +3452,7 @@ export default function AdminPanel({
                                                 updated[fIdx] = { ...fp, tagEn: e.target.value };
                                                 setEditFeaturedProducts(updated);
                                   }}
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                             </div>
@@ -3460,7 +3460,7 @@ export default function AdminPanel({
                             {/* Secondary Tags Translation */}
                             <div className="col-span-2 grid grid-cols-3 gap-2">
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Հայերեն)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Հայերեն)</label>
                                 <input
                                   type="text"
                                   value={fp.secondaryTagHy || ""}
@@ -3470,11 +3470,11 @@ export default function AdminPanel({
                                                 setEditFeaturedProducts(updated);
                                   }}
                                   placeholder="Օրինակ` ԷԿՈ ԸՆՏՐՈՒԹՅՈՒՆ 🌿"
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Русский)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (Русский)</label>
                                 <input
                                   type="text"
                                   value={fp.secondaryTagRu || ""}
@@ -3484,11 +3484,11 @@ export default function AdminPanel({
                                                 setEditFeaturedProducts(updated);
                                   }}
                                   placeholder="Например` ЭКО ВЫБОР 🌿"
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (English)</label>
+                                <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Երկրորդական Թեգ (English)</label>
                                 <input
                                   type="text"
                                   value={fp.secondaryTagEn || ""}
@@ -3498,14 +3498,14 @@ export default function AdminPanel({
                                                 setEditFeaturedProducts(updated);
                                   }}
                                   placeholder="Example` ECO CHOICE 🌿"
-                                  className="w-full bg-white border border-capsule-accent/10 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans"
+                                  className="w-full bg-white border border-[#FF2300]/25/10 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans"
                                 />
                               </div>
                             </div>
 
                             {/* Category dropdown links / Calculator categories Anchor */}
                             <div className="col-span-2">
-                              <label className="block text-[9px] text-capsule-text-muted uppercase font-bold mb-1 font-mono">Կապված Կալկուլյատորի Բաժինը (Target Calculator Category Anchor)</label>
+                              <label className="block text-[9px] text-[#727784] uppercase font-bold mb-1 font-mono">Կապված Կալկուլյատորի Բաժինը (Target Calculator Category Anchor)</label>
                               <select
                                 value={fp.categoryId}
                                 onChange={(e) => {
@@ -3513,7 +3513,7 @@ export default function AdminPanel({
                                               updated[fIdx] = { ...fp, categoryId: e.target.value };
                                               setEditFeaturedProducts(updated);
                                 }}
-                                className="w-full bg-white border border-[#2E3159]/20 rounded-lg p-1.5 text-xs outline-none focus:border-capsule-accent font-sans font-bold text-capsule-accent"
+                                className="w-full bg-white border border-[#2E3159]/20 rounded-lg p-1.5 text-xs outline-none focus:border-[#FF2300]/25 font-sans font-bold text-[#FF2300]"
                               >
                                 {categories.map(cat => (
                                   <option key={cat.id} value={cat.id}>
@@ -3521,7 +3521,7 @@ export default function AdminPanel({
                                   </option>
                                 ))}
                               </select>
-                              <p className="text-[10px] text-capsule-accent mt-1">
+                              <p className="text-[10px] text-[#FF2300] mt-1">
                                 🔗 Գլխավոր էջում այս ապրանքի վրա սեղմելիս, օգտատերը կուղղորդվի կալկուլյատոր և ավտոմատ կընտրվի նշված բաժինը։
                               </p>
                             </div>
@@ -3550,23 +3550,23 @@ export default function AdminPanel({
               {/* TAB: BOXES PRICING & SPECIFICATIONS CONFIGURATION */}
               {activeTab === "box_pricing" && editPricingRules && (
                 <div className="space-y-6">
-                  <div className="border-b border-capsule-accent/10 pb-3 flex justify-between items-center flex-wrap gap-2">
+                  <div className="border-b border-[#FF2300]/25/10 pb-3 flex justify-between items-center flex-wrap gap-2">
                     <div>
-                      <h3 className="font-serif text-lg text-capsule-accent font-semibold">📦 Տուփերի Գնագոյացման Կառավարման Վահանակ (Boxes Pricing Portal)</h3>
-                      <p className="text-[11px] text-capsule-text-muted mt-1">
+                      <h3 className="font-serif text-lg text-[#FF2300] font-semibold">📦 Տուփերի Գնագոյացման Կառավարման Վահանակ (Boxes Pricing Portal)</h3>
+                      <p className="text-[11px] text-[#727784] mt-1">
                         Այստեղ կարող եք փոփոխել պատերի հաստությունը (մմ), հավաքման սակագները, մարժաներն ու պատրաստի չափսերի անհատական գները։
                       </p>
                     </div>
                   </div>
 
                   {/* SECTION 1: WALL THICKNESS & DIMENSION RULES */}
-                  <div className="bg-capsule-surf2/25 border border-capsule-accent/10 p-5 rounded-xl space-y-4">
-                    <h4 className="font-sans text-xs font-bold text-capsule-accent uppercase tracking-wider">
+                  <div className="bg-[#f0f2f5]/25 border border-[#FF2300]/25/10 p-5 rounded-xl space-y-4">
+                    <h4 className="font-sans text-xs font-bold text-[#FF2300] uppercase tracking-wider">
                       1. Պատերի Հաստության Կարգավորում (Wall Thickness in mm)
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Սովորական Ստվարաթուղթ (Standard Folding)
                         </label>
                         <div className="relative">
@@ -3580,17 +3580,17 @@ export default function AdminPanel({
                                 box_wall_thickness_standard: parseFloat(e.target.value) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
-                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-capsule-text-muted uppercase">մմ</span>
+                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-[#727784] uppercase">մմ</span>
                         </div>
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Ծալվող ստվարաթղթե տուփերի պատի միջին հաստությունը (օր.՝ 0.5 մմ)։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Պրեմիում Կոշտ Ստվարաթուղթ (Premium Rigid)
                         </label>
                         <div className="relative">
@@ -3604,17 +3604,17 @@ export default function AdminPanel({
                                 box_wall_thickness_rigid: parseFloat(e.target.value) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
-                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-capsule-text-muted uppercase">մմ</span>
+                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-[#727784] uppercase">մմ</span>
                         </div>
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Rigid տուփերի ներքին մոխրագույն ստվարաթղթի (greyboard) հաստությունը (օր.՝ 2.0 մմ / 1.5 մմ)։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Կոշտ Տուփի Բարձրության Շեմ (Rigid Height Floor)
                         </label>
                         <div className="relative">
@@ -3628,24 +3628,24 @@ export default function AdminPanel({
                                 box_rigid_height_floor: parseFloat(e.target.value) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
-                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-capsule-text-muted uppercase">սմ</span>
+                          <span className="absolute right-3 top-1.5 text-[9px] font-bold text-[#727784] uppercase">սմ</span>
                         </div>
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Կոշտ տուփերի կառուցվածքային սահմանաչափով նվազագույն թույլատրելի բարձրությունը (օր.՝ 3.0 սմ)։
                         </p>
                       </div>
                     </div>
 
                     {/* Surcharges per unit based on chosen wall thickness/greyboard core */}
-                    <div className="border-t border-capsule-accent/5 pt-4 mt-4">
-                      <h5 className="font-sans text-[10px] font-bold text-capsule-accent uppercase tracking-wider mb-2">
+                    <div className="border-t border-[#FF2300]/25/5 pt-4 mt-4">
+                      <h5 className="font-sans text-[10px] font-bold text-[#FF2300] uppercase tracking-wider mb-2">
                         Կոշտ ստվարաթղթի (Greyboard) հաստության գնային հավելումներ (Core Surcharges per unit in AMD)
                       </h5>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
-                          <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                          <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                             1.5 մմ հաստություն (֏)
                           </label>
                           <input
@@ -3657,11 +3657,11 @@ export default function AdminPanel({
                                 box_thick_surcharge_1_5: parseInt(e.target.value, 10) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                          <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                             2.0 մմ հաստություն (֏)
                           </label>
                           <input
@@ -3673,11 +3673,11 @@ export default function AdminPanel({
                                 box_thick_surcharge_2_0: parseInt(e.target.value, 10) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                          <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                             2.5 մմ հաստություն (֏)
                           </label>
                           <input
@@ -3689,11 +3689,11 @@ export default function AdminPanel({
                                 box_thick_surcharge_2_5: parseInt(e.target.value, 10) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                          <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                             3.0 մմ հաստություն (֏)
                           </label>
                           <input
@@ -3705,7 +3705,7 @@ export default function AdminPanel({
                                 box_thick_surcharge_3_0: parseInt(e.target.value, 10) || 0
                               });
                             }}
-                            className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                            className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                           />
                         </div>
                       </div>
@@ -3713,13 +3713,13 @@ export default function AdminPanel({
                   </div>
 
                   {/* SECTION 2: ASSEMBLY COSTS & SURCHARGES */}
-                  <div className="bg-capsule-surf2/25 border border-capsule-accent/10 p-5 rounded-xl space-y-4">
-                    <h4 className="font-sans text-xs font-bold text-capsule-accent uppercase tracking-wider">
+                  <div className="bg-[#f0f2f5]/25 border border-[#FF2300]/25/10 p-5 rounded-xl space-y-4">
+                    <h4 className="font-sans text-xs font-bold text-[#FF2300] uppercase tracking-wider">
                       2. Աշխատուժի և Հավաքման Սակագներ (Assembly Labor & Surcharges)
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Folding Box Base (֏)
                         </label>
                         <input
@@ -3731,15 +3731,15 @@ export default function AdminPanel({
                               box_assembly_cost_folding: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Փափուկ ծալվող տուփերի հավաքման բազային աշխատուժի գինը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Rigid Box Base (֏)
                         </label>
                         <input
@@ -3751,15 +3751,15 @@ export default function AdminPanel({
                               box_assembly_cost_rigid: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Rigid (Կոշտ կափարիչով) տուփերի պատրաստման և պաստառապատման բազային աշխատուժի գինը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Magnetic Flap Surcharge (֏)
                         </label>
                         <input
@@ -3771,15 +3771,15 @@ export default function AdminPanel({
                               box_surcharge_magnetic: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Մագնիսական կափարիչով տուփերի նեոդիմյան մագնիսների և փաթթոցման հավելավճարը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Shoulder Neck Surcharge (֏)
                         </label>
                         <input
@@ -3791,9 +3791,9 @@ export default function AdminPanel({
                               box_surcharge_shoulder_neck: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Օձիքով (Shoulder/hinge neck) տուփերի ուսիկների և ճշգրիտ հարմարեցման հավելավճարը։
                         </p>
                       </div>
@@ -3801,13 +3801,13 @@ export default function AdminPanel({
                   </div>
 
                   {/* SECTION 3: SELLING PRICE FLOORS */}
-                  <div className="bg-capsule-surf2/25 border border-capsule-accent/10 p-5 rounded-xl space-y-4">
-                    <h4 className="font-sans text-xs font-bold text-capsule-accent uppercase tracking-wider">
+                  <div className="bg-[#f0f2f5]/25 border border-[#FF2300]/25/10 p-5 rounded-xl space-y-4">
+                    <h4 className="font-sans text-xs font-bold text-[#FF2300] uppercase tracking-wider">
                       3. Նվազագույն Վաճառքի Շեմեր (Min Unit Price Selling Floors)
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Folding Box Min (֏)
                         </label>
                         <input
@@ -3819,15 +3819,15 @@ export default function AdminPanel({
                               box_min_sell_folding: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Ծալվող սովորական տուփի նվազագույն վաճառքի միավոր գինը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Rigid Box Min (֏)
                         </label>
                         <input
@@ -3839,15 +3839,15 @@ export default function AdminPanel({
                               box_min_sell_rigid: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Rigid (Կափարիչով կոշտ) տուփի նվազագույն վաճառքի միավոր գինը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Magnetic Flap Min (֏)
                         </label>
                         <input
@@ -3859,15 +3859,15 @@ export default function AdminPanel({
                               box_min_sell_magnetic: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Մագնիսական կոշտ տուփի նվազագույն վաճառքի միավոր գինը։
                         </p>
                       </div>
 
                       <div>
-                        <label className="block text-[10px] text-capsule-text-secondary uppercase font-bold mb-1">
+                        <label className="block text-[10px] text-[#414753] uppercase font-bold mb-1">
                           Shoulder Neck Min (֏)
                         </label>
                         <input
@@ -3879,9 +3879,9 @@ export default function AdminPanel({
                               box_min_sell_shoulder_neck: parseInt(e.target.value, 10) || 0
                             });
                           }}
-                          className="bg-white border border-capsule-accent/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-capsule-accent"
+                          className="bg-white border border-[#FF2300]/25/15 rounded-lg py-1.5 px-3 w-full font-mono font-bold text-xs outline-none focus:border-[#FF2300]/25"
                         />
-                        <p className="text-[9px] text-capsule-text-muted mt-1">
+                        <p className="text-[9px] text-[#727784] mt-1">
                           Ուսիկով (Shoulder neck) տուփի նվազագույն վաճառքի միավոր գինը։
                         </p>
                       </div>
@@ -3889,9 +3889,9 @@ export default function AdminPanel({
                   </div>
 
                   {/* SECTION 4: PREDEFINED SIZES & FIXED PRICING PORTAL (kakoy razmer, kakoy cena) */}
-                  <div className="bg-capsule-surf2/25 border border-capsule-accent/10 p-5 rounded-xl space-y-4">
-                    <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2 flex-wrap gap-2">
-                      <h4 className="font-sans text-xs font-bold text-capsule-accent uppercase tracking-wider">
+                  <div className="bg-[#f0f2f5]/25 border border-[#FF2300]/25/10 p-5 rounded-xl space-y-4">
+                    <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2 flex-wrap gap-2">
+                      <h4 className="font-sans text-xs font-bold text-[#FF2300] uppercase tracking-wider">
                         4. Տուփերի Պատրաստի Չափսեր և Անհատական Գներ (Predeclared Sizes & Direct Prices)
                       </h4>
                       <button
@@ -3913,13 +3913,13 @@ export default function AdminPanel({
                             setEditProducts(updated);
                           }
                         }}
-                        className="bg-capsule-accent text-capsule-surf px-2.5 py-1 rounded text-[10px] font-bold uppercase cursor-pointer flex items-center gap-1 hover:bg-capsule-accent-light transition-all shadow-sm"
+                        className="bg-[#FF2300] text-capsule-surf px-2.5 py-1 rounded text-[10px] font-bold uppercase cursor-pointer flex items-center gap-1 hover:bg-[#FF2300]-light transition-all shadow-sm"
                       >
                         <Plus size={12} /> Ավելացնել Չափս / Գին
                       </button>
                     </div>
 
-                    <p className="text-[11px] text-capsule-text-muted mt-1">
+                    <p className="text-[11px] text-[#727784] mt-1">
                       Այստեղ կարող եք ստեղծել կոնկրետ չափսեր և դրանց ուղղակի վաճառքի գինը (֏), որոնք կլինեն ընտրության ցանկում։
                     </p>
 
@@ -3927,9 +3927,9 @@ export default function AdminPanel({
                       {editProducts.find(p => p.id === "boxes_items")?.items.map((it, itIdx) => {
                         const boxesPIdx = editProducts.findIndex(p => p.id === "boxes_items");
                         return (
-                          <div key={it.id} className="grid grid-cols-12 gap-2 items-center bg-white p-3 rounded-lg border border-capsule-accent/10 text-xs shadow-sm">
+                          <div key={it.id} className="grid grid-cols-12 gap-2 items-center bg-white p-3 rounded-lg border border-[#FF2300]/25/10 text-xs shadow-sm">
                             <div className="col-span-7">
-                              <label className="block text-[8px] text-capsule-text-muted uppercase font-bold">Անվանում և Չափս</label>
+                              <label className="block text-[8px] text-[#727784] uppercase font-bold">Անվանում և Չափս</label>
                               <input
                                 type="text"
                                 value={it.name}
@@ -3941,12 +3941,12 @@ export default function AdminPanel({
                                   updated[boxesPIdx] = { ...prod, items: updatedItems };
                                   setEditProducts(updated);
                                 }}
-                                className="bg-transparent border-b border-capsule-accent/10 focus:border-capsule-accent outline-none font-sans font-bold w-full text-capsule-dark mt-0.5 py-0.5"
+                                className="bg-transparent border-b border-[#FF2300]/25/10 focus:border-[#FF2300]/25 outline-none font-sans font-bold w-full text-[#1a1c1d] mt-0.5 py-0.5"
                                 placeholder="օր.՝ Տուփ 15×15×5 սմ"
                               />
                             </div>
                             <div className="col-span-4">
-                              <label className="block text-[8px] text-capsule-text-muted uppercase font-bold">Միավորի Գին (֏)</label>
+                              <label className="block text-[8px] text-[#727784] uppercase font-bold">Միավորի Գին (֏)</label>
                               <input
                                 type="number"
                                 value={it.price}
@@ -3958,7 +3958,7 @@ export default function AdminPanel({
                                   updated[boxesPIdx] = { ...prod, items: updatedItems };
                                   setEditProducts(updated);
                                 }}
-                                className="bg-capsule-surf2/50 rounded px-2 py-1 font-mono font-bold text-center text-capsule-accent w-full mt-0.5"
+                                className="bg-[#f0f2f5]/50 rounded px-2 py-1 font-mono font-bold text-center text-[#FF2300] w-full mt-0.5"
                               />
                             </div>
                             <div className="col-span-1 text-right">
@@ -3989,41 +3989,41 @@ export default function AdminPanel({
               {/* TAB 9S: CREDENTIALS UPDATE */}
               {activeTab === "credentials" && (
                 <div className="space-y-4 max-w-sm">
-                  <h3 className="font-serif text-base text-capsule-accent font-semibold">Մուտքի Տվյալների Փոփոխում</h3>
+                  <h3 className="font-serif text-base text-[#FF2300] font-semibold">Մուտքի Տվյալների Փոփոխում</h3>
                   <form onSubmit={handleCredentialsUpdate} className="space-y-3">
                     <div>
-                      <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Նոր Օգտանուն</label>
+                      <label className="block text-[10px] text-[#727784] uppercase font-bold">Նոր Օգտանուն</label>
                       <input
                         type="text"
                         value={newUsername}
                         onChange={(e) => setNewUsername(e.target.value)}
                         placeholder="admin"
-                        className="w-full bg-capsule-surf2 border border-capsule-accent/10 rounded py-1.5 px-3 text-xs outline-none"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1.5 px-3 text-xs outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Նոր Գաղտնաբառ</label>
+                      <label className="block text-[10px] text-[#727784] uppercase font-bold">Նոր Գաղտնաբառ</label>
                       <input
                         type="password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full bg-capsule-surf2 border border-capsule-accent/10 rounded py-1.5 px-3 text-xs outline-none"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1.5 px-3 text-xs outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">PIN Կոդ</label>
+                      <label className="block text-[10px] text-[#727784] uppercase font-bold">PIN Կոդ</label>
                       <input
                         type="password"
                         value={newPin}
                         onChange={(e) => setNewPin(e.target.value)}
                         placeholder="1234"
-                        className="w-full bg-capsule-surf2 border border-capsule-accent/10 rounded py-1.5 px-3 text-xs outline-none font-mono"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1.5 px-3 text-xs outline-none font-mono"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="bg-capsule-accent text-capsule-surf text-xs py-2 px-5 rounded-full font-semibold uppercase tracking-wider shadow cursor-pointer transition-all mt-2"
+                      className="bg-[#FF2300] text-capsule-surf text-xs py-2 px-5 rounded-full font-semibold uppercase tracking-wider shadow cursor-pointer transition-all mt-2"
                     >
                       Թարմացնել Տվյալները
                     </button>
@@ -4033,12 +4033,12 @@ export default function AdminPanel({
 
               {/* TAB: BACKUPS & INTEGRATION SYNC */}
               {activeTab === "backups" && (
-                <div className="space-y-6 max-w-2xl bg-white p-6 rounded-xl border border-capsule-accent/10 shadow-sm">
-                  <div className="border-b border-capsule-accent/10 pb-4">
-                    <h3 className="font-serif text-lg text-capsule-accent font-semibold flex items-center gap-2">
+                <div className="space-y-6 max-w-2xl bg-white p-6 rounded-xl border border-[#FF2300]/25/10 shadow-sm">
+                  <div className="border-b border-[#FF2300]/25/10 pb-4">
+                    <h3 className="font-serif text-lg text-[#FF2300] font-semibold flex items-center gap-2">
                       <span>💾</span> Տվյալների Պահուստավորում և Սինքրոնիզացիա (Backup & Sync)
                     </h3>
-                    <p className="text-xs text-capsule-text-secondary mt-1">
+                    <p className="text-xs text-[#414753] mt-1">
                       Ներբեռնեք Ձեր ամբողջական տվյալների բազան կամ վերականգնեք այն JSON ֆայլի միջոցով։
                     </p>
                   </div>
@@ -4057,31 +4057,31 @@ export default function AdminPanel({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Export Card */}
-                    <div className="border border-capsule-accent/5 bg-capsule-surf2/30 p-5 rounded-lg flex flex-col justify-between">
+                    <div className="border border-[#FF2300]/25/5 bg-[#f0f2f5]/30 p-5 rounded-lg flex flex-col justify-between">
                       <div>
-                        <h4 className="font-serif font-bold text-xs text-capsule-accent uppercase tracking-wider mb-2">Ներբեռնել (Backup / Export)</h4>
-                        <p className="text-xs text-capsule-text-muted leading-relaxed mb-4">
-                          Արտահանեք ամբողջական տվյալների բազան (բոլոր գները, բանաձևերը, կատեգորիաները, այլ ապրանքները և հարցումները) որպես մեկ <strong className="font-mono text-capsule-dark direct-select">capsule_database.json</strong> ֆայլ։
+                        <h4 className="font-serif font-bold text-xs text-[#FF2300] uppercase tracking-wider mb-2">Ներբեռնել (Backup / Export)</h4>
+                        <p className="text-xs text-[#727784] leading-relaxed mb-4">
+                          Արտահանեք ամբողջական տվյալների բազան (բոլոր գները, բանաձևերը, կատեգորիաները, այլ ապրանքները և հարցումները) որպես մեկ <strong className="font-mono text-[#1a1c1d] direct-select">capsule_database.json</strong> ֆայլ։
                         </p>
                       </div>
                       <button
                         onClick={handleDownloadBackup}
                         disabled={backupLoading}
-                        className="w-full bg-capsule-accent hover:bg-capsule-accent-light text-capsule-surf py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow cursor-pointer text-center disabled:opacity-50"
+                        className="w-full bg-[#FF2300] hover:bg-[#FF2300]-light text-capsule-surf py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow cursor-pointer text-center disabled:opacity-50"
                       >
                         {backupLoading ? "Ներբեռնվում է..." : "⬇️ Ներբեռնել Պահուստային Ֆայլը"}
                       </button>
                     </div>
 
                     {/* Import Card */}
-                    <div className="border border-capsule-accent/5 bg-capsule-surf2/30 p-5 rounded-lg flex flex-col justify-between">
+                    <div className="border border-[#FF2300]/25/5 bg-[#f0f2f5]/30 p-5 rounded-lg flex flex-col justify-between">
                       <div>
-                        <h4 className="font-serif font-bold text-xs text-capsule-accent uppercase tracking-wider mb-2">Վերականգնել (Import / Restore)</h4>
-                        <p className="text-xs text-capsule-text-muted leading-relaxed mb-4">
-                          Վերականգնեք Ձեր ամբողջ տվյալների բազան՝ վերբեռնելով նախկինում ներբեռնված պահուստային <strong className="font-mono text-capsule-dark">.json</strong> ֆայլը։ Բոլոր ընթացիկ տվյալները կփոխարինվեն։
+                        <h4 className="font-serif font-bold text-xs text-[#FF2300] uppercase tracking-wider mb-2">Վերականգնել (Import / Restore)</h4>
+                        <p className="text-xs text-[#727784] leading-relaxed mb-4">
+                          Վերականգնեք Ձեր ամբողջ տվյալների բազան՝ վերբեռնելով նախկինում ներբեռնված պահուստային <strong className="font-mono text-[#1a1c1d]">.json</strong> ֆայլը։ Բոլոր ընթացիկ տվյալները կփոխարինվեն։
                         </p>
                       </div>
-                      <label className={`w-full bg-capsule-dark hover:bg-capsule-accent text-capsule-surf py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow cursor-pointer text-center block ${importLoading ? 'opacity-50 pointer-events-none' : ''}`}>
+                      <label className={`w-full bg-capsule-dark hover:bg-[#FF2300] text-capsule-surf py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow cursor-pointer text-center block ${importLoading ? 'opacity-50 pointer-events-none' : ''}`}>
                         {importLoading ? "Վերականգնվում է..." : "⬆️ Վերբեռնել և Վերականգնել (JSON)"}
                         <input
                           type="file"
@@ -4095,29 +4095,29 @@ export default function AdminPanel({
                   </div>
 
                   {/* Render.com sync guidance */}
-                  <div className="bg-capsule-accent/5 border border-capsule-accent/15 p-5 rounded-xl space-y-3">
-                    <h4 className="font-serif font-bold text-xs text-capsule-dark uppercase tracking-wider flex items-center gap-1.5">
+                  <div className="bg-[#FF2300]/5 border border-[#FF2300]/25/15 p-5 rounded-xl space-y-3">
+                    <h4 className="font-serif font-bold text-xs text-[#1a1c1d] uppercase tracking-wider flex items-center gap-1.5">
                       <span>☁️</span> ERP / Render & GitHub Ավտոմատ Սինքրոնիզացիա
                     </h4>
-                    <p className="text-xs text-capsule-text-secondary leading-relaxed">
-                      Render հոսթինգը օգտագործում է <strong className="text-capsule-accent font-semibold">ephemeral filesystem (ժամանակավոր ֆայլային համակարգ)</strong>: Սա նշանակում է՝ ամեն անգամ նոր տարբերակ թողարկելիս (Redeploy / Update) կամ սերվերը ավտոմատ վերագործարկվելիս, սերվերի վրայի տեղական ֆայլերը ջնջվում են և վերականգնվում են GitHub-ում կոմիթ արված տարբերակով, ինչի պատճառով ադմինից կատարված փոփոխությունները կարող են կորչել։
+                    <p className="text-xs text-[#414753] leading-relaxed">
+                      Render հոսթինգը օգտագործում է <strong className="text-[#FF2300] font-semibold">ephemeral filesystem (ժամանակավոր ֆայլային համակարգ)</strong>: Սա նշանակում է՝ ամեն անգամ նոր տարբերակ թողարկելիս (Redeploy / Update) կամ սերվերը ավտոմատ վերագործարկվելիս, սերվերի վրայի տեղական ֆայլերը ջնջվում են և վերականգնվում են GitHub-ում կոմիթ արված տարբերակով, ինչի պատճառով ադմինից կատարված փոփոխությունները կարող են կորչել։
                     </p>
                     <div className="space-y-2 pt-1.5">
-                      <p className="text-[11px] font-bold text-capsule-accent uppercase tracking-wider">
+                      <p className="text-[11px] font-bold text-[#FF2300] uppercase tracking-wider">
                         🛠️ Ինչպե՞ս միացնել ավտոմատ պահպանումը GitHub-ում (Foolproof Auto-Sync).
                       </p>
-                      <p className="text-xs text-capsule-text-muted leading-relaxed">
+                      <p className="text-xs text-[#727784] leading-relaxed">
                         Դուք կարող եք Render-ի Ձեր Վահանակում (Environment Variables բաժնում) ավելացնել հետևյալ փոփոխականները։ Այդ դեպքում համակարգը ավտոմատ կերպով ցանկացած կարգավորում փոխելիս փոփոխությունները կոմիթ կանի Ձեր GitHub-ում, ինչը կկանխի ցանկացած տվյալների կորուստ.
                       </p>
-                      <ul className="list-disc list-inside space-y-1.5 text-xs text-capsule-text-secondary pl-2 bg-white/50 p-3 rounded border border-capsule-accent/5 font-mono">
+                      <ul className="list-disc list-inside space-y-1.5 text-xs text-[#414753] pl-2 bg-white/50 p-3 rounded border border-[#FF2300]/25/5 font-mono">
                         <li>
-                          <strong className="text-capsule-dark">GITHUB_TOKEN</strong>: Ձեր personal access token-ը (PAT), որը տալիս է repo-ին կարդալու/գրելու թույլտվություն (տես GitHub Settings)։
+                          <strong className="text-[#1a1c1d]">GITHUB_TOKEN</strong>: Ձեր personal access token-ը (PAT), որը տալիս է repo-ին կարդալու/գրելու թույլտվություն (տես GitHub Settings)։
                         </li>
                         <li>
-                          <strong className="text-capsule-dark">GITHUB_REPO</strong>: Ձեր պրոյեկտի ռեպոզիտորիան (օր․՝ <code className="bg-capsule-surf2 py-0.5 px-1 rounded">username/repo-name</code>)։
+                          <strong className="text-[#1a1c1d]">GITHUB_REPO</strong>: Ձեր պրոյեկտի ռեպոզիտորիան (օր․՝ <code className="bg-[#f0f2f5] py-0.5 px-1 rounded">username/repo-name</code>)։
                         </li>
                         <li>
-                          <strong className="text-capsule-dark">GITHUB_BRANCH</strong>: Այն ճյուղը, որով աշխատում եք (լռելյայն՝ <code className="bg-capsule-surf2 py-0.5 px-1 rounded">main</code>)։
+                          <strong className="text-[#1a1c1d]">GITHUB_BRANCH</strong>: Այն ճյուղը, որով աշխատում եք (լռելյայն՝ <code className="bg-[#f0f2f5] py-0.5 px-1 rounded">main</code>)։
                         </li>
                       </ul>
                       <p className="text-xs text-emerald-800 font-semibold bg-emerald-50 p-2.5 rounded border border-emerald-200 mt-2">
@@ -4130,22 +4130,22 @@ export default function AdminPanel({
 
               {/* TAB: AI AGENT SETTINGS */}
               {activeTab === "ai_agent" && editAiSettings && (
-                <div className="space-y-6 max-w-3xl bg-white p-6 rounded-xl border border-capsule-accent/10 shadow-sm animate-fade-in">
-                  <div className="border-b border-capsule-accent/10 pb-4">
-                    <h3 className="font-serif text-lg text-capsule-accent font-semibold flex items-center gap-2">
+                <div className="space-y-6 max-w-3xl bg-white p-6 rounded-xl border border-[#FF2300]/25/10 shadow-sm animate-fade-in">
+                  <div className="border-b border-[#FF2300]/25/10 pb-4">
+                    <h3 className="font-serif text-lg text-[#FF2300] font-semibold flex items-center gap-2">
                       <span>🤖</span> AI Օգնականի Կարգավորումներ (AI Agent Settings)
                     </h3>
-                    <p className="text-xs text-capsule-text-secondary mt-1">
-                      Կարգավորեք Capsule Concept-ի ավտոմատ AI համակարգի պետությունները, հրահանգները և պարամետրերը:
+                    <p className="text-xs text-[#414753] mt-1">
+                      Կարգավորեք CAPSULE PACK-ի ավտոմատ AI համակարգի պետությունները, հրահանգները և պարամետրերը:
                     </p>
                   </div>
 
                   <div className="space-y-6">
                     {/* Toggle Activation Switch */}
-                    <div className="flex items-center justify-between p-4 bg-capsule-surf2/30 border border-capsule-accent/5 rounded-lg">
+                    <div className="flex items-center justify-between p-4 bg-[#f0f2f5]/30 border border-[#FF2300]/25/5 rounded-lg">
                       <div>
-                        <h4 className="font-serif font-bold text-xs text-capsule-dark uppercase tracking-wider">ԱԿՏԻՎԱՑՆԵԼ AI ՕԳՆԱԿԱՆԸ (Enable AI Chat)</h4>
-                        <p className="text-xs text-capsule-text-muted mt-0.5">Անջատելու դեպքում AI Խորհրդատուի բաժինը ամբողջությամբ կթաքնվի կայքից։</p>
+                        <h4 className="font-serif font-bold text-xs text-[#1a1c1d] uppercase tracking-wider">ԱԿՏԻՎԱՑՆԵԼ AI ՕԳՆԱԿԱՆԸ (Enable AI Chat)</h4>
+                        <p className="text-xs text-[#727784] mt-0.5">Անջատելու դեպքում AI Խորհրդատուի բաժինը ամբողջությամբ կթաքնվի կայքից։</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer select-none">
                         <input
@@ -4154,18 +4154,18 @@ export default function AdminPanel({
                           onChange={(e) => setEditAiSettings({ ...editAiSettings, enabled: e.target.checked })}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-capsule-accent"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF2300]"></div>
                       </label>
                     </div>
 
                     {/* Model & Temp Inputs row */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-capsule-dark uppercase tracking-wider mb-1.5">Model Name (Gemini API Engine)</label>
+                        <label className="block text-xs font-bold text-[#1a1c1d] uppercase tracking-wider mb-1.5">Model Name (Gemini API Engine)</label>
                         <select
                           value={editAiSettings.modelName || "gemini-3.5-flash"}
                           onChange={(e) => setEditAiSettings({ ...editAiSettings, modelName: e.target.value })}
-                          className="w-full bg-[#FAFAF9] border border-capsule-accent/25 rounded-lg py-2.5 px-3.5 text-xs text-capsule-dark font-semibold outline-none focus:ring-1 focus:ring-capsule-accent transition-all"
+                          className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/25 rounded-lg py-2.5 px-3.5 text-xs text-[#1a1c1d] font-semibold outline-none focus:ring-1 focus:ring-[#FF2300] transition-all"
                         >
                           <option value="gemini-3.5-flash">Gemini 3.5 Flash (Default/Recommended)</option>
                           <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
@@ -4174,7 +4174,7 @@ export default function AdminPanel({
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-capsule-dark uppercase tracking-wider mb-1.5">Temperature / Ջերմաստիճան ({editAiSettings.temperature})</label>
+                        <label className="block text-xs font-bold text-[#1a1c1d] uppercase tracking-wider mb-1.5">Temperature / Ջերմաստիճան ({editAiSettings.temperature})</label>
                         <div className="flex items-center gap-3">
                           <input
                             type="range"
@@ -4185,30 +4185,30 @@ export default function AdminPanel({
                             onChange={(e) => setEditAiSettings({ ...editAiSettings, temperature: parseFloat(e.target.value) })}
                             className="flex-1 accent-capsule-accent cursor-pointer"
                           />
-                          <span className="font-mono text-xs text-capsule-dark font-bold bg-[#FAFAF9] border px-2.5 py-1 rounded block">{editAiSettings.temperature}</span>
+                          <span className="font-mono text-xs text-[#1a1c1d] font-bold bg-[#f0f2f5] border px-2.5 py-1 rounded block">{editAiSettings.temperature}</span>
                         </div>
-                        <p className="text-[10px] text-capsule-text-muted mt-1">Որքան ցածր է արժեքը, այնքան պատասխանները կլինեն ճշգրիտ, փաստացի և հետևողական:</p>
+                        <p className="text-[10px] text-[#727784] mt-1">Որքան ցածր է արժեքը, այնքան պատասխանները կլինեն ճշգրիտ, փաստացի և հետևողական:</p>
                       </div>
                     </div>
 
                     {/* System Prompt Custom Instructions text area */}
                     <div>
-                      <label className="block text-xs font-bold text-capsule-dark uppercase tracking-wider mb-1.5">AI System Prompt Instructions (Հրահանգներ AI-ի համար)</label>
+                      <label className="block text-xs font-bold text-[#1a1c1d] uppercase tracking-wider mb-1.5">AI System Prompt Instructions (Հրահանգներ AI-ի համար)</label>
                       <textarea
                         rows={10}
                         value={editAiSettings.systemPrompt}
                         onChange={(e) => setEditAiSettings({ ...editAiSettings, systemPrompt: e.target.value })}
-                        className="w-full bg-[#FAFAF9] border border-capsule-accent/25 rounded-lg py-3 px-3.5 text-xs text-capsule-dark font-medium leading-relaxed outline-none focus:ring-1 focus:ring-capsule-accent font-sans transition-all"
+                        className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/25 rounded-lg py-3 px-3.5 text-xs text-[#1a1c1d] font-medium leading-relaxed outline-none focus:ring-1 focus:ring-[#FF2300] font-sans transition-all"
                         placeholder="Write dynamic system instruction guidelines..."
                       />
-                      <p className="text-[10px] text-capsule-text-muted mt-1 leading-relaxed">
+                      <p className="text-[10px] text-[#727784] mt-1 leading-relaxed">
                         💡 <em>Նշում:</em> Բոլոր ակտիվ չափսերը, թղթերի տեսակներն ու հետտպագրական մշակումների գները ավտոմատ կերպով կցվում են այս հրահանգի վերջում, այնպես որ AI-ն միշտ կտիրապետի վերջին տվյալներին:
                       </p>
                     </div>
 
                     {/* Quick Suggestions Helper Buttons to restore defaults */}
-                    <div className="flex justify-between items-center bg-capsule-accent/5 p-4 rounded-lg border border-capsule-accent/10">
-                      <div className="text-[11px] text-capsule-text-secondary font-medium">
+                    <div className="flex justify-between items-center bg-[#FF2300]/5 p-4 rounded-lg border border-[#FF2300]/25/10">
+                      <div className="text-[11px] text-[#414753] font-medium">
                         Ցանկանու՞մ եք վերադարձնել լռելյայն հրահանգները:
                       </div>
                       <button
@@ -4217,11 +4217,11 @@ export default function AdminPanel({
                           if (confirm("Ցանկանու՞մ եք վերականգնել լռելյայն համակարգային հրահանգները:")) {
                             setEditAiSettings({
                               ...editAiSettings,
-                              systemPrompt: `Դուք Capsule Concept-ի պրոֆեսիոնալ փաթեթավորման և տպագրության խորհրդատուն եք (Professional Packaging & Printing Consultant)։\nՁեր միակ առաքելությունն է խորհրդատվություն և օգնություն մատուցել հաճախորդներին տպագրության, տոպրակների, տուփերի, ժապավենների, սթիքերների և այլ փաթեթավորման նյութերի ընտրության վերաբերյալ։\n\nԿԱՐԵՎՈՐ ԿԱՆՈՆՆԵՐ (Strict Guidelines):\n1. Եղեք խիստ պրոֆեսիոնալ, կոնկրետ, օբյեկտիվ և հակիրճ։ Մի՛ փորձեք ընկերանալ հաճախորդի հետ, խուսափեք չափազանց ջերմ, ոչ պաշտոնական կամ հասարակ արտահայտություններից (ne navalit družic)։ Պատասխանեք պարզ, սառնասիրտ, բայց օգնող և պոլիտեկտ՝ ինչպես Capsule Concept բարձրակարգ ընկերության պրոֆեսիոնալ ներկայացուցիչը։\n2. Խոսեք ՄԻԱՅՆ տպագրության, թղթերի տեսակների (foil, lamination, kraft, rigid, decorative), տուփերի, տոպրակների և փաթեթավորման թեմաների շրջանակներում։ Եթե հաճախորդը փորձի զրուցել այլ թեմաներից (օրինակ՝ խոհարարություն, ծրագրավորում, պատմություն, անձնական հարցեր, անկապ զրույցներ), քաղաքավարի բայց հաստատակամորեն մերժեք և ուղղորդեք հարցը դեպի մաքուր տպագրության ու տոպրակների/տուփերի աշխարհ։\n3. Օգտագործեք միայն Capsule Concept-ի իրական ցանկերն ու տվյալները, որոնք առկա են մեր պորտֆոլիոյում (folio) և բազայում։\n4. Զրուցեք այն լեզվով, որով դիմել է օգտատերը (հայերեն, ռուսերեն կամ անգլերեն)։ Գրեք գրագետ և առանց ուղղագրական սխալների։\n5. Պատասխանները պահեք փոքր, կազմակերպված և հեշտ ընթեռնելի (օգտագործեք bullet point-եր կամ կարճ պարբերություններ)։`
+                              systemPrompt: `Դուք CAPSULE PACK-ի պրոֆեսիոնալ փաթեթավորման և տպագրության խորհրդատուն եք (Professional Packaging & Printing Consultant)։\nՁեր միակ առաքելությունն է խորհրդատվություն և օգնություն մատուցել հաճախորդներին տպագրության, տոպրակների, տուփերի, ժապավենների, սթիքերների և այլ փաթեթավորման նյութերի ընտրության վերաբերյալ։\n\nԿԱՐԵՎՈՐ ԿԱՆՈՆՆԵՐ (Strict Guidelines):\n1. Եղեք խիստ պրոֆեսիոնալ, կոնկրետ, օբյեկտիվ և հակիրճ։ Մի՛ փորձեք ընկերանալ հաճախորդի հետ, խուսափեք չափազանց ջերմ, ոչ պաշտոնական կամ հասարակ արտահայտություններից (ne navalit družic)։ Պատասխանեք պարզ, սառնասիրտ, բայց օգնող և պոլիտեկտ՝ ինչպես CAPSULE PACK բարձրակարգ ընկերության պրոֆեսիոնալ ներկայացուցիչը։\n2. Խոսեք ՄԻԱՅՆ տպագրության, թղթերի տեսակների (foil, lamination, kraft, rigid, decorative), տուփերի, տոպրակների և փաթեթավորման թեմաների շրջանակներում։ Եթե հաճախորդը փորձի զրուցել այլ թեմաներից (օրինակ՝ խոհարարություն, ծրագրավորում, պատմություն, անձնական հարցեր, անկապ զրույցներ), քաղաքավարի բայց հաստատակամորեն մերժեք և ուղղորդեք հարցը դեպի մաքուր տպագրության ու տոպրակների/տուփերի աշխարհ։\n3. Օգտագործեք միայն CAPSULE PACK-ի իրական ցանկերն ու տվյալները, որոնք առկա են մեր պորտֆոլիոյում (folio) և բազայում։\n4. Զրուցեք այն լեզվով, որով դիմել է օգտատերը (հայերեն, ռուսերեն կամ անգլերեն)։ Գրեք գրագետ և առանց ուղղագրական սխալների։\n5. Պատասխանները պահեք փոքր, կազմակերպված և հեշտ ընթեռնելի (օգտագործեք bullet point-եր կամ կարճ պարբերություններ)։`
                             });
                           }
                         }}
-                        className="py-1.5 px-3 bg-white hover:bg-capsule-accent/5 rounded-full border border-capsule-accent/20 text-[10px] font-bold uppercase tracking-wider transition-colors inline-block cursor-pointer select-none"
+                        className="py-1.5 px-3 bg-white hover:bg-[#FF2300]/5 rounded-full border border-[#FF2300]/25/20 text-[10px] font-bold uppercase tracking-wider transition-colors inline-block cursor-pointer select-none"
                       >
                         🔄 Վերականգնել Լռելյայնը / Default
                       </button>
@@ -4232,7 +4232,7 @@ export default function AdminPanel({
                       <button
                         type="button"
                         onClick={handleSaveAll}
-                        className="bg-capsule-accent hover:bg-capsule-accent-light text-capsule-surf text-xs py-2.5 px-6 rounded-full font-bold uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer selection:bg-transparent"
+                        className="bg-[#FF2300] hover:bg-[#FF2300]-light text-capsule-surf text-xs py-2.5 px-6 rounded-full font-bold uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer selection:bg-transparent"
                       >
                         <Save size={13} />
                         ՊԱՀՊԱՆԵԼ AI ԿԱՐԳԱՎՈՐՈՒՄՆԵՐԸ
@@ -4245,8 +4245,8 @@ export default function AdminPanel({
               {/* TAB: TIERS */}
               {activeTab === "tiers" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Մեծածախ Քանակի Գործակիցներ (Tiers)</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Մեծածախ Քանակի Գործակիցներ (Tiers)</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -4258,17 +4258,17 @@ export default function AdminPanel({
                         };
                         setEditTiers([...editTiers, newTier]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Ավելացնել Tier
                     </button>
                   </div>
                   <div className="space-y-3">
                     {editTiers.map((t, idx) => (
-                      <div key={t.id} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center gap-3">
+                      <div key={t.id} className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center gap-3">
                         <div className="flex-1 grid grid-cols-3 gap-3 text-xs">
                           <div>
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold">Քանակ</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold">Քանակ</label>
                             <input
                               type="number"
                               value={t.qty}
@@ -4277,11 +4277,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...t, qty: parseInt(e.target.value, 10) || 0 };
                                 setEditTiers(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 font-mono text-center w-full font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-mono text-center w-full font-bold"
                             />
                           </div>
                           <div>
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold">Գործակից (mult)</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold">Գործակից (mult)</label>
                             <input
                               type="number"
                               step="0.01"
@@ -4291,11 +4291,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...t, mult: parseFloat(e.target.value) || 0 };
                                 setEditTiers(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 font-mono text-center w-full font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 font-mono text-center w-full font-bold"
                             />
                           </div>
                           <div>
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold">Լավագույն Գին</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold">Լավագույն Գին</label>
                             <div className="flex items-center h-8 justify-center">
                               <input
                                 type="checkbox"
@@ -4326,8 +4326,8 @@ export default function AdminPanel({
               {/* TAB: SIZES */}
               {activeTab === "sizes" && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Չափսերի Պրեսեթներ</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Չափսերի Պրեսեթներ</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -4342,18 +4342,18 @@ export default function AdminPanel({
                         };
                         setEditDimensions([newDim, ...editDimensions]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer"
                     >
                       + Նոր Չափս
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-1">
                     {editDimensions.map((d, idx) => (
-                      <div key={d.id} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-3.5 rounded-xl space-y-3 relative">
+                      <div key={d.id} className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 p-3.5 rounded-xl space-y-3 relative">
                         <div className="flex justify-between items-center">
-                          <span className="text-[10px] bg-capsule-accent/10 text-capsule-accent px-2 py-0.5 rounded uppercase tracking-wider font-bold">ID: {d.id}</span>
+                          <span className="text-[10px] bg-[#FF2300]/10 text-[#FF2300] px-2 py-0.5 rounded uppercase tracking-wider font-bold">ID: {d.id}</span>
                           <div className="flex items-center gap-3">
-                            <label className="text-[9px] text-capsule-text-muted font-bold uppercase flex items-center gap-1.5 cursor-pointer">
+                            <label className="text-[9px] text-[#727784] font-bold uppercase flex items-center gap-1.5 cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={d.active}
@@ -4378,7 +4378,7 @@ export default function AdminPanel({
                         
                         <div className="grid grid-cols-1 gap-2 text-xs">
                           <div>
-                            <label className="block text-[9px] text-capsule-text-muted uppercase font-bold">Չափսի Տեքստ (սմ)</label>
+                            <label className="block text-[9px] text-[#727784] uppercase font-bold">Չափսի Տեքստ (սմ)</label>
                             <input
                               type="text"
                               value={d.dim}
@@ -4387,12 +4387,12 @@ export default function AdminPanel({
                                 updated[idx] = { ...d, dim: e.target.value };
                                 setEditDimensions(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 w-full font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 w-full font-bold"
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
-                              <label className="block text-[9px] text-capsule-text-muted uppercase font-bold">Բաժին</label>
+                              <label className="block text-[9px] text-[#727784] uppercase font-bold">Բաժին</label>
                               <select
                                 value={d.categoryId}
                                 onChange={(e) => {
@@ -4400,7 +4400,7 @@ export default function AdminPanel({
                                   updated[idx] = { ...d, categoryId: e.target.value };
                                   setEditDimensions(updated);
                                 }}
-                                className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2 w-full font-semibold"
+                                className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2 w-full font-semibold"
                               >
                                 {categories.map(c => (
                                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -4409,7 +4409,7 @@ export default function AdminPanel({
                             </div>
                             <div className="grid grid-cols-3 gap-1">
                               <div>
-                                <label className="block text-[8px] text-capsule-text-muted uppercase text-center font-bold">Լայնք</label>
+                                <label className="block text-[8px] text-[#727784] uppercase text-center font-bold">Լայնք</label>
                                 <input
                                   type="number"
                                   value={d.w}
@@ -4418,11 +4418,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...d, w: parseFloat(e.target.value) || 0 };
                                     setEditDimensions(updated);
                                   }}
-                                  className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
+                                  className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[8px] text-capsule-text-muted uppercase text-center font-bold">Բարձր</label>
+                                <label className="block text-[8px] text-[#727784] uppercase text-center font-bold">Բարձր</label>
                                 <input
                                   type="number"
                                   value={d.h}
@@ -4431,11 +4431,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...d, h: parseFloat(e.target.value) || 0 };
                                     setEditDimensions(updated);
                                   }}
-                                  className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
+                                  className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[8px] text-capsule-text-muted uppercase text-center font-bold">Խորք</label>
+                                <label className="block text-[8px] text-[#727784] uppercase text-center font-bold">Խորք</label>
                                 <input
                                   type="number"
                                   value={d.d}
@@ -4444,14 +4444,14 @@ export default function AdminPanel({
                                     updated[idx] = { ...d, d: parseFloat(e.target.value) || 0 };
                                     setEditDimensions(updated);
                                   }}
-                                  className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
+                                  className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-1 text-center font-mono w-full font-bold"
                                 />
                               </div>
                             </div>
                             
                             <div className="grid grid-cols-2 gap-2 mt-1">
                               <div>
-                                <label className="block text-[8px] text-capsule-text-secondary uppercase text-center font-bold">Գնի Ուղղում (֏)</label>
+                                <label className="block text-[8px] text-[#414753] uppercase text-center font-bold">Գնի Ուղղում (֏)</label>
                                 <input
                                   type="number"
                                   placeholder="Չկա"
@@ -4461,11 +4461,11 @@ export default function AdminPanel({
                                     updated[idx] = { ...d, directPriceOverride: parseInt(e.target.value, 10) || undefined };
                                     setEditDimensions(updated);
                                   }}
-                                  className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-1 text-center font-mono w-full font-bold text-emerald-700"
+                                  className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-1 text-center font-mono w-full font-bold text-emerald-700"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[8px] text-capsule-text-secondary uppercase text-center font-bold">Գործակից / Mult.</label>
+                                <label className="block text-[8px] text-[#414753] uppercase text-center font-bold">Գործակից / Mult.</label>
                                 <input
                                   type="number"
                                   step="0.01"
@@ -4476,7 +4476,7 @@ export default function AdminPanel({
                                     updated[idx] = { ...d, priceMultiplier: parseFloat(e.target.value) || undefined };
                                     setEditDimensions(updated);
                                   }}
-                                  className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-1 text-center font-mono w-full font-bold text-amber-700"
+                                  className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-1 text-center font-mono w-full font-bold text-amber-700"
                                 />
                               </div>
                             </div>
@@ -4491,165 +4491,165 @@ export default function AdminPanel({
               {/* TAB: TAXES & COEFFICIENTS */}
               {activeTab === "taxes" && editPricingRules && editDecPricingRules && (
                 <div className="space-y-6">
-                  <h3 className="font-serif text-base text-capsule-accent font-semibold border-b border-capsule-accent/10 pb-2">Մարժաներ, Զեղչեր և Հավելավճարներ</h3>
+                  <h3 className="font-serif text-base text-[#FF2300] font-semibold border-b border-[#FF2300]/25/10 pb-2">Մարժաներ, Զեղչեր և Հավելավճարներ</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto pr-1 col-span-2">
                     {/* STANDARD RULES */}
-                    <div className="bg-capsule-surf2/20 border border-capsule-accent/10 rounded-2xl p-4 space-y-4">
-                      <h4 className="font-serif font-bold text-sm text-capsule-accent uppercase tracking-wider border-b border-capsule-accent/5 pb-1 col-span-2">Ստանդարտ Բաժիններ (Standard Bags)</h4>
+                    <div className="bg-[#f0f2f5]/20 border border-[#FF2300]/25/10 rounded-2xl p-4 space-y-4">
+                      <h4 className="font-serif font-bold text-sm text-[#FF2300] uppercase tracking-wider border-b border-[#FF2300]/25/5 pb-1 col-span-2">Ստանդարտ Բաժիններ (Standard Bags)</h4>
                       <div className="grid grid-cols-2 gap-3 text-xs col-span-2">
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Markup Coefficient</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Markup Coefficient</label>
                           <input
                             type="number"
                             step="0.01"
                             value={editPricingRules.markup ?? 1.15}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, markup: parseFloat(e.target.value) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Profit Margin Mult</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Profit Margin Mult</label>
                           <input
                             type="number"
                             step="0.01"
                             value={editPricingRules.margin ?? 1.45}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, margin: parseFloat(e.target.value) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Դիզայնի Գին (֏)</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Դիզայնի Գին (֏)</label>
                           <input
                             type="number"
                             value={editPricingRules.desfee ?? 15000}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, desfee: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Մին. MOQ (հատ)</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Մին. MOQ (հատ)</label>
                           <input
                             type="number"
                             value={editPricingRules.minQty ?? 300}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, minQty: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">1/2 Գույն Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">1/2 Գույն Գործակից</label>
                           <input
                             type="number"
                             value={editPricingRules.c2 ?? 48}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, c2: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">CMYK Գույների Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">CMYK Գույների Գործակից</label>
                           <input
                             type="number"
                             value={editPricingRules.c4 ?? 98}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, c4: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Երկկողմանի Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Երկկողմանի Գործակից</label>
                           <input
                             type="number"
                             value={editPricingRules.s2 ?? 58}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, s2: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Թվային Տպ. Mult</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Թվային Տպ. Mult</label>
                           <input
                             type="number"
                             value={editPricingRules.dig ?? 42}
                             onChange={(e) => setEditPricingRules({ ...editPricingRules, dig: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                       </div>
                     </div>
 
                     {/* PREMIUM/DECORATIVE RULES */}
-                    <div className="bg-capsule-surf2/20 border border-capsule-accent/10 rounded-2xl p-4 space-y-4">
-                      <h4 className="font-serif font-bold text-sm text-capsule-accent uppercase tracking-wider border-b border-capsule-accent/5 pb-1">Դեկորատիվ Բաժիններ (Premium Bags)</h4>
+                    <div className="bg-[#f0f2f5]/20 border border-[#FF2300]/25/10 rounded-2xl p-4 space-y-4">
+                      <h4 className="font-serif font-bold text-sm text-[#FF2300] uppercase tracking-wider border-b border-[#FF2300]/25/5 pb-1">Դեկորատիվ Բաժիններ (Premium Bags)</h4>
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Markup Coefficient</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Markup Coefficient</label>
                           <input
                             type="number"
                             step="0.01"
                             value={editDecPricingRules.markup ?? 1.25}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, markup: parseFloat(e.target.value) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Profit Margin Mult</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Profit Margin Mult</label>
                           <input
                             type="number"
                             step="0.01"
                             value={editDecPricingRules.margin ?? 1.60}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, margin: parseFloat(e.target.value) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Դիզայնի Գին (֏)</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Դիզայնի Գին (֏)</label>
                           <input
                             type="number"
                             value={editDecPricingRules.desfee ?? 25000}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, desfee: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Մին. MOQ (հատ)</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Մին. MOQ (հատ)</label>
                           <input
                             type="number"
                             value={editDecPricingRules.minQty ?? 300}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, minQty: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">1/2 Գույն Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">1/2 Գույն Գործակից</label>
                           <input
                             type="number"
                             value={editDecPricingRules.c2 ?? 70}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, c2: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">CMYK Գույների Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">CMYK Գույների Գործակից</label>
                           <input
                             type="number"
                             value={editDecPricingRules.c4 ?? 140}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, c4: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Երկկողմանի Գործակից</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Երկկողմանի Գործակից</label>
                           <input
                             type="number"
                             value={editDecPricingRules.s2 ?? 80}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, s2: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] text-capsule-text-muted uppercase font-bold">Թվային Տպ. Mult</label>
+                          <label className="block text-[10px] text-[#727784] uppercase font-bold">Թվային Տպ. Mult</label>
                           <input
                             type="number"
                             value={editDecPricingRules.dig ?? 65}
                             onChange={(e) => setEditDecPricingRules({ ...editDecPricingRules, dig: parseInt(e.target.value, 10) || 0 })}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-2 px-3 outline-none font-semibold font-mono"
                           />
                         </div>
                       </div>
@@ -4661,8 +4661,8 @@ export default function AdminPanel({
               {/* TAB: PRINTING METHODS */}
               {activeTab === "printing" && editPrintingMethods && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b border-capsule-accent/10 pb-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Տպագրական Մեթոդներ</h3>
+                  <div className="flex justify-between items-center border-b border-[#FF2300]/25/10 pb-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Տպագրական Մեթոդներ</h3>
                     <button
                       type="button"
                       onClick={() => {
@@ -4678,14 +4678,14 @@ export default function AdminPanel({
                         };
                         setEditPrintingMethods([...editPrintingMethods, newMethodObj]);
                       }}
-                      className="bg-capsule-accent text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer select-none"
+                      className="bg-[#FF2300] text-capsule-surf px-3 py-1 rounded-lg text-xs font-bold uppercase cursor-pointer select-none"
                     >
                       + Նոր Մեթոդ
                     </button>
                   </div>
                   <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
                     {editPrintingMethods.map((m, idx) => (
-                      <div key={m.id} className="bg-capsule-surf2/40 border border-capsule-accent/10 p-4 rounded-xl space-y-3">
+                      <div key={m.id} className="bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 p-4 rounded-xl space-y-3">
                         <div className="flex justify-between items-center">
                           <input
                             type="text"
@@ -4695,10 +4695,10 @@ export default function AdminPanel({
                               updated[idx] = { ...m, name: e.target.value };
                               setEditPrintingMethods(updated);
                             }}
-                            className="bg-transparent border-none outline-none font-bold text-xs text-capsule-dark flex-1 font-sans border-b border-capsule-accent/10 py-1"
+                            className="bg-transparent border-none outline-none font-bold text-xs text-[#1a1c1d] flex-1 font-sans border-b border-[#FF2300]/25/10 py-1"
                           />
                           <div className="flex items-center gap-3 ml-2 text-xs">
-                            <label className="text-[10px] text-capsule-text-secondary font-bold uppercase flex items-center gap-1 cursor-pointer select-none">
+                            <label className="text-[10px] text-[#414753] font-bold uppercase flex items-center gap-1 cursor-pointer select-none">
                               <input
                                 type="checkbox"
                                 checked={m.active}
@@ -4723,7 +4723,7 @@ export default function AdminPanel({
                         
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Նվազագույն Քանակ (MOQ)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Նվազագույն Քանակ (MOQ)</span>
                             <input
                               type="number"
                               value={m.minQty}
@@ -4732,11 +4732,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...m, minQty: parseInt(e.target.value, 10) || 0 };
                                 setEditPrintingMethods(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Մեքենայի Կարգաբերում (Setup ֏)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Մեքենայի Կարգաբերում (Setup ֏)</span>
                             <input
                               type="number"
                               value={m.setupCost}
@@ -4745,11 +4745,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...m, setupCost: parseInt(e.target.value, 10) || 0 };
                                 setEditPrintingMethods(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Մեկ հատի գին (֏)</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Մեկ հատի գին (֏)</span>
                             <input
                               type="number"
                               value={m.pricePerUnit}
@@ -4758,11 +4758,11 @@ export default function AdminPanel({
                                 updated[idx] = { ...m, pricePerUnit: parseInt(e.target.value, 10) || 0 };
                                 setEditPrintingMethods(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
                             />
                           </div>
                           <div>
-                            <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Գործակից / Mult.</span>
+                            <span className="text-[9px] text-[#727784] uppercase font-bold block">Գործակից / Mult.</span>
                             <input
                               type="number"
                               step="0.05"
@@ -4772,18 +4772,18 @@ export default function AdminPanel({
                                 updated[idx] = { ...m, priceMultiplier: parseFloat(e.target.value) || 1.0 };
                                 setEditPrintingMethods(updated);
                               }}
-                              className="bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
+                              className="bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 w-full font-mono text-center font-bold"
                             />
                           </div>
                         </div>
                         
                         <div className="text-[10px] space-y-1">
-                          <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Թույլատրելի Բաժիններ</span>
+                          <span className="text-[9px] text-[#727784] uppercase font-bold block">Թույլատրելի Բաժիններ</span>
                           <div className="flex gap-4">
                             {["bags", "boxes"].map((catId) => {
                               const hasCat = (m.allowedCategories || []).includes(catId);
                               return (
-                                <label key={catId} className="flex items-center gap-1.5 font-semibold text-capsule-dark hover:text-capsule-accent cursor-pointer select-none">
+                                <label key={catId} className="flex items-center gap-1.5 font-semibold text-[#1a1c1d] hover:text-[#FF2300] cursor-pointer select-none">
                                   <input
                                     type="checkbox"
                                     checked={hasCat}
@@ -4806,7 +4806,7 @@ export default function AdminPanel({
 
                         {/* Optional Warning Message field */}
                         <div className="text-[10px] space-y-1">
-                          <span className="text-[9px] text-capsule-text-muted uppercase font-bold block">Սահմանափակման / Զգուշացման Հաղորդագրություն (Warning Message)</span>
+                          <span className="text-[9px] text-[#727784] uppercase font-bold block">Սահմանափակման / Զգուշացման Հաղորդագրություն (Warning Message)</span>
                           <input
                             type="text"
                             value={m.warningMessage || ""}
@@ -4815,7 +4815,7 @@ export default function AdminPanel({
                               updated[idx] = { ...m, warningMessage: e.target.value };
                               setEditPrintingMethods(updated);
                             }}
-                            className="w-full bg-capsule-surf border border-capsule-accent/10 rounded py-1 px-2.5 font-semibold outline-none"
+                            className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded py-1 px-2.5 font-semibold outline-none"
                             placeholder="Օրինակ՝ Օֆսեթ տպագրության համար նվազագույն քանակը 300 հատ է:"
                           />
                         </div>
@@ -4828,14 +4828,14 @@ export default function AdminPanel({
               {/* TAB: SITE TEXTS & TRANSLATIONS */}
               {activeTab === "sitetexts" && (
                 <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-capsule-accent/10 pb-2 gap-2">
-                    <h3 className="font-serif text-base text-capsule-accent font-semibold">Ինտերֆեյսային Տեքստեր և Թարգմանություններ</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-[#FF2300]/25/10 pb-2 gap-2">
+                    <h3 className="font-serif text-base text-[#FF2300] font-semibold">Ինտերֆեյսային Տեքստեր և Թարգմանություններ</h3>
                     <input
                       type="text"
                       placeholder="Որոնել բանալի կամ տեքստ..."
                       value={siteTextSearch}
                       onChange={(e) => setSiteTextSearch(e.target.value)}
-                      className="bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1 px-3 text-xs w-full sm:w-64 tracking-tight outline-none"
+                      className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1 px-3 text-xs w-full sm:w-64 tracking-tight outline-none"
                     />
                   </div>
                   
@@ -4846,8 +4846,8 @@ export default function AdminPanel({
                         editSiteTexts[k].toLowerCase().includes(siteTextSearch.toLowerCase())
                       )
                       .map((key) => (
-                        <div key={key} className="bg-capsule-surf2/30 border border-capsule-accent/10 p-3 rounded-xl grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
-                          <div className="md:col-span-4 font-mono font-bold text-[10px] text-capsule-accent py-1.5 break-all">
+                        <div key={key} className="bg-[#f0f2f5]/30 border border-[#FF2300]/25/10 p-3 rounded-xl grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+                          <div className="md:col-span-4 font-mono font-bold text-[10px] text-[#FF2300] py-1.5 break-all">
                             {key}
                           </div>
                           <div className="md:col-span-8">
@@ -4859,7 +4859,7 @@ export default function AdminPanel({
                                 updated[key] = e.target.value;
                                 setEditSiteTexts(updated);
                               }}
-                              className="w-full bg-capsule-surf border border-capsule-accent/10 rounded-lg py-1.5 px-3 text-xs text-capsule-dark font-semibold outline-none resize-y min-h-[36px]"
+                              className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/10 rounded-lg py-1.5 px-3 text-xs text-[#1a1c1d] font-semibold outline-none resize-y min-h-[36px]"
                             />
                           </div>
                         </div>
@@ -4871,10 +4871,10 @@ export default function AdminPanel({
             </div>
 
             {/* Bottom Actions banner for admin edits */}
-            <div className="px-4 py-2 bg-[#FAF9F5] border-t border-capsule-accent/10 flex justify-end gap-2 shrink-0 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+            <div className="px-4 py-2 bg-[#FAF9F5] border-t border-[#FF2300]/25/10 flex justify-end gap-2 shrink-0 z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
               <button 
                 onClick={onReload}
-                className="border border-capsule-accent/15 hover:bg-capsule-accent/5 text-capsule-accent text-[10px] px-3 py-1 rounded-md font-bold uppercase tracking-wider cursor-pointer transition-all active:scale-95 duration-150"
+                className="border border-[#FF2300]/25/15 hover:bg-[#FF2300]/5 text-[#FF2300] text-[10px] px-3 py-1 rounded-md font-bold uppercase tracking-wider cursor-pointer transition-all active:scale-95 duration-150"
               >
                 Չեղարկել
               </button>

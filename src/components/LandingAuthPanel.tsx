@@ -56,7 +56,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
         /* ==================== STYLE 1: LOGGED IN VIEW ==================== */
         <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto bg-[#EBF0F6] rounded-[2.5rem] p-8 sm:p-10 shadow-[12px_12px_24px_#B2B9C4,_-12px_-12px_24px_#FFFFFF] transition-all duration-300">
           <div className="text-center w-full space-y-1">
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-capsule-accent">Active Session</span>
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#FF2300]">Active Session</span>
             <h2 className="text-xl sm:text-2xl font-black text-[#5A6578] tracking-tight">
               {locale === "hy" ? "Բարի գալուստ" : locale === "ru" ? "Добро пожаловать" : "Welcome Back"}!
             </h2>
@@ -67,7 +67,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
 
           {partnerDiscount > 0 && (
             <div className="w-full p-4 bg-[#EBF0F6] rounded-2xl flex flex-col items-center justify-center text-center shadow-[inset_4px_4px_8px_#B2B9C4,_inset_-4px_-4px_8px_#FFFFFF]">
-              <span className="text-[10px] uppercase font-bold text-capsule-accent mb-0.5 tracking-widest">Partner Discount Code Active</span>
+              <span className="text-[10px] uppercase font-bold text-[#FF2300] mb-0.5 tracking-widest">Partner Discount Code Active</span>
               <span className="text-xs sm:text-sm font-bold text-[#5A6578]">15% automatic discount applied on all layouts</span>
             </div>
           )}
@@ -75,9 +75,9 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
           <button
             type="button"
             onClick={() => setIsClientCabinetOpen(true)}
-            className="group w-full flex items-center justify-center gap-2.5 bg-[#EBF0F6] rounded-full py-4 text-capsule-accent font-sans font-bold text-xs sm:text-[13px] tracking-widest uppercase shadow-[6px_6px_12px_#B2B9C4,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#B2B9C4,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#B2B9C4,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none"
+            className="group w-full flex items-center justify-center gap-2.5 bg-[#EBF0F6] rounded-full py-4 text-[#FF2300] font-sans font-bold text-xs sm:text-[13px] tracking-widest uppercase shadow-[6px_6px_12px_#B2B9C4,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#B2B9C4,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#B2B9C4,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none"
           >
-            <User size={13} className="text-capsule-accent" />
+            <User size={13} className="text-[#FF2300]" />
             <span>{locale === "hy" ? "Բացել Լիչնի Կաբինետը" : locale === "ru" ? "Открыть Личный Кабинет" : "Open Personal Cabinet"}</span>
           </button>
 
@@ -92,7 +92,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
               setShowBookmarkToast(true);
               setTimeout(() => setShowBookmarkToast(false), 2000);
             }}
-            className="text-xs font-bold text-[#7C8797] hover:text-capsule-accent hover:underline cursor-pointer transition-colors"
+            className="text-xs font-bold text-[#7C8797] hover:text-[#FF2300] hover:underline cursor-pointer transition-colors"
           >
             {locale === "hy" ? "Դուրս գալ" : locale === "ru" ? "Выйти" : "Sign Out"}
           </button>
@@ -109,7 +109,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
               <button 
                 type="button" 
                 onClick={() => { setLandingAuthMode("login"); setSignUpSuccessMessage(""); }}
-                className={`uppercase transition-all duration-200 cursor-pointer ${landingAuthMode === "login" ? "text-capsule-accent scale-105 font-black" : "hover:text-[#5A6578]"}`}
+                className={`uppercase transition-all duration-200 cursor-pointer ${landingAuthMode === "login" ? "text-[#FF2300] scale-105 font-black" : "hover:text-[#5A6578]"}`}
               >
                 {locale === "hy" ? "Մուտք" : locale === "ru" ? "Вход" : "Log In"}
               </button>
@@ -117,7 +117,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
               <button 
                 type="button" 
                 onClick={() => { setLandingAuthMode("signup"); setSignUpSuccessMessage(""); }}
-                className={`uppercase transition-all duration-200 cursor-pointer ${landingAuthMode === "signup" ? "text-capsule-accent scale-105 font-black" : "hover:text-[#5A6578]"}`}
+                className={`uppercase transition-all duration-200 cursor-pointer ${landingAuthMode === "signup" ? "text-[#FF2300] scale-105 font-black" : "hover:text-[#5A6578]"}`}
               >
                 {locale === "hy" ? "Գրանցում" : locale === "ru" ? "Регистрация" : "Sign Up"}
               </button>
@@ -132,7 +132,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                     <span className="relative">
                       UP
                       <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                        <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                         </svg>
                       </span>
@@ -144,7 +144,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                     <span className="relative">
                       IN
                       <span className="absolute -bottom-2 right-0 left-0 flex justify-center">
-                        <svg className="w-6 h-2 text-capsule-accent" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-6 h-2 text-[#FF2300]" viewBox="0 0 20 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M2 1.5C5 4.5 15 4.5 18 1.5" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
                         </svg>
                       </span>
@@ -228,7 +228,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                   onClick={() => setLandingAuthRole("Client")}
                   className={`py-3 px-4 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 ${
                     landingAuthRole === "Client"
-                      ? "bg-[#EBF0F6] text-capsule-accent shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] font-black"
+                      ? "bg-[#EBF0F6] text-[#FF2300] shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] font-black"
                       : "bg-[#EBF0F6] text-[#7C8797] shadow-[4px_4px_8px_#B2B9C4,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
                   }`}
                 >
@@ -239,7 +239,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                   onClick={() => setLandingAuthRole("Partner")}
                   className={`py-3 px-4 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 ${
                     landingAuthRole === "Partner"
-                      ? "bg-[#EBF0F6] text-capsule-accent shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] font-black"
+                      ? "bg-[#EBF0F6] text-[#FF2300] shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] font-black"
                       : "bg-[#EBF0F6] text-[#7C8797] shadow-[4px_4px_8px_#B2B9C4,_-4px_-4px_8px_#FFFFFF] hover:text-[#5A6578]"
                   }`}
                 >
@@ -256,7 +256,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="w-full rounded-2xl p-3.5 bg-[#EBF0F6] border-none text-capsule-accent text-[11px] font-semibold text-center leading-normal shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] break-words"
+                className="w-full rounded-2xl p-3.5 bg-[#EBF0F6] border-none text-[#FF2300] text-[11px] font-semibold text-center leading-normal shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF] break-words"
               >
                 {signUpSuccessMessage}
               </motion.div>
@@ -321,9 +321,9 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                   setLandingAuthLoading(false);
                 }
               }}
-              className="group w-full flex items-center justify-center gap-2.5 bg-[#EBF0F6] rounded-full py-4 text-capsule-accent font-sans font-bold text-sm tracking-wide shadow-[6px_6px_12px_#B2B9C4,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#B2B9C4,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#B2B9C4,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
+              className="group w-full flex items-center justify-center gap-2.5 bg-[#EBF0F6] rounded-full py-4 text-[#FF2300] font-sans font-bold text-sm tracking-wide shadow-[6px_6px_12px_#B2B9C4,_-6px_-6px_12px_#FFFFFF] hover:shadow-[7px_7px_14px_#B2B9C4,_-7px_-7px_14px_#FFFFFF] active:shadow-[inset_4px_4px_8px_#B2B9C4,_inset_-4px_-4px_8px_#FFFFFF] active:scale-[0.98] transition-all duration-300 cursor-pointer select-none disabled:opacity-40"
             >
-              <Lock size={14} className="text-capsule-accent stroke-[2.5]" />
+              <Lock size={14} className="text-[#FF2300] stroke-[2.5]" />
               <span>
                 {landingAuthLoading ? (locale === "hy" ? "Խնդրում ենք սպասել..." : "Please wait...") : (landingAuthMode === "login" ? "Log in" : "Sign Up")}
               </span>
@@ -359,7 +359,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
               title="Bookmark Current Specifications"
             >
               <Bookmark size={16} strokeWidth={2.2} className="group-hover:scale-110 transition-transform duration-300" />
-              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-capsule-accent text-white font-sans font-black text-[9px] flex items-center justify-center border border-white shadow-sm">
+              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FF2300] text-white font-sans font-black text-[9px] flex items-center justify-center border border-white shadow-sm">
                 {savedItemsCount}
               </span>
             </button>
@@ -369,12 +369,12 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
               onClick={() => setNeumorphicSettingsOpen(!neumorphicSettingsOpen)}
               className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-[#EBF0F6] border-none transition-all duration-300 cursor-pointer ${
                 neumorphicSettingsOpen
-                  ? "text-capsule-accent shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF]"
+                  ? "text-[#FF2300] shadow-[inset_3px_3px_6px_#B2B9C4,_inset_-3px_-3px_6px_#FFFFFF]"
                   : "text-[#7C8797] hover:text-[#5A6578] shadow-[5px_5px_10px_#B2B9C4,_-5px_-5px_10px_#FFFFFF] hover:shadow-[6px_6px_12px_#B2B9C4,_-6px_-6px_12px_#FFFFFF] active:shadow-[inset_3px_3px_6px_#B2B9C4,inset_-3px_-3px_6px_#FFFFFF] active:scale-[0.96]"
               }`}
               title="Preferences Settings"
             >
-              <Settings size={16} strokeWidth={2.2} className={neumorphicSettingsOpen ? "animate-spin-slow text-capsule-accent" : ""} />
+              <Settings size={16} strokeWidth={2.2} className={neumorphicSettingsOpen ? "animate-spin-slow text-[#FF2300]" : ""} />
             </button>
           </div>
 
@@ -398,7 +398,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                     onClick={() => setNeumorphicVolume(!neumorphicVolume)}
                     className={`w-8 h-8 rounded-xl flex items-center justify-center bg-[#EBF0F6] border-none transition-all cursor-pointer ${
                       neumorphicVolume
-                        ? "text-capsule-accent shadow-[3px_3px_6px_#B2B9C4,_-3px_-3px_6px_#FFFFFF]"
+                        ? "text-[#FF2300] shadow-[3px_3px_6px_#B2B9C4,_-3px_-3px_6px_#FFFFFF]"
                         : "text-[#7C8797] shadow-[inset_2px_2px_4px_#B2B9C4,_inset_-2px_-2px_4px_#FFFFFF]"
                     }`}
                   >
@@ -419,7 +419,7 @@ export const LandingAuthPanel: React.FC<LandingAuthPanelProps> = ({
                       setShowBookmarkToast(true);
                       setTimeout(() => setShowBookmarkToast(false), 1500);
                     }}
-                    className="px-3 py-1.5 text-[9px] uppercase font-black tracking-wider bg-[#EBF0F6] text-[#7C8797] rounded-lg shadow-[2px_2px_4px_#B2B9C4,_-2px_-2px_4px_#FFFFFF] border border-white hover:text-capsule-accent active:scale-95 transition-all cursor-pointer"
+                    className="px-3 py-1.5 text-[9px] uppercase font-black tracking-wider bg-[#EBF0F6] text-[#7C8797] rounded-lg shadow-[2px_2px_4px_#B2B9C4,_-2px_-2px_4px_#FFFFFF] border border-white hover:text-[#FF2300] active:scale-95 transition-all cursor-pointer"
                   >
                     Clear
                   </button>

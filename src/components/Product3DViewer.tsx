@@ -2298,124 +2298,164 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({
   ];
 
   return (
-    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-5 shadow-sm space-y-4 select-none relative overflow-hidden transition-all duration-300">
+    <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] space-y-5 select-none relative overflow-hidden transition-all duration-300">
       
-      {/* Interactive live viewport controls / Header accordion dropdown toggle */}
-      <div 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center border-b border-capsule-accent/5 pb-2 cursor-pointer hover:opacity-90 select-none group/hdr"
-      >
+      {/* Interactive live viewport controls / Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-100 pb-3 gap-2">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-capsule-accent/5 text-capsule-accent">
-            <Layers size={14} className={`text-capsule-accent ${isOpen ? "animate-pulse" : ""}`} />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[10px] tracking-widest font-bold uppercase text-capsule-text-muted">{t("model3d.title", "Ինտերակտիվ 3D Մոդել (Live)")}</span>
-            <span className="text-[8px] text-capsule-accent/70 font-semibold uppercase">{isOpen ? t("model3d.click_to_close", "Սեղմեք փակելու համար") : t("model3d.click_to_open", "Սեղմեք բացելու համար")}</span>
-          </div>
-          <ChevronDown 
-            size={14} 
-            className={`text-capsule-accent transition-transform duration-300 ml-1 ${isOpen ? "rotate-180" : ""}`} 
-          />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF2300] animate-pulse" />
+          <span className="text-[11px] tracking-widest font-extrabold uppercase text-[#1a1c1d] font-sans">
+            {t("model3d.title", "Ինտերակտիվ 3D Մոդել (Live)")}
+          </span>
         </div>
         
-        {isOpen && (
-          <div 
-            onClick={(e) => e.stopPropagation()} 
-            className="flex items-center gap-1"
+        <div className="flex items-center gap-1.5 self-end sm:self-auto">
+          <button
+            type="button"
+            onClick={() => setAutoRotate(!autoRotate)}
+            title={t("model3d.rotate_mode", "Պտտման Ռեժիմ")}
+            className={`px-3 py-1.5 rounded-full border text-[10px] font-bold cursor-pointer transition-all duration-300 flex items-center gap-1 shadow-sm ${
+              autoRotate 
+                ? "bg-[#FF2300] border-[#FF2300] text-white" 
+                : "bg-[#f0f2f5] border-white/60 shadow-[2px_2px_5px_#d1d9e6,_-2px_-2px_5px_#FFFFFF] text-[#1a1c1d]"
+            }`}
           >
-            <button
-              onClick={() => setAutoRotate(!autoRotate)}
-              title={t("model3d.rotate_mode", "Պտտման Ռեժիմ")}
-              className={`p-1.5 rounded-lg border text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 ${
-                autoRotate 
-                  ? "bg-capsule-accent/10 border-capsule-accent/30 text-capsule-accent" 
-                  : "bg-capsule-surf2/40 border-capsule-accent/10 text-capsule-text-secondary"
-              }`}
-            >
-              <RotateCw size={10} className={autoRotate ? "animate-spin" : ""} />
-              <span className="hidden sm:inline">{t("model3d.rotate", "Պտտում")}</span>
-            </button>
+            <RotateCw size={10} className={autoRotate ? "animate-spin" : ""} />
+            <span>{t("model3d.rotate", "Պտտում")}</span>
+          </button>
 
-            <button
-              onClick={() => setShowGuidelines(!showGuidelines)}
-              title={t("model3d.guidelines_mode", "Չափման Գծեր")}
-              className={`p-1.5 rounded-lg border text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 ${
-                showGuidelines
-                  ? "bg-capsule-accent/10 border-capsule-accent/30 text-capsule-accent"
-                  : "bg-capsule-surf2/40 border-capsule-accent/10 text-capsule-text-secondary"
-              }`}
-            >
-              <Info size={10} />
-              <span className="hidden sm:inline">{t("model3d.guidelines", "Գծեր")}</span>
-            </button>
-
-            <button
-              onClick={() => setCompareSize(!compareSize)}
-              title={t("model3d.compare_size", "Չափի Համեմատում")}
-              className={`p-1.5 rounded-lg border text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 ${
-                compareSize
-                  ? "bg-capsule-accent/10 border-capsule-accent/30 text-capsule-accent"
-                  : "bg-capsule-surf2/40 border-capsule-accent/10 text-capsule-text-secondary"
-              }`}
-            >
-              <Smartphone size={10} />
-              <span className="hidden sm:inline">{t("model3d.compare", "Համեմատել")}</span>
-            </button>
-
-            {(productType === "bags") && (
-              <button
-                onClick={() => setHandlePose(handlePose === "upright" ? "draped" : "upright")}
-                title={t("model3d.handle_pose", "Բռնակի դիրք")}
-                className="p-1.5 rounded-lg border text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 bg-capsule-surf2/40 border-capsule-accent/10 hover:bg-capsule-accent/5 hover:text-capsule-accent hover:border-capsule-accent/20 text-capsule-text-secondary"
-              >
-                <Sliders size={10} />
-                <span className="hidden sm:inline">{handlePose === "upright" ? t("model3d.upright", "Աղեղնաձև") : t("model3d.draped", "Կախված")}</span>
-              </button>
-            )}
-          </div>
-        )}
+          <button
+            type="button"
+            onClick={() => setShowGuidelines(!showGuidelines)}
+            title={t("model3d.guidelines_mode", "Չափման Գծեր")}
+            className={`px-3 py-1.5 rounded-full border text-[10px] font-bold cursor-pointer transition-all duration-300 flex items-center gap-1 shadow-sm ${
+              showGuidelines
+                ? "bg-[#FF2300] border-[#FF2300] text-white"
+                : "bg-[#f0f2f5] border-white/60 shadow-[2px_2px_5px_#d1d9e6,_-2px_-2px_5px_#FFFFFF] text-[#1a1c1d]"
+            }`}
+          >
+            <Info size={10} />
+            <span>{t("model3d.guidelines", "Չափերի Ուղեցույցներ")}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Collapsible Content Area */}
-      {isOpen && (
-        <div className="space-y-4 animate-fadeIn transition-all duration-300">
-          {/* WebGL Canvas viewport wrapper */}
-          <div className="relative group rounded-3xl overflow-hidden bg-gradient-to-b from-[#FEFDFB] via-[#FAF8F5] to-[#EAE6DD] border border-[#1A3F25]/10 shadow-[0_12px_45px_-12px_rgba(26,63,37,0.12)] transition-all duration-300 hover:border-[#1A3F25]/20 hover:shadow-[0_20px_50px_-16px_rgba(26,63,37,0.22)]">
-            
-            {/* Helper instruction */}
-            <div className="absolute top-3 left-3 bg-capsule-surf/85 backdrop-blur-md border border-[#1A3F25]/10 rounded-full px-2.5 py-1 text-[9px] font-bold text-capsule-text-muted flex items-center gap-1 pointer-events-none select-none z-10">
-              <Eye size={10} className="text-[#1A3F25]" />
-              <span>{t("model3d.rotate_mouse", "Պտտեք մկնիկով")}</span>
-            </div>
-
-            {(!w || !h) ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-capsule-surf2/90 backdrop-blur-sm space-y-3 select-none z-20">
-                <div className="p-3 bg-capsule-accent/5 rounded-full text-capsule-accent border border-capsule-accent/10">
-                  <Sparkles size={24} className="animate-pulse text-capsule-accent" />
-                </div>
-                <div className="text-[11px] font-bold text-capsule-accent uppercase tracking-wider">{t("model3d.phy_modeling", "3D Ֆիզիկական Մոդելավորում")}</div>
-                <p className="text-[10px] sm:text-xs leading-relaxed max-w-[260px] text-capsule-text-secondary mx-auto">
-                  {t("model3d.select_fields_error", "Խնդրում ենք ընտրել բոլոր պարտադիր դաշտերը՝ ինտերակտիվ 3D նախադիտումը բեռնելու համար։")}
-                </p>
-              </div>
-            ) : null}
-
-            <div 
-              ref={containerRef} 
-              className={`w-full h-[320px] xs:h-[360px] sm:h-[420px] md:h-[480px] lg:h-[500px] cursor-grab active:cursor-grabbing transform duration-300 ${(!w || !h) ? 'opacity-0 pointer-events-none' : ''}`}
-            />
+      {/* Content Area */}
+      <div className="space-y-4 animate-fadeIn transition-all duration-300">
+        {/* WebGL Canvas viewport wrapper */}
+        <div className="relative group rounded-3xl overflow-hidden bg-[#f0f2f5] border border-white/60 shadow-[inset_4px_4px_10px_#d1d9e6,_inset_-4px_-4px_10px_#FFFFFF] transition-all duration-300">
+          
+          {/* Helper instruction */}
+          <div className="absolute top-3 left-3 bg-[#f0f2f5]/85 backdrop-blur-md border border-[#1A3F25]/10 rounded-full px-2.5 py-1 text-[9px] font-bold text-[#727784] flex items-center gap-1 pointer-events-none select-none z-10">
+            <Eye size={10} className="text-[#1A3F25]" />
+            <span>{t("model3d.rotate_mouse", "Պտտեք մկնիկով")}</span>
           </div>
 
-          {/* CUSTOM COLOR PALETTE TO TRY ON MODEL */}
-          <div className="space-y-2 select-none">
-            <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider">{t("model3d.test_color", "Փորձարկեք Գույնը (3D Mockup Color)")}</span>
-            <div className="flex flex-wrap gap-2 items-center">
-              
-              {/* Custom Color Selector Container - Gorgeous interactive color wheel trigger & manual hex validator */}
-              <div className="flex items-center gap-1.5 bg-capsule-surf2/45 hover:bg-capsule-surf2/70 rounded-full px-2 py-0.5 border border-capsule-accent/15 transition-all shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-                <label className="relative flex items-center gap-1 cursor-pointer text-[10px] font-bold text-capsule-text-secondary select-none">
-                  {/* Invisible native picker spanning above visual badge */}
+          {(!w || !h) ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[#f0f2f5]/90 backdrop-blur-sm space-y-3 select-none z-20">
+              <div className="p-3 bg-[#FF2300]/5 rounded-full text-[#FF2300] border border-[#FF2300]/25/10">
+                <Sparkles size={24} className="animate-pulse text-[#FF2300]" />
+              </div>
+              <div className="text-[11px] font-bold text-[#FF2300] uppercase tracking-wider">{t("model3d.phy_modeling", "3D Ֆիզիկական Մոդելավորում")}</div>
+              <p className="text-[10px] sm:text-xs leading-relaxed max-w-[260px] text-[#414753] mx-auto">
+                {t("model3d.select_fields_error", "Խնդրում ենք ընտրել բոլոր պարտադիր դաշտերը՝ ինտերակտիվ 3D նախադիտումը բեռնելու համար։")}
+              </p>
+            </div>
+          ) : null}
+
+          <div 
+            ref={containerRef} 
+            className={`w-full h-[320px] xs:h-[360px] sm:h-[420px] md:h-[480px] lg:h-[500px] cursor-grab active:cursor-grabbing transform duration-300 ${(!w || !h) ? 'opacity-0 pointer-events-none' : ''}`}
+          />
+
+          {/* Floating Controls Overlay (matching photo bottom right) */}
+          {w && h && (
+            <div className="absolute right-4 bottom-4 flex flex-col gap-2.5 z-10">
+              <button 
+                type="button" 
+                onClick={() => {
+                  // Standard zoom trigger via custom key event or zoom-in state if desired
+                }}
+                className="w-8 h-8 rounded-full bg-white shadow-[2px_2px_5px_#d1d9e6,_-2px_-2px_5px_#FFFFFF] border border-white/60 flex items-center justify-center text-[#1a1c1d] hover:scale-110 active:scale-95 transition-transform"
+              >
+                <Search size={14} />
+              </button>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setAutoRotate(!autoRotate);
+                }}
+                className="w-8 h-8 rounded-full bg-white shadow-[2px_2px_5px_#d1d9e6,_-2px_-2px_5px_#FFFFFF] border border-white/60 flex items-center justify-center text-[#1a1c1d] hover:scale-110 active:scale-95 transition-transform"
+              >
+                <RotateCw size={14} className={autoRotate ? "animate-spin" : ""} />
+              </button>
+              <button 
+                type="button" 
+                onClick={() => {
+                  if (containerRef.current) {
+                    if (!document.fullscreenElement) {
+                      containerRef.current.requestFullscreen().catch(() => {});
+                    } else {
+                      document.exitFullscreen().catch(() => {});
+                    }
+                  }
+                }}
+                className="w-8 h-8 rounded-full bg-white shadow-[2px_2px_5px_#d1d9e6,_-2px_-2px_5px_#FFFFFF] border border-white/60 flex items-center justify-center text-[#1a1c1d] hover:scale-110 active:scale-95 transition-transform"
+              >
+                <Expand size={14} />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* CUSTOM COLOR PALETTE TO TRY ON MODEL */}
+        <div className="space-y-2 select-none">
+          <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider">{t("model3d.test_color", "Փորձարկեք Գույնը (3D Mockup Color)")}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            
+            {/* Preset swatches (on the LEFT) */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {colorsPalette.map((col, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setBagBaseColor(col.hex)}
+                  title={col.label}
+                  className={`w-6 h-6 rounded-full border transition-all cursor-pointer relative flex items-center justify-center ${
+                    (bagBaseColor === col.hex || (col.hex === "" && !bagBaseColor))
+                      ? "ring-2 ring-[#FF2300] border-white scale-110 shadow-md"
+                      : "border-[#FF2300]/10 hover:scale-105"
+                  }`}
+                  style={{ backgroundColor: col.hex || "#FAF8F5" }}
+                >
+                  {(bagBaseColor === col.hex || (col.hex === "" && !bagBaseColor)) && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" style={{ backgroundColor: col.hex === "" ? "#1A3F25" : "#FFF" }} />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Custom Color Selector Container - Gorgeous checkbox-like design (on the RIGHT) */}
+            <div className="flex items-center gap-2">
+              <label className="relative flex items-center gap-2 cursor-pointer text-[10px] font-bold text-[#1a1c1d] select-none">
+                <input 
+                  type="checkbox"
+                  checked={!!bagBaseColor}
+                  onChange={() => {
+                    if (bagBaseColor) {
+                      setBagBaseColor("");
+                    } else {
+                      setBagBaseColor("#FFFFFF");
+                    }
+                  }}
+                  className="w-4 h-4 rounded border-gray-300 text-[#FF2300] focus:ring-[#FF2300] cursor-pointer"
+                />
+                <span className="text-[10px] font-extrabold text-[#727784] tracking-wider uppercase">{t("model3d.custom_hex", "Անհատական HEX՝")}</span>
+              </label>
+
+              {/* Hex Text input & Color circular preview swatch adjacent */}
+              <div className="flex items-center gap-1.5 bg-[#f0f2f5]/80 hover:bg-[#f0f2f5] rounded-full px-2 py-1 border border-white/60 shadow-[inset_1px_1px_3px_#d1d9e6,_inset_-1px_-1px_3px_#FFFFFF] transition-all">
+                <label className="relative flex items-center cursor-pointer">
                   <input 
                     type="color" 
                     value={bagBaseColor ? (bagBaseColor.startsWith("#") && bagBaseColor.length === 7 ? bagBaseColor : "#FAF8F5") : "#FAF8F5"}
@@ -2423,9 +2463,54 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({
                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                   />
                   <span 
+                    className="w-3.5 h-3.5 rounded-full border border-white shadow-sm transition-transform duration-200 hover:scale-110" 
+                    style={{ backgroundColor: bagBaseColor || "#FAF8F5" }} 
+                  />
+                </label>
+                <div className="flex items-center px-1">
+                  <span className="text-[10px] text-gray-400 font-mono font-bold select-none">#</span>
+                  <input 
+                    type="text"
+                    maxLength={6}
+                    placeholder="FFFFFF"
+                    value={bagBaseColor ? bagBaseColor.replace("#", "") : ""}
+                    onChange={(e) => {
+                      const cleanVal = e.target.value.replace(/[^0-9A-Fa-f]/g, "");
+                      setBagBaseColor(cleanVal ? "#" + cleanVal : "");
+                    }}
+                    className="w-[54px] bg-transparent text-[10px] font-mono text-[#1a1c1d] outline-none font-bold placeholder-gray-300 uppercase tracking-wide"
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* CUSTOM HANDLE COLOR PALETTE */}
+        {(productType === "bags" || productType === "boxes") && (
+          <div className="space-y-2 select-none border-t border-gray-100 pt-3">
+            <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider">
+              {productType === "boxes" 
+                ? t("model3d.ribbon_color_label", "Ժապավենի / Բռնակի Գույն (Ribbon / Pull Color)") 
+                : t("model3d.handle_color_label", "Բռնակի Գույն (Custom Handle Color)")}
+            </span>
+            <div className="flex flex-wrap gap-1.5 font-sans">
+              
+              {/* Custom Ribbon/Handle Color Picker & HEX Input */}
+              <div className="flex items-center gap-1.5 bg-[#f0f2f5]/45 hover:bg-[#f0f2f5]/70 rounded-full px-2 py-0.5 border border-[#FF2300]/25/15 transition-all shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+                <label className="relative flex items-center gap-1 cursor-pointer text-[10px] font-bold text-[#414753] select-none">
+                  {/* Invisible native picker spanning above visual badge */}
+                  <input 
+                    type="color" 
+                    value={bagHandleColor ? (bagHandleColor.startsWith("#") && bagHandleColor.length === 7 ? bagHandleColor : "#3A2010") : "#3A2010"}
+                    onChange={(e) => setBagHandleColor(e.target.value)}
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                  />
+                  <span 
                     className="w-3.5 h-3.5 rounded-full border border-white shadow-sm flex items-center justify-center overflow-hidden transition-transform duration-200 hover:scale-110 active:scale-95" 
                     style={{ 
-                      backgroundColor: bagBaseColor || "#FAF8F5",
+                      backgroundColor: bagHandleColor || "#3A2010",
                     }} 
                   />
                   <span>{t("model3d.custom_hex", "Անհատական HEX՝")}</span>
@@ -2436,99 +2521,24 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({
                     type="text"
                     maxLength={6}
                     placeholder="FFFFFF"
-                    value={bagBaseColor ? bagBaseColor.replace("#", "") : ""}
+                    value={bagHandleColor ? bagHandleColor.replace("#", "") : ""}
                     onChange={(e) => {
                       const cleanVal = e.target.value.replace(/[^0-9A-Fa-f]/g, "");
                       if (cleanVal.length === 6 || cleanVal.length === 3) {
-                        setBagBaseColor("#" + cleanVal);
+                        setBagHandleColor("#" + cleanVal);
                       } else {
-                        // Keep typing, update temporarily to hex without validation error
-                        setBagBaseColor("#" + cleanVal);
+                        setBagHandleColor("#" + cleanVal);
                       }
                     }}
-                    className="w-[50px] bg-transparent text-[10px] font-mono text-capsule-dark outline-none font-bold placeholder-gray-300 uppercase tracking-wide"
+                    className="w-[50px] bg-transparent text-[10px] font-mono text-[#1a1c1d] outline-none font-bold placeholder-gray-300 uppercase tracking-wide"
                   />
                 </div>
               </div>
 
-              {/* Preset swatches */}
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {colorsPalette.map((col, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setBagBaseColor(col.hex)}
-                    title={col.label}
-                    className={`w-5 h-5 rounded-full border transition-all cursor-pointer relative flex items-center justify-center ${
-                      (bagBaseColor === col.hex || (col.hex === "" && !bagBaseColor))
-                        ? "ring-2 ring-capsule-accent/80 border-white scale-110 shadow-md"
-                        : "border-capsule-accent/20 hover:scale-105"
-                    }`}
-                    style={{ backgroundColor: col.hex || "#FAF8F5" }}
-                  >
-                    {(bagBaseColor === col.hex || (col.hex === "" && !bagBaseColor)) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-capsule-accent" style={{ backgroundColor: col.hex === "" ? "#1A3F25" : "#FFF" }} />
-                    )}
-                  </button>
-                ))}
-              </div>
-
             </div>
           </div>
-
-          {/* CUSTOM HANDLE COLOR PALETTE */}
-          {(productType === "bags" || productType === "boxes") && (
-            <div className="space-y-2 select-none border-t border-capsule-accent/5 pt-3">
-              <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider">
-                {productType === "boxes" 
-                  ? t("model3d.ribbon_color_label", "Ժապավենի / Բռնակի Գույն (Ribbon / Pull Color)") 
-                  : t("model3d.handle_color_label", "Բռնակի Գույն (Custom Handle Color)")}
-              </span>
-              <div className="flex flex-wrap gap-1.5 font-sans">
-                
-                {/* Custom Ribbon/Handle Color Picker & HEX Input */}
-                <div className="flex items-center gap-1.5 bg-capsule-surf2/45 hover:bg-capsule-surf2/70 rounded-full px-2 py-0.5 border border-capsule-accent/15 transition-all shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-                  <label className="relative flex items-center gap-1 cursor-pointer text-[10px] font-bold text-capsule-text-secondary select-none">
-                    {/* Invisible native picker spanning above visual badge */}
-                    <input 
-                      type="color" 
-                      value={bagHandleColor ? (bagHandleColor.startsWith("#") && bagHandleColor.length === 7 ? bagHandleColor : "#3A2010") : "#3A2010"}
-                      onChange={(e) => setBagHandleColor(e.target.value)}
-                      className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
-                    />
-                    <span 
-                      className="w-3.5 h-3.5 rounded-full border border-white shadow-sm flex items-center justify-center overflow-hidden transition-transform duration-200 hover:scale-110 active:scale-95" 
-                      style={{ 
-                        backgroundColor: bagHandleColor || "#3A2010",
-                      }} 
-                    />
-                    <span>{t("model3d.custom_hex", "Անհատական HEX՝")}</span>
-                  </label>
-                  <div className="flex items-center bg-white border border-[#1A3F25]/10 rounded-md px-1 py-0.5 shadow-inner">
-                    <span className="text-[10px] text-[#1A3F25]/40 font-mono font-bold select-none">#</span>
-                    <input 
-                      type="text"
-                      maxLength={6}
-                      placeholder="FFFFFF"
-                      value={bagHandleColor ? bagHandleColor.replace("#", "") : ""}
-                      onChange={(e) => {
-                        const cleanVal = e.target.value.replace(/[^0-9A-Fa-f]/g, "");
-                        if (cleanVal.length === 6 || cleanVal.length === 3) {
-                          setBagHandleColor("#" + cleanVal);
-                        } else {
-                          setBagHandleColor("#" + cleanVal);
-                        }
-                      }}
-                      className="w-[50px] bg-transparent text-[10px] font-mono text-capsule-dark outline-none font-bold placeholder-gray-300 uppercase tracking-wide"
-                    />
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

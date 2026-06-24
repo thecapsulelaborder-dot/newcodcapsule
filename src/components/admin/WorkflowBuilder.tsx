@@ -42,7 +42,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Creation Box */}
-        <form onSubmit={handleCreate} className="lg:col-span-4 bg-[#FAF9F6] p-6 rounded-[2rem] border border-gray-150 space-y-4">
+        <form onSubmit={handleCreate} className="lg:col-span-4 bg-[#f0f2f5] p-6 rounded-[2rem] border border-gray-150 space-y-4">
           <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider">Configure Flow Event</h3>
 
           <div className="space-y-1">
@@ -97,7 +97,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
 
           <div className="space-y-3">
             {workflows.map((wf) => (
-              <div key={wf.id} className="p-4 rounded-2xl bg-[#FAFAF9] border border-gray-150 flex items-center justify-between gap-4">
+              <div key={wf.id} className="p-4 rounded-2xl bg-[#f0f2f5] border border-gray-150 flex items-center justify-between gap-4">
                 <div className="space-y-1 flex-1">
                   <span className="text-xs font-black text-[#1A3F25] block">{wf.name || "Flow Automation Client"}</span>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-gray-400 font-semibold">

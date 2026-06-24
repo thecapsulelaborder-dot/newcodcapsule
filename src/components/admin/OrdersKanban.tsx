@@ -49,7 +49,7 @@ export const OrdersKanban: React.FC<OrdersKanbanProps> = ({
           );
 
           return (
-            <div key={status} className="bg-[#FAF9F6] p-4 rounded-3xl border border-gray-150 flex flex-col min-h-[400px]">
+            <div key={status} className="bg-[#f0f2f5] p-4 rounded-3xl border border-gray-150 flex flex-col min-h-[400px]">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-xs font-black uppercase text-gray-600 tracking-wider">
                   {status}

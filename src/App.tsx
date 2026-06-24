@@ -93,6 +93,10 @@ import { Product3DViewer } from "./components/Product3DViewer";
 import { PaymentMethods } from "./components/PaymentMethods";
 import AIAgentBlock from "./components/AIAgentBlock";
 import EcommerceStore from "./components/EcommerceStore";
+import CapsulePackHome from "./components/CapsulePackHome";
+import AIChatAgentPage from "./components/AIChatAgentPage";
+import AboutUs from "./components/AboutUs";
+import ContactView from "./components/Contact";
 
 import {
   calculateBagsPrice as clientCalculateBagsPrice,
@@ -375,7 +379,7 @@ export default function App() {
   // ── AI ASSISTANT CLIENT STATES ──────────────────────────────────
   const [isAssistantOpen, setIsAssistantOpen] = useState<boolean>(false);
   const [assistantMessages, setAssistantMessages] = useState<{ role: "user" | "assistant"; text: string }[]>([
-    { role: "assistant", text: "Ողջույն! Ես PACKY-ի փաթեթավորման և տպագրության պաշտոնական AI օգնականն եմ։ Կարող եմ Ձեզ խորհրդատվություն տալ տոպրակների, տուփերի, սթիքերների, այցեքարտերի կամ ժապավենների նյութերի, լամինացիայի, չափսերի և տպագրական տեխնիկաների վերաբերյալ։ Ինչպե՞ս կարող եմ օգնել։" }
+    { role: "assistant", text: "Ողջույն! Ես CAPSULE PACK-ի փաթեթավորման և տպագրության պաշտոնական AI օգնականն եմ։ Կարող եմ Ձեզ խորհրդատվություն տալ տոպրակների, տուփերի, սթիքերների, այցեքարտերի կամ ժապավենների նյութերի, լամինացիայի, չափսերի և տպագրական տեխնիկաների վերաբերյալ։ Ինչպե՞ս կարող եմ օգնել։" }
   ]);
   const [assistantInput, setAssistantInput] = useState<string>("");
   const [isAssistantTyping, setIsAssistantTyping] = useState<boolean>(false);
@@ -389,6 +393,7 @@ export default function App() {
   const [activeCurrency, setActiveCurrency] = useState<"AMD" | "USD" | "RUB">("AMD");
   const [isCurrencyMenuOpen, setIsCurrencyMenuOpen] = useState<boolean>(false);
   const [isHeaderSearchOpen, setIsHeaderSearchOpen] = useState<boolean>(false);
+  const [blueprintScale, setBlueprintScale] = useState<number>(87);
   const currencyMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -494,6 +499,7 @@ export default function App() {
   const [gsm, setGsm] = useState<number>(210);
   const [lamination, setLamination] = useState<"matte" | "gloss" | "soft_touch" | "none" | "">("");
   const [handle, setHandle] = useState<"cord" | "ribbon" | "">("");
+  const [handleColor, setHandleColor] = useState<string>("#000000");
   const [ribbonWidthPrice, setRibbonWidthPrice] = useState<number>(55);
   const ribbonWidths = [
     { id: "rw_1_5", widthCm: 1.5, label: "1.5 սմ", price: 55 },
@@ -541,10 +547,13 @@ export default function App() {
       return [];
     }
   });
-  const [currentView, setCurrentView] = useState<"home" | "calculator" | "track" | "ecommerce">(() => {
+  const [currentView, setCurrentView] = useState<"home" | "calculator" | "track" | "ecommerce" | "ai-chat" | "about" | "contact">(() => {
     if (window.location.pathname === "/track-order") return "track";
     if (window.location.pathname === "/calculator") return "calculator";
     if (window.location.pathname === "/shop") return "ecommerce";
+    if (window.location.pathname === "/chat" || window.location.pathname === "/ai-chat") return "ai-chat";
+    if (window.location.pathname === "/about") return "about";
+    if (window.location.pathname === "/contact") return "contact";
     return "home";
   });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -884,7 +893,7 @@ export default function App() {
         if (match.index > lastIndex) {
           parts.push(content.substring(lastIndex, match.index));
         }
-        parts.push(<strong key={match.index} className="font-semibold text-capsule-accent">{match[1]}</strong>);
+        parts.push(<strong key={match.index} className="font-semibold text-[#FF2300]">{match[1]}</strong>);
         lastIndex = boldRegex.lastIndex;
       }
       if (lastIndex < content.length) {
@@ -905,7 +914,7 @@ export default function App() {
           if (match.index > liLastIndex) {
             liParts.push(liContent.substring(liLastIndex, match.index));
           }
-          liParts.push(<strong key={match.index} className="font-semibold text-capsule-accent">{match[1]}</strong>);
+          liParts.push(<strong key={match.index} className="font-semibold text-[#FF2300]">{match[1]}</strong>);
           liLastIndex = boldRegex.lastIndex;
         }
         if (liLastIndex < liContent.length) {
@@ -939,10 +948,12 @@ export default function App() {
     const p = pld || {};
     if (catId === "bags") {
       const pHandle = p.handle !== undefined ? p.handle : handle;
+      const pHandleColor = p.handleColor !== undefined ? p.handleColor : handleColor;
+      const handleColorSuffix = pHandleColor ? ` (${pHandleColor})` : "";
       const ribbonWidthText = pHandle === "ribbon" ? ` (${activeRibLabel})` : "";
       const handleText = pHandle === "cord" 
-        ? t("options.handle_cord", "Շնուր") 
-        : `${t("options.handle_ribbon", "Սատինե Ժապավեն")}${ribbonWidthText ? ribbonWidthText.replace("սմ", t("common.units.cm", "սմ")) : ""}`;
+        ? `${t("options.handle_cord", "Շնուր")}${handleColorSuffix}` 
+        : `${t("options.handle_ribbon", "Սատինե Ժապավեն")}${ribbonWidthText ? ribbonWidthText.replace("սմ", t("common.units.cm", "սմ")) : ""}${handleColorSuffix}`;
       const pLamination = p.lamination !== undefined ? p.lamination : lamination;
       const lamText = pLamination === "matte" 
         ? t("options.lamination_matte", "Փայլատ") 
@@ -1166,6 +1177,7 @@ export default function App() {
         gsm,
         lamination,
         handle,
+        handleColor,
         ribbonWidthPrice,
         colors,
         sides,
@@ -1704,7 +1716,8 @@ export default function App() {
     let desc = "";
     if (activeCategory === "bags") {
       const ribbonWidthText = handle === "ribbon" ? ` (${activeRibLabel})` : "";
-      const handleText = handle === "cord" ? "Շնուր" : `Սատինե Ժապավեն${ribbonWidthText}`;
+      const handleColorText = handleColor ? ` (${handleColor})` : "";
+      const handleText = handle === "cord" ? `Շնուր${handleColorText}` : `Սատինե Ժապավեն${ribbonWidthText}${handleColorText}`;
       const lamText = lamination === "matte" ? "Փայլատ" : lamination === "gloss" ? "Փայլուն" : lamination === "soft_touch" ? "Soft-Touch" : "Առանց լամինացիայի";
       desc = `Տոպրակի Պատվեր:\nՉափսեր: ${calcResult.dimensionsText} սմ\nՔանակ: ${calcResult.qty} հատ\nԽտություն: ${gsm}g/m² (${lamText})\nՏպագրություն: ${formatColorsLabel(colors)} (${sides} կողմ)\nԲռնակ: ${handleText}\nՄշակումներ: ${selectedFinishes.map(k => finishes.find(f => f.key === k)?.label).join(", ") || "Չկան"}\nՏպագրության Մեթոդ: ${calcResult.printingMethodUsed}`;
     } else if (activeCategory === "boxes") {
@@ -1958,6 +1971,7 @@ export default function App() {
             gsm,
             lamination,
             handle,
+            handleColor,
             ribbonWidthPrice,
             colors,
             sides,
@@ -2246,6 +2260,7 @@ export default function App() {
     gsm,
     lamination,
     handle,
+    handleColor,
     ribbonWidthPrice,
     colors,
     sides,
@@ -2449,10 +2464,66 @@ export default function App() {
     }, 150);
   };
 
+  const tLocal = (key: string) => {
+    const dict: Record<string, Record<string, string>> = {
+      blueBlockTitle: {
+        hy: "Փաթեթավորման նախագծում, հաշվարկ և արտադրություն՝ մեկ հարթակում",
+        ru: "Проектирование, расчет и производство упаковки — на одной платформе",
+        en: "Packaging design, calculation & production in one platform"
+      },
+      blueBlockSubtitle: {
+        hy: "Capsule Lab-ը միավորում է AI օգնականը, օնլայն հաշվարկիչը, 3D նախագծումը և արտադրության կառավարումը մեկ համակարգում։",
+        ru: "Capsule Lab объединяет AI-ассистента, онлайн-калькулятор, 3D-проектирование и управление производством в единую систему.",
+        en: "Capsule Lab integrates an AI assistant, online calculator, 3D modeling, and production management into one system."
+      },
+      blueBlockBullet1: {
+        hy: "AI փաթեթավորման օգնական",
+        ru: "AI-ассистент упаковки",
+        en: "AI Packaging Assistant"
+      },
+      blueBlockBullet2: {
+        hy: "Ակնթարթային գնի հաշվարկ",
+        ru: "Мгновенный расчет стоимости",
+        en: "Instant Cost Calculation"
+      },
+      blueBlockBullet3: {
+        hy: "3D նախադիտում իրական ժամանակում",
+        ru: "3D-предпросмотр в реальном времени",
+        en: "Real-time 3D Preview"
+      },
+      blueBlockBullet4: {
+        hy: "Պատվերների և արտադրության կառավարում",
+        ru: "Управление заказами и производством",
+        en: "Order & Production Management"
+      },
+      blueBlockBtn: {
+        hy: "Սկսել հաշվարկը",
+        ru: "Начать расчет",
+        en: "Start Calculation"
+      },
+      blueBlockSliderLabel: {
+        hy: "AI ՉԱՓՍԵՐԻ ԿԱՐԳԱՎՈՐՈՒՄ",
+        ru: "AI НАСТРОЙКА РАЗМЕРОВ",
+        en: "AI DIMENSION CONTROL"
+      },
+      saveProjectBtn: {
+        hy: "Պահպանել նախագիծը",
+        ru: "Сохранить проект",
+        en: "Save Project"
+      },
+      projectSavedAlert: {
+        hy: "Նախագիծը հաջողությամբ պահպանվեց ձեր անձնական էջում:",
+        ru: "Проект успешно сохранен в ваш личный кабинет!",
+        en: "Project successfully saved to your client cabinet!"
+      }
+    };
+    return dict[key]?.[locale] || dict[key]?.["en"] || key;
+  };
+
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-capsule-bg flex flex-col text-capsule-dark-secondary transition-all selection:bg-capsule-accent/15">
+    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-[#f0f2f5] flex flex-col text-[#1a1c1d] transition-all selection:bg-[#FF2300]/10">
       {/* Luxury Minimalist Single-Row Header (PACKY Premium Style & Colors based on official mockup) */}
-      <header className="relative z-[150] w-full select-none bg-[#FAFAF8] shadow-[inset_0_1px_0_rgba(255,255,255,0.7),_0_3px_12px_rgba(58,32,16,0.03)] border-b border-[#E5E1D8]/50 transition-colors py-1.5">
+      <header className="relative z-[150] w-full select-none bg-[#f0f2f5]/90 backdrop-blur-md shadow-[0_4px_20px_rgba(209,217,230,0.4)] border-b border-white/40 transition-colors py-2">
         <div className="max-w-[1440px] mx-auto h-20 px-4 sm:px-6 lg:px-8 xl:px-12 flex items-center justify-between">
           
           {/* LEFT: Premium Star Logo + Brand Typography */}
@@ -2461,10 +2532,10 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsDrawerMenuOpen(true)}
-              className="lg:hidden cursor-pointer group flex items-center justify-center w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[2.5px_2.5px_6px_#E5DDD1,_-2.5px_-2.5px_6px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_4px_#E5DDD1,_inset_-1.5px_-1.5px_4px_#FFFFFF] transition-all duration-200 outline-none"
+              className="lg:hidden cursor-pointer group flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f2f5] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#ffffff] border border-white/50 hover:shadow-[2px_2px_4px_#d1d9e6,_-2px_-2px_4px_#ffffff] active:shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#ffffff] transition-all duration-200 outline-none"
               title="Menu"
             >
-              <Menu size={16} className="text-[#3D271B]" />
+              <Menu size={16} className="text-[#1a1c1d]" />
             </button>
 
             <button
@@ -2476,7 +2547,7 @@ export default function App() {
                 window.history.pushState({}, "", "/");
               }}
               className="flex items-center select-none border-none outline-none cursor-pointer hover:opacity-95 active:scale-95 transition-all bg-transparent group"
-              title="PACKY"
+              title="CAPSULE PACK"
             >
               <svg 
                 className="h-10.5 sm:h-11 md:h-12 w-auto shrink-0 select-none transition-transform duration-300 group-hover:scale-[1.02] text-[#FF2300]" 
@@ -2492,7 +2563,7 @@ export default function App() {
           </div>
 
           {/* CENTER: Symmetrical Navigation Links (Hidden on mobile) */}
-          <div className="hidden lg:flex items-center justify-center gap-2 px-2.5 py-1.5 rounded-full bg-[#FAFAF8] shadow-[inset_3px_3px_7px_#E5DDD1,_inset_-3px_-3px_7px_#FFFFFF] border border-white/45 selection:bg-transparent">
+          <div className="hidden lg:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f0f2f5] shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#ffffff] border border-white/20 selection:bg-transparent">
             {/* Home Link */}
             <button
               type="button"
@@ -2501,10 +2572,10 @@ export default function App() {
                 setIsInTrackPortal(false);
                 window.history.pushState({}, "", "/");
               }}
-              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
                 currentView === "home" 
-                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
-                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
               }`}
             >
               {locale === "hy" ? "ԳԼԽԱՎՈՐ" : locale === "ru" ? "ГЛАВНАЯ" : "HOME"}
@@ -2518,10 +2589,10 @@ export default function App() {
                 setIsInTrackPortal(false);
                 window.history.pushState({}, "", "/calculator");
               }}
-              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
                 currentView === "calculator" 
-                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
-                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
               }`}
             >
               {locale === "hy" ? "ՀԱՇՎԻՉ" : locale === "ru" ? "КАЛЬКУЛЯТОР" : "CALCULATOR"}
@@ -2535,10 +2606,10 @@ export default function App() {
                 setIsInTrackPortal(false);
                 window.history.pushState({}, "", "/shop");
               }}
-              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
                 currentView === "ecommerce" 
-                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
-                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
               }`}
             >
               {locale === "hy" ? "ԽԱՆՈՒԹ" : locale === "ru" ? "МАГАЗИН" : "SHOP"}
@@ -2552,13 +2623,65 @@ export default function App() {
                 setIsInTrackPortal(true);
                 window.history.pushState({}, "", "/track-order");
               }}
-              className={`text-[10px] tracking-[0.2em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-4 py-2 rounded-full border-none outline-none ${
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
                 currentView === "track" 
-                  ? "text-capsule-accent bg-[#FAFAF8] shadow-[2px_2px_5px_#E5DDD1,_-2px_-2px_5px_#FFFFFF] font-black border border-white/80" 
-                  : "text-[#3D271B]/55 hover:text-[#3D271B] bg-transparent"
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
               }`}
             >
-              {locale === "hy" ? "ՊԱՏՎԵՐԻ ՀԵՏԵՎՈՒՄ" : locale === "ru" ? "ОТСЛЕЖИВАНИЕ" : "TRACK ORDER"}
+              {locale === "hy" ? "ՀԵՏԵՎՈՒՄ" : locale === "ru" ? "ОТСЛЕЖИВАНИЕ" : "TRACK"}
+            </button>
+
+            {/* AI Assistant Chat Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("ai-chat");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/chat");
+              }}
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none flex items-center gap-1 ${
+                currentView === "ai-chat" 
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
+              }`}
+            >
+              <Sparkles size={10} className={currentView === "ai-chat" ? "text-[#FF2300] animate-pulse" : "text-gray-400"} />
+              <span>{locale === "hy" ? "AI ԶՐՈՒՅՑ" : locale === "ru" ? "AI ЧАТ" : "AI CHAT"}</span>
+            </button>
+
+            {/* About Us Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("about");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/about");
+              }}
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
+                currentView === "about" 
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ՄԵՐ ՄԱՍԻՆ" : locale === "ru" ? "О НАС" : "ABOUT US"}
+            </button>
+
+            {/* Contact Link */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("contact");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/contact");
+              }}
+              className={`text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.15em] font-extrabold uppercase shrink-0 cursor-pointer transition-all px-3 py-1.5 rounded-full border-none outline-none ${
+                currentView === "contact" 
+                  ? "text-[#FF2300] bg-[#f0f2f5] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#ffffff] font-black border border-white/70" 
+                  : "text-[#1a1c1d]/60 hover:text-[#FF2300] bg-transparent"
+              }`}
+            >
+              {locale === "hy" ? "ԿԱՊ" : locale === "ru" ? "КОНТАКТЫ" : "CONTACT"}
             </button>
           </div>
 
@@ -2566,17 +2689,17 @@ export default function App() {
           <div className="flex items-center justify-end gap-3.5 sm:gap-4 lg:gap-5 selection:bg-transparent">
             
             {/* Extremely subtle dropdown select switchers (Desktop only) */}
-            <div className="hidden xl:flex items-center gap-3 px-4.5 py-2.5 rounded-full bg-[#FAFAF8] shadow-[inset_2.5px_2.5px_6px_#E5DDD1,_inset_-2.5px_-2.5px_6px_#FFFFFF] border border-white/35 text-[10px] font-extrabold tracking-[0.1em] text-[#3D271B]/75 font-sans">
+            <div className="hidden xl:flex items-center gap-3 px-4.5 py-2.5 rounded-full bg-[#f0f2f5] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#ffffff] border border-white/20 text-[10px] font-extrabold tracking-[0.1em] text-[#1a1c1d] font-sans">
               {/* Language Switcher */}
               <div className="relative" ref={langMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-[#F4F2EE]/45 hover:text-capsule-accent transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
+                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-white/40 hover:text-[#FF2300] transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
                   title="Language Selector"
                 >
                   <span>{locale === "hy" ? "AM" : locale === "ru" ? "RU" : "EN"}</span>
-                  <ChevronDown size={10} className={`text-[#3D271B]/40 transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown size={10} className={`text-gray-400 transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
                   {isLangMenuOpen && (
@@ -2585,7 +2708,7 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2.5 w-32 bg-[#FAFAF8] border border-[#E5E1D8] shadow-[4px_4px_12px_rgba(58,32,16,0.1)] rounded-2xl py-1.5 z-[220] overflow-hidden"
+                      className="absolute right-0 mt-2.5 w-32 bg-[#f0f2f5] border border-white/60 shadow-[6px_6px_12px_#d1d9e6] rounded-2xl py-1.5 z-[220] overflow-hidden"
                     >
                       {(["hy", "en", "ru"] as const).map((lang) => (
                         <button
@@ -2595,10 +2718,10 @@ export default function App() {
                             setLocale(lang);
                             setIsLangMenuOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 text-[9px] uppercase tracking-wider hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between border-none bg-transparent ${locale === lang ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
+                          className={`w-full text-left px-4 py-2 text-[9px] uppercase tracking-wider hover:bg-white/45 hover:text-[#FF2300] transition-colors flex items-center justify-between border-none bg-transparent ${locale === lang ? "text-[#FF2300] font-black bg-[#f0f2f5]" : "text-[#1a1c1d]"}`}
                         >
                           <span>{lang === "hy" ? "AM" : lang === "en" ? "EN" : "RU"}</span>
-                          {locale === lang && <Check size={8} className="text-capsule-accent" />}
+                          {locale === lang && <Check size={8} className="text-[#FF2300]" />}
                         </button>
                       ))}
                     </motion.div>
@@ -2606,18 +2729,18 @@ export default function App() {
                 </AnimatePresence>
               </div>
 
-              <span className="h-3.5 w-px bg-[#E5E1D8]/80"></span>
+              <span className="h-3.5 w-px bg-white/40"></span>
 
               {/* Currency Switcher */}
               <div className="relative" ref={currencyMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsCurrencyMenuOpen(!isCurrencyMenuOpen)}
-                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-[#F4F2EE]/45 hover:text-capsule-accent transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
+                  className="cursor-pointer flex items-center gap-1.5 py-0.5 px-2 rounded-lg hover:bg-white/40 hover:text-[#FF2300] transition-all uppercase border-none outline-none select-none bg-transparent font-extrabold"
                   title="Currency Selector"
                 >
                   <span>{activeCurrency}</span>
-                  <ChevronDown size={10} className={`text-[#3D271B]/40 transition-transform duration-200 ${isCurrencyMenuOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown size={10} className={`text-gray-400 transition-transform duration-200 ${isCurrencyMenuOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
                   {isCurrencyMenuOpen && (
@@ -2626,7 +2749,7 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2.5 w-32 bg-[#FAFAF8] border border-[#E5E1D8] shadow-[4px_4px_12px_rgba(58,32,16,0.1)] rounded-2xl py-1.5 z-[220] overflow-hidden"
+                      className="absolute right-0 mt-2.5 w-32 bg-[#f0f2f5] border border-white/60 shadow-[6px_6px_12px_#d1d9e6] rounded-2xl py-1.5 z-[220] overflow-hidden"
                     >
                       {(["AMD", "USD", "RUB"] as const).map((curr) => (
                         <button
@@ -2636,10 +2759,10 @@ export default function App() {
                             setActiveCurrency(curr);
                             setIsCurrencyMenuOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 text-[9px] font-bold hover:bg-[#F4F2EE] hover:text-capsule-accent transition-colors flex items-center justify-between border-none bg-transparent ${activeCurrency === curr ? "text-capsule-accent font-black bg-[#FAF9F5]" : "text-[#3D271B]"}`}
+                          className={`w-full text-left px-4 py-2 text-[9px] font-bold hover:bg-white/45 hover:text-[#FF2300] transition-colors flex items-center justify-between border-none bg-transparent ${activeCurrency === curr ? "text-[#FF2300] font-black bg-[#f0f2f5]" : "text-[#1a1c1d]"}`}
                         >
                           <span>{curr}</span>
-                          {activeCurrency === curr && <Check size={8} className="text-capsule-accent" />}
+                          {activeCurrency === curr && <Check size={8} className="text-[#FF2300]" />}
                         </button>
                       ))}
                     </motion.div>
@@ -2648,16 +2771,29 @@ export default function App() {
               </div>
             </div>
 
+            {/* Calculator Trigger Button (Red Soft-UI style from mockup) */}
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentView("calculator");
+                setIsInTrackPortal(false);
+                window.history.pushState({}, "", "/calculator");
+              }}
+              className="hidden sm:block px-5 py-2.5 bg-[#FF2300] hover:bg-[#e61f00] text-white text-[10px] tracking-[0.1em] font-extrabold uppercase rounded-full shadow-[4px_4px_8px_rgba(255,35,0,0.22),_-4px_-4px_8px_#ffffff] border border-white/25 hover:shadow-[2px_2px_4px_rgba(255,35,0,0.22)] active:shadow-[inset_2.5px_2.5px_5px_rgba(0,0,0,0.15)] transition-all duration-200 cursor-pointer outline-none shrink-0"
+            >
+              {locale === "hy" ? "ՀԱՇՎԻՉ" : locale === "ru" ? "КАЛЬКУЛЯТОР" : "Calculator"}
+            </button>
+
             {/* Shopping Bag / Cart Dial (Embossed Neumorphic Dial) */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="cursor-pointer group text-[#3D271B] w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[3px_3px_7px_#E5DDD1,_-3px_-3px_7px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5DDD1,_inset_-2px_-2px_5px_#FFFFFF] transition-all duration-200 flex items-center justify-center relative outline-none"
+              className="cursor-pointer group text-[#1a1c1d] w-10 h-10 rounded-full bg-[#f0f2f5] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#ffffff] border border-white/50 hover:shadow-[2px_2px_4px_#d1d9e6,_-2px_-2px_4px_#ffffff] active:shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#ffffff] transition-all duration-200 flex items-center justify-center relative outline-none"
               title="Shopping Cart"
             >
-              <ShoppingBag size={15} className="stroke-[2.4] group-hover:scale-[1.05] transition-transform" />
+              <ShoppingBag size={15} className="stroke-[2.4] group-hover:scale-[1.05] transition-transform text-[#1a1c1d] group-hover:text-[#FF2300]" />
               {bundleItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[15px] h-3.5 rounded-full bg-capsule-accent text-white flex items-center justify-center font-sans font-black text-[7.5px] px-0.5 border-1.5 border-[#FAFAF8] shadow-[1px_1px_3px_rgba(58,32,16,0.15)]">
+                <span className="absolute -top-1 -right-1 min-w-[15px] h-3.5 rounded-full bg-[#FF2300] text-white flex items-center justify-center font-sans font-black text-[7.5px] px-0.5 border border-[#f0f2f5] shadow-[1px_1px_3px_rgba(209,217,230,0.5)]">
                   {bundleItems.length}
                 </span>
               )}
@@ -2667,12 +2803,12 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsClientCabinetOpen(true)}
-              className="cursor-pointer text-[#3D271B] w-10 h-10 rounded-full bg-[#FAFAF8] shadow-[3px_3px_7px_#E5DDD1,_-3px_-3px_7px_#FFFFFF] border border-white/60 hover:shadow-[1.5px_1.5px_4px_#E5DDD1,_-1.5px_-1.5px_4px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5DDD1,_inset_-2px_-2px_5px_#FFFFFF] transition-all duration-200 flex items-center justify-center relative outline-none"
+              className="cursor-pointer text-[#1a1c1d] w-10 h-10 rounded-full bg-[#f0f2f5] shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#ffffff] border border-white/50 hover:shadow-[2px_2px_4px_#d1d9e6,_-2px_-2px_4px_#ffffff] active:shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#ffffff] transition-all duration-200 flex items-center justify-center relative outline-none hover:text-[#FF2300]"
               title="Personal Cabinet"
             >
               <User size={15} className="stroke-[2.2]" />
               {userEmail && (
-                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 ring-1 ring-[#FAFAF8]" />
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 ring-1 ring-[#f0f2f5]" />
               )}
             </button>
           </div>
@@ -2680,274 +2816,16 @@ export default function App() {
       </header>
 
       {currentView === "home" && (
-        <div className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-8 sm:mt-12 md:mt-16 mb-20 select-none">
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#FAFAF8] shadow-[5px_5px_15px_#E5DDD1,_-5px_-5px_15px_#FFFFFF] border border-white/60 min-h-[460px] sm:min-h-[500px] lg:min-h-[560px] flex items-center p-8 sm:p-14 lg:p-16 xl:p-20">
-            
-            {/* Ambient Purple/Blue Glow Overlays */}
-            <div className="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-violet-400/20 mix-blend-multiply filter blur-[70px] opacity-75 pointer-events-none" />
-            <div className="absolute top-10 left-36 w-64 h-64 rounded-full bg-indigo-300/15 mix-blend-multiply filter blur-[60px] opacity-60 pointer-events-none" />
-            
-            {/* Highly detailed decorative vector-svg radial-dial coordinate widget representing precision luxury packaging geometry design exactly matching the image */}
-            <svg className="absolute -right-28 sm:-right-20 lg:-right-6 bottom-[-22%] sm:bottom-[-18%] lg:bottom-[-5%] w-[360px] sm:w-[480px] lg:w-[620px] h-[360px] sm:h-[480px] lg:w-[620px] h-[620px] pointer-events-none opacity-80 lg:opacity-100 select-none duration-1000" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Outer boundary concentric rings */}
-              <circle cx="300" cy="300" r="280" stroke="url(#card-grad)" strokeWidth="1" strokeDasharray="4 8" opacity="0.35" />
-              <circle cx="300" cy="300" r="255" stroke="#7C72E6" strokeWidth="1" opacity="0.1" />
-              <circle cx="300" cy="300" r="225" stroke="url(#arc-grad)" strokeWidth="1.2" strokeDasharray="2 12" opacity="0.4" />
-              
-              {/* The prominent wide bluish-purple semi-transparent ring */}
-              <circle cx="300" cy="300" r="190" stroke="url(#ring-grad)" strokeWidth="34" opacity="0.18" />
-              <circle cx="300" cy="300" r="190" stroke="#8E9AE2" strokeWidth="0.5" opacity="0.3" />
-              
-              {/* Middle circle with radial line ticks */}
-              <circle cx="300" cy="300" r="145" stroke="#7C72E6" strokeWidth="1" strokeDasharray="3 6" opacity="0.22" />
-              
-              {/* Ticks ring */}
-              <g opacity="0.45">
-                {Array.from({ length: 48 }).map((_, i) => {
-                  const angle = (i * 360) / 48;
-                  const rad = (angle * Math.PI) / 180;
-                  const x1 = 300 + Math.cos(rad) * 145;
-                  const y1 = 300 + Math.sin(rad) * 145;
-                  const x2 = 300 + Math.cos(rad) * 160;
-                  const y2 = 300 + Math.sin(rad) * 160;
-                  return (
-                    <line
-                      key={i}
-                      x1={x1}
-                      y1={y1}
-                      x2={x2}
-                      y2={y2}
-                      stroke="#8A7EE4"
-                      strokeWidth={i % 4 === 0 ? "1.5" : "0.75"}
-                    />
-                  );
-                })}
-              </g>
-              
-              {/* Core elements */}
-              <circle cx="300" cy="300" r="95" stroke="#7D8DE5" strokeWidth="1.5" strokeDasharray="6 18" opacity="0.45" />
-              <circle cx="300" cy="300" r="65" stroke="url(#arc-grad)" strokeWidth="1" opacity="0.3" />
-              <circle cx="300" cy="300" r="12" fill="#7C72E6" opacity="0.1" />
-
-              {/* Glow/Gradient Definitions */}
-              <defs>
-                <linearGradient id="ring-grad" x1="0" y1="0" x2="600" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop offset="0.1" stopColor="#8A7EE4" />
-                  <stop offset="0.6" stopColor="#5E83F2" />
-                  <stop offset="0.9" stopColor="#BD85E6" />
-                </linearGradient>
-                <linearGradient id="card-grad" x1="0" y1="0" x2="600" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#8E7EE2" />
-                  <stop offset="1" stopColor="#FAFAF8" />
-                </linearGradient>
-                <linearGradient id="arc-grad" x1="0" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#7C72E6" />
-                  <stop offset="1" stopColor="#E3ABFF" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* Left Content Column */}
-            <div className="relative z-10 w-full max-w-xl flex flex-col items-start text-left">
-              {/* Beta/Information Pill Tag */}
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[9px] tracking-[0.25em] uppercase font-mono font-bold text-[#554DDC] bg-white/80 backdrop-blur-sm border border-[#E0D7FC]/65 rounded-full shadow-[0_2px_8px_rgba(99,102,241,0.06)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#554DDC] animate-ping" />
-                {locale === "hy" ? "ՊՐԵՄԻՈՒՄ ՓԱԹԵԹԱՎՈՐՈՒՄ" : locale === "ru" ? "ПРЕМИАЛЬНАЯ УПАКОВКА" : "PREMIUM PACKAGING LAB"}
-              </div>
-
-              {/* Double-fonts title matching the reference image layout precisely */}
-              <h1 className="font-sans font-black text-4xl sm:text-5xl lg:text-5xl xl:text-6xl tracking-tight text-[#30241C] leading-[1.1] mt-5 md:mt-6 mb-4 md:mb-5">
-                {locale === "hy" ? "Ձևավորել Խելացի:" : locale === "ru" ? "Проектируй Умно." : "Design Smarter."}
-                <span className="block font-serif font-light italic text-[#30241C] mt-1 lg:mt-2">
-                  {locale === "hy" ? "Արտադրել Արագ," : locale === "ru" ? "Создавай Быстрее," : "Brand Faster,"}
-                </span>
-              </h1>
-
-              {/* Spaced Subtitle Description */}
-              <p className="font-sans text-xs sm:text-sm text-[#3D271B]/65 leading-relaxed max-w-sm sm:max-w-md md:max-w-lg mb-8 md:mb-9">
-                {locale === "hy" 
-                  ? "Պատվիրեք անհատականացված բրենդային տոպրակներ, տուփեր և պիտակներ հաշված վայրկյաններում մեր առաջատար առցանց հաշվիչով:" 
-                  : locale === "ru"
-                  ? "Закажите фирменные пакеты, коробки и этикетки за считанные секунды с помощью нашего умного онлайн-калькулятора."
-                  : "Order custom branded bags, luxury boxes, and bespoke labels in seconds with our advanced instant online configurator."}
-              </p>
-
-              {/* Clean Symmetrical Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-4 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentView("calculator");
-                    window.history.pushState({}, "", "/calculator");
-                  }}
-                  className="bg-[#1A3F25] hover:bg-[#112d19] text-white font-sans text-[11px] font-bold py-3.5 px-8 rounded-full shadow-[2px_4px_10px_rgba(26,63,37,0.15)] cursor-pointer uppercase tracking-[0.1em] border-none outline-none hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-                >
-                  {locale === "hy" ? "Բացել Հաշվիչը" : locale === "ru" ? "Открыть Калькулятор" : "Open Calculator"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentView("track");
-                    setIsInTrackPortal(true);
-                    window.history.pushState({}, "", "/track-order");
-                  }}
-                  className="bg-white/90 hover:bg-white text-[#30241C] border border-[#E0DCD4] shadow-[2px_2px_8px_#E5DDD1] transition-all duration-300 py-3.5 px-8 rounded-full font-bold text-[11px] uppercase tracking-[0.1em] cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  {locale === "hy" ? "Հետևել Պատվերին" : locale === "ru" ? "Отследить Заказ" : "Track Order"}
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          {/* AI Mode packaging assistant block exactly as requested */}
-          <AIAgentBlock locale={locale} />
-
-          {/* "Others also bought" / "Այլ հաճախորդներ նաև գնել են" block */}
-          {featuredProducts && featuredProducts.filter(fp => fp.active).length > 0 && (
-            <div className="w-full py-16 px-6 sm:px-10 lg:px-12 max-w-[1240px] mx-auto select-none font-sans mt-16 mb-16 select-none animate-fade-in" id="others-also-bought-block">
-              <div className="text-center mb-12">
-                <h2 className="font-sans font-black text-3.5xl sm:text-4.5xl text-[#3D271B] tracking-tight leading-none uppercase font-bold">
-                  {locale === "hy" 
-                    ? "Սա նույնպես ձեռնտու է (Այլ հաճախորդներ գնում են)" 
-                    : locale === "ru" 
-                    ? "С этим товаром также часто покупают" 
-                    : "Others Also Bought"}
-                </h2>
-                <div className="w-24 h-2 bg-[#F4F2EE] shadow-[inset_2.5px_2.5px_5px_rgba(180,175,166,0.65),inset_-2.5px_-2.5px_5px_#ffffff] rounded-full mx-auto mt-6" />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-                {featuredProducts.filter(fp => fp.active).map((fp, idx) => {
-                  const prodName = locale === "hy" ? fp.nameHy : locale === "ru" ? fp.nameRu : fp.nameEn;
-                  const minQtyText = locale === "hy" ? fp.minQtyTextHy : locale === "ru" ? fp.minQtyTextRu : fp.minQtyTextEn;
-                  const tagText = locale === "hy" ? fp.tagHy : locale === "ru" ? fp.tagRu : fp.tagEn;
-                  const secTagText = locale === "hy" ? fp.secondaryTagHy : locale === "ru" ? fp.secondaryTagRu : fp.secondaryTagEn;
-
-                  // Define Packhelp-style premium custom themes for each card
-                  let themeClass = "";
-                  let textClass = "";
-                  let tagClass = "";
-                  let subtextClass = "";
-                  let btnClass = "";
-                  let borderClass = "";
-                  let cardShadowClass = "";
-                  let btnShadowClass = "";
-                  let imgWBorderClass = "";
-
-                  if (idx % 4 === 0) {
-                    // Lilac / Lavender
-                    themeClass = "bg-[#ECE2F7] hover:bg-[#E4D7F2]";
-                    textClass = "text-[#1C0D32]";
-                    tagClass = "bg-[#D6C5EB] text-[#1C0D32]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(162,143,184,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
-                    subtextClass = "text-[#1C0D32]/75";
-                    btnClass = "bg-[#ECE2F7] text-[#1C0D32]";
-                    borderClass = "border-[#1C0D32]/10";
-                    cardShadowClass = "shadow-[12px_12px_24px_rgba(162,143,184,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(162,143,184,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
-                    btnShadowClass = "shadow-[3px_3px_6px_rgba(162,143,184,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(162,143,184,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
-                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(162,143,184,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
-                  } else if (idx % 4 === 1) {
-                    // Deep Forest Green
-                    themeClass = "bg-[#0B5C3A] hover:bg-[#094F31]";
-                    textClass = "text-white";
-                    tagClass = "bg-white/10 text-white/95 border-none shadow-[inset_1.5px_1.5px_3px_rgba(5,50,32,0.5),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,0.15)]";
-                    subtextClass = "text-white/80";
-                    btnClass = "bg-[#0B5C3A] text-white";
-                    borderClass = "border-white/10";
-                    cardShadowClass = "shadow-[12px_12px_24px_rgba(5,50,32,0.45),_-12px_-12px_24px_rgba(30,168,110,0.3)] hover:shadow-[6px_6px_12px_rgba(5,50,32,0.4),_-6px_-6px_12px_rgba(30,168,110,0.25)]";
-                    btnShadowClass = "shadow-[3px_3px_6px_rgba(5,50,32,0.45),_-3px_-3px_6px_rgba(30,168,110,0.35)] hover:shadow-[inset_2px_2px_4px_rgba(5,50,32,0.45),_inset_-2px_-2px_4px_rgba(30,168,110,0.35)]";
-                    imgWBorderClass = "border-white/10 shadow-[inset_3px_3px_6px_rgba(5,50,32,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,0.1)]";
-                  } else if (idx % 4 === 2) {
-                    // Warm Silt Gray / Silver
-                    themeClass = "bg-[#E6E4E2] hover:bg-[#DDDCDA]";
-                    textClass = "text-[#282624]";
-                    tagClass = "bg-[#D6D3D1] text-[#282624]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(170,164,160,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
-                    subtextClass = "text-[#282624]/75";
-                    btnClass = "bg-[#E6E4E2] text-[#282624]";
-                    borderClass = "border-[#282624]/10";
-                    cardShadowClass = "shadow-[12px_12px_24px_rgba(170,164,160,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(170,164,160,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
-                    btnShadowClass = "shadow-[3px_3px_6px_rgba(170,164,160,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(170,164,160,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
-                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(170,164,160,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
-                  } else {
-                    // Sage / Eco Green
-                    themeClass = "bg-[#D7E6DD] hover:bg-[#C9DAD0]";
-                    textClass = "text-[#1B3021]";
-                    tagClass = "bg-[#BDD4C5] text-[#1B3021]/80 border-none shadow-[inset_1.5px_1.5px_3px_rgba(154,170,160,0.45),_inset_-1.5px_-1.5px_3px_rgba(255,255,255,1)]";
-                    subtextClass = "text-[#1B3021]/75";
-                    btnClass = "bg-[#D7E6DD] text-[#1B3021]";
-                    borderClass = "border-[#1B3021]/10";
-                    cardShadowClass = "shadow-[12px_12px_24px_rgba(154,170,160,0.45),_-12px_-12px_24px_rgba(255,255,255,1)] hover:shadow-[6px_6px_12px_rgba(154,170,160,0.4),_-6px_-6px_12px_rgba(255,255,255,1)]";
-                    btnShadowClass = "shadow-[3px_3px_6px_rgba(154,170,160,0.45),_-3px_-3px_6px_rgba(255,255,255,1)] hover:shadow-[inset_2px_2px_4px_rgba(154,170,160,0.45),_inset_-2px_-2px_4px_rgba(255,255,255,1)]";
-                    imgWBorderClass = "border-white/30 shadow-[inset_3px_3px_6px_rgba(154,170,160,0.35),_inset_-3px_-3px_6px_rgba(255,255,255,1)]";
-                  }
-
-                  return (
-                    <div
-                      key={fp.id}
-                      onClick={() => {
-                        setActiveCategory(fp.categoryId);
-                        setCalcResult(null); // Clear previous calcs to start fresh
-                        setCurrentView("calculator");
-                        window.history.pushState({}, "", "/calculator");
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }}
-                      className={`group cursor-pointer glass-mirror-card rounded-[36px] pt-10 pb-12 px-8 flex flex-col justify-between min-h-[500px] md:min-h-[560px] transition-all duration-500 border border-[#E3DFD7]/20 relative active:scale-[0.98] ${themeClass} ${cardShadowClass}`}
-                    >
-                      <div className="flex flex-col justify-between h-full flex-1">
-                        <div>
-                          {/* Slogan classification label / Main custom Tag */}
-                          {tagText && (
-                            <span className={`text-[10px] uppercase font-mono tracking-widest font-black opacity-90 inline-block mb-3.5 px-3 py-1 rounded-full ${tagClass}`}>
-                              {tagText}
-                            </span>
-                          )}
-
-                          {/* Large display Heading showing name */}
-                          <h3 className={`font-sans text-2xl sm:text-2xl font-black tracking-tight leading-[1.125] mb-3 ${textClass}`}>
-                            {prodName}
-                          </h3>
-
-                          {/* Symmetrical elegant details description */}
-                          <p className={`font-sans text-xs sm:text-xs leading-relaxed mb-6 ${subtextClass}`}>
-                            {locale === "hy" 
-                              ? `Բարձրակարգ բրենդավորում հատուկ չափսերով։ ${minQtyText}` 
-                              : locale === "ru" 
-                              ? `Премиальное брендирование по Вашим размерам. ${minQtyText}` 
-                              : `Premium branding tailored to your dimensions. ${minQtyText}`}
-                          </p>
-
-                          {/* Action call - simple link styling matching packhelp.com */}
-                          <div className={`mt-2.5 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 select-none text-center flex items-center justify-center gap-1.5 border-none outline-none ${btnClass} ${btnShadowClass}`}>
-                            <span>
-                              {locale === "hy" ? "Պատվիրել հիմա" : locale === "ru" ? "Заказать сейчас" : "Shop now"}
-                            </span>
-                            <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                          </div>
-                        </div>
-
-                        {/* Visual asset / Nested 3D Mockup Product image at the bottom */}
-                        <div className={`relative aspect-[16/10] w-full overflow-hidden rounded-[1.8rem] border bg-white/10 mt-8 ${imgWBorderClass}`}>
-                          <img
-                            src={fp.image || "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=600"}
-                            alt={prodName}
-                            referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                          />
-                          {secTagText && (
-                            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm border border-emerald-100 rounded-full px-2.5 py-1 text-[8px] uppercase tracking-wider font-mono font-bold text-emerald-800 shadow-sm">
-                              {secTagText}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          <PackhelpShowcase locale={locale as any} setCurrentView={setCurrentView} setActiveCategory={setActiveCategory} />
+        <div className="flex-1 w-full select-none">
+          <CapsulePackHome 
+            locale={locale as any} 
+            setCurrentView={setCurrentView} 
+            setActiveCategory={setActiveCategory} 
+            setIsInTrackPortal={setIsInTrackPortal} 
+            featuredProducts={featuredProducts}
+            setSavedItemsCount={setSavedItemsCount}
+            setCalcResult={setCalcResult}
+          />
         </div>
       )}
 
@@ -2971,6 +2849,27 @@ export default function App() {
         <OrderTrackPortal currentLocale={locale} onBackToHome={navigateToHomeFromPortal} onReorder={handleReorder} />
       )}
 
+      {currentView === "ai-chat" && (
+        <AIChatAgentPage 
+          locale={locale as any} 
+          setCurrentView={setCurrentView} 
+          categories={categories}
+        />
+      )}
+
+      {currentView === "about" && (
+        <AboutUs 
+          locale={locale as any} 
+          setCurrentView={setCurrentView} 
+        />
+      )}
+
+      {currentView === "contact" && (
+        <ContactView 
+          locale={locale as any} 
+        />
+      )}
+
       {currentView === "calculator" && (
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-6">
               {/* Premium Category Label (Removed back to main link) */}
@@ -2978,7 +2877,7 @@ export default function App() {
                 {(() => {
                   const catObj = categories.find((c) => c.id === activeCategory);
                   return catObj ? (
-                    <div className="text-[9px] sm:text-[10px] uppercase font-mono tracking-wider sm:tracking-widest text-[#3D271B] font-black bg-[#FAFAF9] px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-white/80 shadow-[2px_2px_4px_#E5E3DF,_-2px_-2px_4px_#FFFFFF] truncate max-w-[180px] sm:max-w-none">
+                    <div className="text-[9px] sm:text-[10px] uppercase font-mono tracking-wider sm:tracking-widest text-[#1a1c1d] font-bold bg-[#f0f2f5] px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-white/85 shadow-[2px_2px_4px_#d1d9e6,-2px_-2px_4px_#FFFFFF] truncate max-w-[180px] sm:max-w-none">
                       {t(`db.category.${catObj.id}.navLabel`, catObj.navLabel || catObj.name)}
                     </div>
                   ) : null;
@@ -2989,18 +2888,18 @@ export default function App() {
               <div className="relative">
                 {/* Left & Right Dynamic Elegant Inset Shadows for Mobile Scrolling Cue */}
                 <div 
-                  className="pointer-events-none absolute left-1 top-1 bottom-1 w-8 bg-gradient-to-r from-[#FAFAF9] to-transparent z-10 md:hidden rounded-l-full transition-opacity duration-300"
+                  className="pointer-events-none absolute left-1 top-1 bottom-1 w-8 bg-gradient-to-r from-[#f0f2f5] to-transparent z-10 md:hidden rounded-l-full transition-opacity duration-300"
                   style={{ opacity: scrollProgress > 0.05 ? 1 : 0 }}
                 />
                 <div 
-                  className="pointer-events-none absolute right-1 top-1 bottom-1 w-8 bg-gradient-to-l from-[#FAFAF9] to-transparent z-10 md:hidden rounded-r-full transition-opacity duration-300"
+                  className="pointer-events-none absolute right-1 top-1 bottom-1 w-8 bg-gradient-to-l from-[#f0f2f5] to-transparent z-10 md:hidden rounded-r-full transition-opacity duration-300"
                   style={{ opacity: scrollProgress < 0.95 ? 1 : 0 }}
                 />
 
                 <div 
                   ref={categoryTabsRef}
                   onScroll={handleTabsScroll}
-                  className="flex items-center gap-1 sm:gap-1.5 p-1 bg-[#FAFAF9] border border-[#E9E4DB]/40 rounded-full shadow-[inset_2px_2px_4px_rgba(58,32,16,0.05),_inset_-2px_-2px_6px_rgba(255,255,255,0.85)] w-full overflow-x-auto no-scrollbar scroll-smooth flex-nowrap md:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                  className="flex items-center gap-1 sm:gap-1.5 p-1 bg-[#f0f2f5] border border-white/40 rounded-full shadow-[inset_2px_2px_4px_rgba(0,0,0,0.05),_inset_-2px_-2px_6px_rgba(255,255,255,0.85)] w-full overflow-x-auto no-scrollbar scroll-smooth flex-nowrap md:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
                   {categories.map((c) => {
                     if (!c.active) return null;
@@ -3015,8 +2914,8 @@ export default function App() {
                         }}
                         className={`px-3.5 py-1.5 sm:px-4.5 sm:py-2.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-normal transition-all duration-300 uppercase cursor-pointer flex items-center justify-center shrink-0 select-none whitespace-nowrap active:scale-[0.97] ${
                           isSelected 
-                            ? "bg-capsule-accent text-white shadow-[2px_2px_5px_rgba(58,32,16,0.18),_-1px_-1px_4px_rgba(255,255,255,0.15)] font-bold scale-[1.01]"
-                            : "bg-[#FAFAF9]/40 text-[#3D271B]/70 hover:text-[#3D271B] hover:bg-white/80 shadow-[1px_1px_3px_rgba(58,32,16,0.02)] hover:shadow-[2px_2px_5px_rgba(58,32,16,0.04)] hover:scale-[1.01]"
+                            ? "bg-[#FF2300] text-white shadow-[2px_2px_5px_rgba(255,35,0,0.25),_-1px_-1px_4px_rgba(255,255,255,0.15)] font-bold scale-[1.01]"
+                            : "bg-[#f0f2f5]/40 text-[#414753] hover:text-[#1a1c1d] hover:bg-white/80 shadow-[1px_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[2px_2px_5px_rgba(0,0,0,0.04)] hover:scale-[1.01]"
                         }`}
                       >
                         <span>{t(`db.category.${c.id}.navLabel`, c.navLabel || c.name)}</span>
@@ -3029,15 +2928,15 @@ export default function App() {
               {/* Sleek, Premium Interactive Scroll Track & Instructions */}
               {hasScrollableTabs && (
                 <div className="flex flex-col items-center gap-1 mt-2.5 md:hidden">
-                  <div className="w-12 h-1 bg-[#FAFAF9] border border-[#E9E4DB]/40 shadow-[inset_1px_1px_2px_rgba(58,32,16,0.08)] rounded-full relative overflow-hidden">
+                  <div className="w-12 h-1 bg-[#f0f2f5] border border-white/40 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.08)] rounded-full relative overflow-hidden">
                     <div 
-                      className="absolute top-0 bottom-0 left-0 w-4 bg-capsule-accent/60 shadow-[1px_1px_2px_rgba(58,32,16,0.1)] rounded-full transition-transform duration-100 ease-out"
+                      className="absolute top-0 bottom-0 left-0 w-4 bg-[#FF2300]/60 shadow-[1px_1px_2px_rgba(255,35,0,0.1)] rounded-full transition-transform duration-100 ease-out"
                       style={{ 
                         transform: `translateX(${scrollProgress * 32}px)` 
                       }}
                     />
                   </div>
-                  <span className="text-[9px] text-capsule-text-muted font-bold tracking-wider select-none uppercase">
+                  <span className="text-[9px] text-[#727784] font-bold tracking-wider select-none uppercase">
                     {t("menu.scroll_hint", "Սահեցրեք՝ բոլոր բաժինները տեսնելու համար")}
                   </span>
                 </div>
@@ -3047,24 +2946,35 @@ export default function App() {
 
           {currentView === "calculator" && activeCategory && (
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 mt-6 flex flex-col gap-8 pb-10">
+              
+              {/* Header Section from Design */}
+              <div className="mb-2 select-text">
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1a1c1d] uppercase mb-1">
+                  {t("calc.page_title", "Configuration Studio")}
+                </h1>
+                <p className="text-[#414753] text-sm sm:text-base font-medium">
+                  {t("calc.page_subtitle", "Engineering-grade packaging specification tool.")}
+                </p>
+              </div>
+
               {/* ACTIVE CATEGORY HERO HEADERS */}
           {(() => {
             const catObj = categories.find((c) => c.id === activeCategory);
             if (!catObj) return null;
             return (
-              <div className="bg-capsule-surf border border-capsule-accent/10 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm relative overflow-hidden">
+              <div className="bg-[#f0f2f5] border border-white/40 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] relative overflow-hidden">
                 <div className="space-y-1.5 flex-1 select-text">
-                  <h2 className="font-serif font-normal text-xl sm:text-2xl tracking-wide text-capsule-accent">
+                  <h2 className="font-sans font-bold text-xl sm:text-2xl tracking-wide text-[#1a1c1d] uppercase">
                     {t(`db.category.${catObj.id}.heroTitle`, catObj.heroTitle || catObj.name)}
                   </h2>
-                  <p className="text-xs text-capsule-text-secondary pr-4 leading-relaxed">
+                  <p className="text-xs text-[#414753] pr-4 leading-relaxed font-medium">
                     {t(`db.category.${catObj.id}.heroDesc`, catObj.heroDesc)}
                   </p>
                 </div>
                 {catObj.heroBadge && (
-                  <div className="flex flex-col items-center justify-center text-center bg-capsule-accent/5 border border-capsule-accent/20 rounded-xl px-5 py-3 tracking-widest uppercase font-serif shrink-0 select-none">
-                    <span className="text-xl font-medium text-capsule-accent leading-none">{t(`db.category.${catObj.id}.heroBadge`, catObj.heroBadge)}</span>
-                    <span className="text-[10px] text-capsule-text-muted mt-0.5 leading-none font-sans font-semibold">{t(`db.category.${catObj.id}.heroSmall`, catObj.heroSmall || "ԱԿՑԻԱ")}</span>
+                  <div className="flex flex-col items-center justify-center text-center bg-[#FF2300]/5 border border-[#FF2300]/20 rounded-xl px-5 py-3 tracking-widest uppercase font-serif shrink-0 select-none">
+                    <span className="text-xl font-bold text-[#FF2300] leading-none">{t(`db.category.${catObj.id}.heroBadge`, catObj.heroBadge)}</span>
+                    <span className="text-[10px] text-[#727784] mt-0.5 leading-none font-sans font-semibold">{t(`db.category.${catObj.id}.heroSmall`, catObj.heroSmall || "ԱԿՑԻԱ")}</span>
                   </div>
                 )}
               </div>
@@ -3076,19 +2986,19 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* Left Column Settings */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
+              <div className="lg:col-span-7 flex flex-col gap-6 lg:pr-2">
                 
                 {/* Card 1: Colors & Printing Method */}
                 <div className="neu-convex-surf rounded-3xl p-6 space-y-4 relative overflow-hidden">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Palette size={14} className="text-capsule-accent" />
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Palette size={14} className="text-[#FF2300]" />
                     <span>{t("calc.section_1_title", "Բաժին 1. Տպագրության Գունայնություն և Մեթոդ")}</span>
                   </div>
                   
                   <div className="space-y-4">
                     {/* Colors Shade Option */}
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.colors", "Գունայնություն / Գույների Քանակ")}</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.colors", "Գունայնություն / Գույների Քանակ")}</span>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
                           { val: 1, label: t("colors.monochrome", "Մոնոքրոմ"), desc: t("colors.monochrome_desc", "Սև-Սպիտակ / 1 Գույն") },
@@ -3105,11 +3015,11 @@ export default function App() {
                             className={`py-3 px-2 rounded-2xl text-center cursor-pointer transition-all duration-300 flex flex-col justify-center items-center gap-0.5 min-h-[50px] ${
                               colors === item.val 
                                 ? "neu-brand-active scale-[1.03]" 
-                                : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                             }`}
                           >
-                            <span className={`text-[11px] tracking-tight font-bold ${colors === item.val ? "text-white" : "text-[#3D271B]"}`}>{item.label}</span>
-                            <span className={`text-[8px] leading-none opacity-85 select-none text-center ${colors === item.val ? "text-white/90" : "text-[#3D271B]/60"}`}>{item.desc}</span>
+                            <span className={`text-[11px] tracking-tight font-bold ${colors === item.val ? "text-white" : "text-[#1a1c1d]"}`}>{item.label}</span>
+                            <span className={`text-[8px] leading-none opacity-85 select-none text-center ${colors === item.val ? "text-white/90" : "text-[#1a1c1d]/60"}`}>{item.desc}</span>
                           </button>
                         ))}
                       </div>
@@ -3117,7 +3027,7 @@ export default function App() {
 
                     {/* Printing Method Select Option */}
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.printing_tech", "Տպագրության Տեխնոլոգիա (Մեթոդ)")}</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.printing_tech", "Տպագրության Տեխնոլոգիա (Մեթոդ)")}</span>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1">
                         <button
                           type="button"
@@ -3128,11 +3038,11 @@ export default function App() {
                           className={`py-3 px-4 rounded-2xl text-left cursor-pointer transition-all duration-300 flex flex-col justify-center min-h-[50px] ${
                             method === "auto" || method === ""
                               ? "neu-brand-active scale-[1.03]"
-                              : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                              : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                           }`}
                         >
-                          <span className={`text-[11px] font-bold tracking-tight ${method === "auto" || method === "" ? "text-white" : "text-[#3D271B]"}`}>✨ {t("printing.auto", "Ավտոմատ")}</span>
-                          <span className={`text-[8px] leading-none mt-0.5 ${method === "auto" || method === "" ? "text-white/90" : "text-[#3D271B]/60"}`}>{t("printing.optimum_cheapest", "Օպտիմալ / Ամենաէժան")}</span>
+                          <span className={`text-[11px] font-bold tracking-tight ${method === "auto" || method === "" ? "text-white" : "text-[#1a1c1d]"}`}>✨ {t("printing.auto", "Ավտոմատ")}</span>
+                          <span className={`text-[8px] leading-none mt-0.5 ${method === "auto" || method === "" ? "text-white/90" : "text-[#1a1c1d]/60"}`}>{t("printing.optimum_cheapest", "Օպտիմալ / Ամենաէժան")}</span>
                         </button>
                         {printingMethods
                           .filter((m) => m.active && m.allowedCategories?.includes(activeCategory))
@@ -3149,11 +3059,11 @@ export default function App() {
                                 className={`py-3 px-4 rounded-2xl text-left cursor-pointer transition-all duration-300 flex flex-col justify-center min-h-[50px] ${
                                   isSelected
                                     ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                    : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                                 }`}
                               >
-                                <span className={`text-[11px] font-bold tracking-tight ${isSelected ? "text-white" : "text-[#3D271B]"}`}>{t(`db.print_method.${m.id}`, m.name)}</span>
-                                <span className={`text-[8px] leading-none mt-0.5 ${isSelected ? "text-white/90" : "text-[#3D271B]/60"}`}>{t("printing.min_qty", "Մին.")} {m.minQty} {t("common.units.pcs", "հատ")}</span>
+                                <span className={`text-[11px] font-bold tracking-tight ${isSelected ? "text-white" : "text-[#1a1c1d]"}`}>{t(`db.print_method.${m.id}`, m.name)}</span>
+                                <span className={`text-[8px] leading-none mt-0.5 ${isSelected ? "text-white/90" : "text-[#1a1c1d]/60"}`}>{t("printing.min_qty", "Մին.")} {m.minQty} {t("common.units.pcs", "հատ")}</span>
                               </button>
                             );
                           })}
@@ -3164,14 +3074,14 @@ export default function App() {
 
                 {/* Card 2: Sides & Design Option */}
                 <div className="neu-convex-surf rounded-3xl p-6 space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <FileText size={14} className="text-capsule-accent" />
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <FileText size={14} className="text-[#FF2300]" />
                     <span>{t("calc.section_2_title", "Բաժին 2. Դիզայն և Տեղադրություն")}</span>
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.sides", "Տպագրության Կողմեր")}</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.sides", "Տպագրության Կողմեր")}</span>
                       <div className="grid grid-cols-2 gap-2">
                         {[1, 2].map((sd) => {
                           const isSelected = sides === sd;
@@ -3185,10 +3095,10 @@ export default function App() {
                               className={`py-3 rounded-2xl text-[11px] font-bold transition-all duration-300 cursor-pointer ${
                                 isSelected 
                                   ? "neu-brand-active scale-[1.03]" 
-                                  : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                  : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                               }`}
                             >
-                              <span className={isSelected ? "text-white" : "text-[#3D271B]"}>
+                              <span className={isSelected ? "text-white" : "text-[#1a1c1d]"}>
                                 {sd === 1 ? t("options.sides_1", "Միակողմանի") : t("options.sides_2", "Երկկողմանի")}
                               </span>
                             </button>
@@ -3198,7 +3108,7 @@ export default function App() {
                     </div>
 
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.design_file", "Դիզայնի Ֆայլ")}</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.design_file", "Դիզայնի Ֆայլ")}</span>
                       <div className="grid grid-cols-2 gap-2">
                         {[
                           { key: "ready", label: t("options.design_ready", "Պատրաստի Ֆայլ") },
@@ -3215,10 +3125,10 @@ export default function App() {
                               className={`py-3 rounded-2xl text-[11px] font-bold transition-all duration-300 cursor-pointer ${
                                 isSelected 
                                   ? "neu-brand-active scale-[1.03]" 
-                                  : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                  : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                               }`}
                             >
-                              <span className={isSelected ? "text-white" : "text-[#3D271B]"}>
+                              <span className={isSelected ? "text-white" : "text-[#1a1c1d]"}>
                                 {dObj.label}
                               </span>
                             </button>
@@ -3231,13 +3141,13 @@ export default function App() {
 
                 {/* Card 3: Post-press Finishes */}
                 <div className="neu-convex-surf rounded-3xl p-6 space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Sparkles size={14} className="text-capsule-accent" />
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Sparkles size={14} className="text-[#FF2300]" />
                     <span>{t("calc.section_3_title", "Բาժին 3. Լրացուցիչ Մշակումներ (Դեկորներ)")}</span>
                   </div>
                   
                   <div className="space-y-1">
-                    <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono mb-2">{t("calc.effects_subtitle", "Ընտրեք ցանկալի էֆեկտները")}</span>
+                    <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono mb-2">{t("calc.effects_subtitle", "Ընտրեք ցանկալի էֆեկտները")}</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {finishes.filter(f => f.active && f.categoryId === activeCategory).map((fin) => {
                         const isSel = selectedFinishes.includes(fin.key);
@@ -3254,12 +3164,12 @@ export default function App() {
                             className={`flex items-center gap-3 p-3 text-left rounded-2xl transition-all duration-300 cursor-pointer text-xs font-bold ${
                               isSel 
                                 ? "neu-brand-active scale-[1.03]" 
-                                : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                             }`}
                           >
-                            <span className={`rounded-xl py-1 px-1.5 border ${isSel ? "bg-white/10 border-white/20 text-white" : "bg-capsule-bg/40 border-[#D5D0C8]"}`}>{fin.icon}</span>
-                            <span className={`flex-1 truncate ${isSel ? "text-white" : "text-[#3D271B]"}`}>{t(`db.finish.${fin.key}`, fin.label)}</span>
-                            <span className={`font-mono text-[9px] ${isSel ? "text-white/80" : "text-[#3D271B]/60"}`}>+{formatPrice(fin.price)} / {t("common.units.pcs", "հատ")}</span>
+                            <span className={`rounded-xl py-1 px-1.5 border ${isSel ? "bg-white/10 border-white/20 text-white" : "bg-[#f0f2f5]/40 border-[#d1d9e6]"}`}>{fin.icon}</span>
+                            <span className={`flex-1 truncate ${isSel ? "text-white" : "text-[#1a1c1d]"}`}>{t(`db.finish.${fin.key}`, fin.label)}</span>
+                            <span className={`font-mono text-[9px] ${isSel ? "text-white/80" : "text-[#1a1c1d]/60"}`}>+{formatPrice(fin.price)} / {t("common.units.pcs", "հատ")}</span>
                           </button>
                         );
                       })}
@@ -3268,7 +3178,7 @@ export default function App() {
                 </div>
 
                 {/* Sizes sub tabs */}
-                <div className="flex p-1 bg-[#FAFAF9] shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_5px_#FFFFFF] border border-[#E9E4DB]/40 rounded-full w-full max-w-md select-none mt-2">
+                <div className="flex p-1 bg-[#f0f2f5] shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] border border-[#d1d9e6]/40 rounded-full w-full max-w-md select-none mt-2">
                   {[
                     { key: "select", lbl: t("options.tab_select", "Ընտրել Չափս") },
                     { key: "custom", lbl: t("options.tab_custom", "Անհատական Չափս") },
@@ -3281,8 +3191,8 @@ export default function App() {
                         onClick={() => setCalcTab(sub.key as any)}
                         className={`flex-1 py-2 text-[10px] sm:text-xs font-bold uppercase rounded-full text-center cursor-pointer transition-all duration-300 ${
                           isSelected 
-                            ? "bg-capsule-accent text-white shadow-[2px_2px_5px_rgba(58,32,16,0.22)] scale-[1.02]" 
-                            : "text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                            ? "bg-[#FF2300] text-white shadow-[2px_2px_5px_rgba(58,32,16,0.22)] scale-[1.02]" 
+                            : "text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                         }`}
                       >
                         {sub.lbl}
@@ -3291,19 +3201,23 @@ export default function App() {
                   })}
                 </div>
 
-                {/* Sub Tab: PRESETS SIZE SELECT */}
-                {calcTab === "select" && (
-                  <div className="space-y-4 neu-convex-surf rounded-3xl p-6">
-                    {/* Header */}
-                    <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                      <Expand size={14} className="text-capsule-accent" />
-                      <span>{t("calc.section_4_title", "Բաժին 4. Չափսի, Թղթի և Քանակի Ընտրություն (Ստանդարտ)")}</span>
-                    </div>
+                {/* Sub Tab: PRESETS / CUSTOM / TABLE */}
+                <div className="space-y-4 neu-convex-surf rounded-3xl p-6">
+                  {/* Header */}
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Expand size={14} className="text-[#FF2300]" />
+                    <span>
+                      {calcTab === "select" && t("calc.section_4_title", "Բաժին 4. Չափսի, Թղթի և Քանակի Ընտրություն (Ստանդարտ)")}
+                      {calcTab === "custom" && t("calc.section_4_custom_title", "Բաժին 4. Չափսի, Թղթի և Քանակի Ընտրություն (Անհատական)")}
+                      {calcTab === "table" && t("calc.matrix_title", "Չափերի և Մեծածախ Քանակների Գնացուցակ (֏/հատ)")}
+                    </span>
+                  </div>
 
-                    {/* Preset Sizes block */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono flex items-center gap-1.5">
-                        <Expand size={12} className="text-capsule-accent" />
+                  {calcTab === "select" && (
+                    /* Preset Sizes block */
+                    <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
+                      <div className="text-[10px] font-bold text-[#FF2300] uppercase tracking-wider font-mono flex items-center gap-1.5">
+                        <Expand size={12} className="text-[#FF2300]" />
                         <span>{t("common.dimensions", "Չափսեր (սմ)")}</span>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -3322,206 +3236,26 @@ export default function App() {
                                 className={`p-3 rounded-2xl text-center cursor-pointer transition-all duration-300 flex flex-col justify-center items-center min-h-[52px] ${
                                   isSelected
                                     ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                    : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                                 }`}
                               >
-                                <span className={`text-[11px] font-bold tracking-tight font-sans ${isSelected ? "text-white" : "text-[#3D271B]"}`}>
-                                  {dElement.dim} <span className={`text-[8px] font-normal leading-none ${isSelected ? "text-white/85" : "text-[#3D271B]/65"}`}>{t("common.units.cm", "սմ")}</span>
+                                <span className={`text-[11px] font-bold tracking-tight font-sans ${isSelected ? "text-white" : "text-[#1a1c1d]"}`}>
+                                  {dElement.dim} <span className={`text-[8px] font-normal leading-none ${isSelected ? "text-white/85" : "text-[#1a1c1d]/65"}`}>{t("common.units.cm", "սմ")}</span>
                                 </span>
                               </button>
                             );
                           })}
                       </div>
                     </div>
+                  )}
 
-                    {/* Paper Selection block */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono flex items-center gap-1.5 font-normal">
-                        <FileText size={12} className="text-capsule-accent" />
-                        <span>{t("common.paper", "Թղթի Տեսակ և Խտություն (Paper Options)")}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {papers
-                          .filter((p) => p.active && p.assignedProducts.includes(activeCategory))
-                          .map((p) => {
-                            const isSelected = selectedPaperId === p.id;
-                            return (
-                              <button
-                                key={p.id}
-                                type="button"
-                                onClick={() => {
-                                  setSelectedPaperId(p.id);
-                                  setGsm(p.gsm);
-                                  setCalcResult(null);
-                                }}
-                                className={`p-3 rounded-2xl cursor-pointer transition-all duration-300 flex flex-col justify-center min-h-[54px] ${
-                                  isSelected
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] hover:shadow-[0_8px_15px_-3px_rgba(31,42,42,0.06)] active:shadow-[inset_2px_2px_4px_#D5D0C8,_inset_-2px_-2px_4px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                <span className={`text-[11px] font-bold leading-tight truncate w-full ${isSelected ? "text-white" : "text-[#3D271B]"}`}>{t(`db.paper.${p.id}`, p.name)}</span>
-                                <span className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/90" : "text-capsule-accent"}`}>
-                                  {p.gsm} {t("common.units.g", "Gsm")}
-                                </span>
-                              </button>
-                            );
-                          })}
-                      </div>
-                    </div>
-
-                    {/* Sub-block: Lamination & Handles */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-4">
-                      <div className="text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono">{t("common.lamination_and_handles", "Լամինացիա և Բռնակներ")}</div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider">{t("common.lamination", "Լամինացիայի Տեսակ")}</span>
-                          <div className="grid grid-cols-2 gap-2 mt-1">
-                            {[
-                              { val: "matte", label: t("options.lamination_matte", "Փայլատ") },
-                              { val: "gloss", label: t("options.lamination_gloss", "Փայլուն") },
-                              { val: "soft_touch", label: t("options.lamination_soft_touch", "Soft-Touch") },
-                              { val: "none", label: t("options.lamination_none", "Առանց") }
-                            ].map((item) => (
-                              <button
-                                key={item.val}
-                                type="button"
-                                onClick={() => {
-                                  setLamination(item.val as any);
-                                  setCalcResult(null);
-                                }}
-                                className={`py-2 rounded-2xl text-xs font-bold transition-all duration-300 cursor-pointer ${
-                                  lamination === item.val
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                {item.label}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="space-y-1">
-                          <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.handle", "Բռնակներ")}</span>
-                          <div className="grid grid-cols-2 gap-3 mt-1">
-                            {[
-                              { key: "cord", label: t("options.handle_cord", "Պարանային Շնուր") },
-                              { key: "ribbon", label: t("options.handle_ribbon", "Սատինե Ժապավեն") }
-                            ].map((hb) => (
-                              <button
-                                key={hb.key}
-                                onClick={() => {
-                                  setHandle(hb.key as any);
-                                  if (hb.key === "ribbon") {
-                                    const activeRibs = (bagRibbonHandles || []).filter(h => h.active);
-                                    const defaultPrice = activeRibs.length > 0 ? activeRibs[0].price : 75;
-                                    setRibbonWidthPrice(defaultPrice);
-                                  }
-                                  setCalcResult(null);
-                                }}
-                                className={`py-2 rounded-2xl text-[11px] font-bold transition-all duration-300 cursor-pointer ${
-                                  handle === hb.key
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                {hb.label}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {handle === "ribbon" && (
-                        <div className="space-y-1 border-t border-capsule-accent/5 pt-3">
-                          <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider">{t("common.ribbon_width", "Ժապավենի Լայնություն")}</span>
-                          <div className="grid grid-cols-4 gap-2 mt-1">
-                            {(bagRibbonHandles.length > 0 ? bagRibbonHandles.filter(h => h.active) : [
-                              { id: "rw_1_2", widthCm: 1.2, label: "1.2 սմ", price: 55, active: true },
-                              { id: "rw_2_0", widthCm: 2.0, label: "2.0 սմ", price: 75, active: true },
-                              { id: "rw_2_5", widthCm: 2.5, label: "2.5 սմ", price: 95, active: true },
-                              { id: "rw_3_0", widthCm: 3.0, label: "3.0 սմ", price: 120, active: true }
-                            ]).map((rib) => (
-                              <button
-                                key={rib.id || rib.label}
-                                type="button"
-                                onClick={() => {
-                                  setRibbonWidthPrice(rib.price);
-                                  setCalcResult(null);
-                                }}
-                                className={`py-2 rounded-2xl text-[11px] font-bold text-center transition-all duration-300 cursor-pointer ${
-                                  ribbonWidthPrice === rib.price
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                <div className={ribbonWidthPrice === rib.price ? "text-white" : "text-[#3D271B]"}>{rib.label ? (rib.label.includes("սմ") ? rib.label.replace("սմ", t("common.units.cm", "սմ")) : rib.label) : rib.label}</div>
-                                <div className={`text-[8px] font-bold font-mono mt-0.5 ${ribbonWidthPrice === rib.price ? "text-white/90" : "text-capsule-accent"}`}>{formatPrice(rib.price)}</div>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Sub-block: Quantity */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                        <div>
-                          <span className="block text-[11px] font-bold text-capsule-accent uppercase tracking-wider font-mono">{t("common.qty", "Պատվերի Քանակ")}</span>
-                          <span className="text-[9px] text-capsule-text-muted">{t("calc.qty_helper", "Ընտրեք առաջարկվող քանակներից կամ մուտքագրեք ձեր նախընտրածը")}</span>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <LuxuryNumericInput
-                            min={categories.find(c => c.id === activeCategory)?.minQty || 300}
-                            step={100}
-                            value={qty}
-                            onChange={(val) => setQty(Math.max(0, parseInt(val) || 0))}
-                            className="w-44"
-                          />
-                          <span className="text-xs text-capsule-text-secondary font-bold">{categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {categories.find(c => c.id === activeCategory)?.qtyPresets?.map((pq) => {
-                          const isSelected = qty === pq;
-                          return (
-                            <button
-                              key={pq}
-                              onClick={() => setQty(pq)}
-                              className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                                isSelected 
-                                  ? "neu-brand-active shadow-sm scale-[1.03]" 
-                                  : "bg-[#FAFAF9] border-white/60 shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.02] active:scale-[0.97]"
-                              }`}
-                            >
-                              <span className={isSelected ? "text-white" : "text-[#3D271B]"}>
-                                {formatNumber(pq)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Sub Tab: CUSTOM DIMENSIONS */}
-                {calcTab === "custom" && (
-                  <div className="space-y-4 neu-convex-surf rounded-3xl p-6">
-                    {/* Header */}
-                    <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                      <Expand size={14} className="text-capsule-accent" />
-                      <span>{t("calc.section_4_custom_title", "Բաժին 4. Չափսի, Թղթի և Քանակի Ընտրություն (Անհատական)")}</span>
-                    </div>
-
-                    {/* Sub-block: Custom Sizes */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <span className="block text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono">{t("common.dimensions", "Չափսեր (սմ)")}</span>
+                  {calcTab === "custom" && (
+                    /* Custom Dimensions block */
+                    <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
+                      <span className="block text-[10px] font-bold text-[#FF2300] uppercase tracking-wider font-mono">{t("common.dimensions", "Չափսեր (սմ)")}</span>
                       <div className="grid grid-cols-3 gap-3">
                         <div>
-                          <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">{t("common.width", "Լայնություն (W)")}</span>
+                          <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">{t("common.width", "Լայնություն (W)")}</span>
                           <LuxuryNumericInput
                             min={1}
                             step={1}
@@ -3531,7 +3265,7 @@ export default function App() {
                           />
                         </div>
                         <div>
-                          <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">{t("common.height", "Բարձրություն (H)")}</span>
+                          <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">{t("common.height", "Բարձրություն (H)")}</span>
                           <LuxuryNumericInput
                             min={1}
                             step={1}
@@ -3541,7 +3275,7 @@ export default function App() {
                           />
                         </div>
                         <div>
-                          <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">{t("common.depth", "Խորություն (D)")}</span>
+                          <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">{t("common.depth", "Խորություն (D)")}</span>
                           <LuxuryNumericInput
                             min={0}
                             step={1}
@@ -3552,86 +3286,88 @@ export default function App() {
                         </div>
                       </div>
                     </div>
+                  )}
 
-                    {/* Custom Paper Selection block */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono flex items-center gap-1.5 font-normal">
-                        <FileText size={12} className="text-capsule-accent" />
-                        <span>{t("common.paper", "Թղթի Տեսակ և Խտություն (Paper Options)")}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {papers
-                          .filter((p) => p.active && p.assignedProducts.includes(activeCategory))
-                          .map((p) => {
-                            const isSelected = selectedPaperId === p.id;
-                            return (
-                              <button
-                                type="button"
-                                key={p.id}
-                                onClick={() => {
-                                  setSelectedPaperId(p.id);
-                                  setGsm(p.gsm);
-                                  setCalcResult(null);
-                                }}
-                                className={`p-3 rounded-2xl cursor-pointer transition-all duration-300 flex flex-col justify-center min-h-[54px] ${
-                                  isSelected
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] hover:shadow-[0_8px_15px_-3px_rgba(31,42,42,0.06)] active:shadow-[inset_2px_2px_4px_#D5D0C8,_inset_-2px_-2px_4px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                <span className={`text-[11px] font-bold leading-tight truncate w-full ${isSelected ? "text-white" : "text-[#3D271B]"}`}>{t(`db.paper.${p.id}`, p.name)}</span>
-                                <span className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/90" : "text-capsule-accent"}`}>
-                                  {p.gsm} {t("common.units.g", "Gsm")}
-                                </span>
-                              </button>
-                            );
-                          })}
-                      </div>
+                  {calcTab === "table" && (
+                    /* Wholesale matrix table */
+                    <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
+                      {bulkLoading ? (
+                        <div className="py-12 text-center text-xs text-[#727784] animate-pulse">{t("calc.loading_matrix", "Հավաքագրվում է աղյուսակը...")}</div>
+                      ) : (
+                        <div className="overflow-x-auto border border-[#f0f2f5] bg-[#e1e6ed]/50 shadow-[2px_2px_6px_rgba(0,0,0,0.06),_inset_-2px_-2px_2px_#FFFFFF] rounded-2xl max-h-[350px]">
+                          <table className="w-full text-left text-xs border-collapse">
+                            <thead className="bg-[#d1d9e6] text-[#727784] text-[9px] uppercase font-bold sticky top-0">
+                              <tr>
+                                <th key="dimensions-col-header" className="p-3">{t("common.dimensions", "Չափսեր (սմ)")}</th>
+                                {tiers.map((tItem) => (
+                                  <th key={`header-tier-${tItem.id}`} className="p-3 text-center">{formatNumber(tItem.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-capsule-accent/5">
+                              {bulkMatrix.map((bm, index) => (
+                                <tr key={`matrix-row-${index}`} className="hover:bg-[#e1e6ed]/60 transition-colors">
+                                  <td key={`matrix-col-dim-${index}`} className="p-3 font-bold text-[#1a1c1d]">{bm.dimText}</td>
+                                  {tiers.map((tItem) => (
+                                    <td key={`matrix-col-tier-${index}-${tItem.id}`} className="p-3 text-center font-mono text-[#414753]">
+                                      {bm.tierPrices[tItem.qty] ? formatPrice(bm.tierPrices[tItem.qty]) : "—"}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
                     </div>
+                  )}
 
-                    {/* Custom Handles block */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono flex items-center gap-1.5">
-                        <Maximize2 size={12} className="text-capsule-accent" />
-                        <span>{t("common.handle", "Բռնակի Տեսակ (Handle Type)")}</span>
+                  {/* Shared option blocks for Paper, Lamination, Handles, and Qty - hidden in table view */}
+                  {calcTab !== "table" && (
+                    <>
+                      {/* Paper Selection block */}
+                      <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
+                        <div className="text-[10px] font-bold text-[#FF2300] uppercase tracking-wider font-mono flex items-center gap-1.5 font-normal">
+                          <FileText size={12} className="text-[#FF2300]" />
+                          <span>{t("common.paper", "Թղթի Տեսակ և Խտություն (Paper Options)")}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {papers
+                            .filter((p) => p.active && p.assignedProducts.includes(activeCategory))
+                            .map((p) => {
+                              const isSelected = selectedPaperId === p.id;
+                              return (
+                                <button
+                                  key={p.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedPaperId(p.id);
+                                    setGsm(p.gsm);
+                                    setCalcResult(null);
+                                  }}
+                                  className={`p-3 rounded-2xl cursor-pointer transition-all duration-300 flex flex-col justify-center min-h-[54px] ${
+                                    isSelected
+                                      ? "neu-brand-active scale-[1.03]"
+                                      : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] hover:shadow-[0_8px_15px_-3px_rgba(31,42,42,0.06)] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
+                                  }`}
+                                >
+                                  <span className={`text-[11px] font-bold leading-tight truncate w-full ${isSelected ? "text-white" : "text-[#1a1c1d]"}`}>{t(`db.paper.${p.id}`, p.name)}</span>
+                                  <span className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/90" : "text-[#FF2300]"}`}>
+                                    {p.gsm} {t("common.units.g", "Gsm")}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { key: "cord", label: t("options.handle_cord", "Պարանային Շնուր") },
-                          { key: "ribbon", label: t("options.handle_ribbon", "Սատինե Ժապավեն") }
-                        ].map((hb) => {
-                          const isSelected = handle === hb.key;
-                          return (
-                            <button
-                              type="button"
-                              key={hb.key}
-                              onClick={() => {
-                                setHandle(hb.key as any);
-                                if (hb.key === "ribbon") {
-                                  const activeRibs = (bagRibbonHandles || []).filter(h => h.active);
-                                  const defaultPrice = activeRibs.length > 0 ? activeRibs[0].price : 75;
-                                  setRibbonWidthPrice(defaultPrice);
-                                }
-                                setCalcResult(null);
-                              }}
-                              className={`p-3 rounded-2xl text-xs font-bold transition-all duration-300 text-center cursor-pointer min-h-[50px] flex items-center justify-center ${
-                                isSelected
-                                  ? "neu-brand-active scale-[1.03]"
-                                  : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                              }`}
-                            >
-                              <span className={isSelected ? "text-white" : "text-[#3D271B]"}>{hb.label}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
 
-                    {/* Sub-block: Lamination */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-4">
-                      <span className="block text-[10px] font-bold text-capsule-accent uppercase tracking-wider font-mono">{t("common.lamination", "Լամինացիայի Տեսակ")}</span>
-                      <div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                      {/* Sub-block: Lamination */}
+                      <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3 font-sans">
+                        <div className="text-[10px] font-bold text-[#FF2300] uppercase tracking-wider font-mono flex items-center gap-1.5 border-b border-[#FF2300]/5 pb-1.5">
+                          <Layers size={13} className="text-[#FF2300]" />
+                          <span>{t("common.lamination_type_title", "Լամինացիայի Տեսակ (Lamination Type)")}</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                           {[
                             { val: "matte", label: t("options.lamination_matte", "Փայլատ") },
                             { val: "gloss", label: t("options.lamination_gloss", "Փայլուն") },
@@ -3644,134 +3380,208 @@ export default function App() {
                                 key={item.val}
                                 type="button"
                                 onClick={() => {
-                                    setLamination(item.val as any);
-                                    setCalcResult(null);
+                                  setLamination(item.val as any);
+                                  setCalcResult(null);
                                 }}
                                 className={`py-2 rounded-2xl text-xs font-bold transition-all duration-300 cursor-pointer ${
                                   isSelected
                                     ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
+                                    : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
                                 }`}
                               >
-                                <span className={isSelected ? "text-white" : "text-[#3D271B]"}>{item.label}</span>
+                                <span className={isSelected ? "text-white" : "text-[#1a1c1d]"}>{item.label}</span>
                               </button>
                             );
                           })}
                         </div>
                       </div>
 
-                      {handle === "ribbon" && (
-                        <div className="space-y-1 border-t border-capsule-accent/5 pt-3">
-                          <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider">{t("common.ribbon_width", "Ժապավենի Լայնություն")}</span>
-                          <div className="grid grid-cols-4 gap-2 mt-1">
-                            {(bagRibbonHandles.length > 0 ? bagRibbonHandles.filter(h => h.active) : [
-                              { id: "rw_1_2", widthCm: 1.2, label: "1.2 սմ", price: 55, active: true },
-                              { id: "rw_2_0", widthCm: 2.0, label: "2.0 սմ", price: 75, active: true },
-                              { id: "rw_2_5", widthCm: 2.5, label: "2.5 սմ", price: 95, active: true },
-                              { id: "rw_3_0", widthCm: 3.0, label: "3.0 սմ", price: 120, active: true }
-                            ]).map((rib) => (
-                              <button
-                                key={rib.id || rib.label}
-                                type="button"
-                                onClick={() => {
-                                  setRibbonWidthPrice(rib.price);
-                                  setCalcResult(null);
-                                }}
-                                className={`py-2 rounded-2xl text-[11px] font-bold text-center transition-all duration-300 cursor-pointer ${
-                                  ribbonWidthPrice === rib.price
-                                    ? "neu-brand-active scale-[1.03]"
-                                    : "bg-[#FAFAF9] shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.01] active:scale-[0.98]"
-                                }`}
-                              >
-                                <div className={ribbonWidthPrice === rib.price ? "text-white" : "text-[#3D271B]"}>{rib.label ? (rib.label.includes("սմ") ? rib.label.replace("սմ", t("common.units.cm", "սմ")) : rib.label) : rib.label}</div>
-                                <div className={`text-[8px] font-bold font-mono mt-0.5 ${ribbonWidthPrice === rib.price ? "text-white/90" : "text-capsule-accent"}`}>{formatPrice(rib.price)}</div>
-                              </button>
-                            ))}
+                      {/* Sub-block: Handles */}
+                      <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-4 font-sans">
+                        <div className="text-[10px] font-bold text-[#FF2300] uppercase tracking-wider font-mono flex items-center gap-1.5 border-b border-[#FF2300]/5 pb-1.5">
+                          <Sliders size={13} className="text-[#FF2300]" />
+                          <span>{t("common.handle_and_styling", "Բռնակներ և Ձևավորում (Handles & Styling)")}</span>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.handle", "Բռնակներ")}</span>
+                          <div className="grid grid-cols-2 gap-3 mt-1">
+                            {[
+                              { key: "cord", label: t("options.handle_cord", "Պարանային Շնուր") },
+                              { key: "ribbon", label: t("options.handle_ribbon", "Սատինե Ժապավեն") }
+                            ].map((hb) => {
+                              const isSelected = handle === hb.key;
+                              return (
+                                <button
+                                  key={hb.key}
+                                  type="button"
+                                  onClick={() => {
+                                    setHandle(hb.key as any);
+                                    if (hb.key === "ribbon") {
+                                      const activeRibs = (bagRibbonHandles || []).filter(h => h.active);
+                                      const defaultPrice = activeRibs.length > 0 ? activeRibs[0].price : 75;
+                                      setRibbonWidthPrice(defaultPrice);
+                                    }
+                                    setCalcResult(null);
+                                  }}
+                                  className={`py-2 rounded-2xl text-[11px] font-bold transition-all duration-300 cursor-pointer ${
+                                    isSelected
+                                      ? "neu-brand-active scale-[1.03]"
+                                      : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
+                                  }`}
+                                >
+                                  <span className={isSelected ? "text-white" : "text-[#1a1c1d]"}>{hb.label}</span>
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
-                      )}
-                    </div>
 
-                    {/* Sub-block: Custom Quantity */}
-                    <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                        <div>
-                          <span className="block text-[11px] font-bold text-capsule-accent uppercase tracking-wider font-mono">{t("common.qty", "Պատվերի Քանակ")}</span>
-                          <span className="text-[9px] text-capsule-text-muted">{t("calc.qty_helper", "Ընտրեք առաջարկվող քանակներից կամ մուտքագրեք ձեր նախընտրածը")}</span>
+                        {/* Handle Color Swatches & custom Hex */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#FF2300]/10 pt-3">
+                          <div className="space-y-2">
+                            <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.handle_color", "Բռնակի Գույն")}</span>
+                            <div className="flex items-center gap-2">
+                              {[
+                                { hex: "#000000", label: "Black" },
+                                { hex: "#FF2300", label: "Red" },
+                                { hex: "#EAB308", label: "Gold" },
+                                { hex: "#2563EB", label: "Blue" },
+                                { hex: "#15803D", label: "Green" },
+                                { hex: "#FFFFFF", label: "White" }
+                              ].map((col) => {
+                                const isColSelected = handleColor.toLowerCase() === col.hex.toLowerCase();
+                                return (
+                                  <button
+                                    key={col.hex}
+                                    type="button"
+                                    onClick={() => {
+                                      setHandleColor(col.hex);
+                                      setCalcResult(null);
+                                    }}
+                                    style={{ backgroundColor: col.hex }}
+                                    className={`w-6 h-6 rounded-full cursor-pointer transition-all border shadow-sm ${
+                                      isColSelected 
+                                        ? "ring-2 ring-[#FF2300] ring-offset-2 scale-[1.12]" 
+                                        : "border-black/10 hover:scale-[1.05]"
+                                    }`}
+                                    title={col.label}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.custom_hex", "Անհատական HEX")}</span>
+                            <div className="flex items-center gap-2.5 bg-[#f0f2f5] shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] p-2 rounded-xl border border-white/60">
+                              <div 
+                                style={{ backgroundColor: handleColor }}
+                                className="w-5 h-5 rounded-full shadow-inner border border-black/10 shrink-0"
+                              />
+                              <input 
+                                type="text"
+                                value={handleColor}
+                                onChange={(e) => {
+                                  setHandleColor(e.target.value);
+                                  setCalcResult(null);
+                                }}
+                                className="bg-transparent border-none focus:ring-0 text-xs font-mono w-20 p-0 text-[#1a1c1d]"
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <LuxuryNumericInput
-                            min={categories.find(c => c.id === activeCategory)?.minQty || 300}
-                            step={100}
-                            value={custQty}
-                            onChange={(val) => setCustQty(Math.max(0, parseInt(val) || 0))}
-                            className="w-44"
-                          />
-                          <span className="text-xs text-capsule-text-secondary font-bold">{categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
+
+                        {handle === "ribbon" && (
+                          <div className="space-y-1 border-t border-[#FF2300]/25/5 pt-3">
+                            <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider">{t("common.ribbon_width", "Ժապավենի Լայնություն")}</span>
+                            <div className="grid grid-cols-4 gap-2 mt-1">
+                              {(bagRibbonHandles.length > 0 ? bagRibbonHandles.filter(h => h.active) : [
+                                { id: "rw_1_2", widthCm: 1.2, label: "1.2 սմ", price: 55, active: true },
+                                { id: "rw_2_0", widthCm: 2.0, label: "2.0 սմ", price: 75, active: true },
+                                { id: "rw_2_5", widthCm: 2.5, label: "2.5 սմ", price: 95, active: true },
+                                { id: "rw_3_0", widthCm: 3.0, label: "3.0 սմ", price: 120, active: true }
+                              ]).map((rib) => {
+                                const isSelected = ribbonWidthPrice === rib.price;
+                                return (
+                                  <button
+                                    key={rib.id || rib.label}
+                                    type="button"
+                                    onClick={() => {
+                                      setRibbonWidthPrice(rib.price);
+                                      setCalcResult(null);
+                                    }}
+                                    className={`py-2 rounded-2xl text-[11px] font-bold text-center transition-all duration-300 cursor-pointer ${
+                                      isSelected
+                                        ? "neu-brand-active scale-[1.03]"
+                                        : "bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] border border-white/60 text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.01] active:scale-[0.98]"
+                                    }`}
+                                  >
+                                    <div className={isSelected ? "text-white" : "text-[#1a1c1d]"}>{rib.label ? (rib.label.includes("սմ") ? rib.label.replace("սմ", t("common.units.cm", "սմ")) : rib.label) : rib.label}</div>
+                                    <div className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/90" : "text-[#FF2300]"}`}>{formatPrice(rib.price)}</div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Sub-block: Quantity */}
+                      <div className="bg-[#f0f2f5]/50 border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-4 space-y-3">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                          <div>
+                            <span className="block text-[11px] font-bold text-[#FF2300] uppercase tracking-wider font-mono">{t("common.qty", "Պատվերի Քանակ")}</span>
+                            <span className="text-[9px] text-[#727784]">{t("calc.qty_helper", "Ընտրեք առաջարկվող քանակներից կամ մուտքագրեք ձեր նախընտրածը")}</span>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <LuxuryNumericInput
+                              min={categories.find(c => c.id === activeCategory)?.minQty || 300}
+                              step={100}
+                              value={calcTab === "custom" ? custQty : qty}
+                              onChange={(val) => {
+                                const parsed = Math.max(0, parseInt(val) || 0);
+                                if (calcTab === "custom") {
+                                  setCustQty(parsed);
+                                } else {
+                                  setQty(parsed);
+                                }
+                              }}
+                              className="w-44"
+                            />
+                            <span className="text-xs text-[#414753] font-bold">{categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {categories.find(c => c.id === activeCategory)?.qtyPresets?.map((pq) => {
+                            const isSelected = (calcTab === "custom" ? custQty : qty) === pq;
+                            return (
+                              <button
+                                key={pq}
+                                onClick={() => {
+                                  if (calcTab === "custom") {
+                                    setCustQty(pq);
+                                  } else {
+                                    setQty(pq);
+                                  }
+                                }}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
+                                  isSelected 
+                                    ? "neu-brand-active shadow-sm scale-[1.03]" 
+                                    : "bg-[#f0f2f5] border-white/60 shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] text-[#1a1c1d]/60 hover:text-[#1a1c1d] hover:scale-[1.02] active:scale-[0.97]"
+                                }`}
+                              >
+                                <span className={isSelected ? "text-white" : "text-[#1a1c1d]"}>
+                                  {formatNumber(pq)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {categories.find(c => c.id === activeCategory)?.qtyPresets?.map((pq) => {
-                          const isSelected = custQty === pq;
-                          return (
-                            <button
-                              key={pq}
-                              onClick={() => setCustQty(pq)}
-                              className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                                isSelected 
-                                  ? "neu-brand-active shadow-sm scale-[1.03]" 
-                                  : "bg-[#FAFAF9] border-white/60 shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] text-[#3D271B]/60 hover:text-[#3D271B] hover:scale-[1.02] active:scale-[0.97]"
-                              }`}
-                            >
-                              <span className={isSelected ? "text-white" : "text-[#3D271B]"}>
-                                {formatNumber(pq)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Sub Tab: BULK MATRIX */}
-                {calcTab === "table" && (
-                  <div className="bg-[#FAFAF9]/50 border border-white/60 shadow-[inset_2px_2px_5px_#E5E3DF,_inset_-2px_-2px_1px_#FFFFFF] rounded-2xl p-6 space-y-4">
-                    <div className="text-[10px] uppercase font-bold text-capsule-accent flex justify-between border-b border-capsule-accent/10 pb-2">
-                      <span>{t("calc.matrix_title", "Չափերի և Մեծածախ Քանակների Գնացուցակ (֏/հատ)")}</span>
-                      <span>{gsm} GSM</span>
-                    </div>
-
-                    {bulkLoading ? (
-                      <div className="py-12 text-center text-xs text-capsule-text-muted animate-pulse">{t("calc.loading_matrix", "Հավաքագրվում է աղյուսակը...")}</div>
-                    ) : (
-                      <div className="overflow-x-auto border border-[#FAFAF9] bg-[#EFECE6]/50 shadow-[2px_2px_6px_rgba(0,0,0,0.06),_inset_-2px_-2px_2px_#FFFFFF] rounded-2xl max-h-[350px]">
-                        <table className="w-full text-left text-xs border-collapse">
-                          <thead className="bg-[#E9E4DB] text-capsule-text-muted text-[9px] uppercase font-bold sticky top-0">
-                            <tr>
-                              <th key="dimensions-col-header" className="p-3">{t("common.dimensions", "Չափսեր (սմ)")}</th>
-                              {tiers.map((tItem) => (
-                                <th key={`header-tier-${tItem.id}`} className="p-3 text-center">{formatNumber(tItem.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-capsule-accent/5">
-                            {bulkMatrix.map((bm, index) => (
-                              <tr key={`matrix-row-${index}`} className="hover:bg-[#EFECE6]/60 transition-colors">
-                                <td key={`matrix-col-dim-${index}`} className="p-3 font-bold text-capsule-dark">{bm.dimText}</td>
-                                {tiers.map((tItem) => (
-                                  <td key={`matrix-col-tier-${index}-${tItem.id}`} className="p-3 text-center font-mono text-capsule-text-secondary">
-                                    {bm.tierPrices[tItem.qty] ? formatPrice(bm.tierPrices[tItem.qty]) : "—"}
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                )}
+                    </>
+                  )}
+                </div>
 
               </div>
 
@@ -3804,9 +3614,9 @@ export default function App() {
                   );
                 })()}
 
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 shadow-md space-y-5">
-                  <div className="text-[10px] tracking-widest font-bold uppercase text-capsule-accent border-b border-capsule-accent/5 pb-2 flex items-center gap-1.5">
-                    <Calculator size={14} />
+                <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] space-y-5">
+                  <div className="text-[11px] tracking-widest font-extrabold uppercase text-[#1a1c1d] border-b border-gray-100 pb-3 flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF2300]" />
                     <span>{t("calc.title", "Գնային Հաշվարկ")}</span>
                   </div>
 
@@ -3816,16 +3626,16 @@ export default function App() {
                       <p className="text-xs font-semibold uppercase">{t(`errors.${calcError}`, calcError)}</p>
                     </div>
                   ) : !calcResult ? (
-                    <div className="py-8 px-4 text-center text-capsule-text-muted space-y-3 select-none">
-                      <HelpCircle className="mx-auto text-capsule-accent/40" size={24} />
-                      <div className="text-[11px] font-bold text-capsule-accent/80 uppercase tracking-wider">{t("calc.select_all_parameters", "Ընտրեք Բոլոր Պարամետրերը")}</div>
-                      <p className="text-[10px] sm:text-xs leading-relaxed max-w-xs mx-auto text-capsule-text-secondary">
+                    <div className="py-8 px-4 text-center text-[#727784] space-y-3 select-none">
+                      <HelpCircle className="mx-auto text-[#FF2300]/40" size={24} />
+                      <div className="text-[11px] font-bold text-[#FF2300]/80 uppercase tracking-wider">{t("calc.select_all_parameters", "Ընտրեք Բոլոր Պարամետրերը")}</div>
+                      <p className="text-[10px] sm:text-xs leading-relaxed max-w-xs mx-auto text-[#414753]">
                         {t("calc.select_all_parameters_description", "Արժեքը և 3D նախադիտումը տեսնելու համար խնդրում ենք ընտրել բոլոր պարտադիր դաշտերը՝")}
                       </p>
                       {getMissingOptions().length > 0 && (
                         <div className="flex flex-wrap justify-center gap-1 mt-2">
                           {getMissingOptions().map((opt) => (
-                            <span key={opt} className="px-2 py-0.5 rounded bg-capsule-accent/5 border border-capsule-accent/15 text-capsule-accent text-[9px] font-bold whitespace-nowrap">
+                            <span key={opt} className="px-2 py-0.5 rounded bg-[#FF2300]/5 border border-[#FF2300]/25/15 text-[#FF2300] text-[9px] font-bold whitespace-nowrap">
                               ● {t(`missing.${opt}`, opt)}
                             </span>
                           ))}
@@ -3834,93 +3644,105 @@ export default function App() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="flex flex-col border-b border-capsule-accent/10 pb-4">
-                        <span className="text-[9px] uppercase text-capsule-text-muted font-bold block">{t("calc.total_price", "Ընդհանուր Արժեք")}</span>
-                        <div className="flex justify-between items-baseline mt-1">
-                          <h3 className="text-3xl font-extrabold text-capsule-accent font-sans">{formatPrice(calcResult.totalPrice || 0)}</h3>
-                          <span className="text-xs font-bold text-capsule-text-secondary">{formatPrice(calcResult.unitPrice)} / {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
+                      <div className="flex flex-col border-b border-gray-100 pb-4">
+                        <span className="text-[10px] uppercase text-[#727784] font-bold block tracking-wider">{t("calc.total_price", "Ընդհանուր Արժեք")}</span>
+                        <div className="flex items-center gap-4 mt-2">
+                          <div className="text-4xl font-extrabold text-[#1a1c1d] font-sans flex items-baseline gap-1">
+                            <span>{formatPrice(calcResult.totalPrice || 0).replace(" ֏", "").replace(" AMD", "")}</span>
+                            <span className="text-2xl font-bold text-[#1a1c1d] font-sans">֏</span>
+                          </div>
+                          <div className="h-8 w-[1.5px] bg-gray-200" />
+                          <div className="text-xs font-bold text-[#414753] flex items-center gap-1">
+                            <span className="text-gray-300">/</span>
+                            <span className="text-sm font-extrabold text-[#1a1c1d]">{formatPrice(calcResult.unitPrice).replace(" ֏", "").replace(" AMD", "")} ֏</span>
+                            <span className="text-[#727784] text-[10px] font-medium font-sans">({t("common.per_unit", "֏/հատ")})</span>
+                          </div>
                         </div>
-                        <p className="text-[10px] text-capsule-text-muted mt-1 uppercase font-mono">
+                        <p className="text-[10px] text-[#727784] mt-2 uppercase font-mono tracking-wide">
                           {t("common.size", "Չափս")}: {calcResult.dimensionsText} {t("common.units.cm", "սմ")} | {t("common.qty", "Քանակ")}: {formatNumber(calcResult.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}
                         </p>
                       </div>
 
-                      <div className="space-y-2.5 text-xs text-capsule-text-secondary">
-                        <div className="flex justify-between border-[#3c1e0b]/10 border-b pb-1">
-                          <span>{t("calc.order_type", "Պատվերի Տեսակ")}</span>
-                          <span className="font-bold text-capsule-dark">
+                      <div className="space-y-2.5 text-xs text-[#414753]">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("calc.order_type", "Պատվերի Տեսակ")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {activeTemplate === "bags" ? t("category.bags_desc", "Ստանդարտ Թղթե Տոպրակ") : t("category.decorative_desc", "Դեկորատիվ Թղթե Տոպրակ")}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("calc.size_option", "Չափսի տարբերակ")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("calc.size_option", "Չափսի տարբերակ")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {calcTab === "custom" ? t("options.size_custom", "Անհատական") : t("options.size_standard", "Ստանդարտ")}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.dimensions", "Չափսեր (սմ)")}</span>
-                          <span className="font-bold text-capsule-dark">{calcResult.dimensionsText} {t("common.units.cm", "սմ")}</span>
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.dimensions", "Չափսեր (սմ)")}</span>
+                          <span className="font-bold text-[#1a1c1d]">{calcResult.dimensionsText} {t("common.units.cm", "սմ")}</span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.qty", "Պատվերի Քանակ")}</span>
-                          <span className="font-bold text-capsule-dark">{formatNumber(calcResult.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.qty", "Պատվերի Քանակ")}</span>
+                          <span className="font-bold text-[#1a1c1d]">{formatNumber(calcResult.qty)} {categories.find(c => c.id === activeCategory)?.id === "ribbons" ? t("common.units.meters", "մետր") : t("common.units.pcs", "հատ")}</span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.paper_type", "Թղթի տեսակ")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.paper_type", "Թղթի տեսակ")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {selectedPaperId ? t(`db.paper.${selectedPaperId}`, papers.find(p => p.id === selectedPaperId)?.name) : "---"}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.paper_gsm", "Թղթի խտություն")}</span>
-                          <span className="font-bold text-capsule-dark">{gsm} {t("common.units.g", "Gsm")}</span>
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.paper_gsm", "Թղթի խտություն")}</span>
+                          <span className="font-bold text-[#1a1c1d]">{gsm} {t("common.units.g", "Gsm")}</span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.lamination", "Լամինացիա")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.lamination", "Լամինացիա")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {lamination === "matte" ? `${t("options.lamination_matte", "Փայլատ")} (Matte)` : lamination === "gloss" ? `${t("options.lamination_gloss", "Փայլուն")} (Gloss)` : lamination === "soft_touch" ? `${t("options.lamination_soft_touch", "Soft-Touch")} (Soft-Touch)` : t("options.lamination_none", "Առանց")}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.colors", "Գունայնություն")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.colors", "Գունայնություն")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {formatColorsLabel(colors)}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.sides", "Կողմեր")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.sides", "Կողմեր")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {sides === 1 ? `${t("options.sides_1", "Միակողմանի")} (1/0)` : `${t("options.sides_2", "Երկկողմանի")} (1/1)`}
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.handle", "Բռնակի տեսակ")}</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.handle", "Բռնակի տեսակ")}</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {handle === "cord" 
                               ? t("options.handle_cord", "Պարանային Շնուր") 
                               : `${t("options.handle_ribbon", "Սատինե Ժապավեն")} (${activeRibLabel ? (activeRibLabel.includes("սմ") ? activeRibLabel.replace("սմ", t("common.units.cm", "սմ")) : activeRibLabel) : ""})`
                             }
                           </span>
                         </div>
-                        <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                          <span>{t("common.design", "Դիզայնի Փուլ")}</span>
-                          <span className="font-bold text-capsule-dark text-right">
+                        <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.design", "Դիզայնի Փուլ")}</span>
+                          <span className="font-bold text-[#1a1c1d] text-right">
                             {design === "ready" ? t("options.design_ready_desc", "Ունեմ պատրաստի մակետ") : t("options.design_help_desc", "Անհրաժեշտ է դիզայնի մշակում")}
                           </span>
                         </div>
                         {selectedFinishes.length > 0 && (
-                          <div className="flex justify-between border-b border-capsule-accent/5 pb-1">
-                            <span>{t("common.finishes", "Մշակումներ")}</span>
-                            <span className="font-bold text-capsule-dark text-right max-w-[200px] truncate">
+                          <div className="flex justify-between border-b border-gray-100 pb-1.5">
+                            <span className="text-[#727784] font-medium">{t("common.finishes", "Մշակումներ")}</span>
+                            <span className="font-bold text-[#1a1c1d] text-right max-w-[200px] truncate">
                               {selectedFinishes.map(k => t(`db.finish.${k}`, finishes.find(f => f.key === k)?.label)).join(", ")}
                             </span>
                           </div>
                         )}
-                        <div className="flex justify-between pb-1">
-                          <span>{t("common.print_method", "Տպագրության մեթոդ")}</span>
-                          <span className="bg-capsule-accent/10 px-2 py-0.5 rounded text-[9px] font-bold text-capsule-accent tracking-widest uppercase">
-                            {t(`options.print_method_${calcResult.printingMethodUsed?.toLowerCase()}`, calcResult.printingMethodUsed)}
+                        <div className="flex justify-between pb-1.5">
+                          <span className="text-[#727784] font-medium">{t("common.print_method", "Տպագրության մեթոդ")}</span>
+                          <span className="font-bold text-[#FF2300] uppercase font-sans">
+                            {calcResult.printingMethodUsed === "offset" || calcResult.printingMethodUsed?.toLowerCase() === "offset"
+                              ? "ՕՖՍԵԹ ՏՊԱԳՐՈՒԹՅՈՒՆ (OFFSET)"
+                              : calcResult.printingMethodUsed === "digital" || calcResult.printingMethodUsed?.toLowerCase() === "digital"
+                                ? "ԹՎԱՅԻՆ ՏՊԱԳՐՈՒԹՅՈՒՆ (DIGITAL)"
+                                : `${t(`options.print_method_${calcResult.printingMethodUsed?.toLowerCase()}`, calcResult.printingMethodUsed)} ՏՊԱԳՐՈՒԹՅՈՒՆ`}
                           </span>
                         </div>
                       </div>
@@ -3934,8 +3756,8 @@ export default function App() {
                           <span className="font-mono font-extrabold text-base">-{calcResult.quantityDiscount.toLocaleString()} ֏</span>
                         </div>
                       )}
-                      <div className="border-t border-capsule-accent/10 pt-4 space-y-2">
-                        <label className="block text-[9px] font-bold text-capsule-text-muted uppercase">Պրոմո Կոդ</label>
+                      <div className="border-t border-gray-100 pt-4 space-y-2">
+                        <label className="block text-[9px] font-bold text-[#727784] uppercase">Պրոմո Կոդ</label>
                         <div className="flex gap-2">
                           <input
                             type="text"
@@ -3943,7 +3765,7 @@ export default function App() {
                             onChange={(e) => setPromoInput(e.target.value.toUpperCase().replace(/\s/g, ""))}
                             disabled={!!appliedPromo}
                             placeholder="EX: WELCOME10"
-                            className="flex-1 bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-bold font-mono outline-none"
+                            className="flex-1 bg-[#f0f2f5] border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] rounded-lg py-2 px-3 text-xs text-[#1a1c1d] font-bold font-mono outline-none"
                           />
                           {appliedPromo ? (
                             <button
@@ -3961,7 +3783,7 @@ export default function App() {
                           ) : (
                             <button
                               onClick={handleApplyCoupon}
-                              className="bg-capsule-accent text-capsule-surf text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-lg cursor-pointer"
+                              className="bg-[#FF2300] text-white text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-lg cursor-pointer"
                             >
                               Կիրառել
                             </button>
@@ -3972,7 +3794,7 @@ export default function App() {
                       </div>
 
                       {/* Inquiry Submitter Button */}
-                      <div className="pt-3 border-t border-capsule-accent/10 space-y-2">
+                      <div className="pt-3 border-t border-gray-100 space-y-2">
                         <button
                           type="button"
                           onClick={() => {
@@ -3984,16 +3806,16 @@ export default function App() {
                             setInquiryPrice(calcResult.totalPrice);
                             setIsInquiryOpen(true);
                           }}
-                          className="w-full bg-capsule-accent hover:bg-capsule-accent-light text-capsule-surf text-xs py-3.5 rounded-full font-bold uppercase cursor-pointer text-center select-none shadow flex justify-center items-center gap-2 transition-all duration-250"
+                          className="w-full bg-[#FF2300] hover:bg-opacity-90 text-white text-xs py-3.5 rounded-full font-bold uppercase cursor-pointer text-center select-none shadow-[0_4px_14px_rgba(255,35,0,0.3)] flex justify-center items-center gap-2 transition-all duration-200"
                         >
-                          <ShoppingBag size={14} />
+                          <Check size={14} />
                           <span>{t("buttons.submit_order", "Հաստատել Պատվերը")}</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => handleAddItemToBundle(activeCategory)}
-                          className="w-full bg-capsule-surf hover:bg-capsule-accent/5 text-capsule-accent border border-capsule-accent/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-2 transition-all duration-250"
+                          className="w-full bg-[#f0f2f5] border border-white/60 shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] text-[#FF2300] hover:bg-white text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-2 transition-all duration-200"
                         >
                           <ShoppingCart size={14} />
                           <span>{t("buttons.add_to_cart", "Ավելացնել Զամբյուղին")}</span>
@@ -4012,15 +3834,15 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* Left Column Box configuration specs */}
-              <div className="lg:col-span-8 space-y-6">
+              <div className="lg:col-span-7 flex flex-col gap-6 lg:pr-2">
                 
                 {/* CARD 1: Box Dimensions */}
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Expand size={14} className="text-capsule-accent" />
+                <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Expand size={14} className="text-[#FF2300]" />
                     <span>{t("calc.card_1_title_box", "Քարտ 1. Տուփի Չափսեր (Dimensions)")}</span>
                   </div>
-                  <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("calc.card_1_desc_box", "Ընտրեք առաջարկվող ստանդարտ չափսերից կամ սահմանեք անհատական չափսեր")}</p>
+                  <p className="text-[10px] text-[#727784] uppercase font-bold">{t("calc.card_1_desc_box", "Ընտրեք առաջարկվող ստանդարտ չափսերից կամ սահմանեք անհատական չափսեր")}</p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                     {products.find(p => p.id === "boxes_items")?.items.map((it) => (
@@ -4030,15 +3852,15 @@ export default function App() {
                         onClick={() => setSelectedBoxItemId(it.id)}
                         className={`p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between min-h-[90px] ${
                           selectedBoxItemId === it.id 
-                            ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                            : "bg-capsule-surf2/20 border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                            ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                            : "bg-[#f0f2f5]/20 border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                         }`}
                       >
                         <div>
-                          <p className={`text-[8px] uppercase tracking-wider font-bold ${selectedBoxItemId === it.id ? "text-white/80" : "text-capsule-text-muted"}`}>Ստանդարտ</p>
+                          <p className={`text-[8px] uppercase tracking-wider font-bold ${selectedBoxItemId === it.id ? "text-white/80" : "text-[#727784]"}`}>Ստանդարտ</p>
                           <h4 className="text-xs font-bold font-sans mt-0.5 leading-tight">{it.name.replace(/ \(.+\)/, "")}</h4>
                         </div>
-                        <p className={`font-semibold text-[10px] mt-2 font-mono ${selectedBoxItemId === it.id ? "text-white/90" : "text-capsule-accent"}`}>Base: {it.price} ֏</p>
+                        <p className={`font-semibold text-[10px] mt-2 font-mono ${selectedBoxItemId === it.id ? "text-white/90" : "text-[#FF2300]"}`}>Base: {it.price} ֏</p>
                       </button>
                     ))}
 
@@ -4047,22 +3869,22 @@ export default function App() {
                       onClick={() => setSelectedBoxItemId("custom")}
                       className={`p-4 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between min-h-[90px] ${
                         selectedBoxItemId === "custom" 
-                          ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                          : "bg-transparent border border-capsule-accent/10 hover:border-capsule-accent/20"
+                          ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                          : "bg-transparent border border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20"
                       }`}
                     >
                       <div>
-                        <p className={`text-[8px] uppercase font-bold ${selectedBoxItemId === "custom" ? "text-white/80" : "text-capsule-accent-light"}`}>Անհատական</p>
-                        <h4 className={`text-xs font-bold font-sans mt-0.5 ${selectedBoxItemId === "custom" ? "text-white" : "text-capsule-accent"}`}>Ազատ Չափսեր</h4>
+                        <p className={`text-[8px] uppercase font-bold ${selectedBoxItemId === "custom" ? "text-white/80" : "text-[#FF2300]-light"}`}>Անհատական</p>
+                        <h4 className={`text-xs font-bold font-sans mt-0.5 ${selectedBoxItemId === "custom" ? "text-white" : "text-[#FF2300]"}`}>Ազատ Չափսեր</h4>
                       </div>
-                      <p className={`text-[9px] mt-2 font-medium ${selectedBoxItemId === "custom" ? "text-white/80" : "text-capsule-text-muted"}`}>Մուտքագրել ձեռքով</p>
+                      <p className={`text-[9px] mt-2 font-medium ${selectedBoxItemId === "custom" ? "text-white/80" : "text-[#727784]"}`}>Մուտքագրել ձեռքով</p>
                     </button>
                   </div>
 
                   {selectedBoxItemId === "custom" && (
-                    <div className="bg-capsule-surf2/30 border border-capsule-accent/15 rounded-xl p-4 grid grid-cols-3 gap-3">
+                    <div className="bg-[#f0f2f5]/30 border border-[#FF2300]/25/15 rounded-xl p-4 grid grid-cols-3 gap-3">
                       <div>
-                        <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">Երկարություն (L) սմ</span>
+                        <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">Երկարություն (L) սմ</span>
                         <LuxuryNumericInput
                           min={1}
                           step={1}
@@ -4072,7 +3894,7 @@ export default function App() {
                         />
                       </div>
                       <div>
-                        <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">Լայնություն (W) սմ</span>
+                        <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">Լայնություն (W) սմ</span>
                         <LuxuryNumericInput
                           min={1}
                           step={1}
@@ -4082,7 +3904,7 @@ export default function App() {
                         />
                       </div>
                       <div>
-                        <span className="block text-[9px] font-bold text-capsule-text-muted uppercase mb-1">Բարձրություն (H) սմ</span>
+                        <span className="block text-[9px] font-bold text-[#727784] uppercase mb-1">Բարձրություն (H) սմ</span>
                         <LuxuryNumericInput
                           min={1}
                           step={1}
@@ -4096,12 +3918,12 @@ export default function App() {
                 </div>
 
                 {/* CARD 2: Box Structure */}
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Layers size={14} className="text-capsule-accent" />
+                <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Layers size={14} className="text-[#FF2300]" />
                     <span>Քարտ 2. Տուփի Կառուցվածք (Box Structure)</span>
                   </div>
-                  <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք տուփի արտաքին տեսքը և բացման մեխանիզմը</p>
+                  <p className="text-[10px] text-[#727784] uppercase font-bold">Ընտրեք տուփի արտաքին տեսքը և բացման մեխանիզմը</p>
 
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     <button
@@ -4112,15 +3934,15 @@ export default function App() {
                       }}
                       className={`relative flex flex-col items-center gap-2 p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
                         boxStyle === "shoulder_lid"
-                          ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                          : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                          ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                          : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                       }`}
                     >
                       <div className="p-2 rounded-lg bg-current/5">
                         <Layers size={18} />
                       </div>
                       <div className="text-xs font-bold leading-none">Կափարիչով</div>
-                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "shoulder_lid" ? "text-white/80" : "text-capsule-text-muted"}`}>Classic Rigid Lid</div>
+                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "shoulder_lid" ? "text-white/80" : "text-[#727784]"}`}>Classic Rigid Lid</div>
                     </button>
                     
                     <button
@@ -4131,16 +3953,16 @@ export default function App() {
                       }}
                       className={`relative flex flex-col items-center gap-2 p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
                         boxStyle === "shoulder_neck"
-                          ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                          : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                          ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                          : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                       }`}
                     >
-                      <span className="absolute -top-2 -right-1 bg-capsule-accent text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full select-none shadow">NEW</span>
+                      <span className="absolute -top-2 -right-1 bg-[#FF2300] text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full select-none shadow">NEW</span>
                       <div className="p-2 rounded-lg bg-current/5">
                         <Inbox size={18} />
                       </div>
                       <div className="text-xs font-bold leading-none">Ուսիկով</div>
-                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "shoulder_neck" ? "text-white/80" : "text-capsule-text-muted"}`}>Hinged Neck Box</div>
+                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "shoulder_neck" ? "text-white/80" : "text-[#727784]"}`}>Hinged Neck Box</div>
                     </button>
 
                     <button
@@ -4151,15 +3973,15 @@ export default function App() {
                       }}
                       className={`relative flex flex-col items-center gap-2 p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
                         boxStyle === "sleeve_drawer"
-                          ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                          : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                          ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                          : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                       }`}
                     >
                       <div className="p-2 rounded-lg bg-current/5">
                         <Sliders size={18} />
                       </div>
                       <div className="text-xs font-bold leading-none">Սահող Դարակով</div>
-                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "sleeve_drawer" ? "text-white/80" : "text-capsule-text-muted"}`}>Slide Drawer</div>
+                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "sleeve_drawer" ? "text-white/80" : "text-[#727784]"}`}>Slide Drawer</div>
                     </button>
 
                     <button
@@ -4170,8 +3992,8 @@ export default function App() {
                       }}
                       className={`relative flex flex-col items-center gap-2 p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
                         boxStyle === "magnetic_flap"
-                          ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                          : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                          ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                          : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                       }`}
                     >
                       <span className="absolute -top-2 -right-1 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full select-none shadow">LUX</span>
@@ -4179,23 +4001,23 @@ export default function App() {
                         <Sparkles size={18} />
                       </div>
                       <div className="text-xs font-bold leading-none">Մագնիսական</div>
-                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "magnetic_flap" ? "text-white/80" : "text-capsule-text-muted"}`}>Luxury Magnetic</div>
+                      <div className={`text-[9px] font-medium mt-0.5 ${boxStyle === "magnetic_flap" ? "text-white/80" : "text-[#727784]"}`}>Luxury Magnetic</div>
                     </button>
                   </div>
                 </div>
 
                 {/* CARD 3: Technical material options */}
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Sliders size={14} className="text-capsule-accent" />
+                <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                    <Sliders size={14} className="text-[#FF2300]" />
                     <span>Քարտ 3. Տեխնիկական Մանրամասներ</span>
                   </div>
-                  <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Սահմանեք տուփի ստվարաթուղթը, լամինացիան և տպագրության որակը</p>
+                  <p className="text-[10px] text-[#727784] uppercase font-bold">Սահմանեք տուփի ստվարաթուղթը, լամինացիան և տպագրության որակը</p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {/* Material */}
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1">Նյութ / Ստվարաթուղթ</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1">Նյութ / Ստվարաթուղթ</span>
                       <div className="flex flex-col gap-1.5">
                         {papers
                           .filter((p) => p.active && p.assignedProducts.includes("boxes"))
@@ -4211,12 +4033,12 @@ export default function App() {
                                 }}
                                 className={`p-2.5 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-center min-h-[50px] ${
                                   isSelected
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold leading-tight">{p.name}</span>
-                                <span className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/80" : "text-capsule-accent"}`}>
+                                <span className={`text-[8px] font-bold font-mono mt-0.5 ${isSelected ? "text-white/80" : "text-[#FF2300]"}`}>
                                   {p.gsm} Gsm
                                 </span>
                               </button>
@@ -4227,7 +4049,7 @@ export default function App() {
 
                     {/* Lamination */}
                     <div className="space-y-1">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1">Լամինացիա</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1">Լամինացիա</span>
                       <div className="grid grid-cols-2 gap-1.5">
                         {[
                           { val: "matte", label: "Փայլատ" },
@@ -4244,8 +4066,8 @@ export default function App() {
                             }}
                             className={`py-2 px-1 rounded-xl text-[10px] font-bold border cursor-pointer transition-all ${
                               boxLamination === item.val
-                                ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                             }`}
                           >
                             {item.label}
@@ -4256,7 +4078,7 @@ export default function App() {
 
                     {/* Colors Shade Option */}
                     <div className="md:col-span-2 space-y-1 pt-2">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1">Գունայնություն / Տպագրություն</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1">Գունայնություն / Տպագրություն</span>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
                           { val: 1, label: "Մոնոքրոմ", desc: "Սև-Սպիտակ / 1 Գույն" },
@@ -4272,12 +4094,12 @@ export default function App() {
                             }}
                             className={`py-2 px-1.5 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                               boxColors === item.val 
-                                ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                             }`}
                           >
                             <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                            <span className={`text-[8px] leading-none opacity-80 select-none text-center ${boxColors === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                            <span className={`text-[8px] leading-none opacity-80 select-none text-center ${boxColors === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                           </button>
                         ))}
                       </div>
@@ -4285,7 +4107,7 @@ export default function App() {
 
                     {/* Printing Method Option */}
                     <div className="md:col-span-2 space-y-1 pt-2">
-                      <span className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-1">Տպագրության Մեթոդ</span>
+                      <span className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-1">Տպագրության Մեթոդ</span>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <button
                           type="button"
@@ -4295,8 +4117,8 @@ export default function App() {
                           }}
                           className={`py-2 px-3 rounded-xl text-left border cursor-pointer transition-all flex flex-col justify-center min-h-[46px] ${
                             boxPrintingMethod === "auto" || boxPrintingMethod === ""
-                              ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                              : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                              ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                              : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                           }`}
                         >
                           <span className="text-[11px] font-bold tracking-tight font-sans">✨ Ավտոմատ</span>
@@ -4314,8 +4136,8 @@ export default function App() {
                               }}
                               className={`py-2 px-3 rounded-xl text-left border cursor-pointer transition-all flex flex-col justify-center min-h-[46px] ${
                                 boxPrintingMethod === m.id
-                                  ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                  : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                  ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                  : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                               }`}
                             >
                               <span className="text-[11px] font-bold tracking-tight">{m.name}</span>
@@ -4328,8 +4150,8 @@ export default function App() {
 
                   {/* Wall Thickness Selector for Rigid Boxes */}
                   {(boxStyle === "magnetic_flap" || boxStyle === "shoulder_neck" || boxStyle === "shoulder_lid" || boxPaperId === "box_rigid") && (
-                    <div className="border-t border-capsule-accent/5 pt-4">
-                      <span className="block text-[9px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2">Պատերի Հաստություն (Rigid Core)</span>
+                    <div className="border-t border-[#FF2300]/25/5 pt-4">
+                      <span className="block text-[9px] font-bold text-[#727784] uppercase tracking-wider mb-2">Պատերի Հաստություն (Rigid Core)</span>
                       <div className="flex flex-wrap gap-2.5">
                         {[1.5, 2.0, 2.5, 3.0].map((tVal) => (
                           <button
@@ -4338,8 +4160,8 @@ export default function App() {
                             onClick={() => setBoxWallThickness(tVal)}
                             className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                               boxWallThickness === tVal
-                                ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                             }`}
                           >
                             {tVal} մմ
@@ -4351,12 +4173,12 @@ export default function App() {
                 </div>
 
                 {/* CARD 4: Box Post-press Options */}
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Sparkles size={14} className="text-capsule-accent" />
+                <div className="bg-[#f0f2f5] border border-white/40 rounded-2xl p-6 shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] space-y-4">
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-gray-100 pb-2">
+                    <Sparkles size={14} className="text-[#FF2300]" />
                     <span>Քարտ 4. Հետտպագրական Մշակումներ</span>
                   </div>
-                  <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ավելացրեք պրեմիում լրացուցիչ ձևավորումներ ձեր տուփին</p>
+                  <p className="text-[10px] text-[#727784] uppercase font-bold">Ավելացրեք պրեմիում լրացուցիչ ձևավորումներ ձեր տուփին</p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {finishes.filter(f => f.active && f.categoryId === "boxes").map((fin) => {
@@ -4374,15 +4196,15 @@ export default function App() {
                           }}
                           className={`flex items-center justify-between p-3 rounded-xl border text-left cursor-pointer transition-all ${
                             isSel
-                              ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                              : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                              ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                              : "bg-[#f0f2f5] border-white/40 shadow-[2px_2px_5px_#d1d9e6,-2px_-2px_5px_#ffffff] text-[#414753] hover:border-gray-300"
                           }`}
                         >
                           <div className="flex items-center gap-2">
                             <span className="text-xs">{fin.icon}</span>
                             <span className="text-xs leading-none">{fin.label}</span>
                           </div>
-                          <span className={`text-[10px] font-mono ${isSel ? "text-white/90" : "opacity-85 text-capsule-accent font-bold"}`}>+{fin.price} ֏</span>
+                          <span className={`text-[10px] font-mono ${isSel ? "text-white/90" : "opacity-85 text-[#FF2300] font-bold"}`}>+{fin.price} ֏</span>
                         </button>
                       );
                     })}
@@ -4390,14 +4212,14 @@ export default function App() {
                 </div>
 
                 {/* CARD 5: Order Quantity */}
-                <div className="bg-capsule-accent/[0.03] border border-capsule-accent/25 rounded-2xl p-6 shadow-sm space-y-4">
-                  <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                    <Sliders size={14} className="text-capsule-accent" />
+                <div className="bg-[#f0f2f5] border border-white/40 rounded-2xl p-6 shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] space-y-4">
+                  <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-gray-100 pb-2">
+                    <Sliders size={14} className="text-[#FF2300]" />
                     <span>Քարտ 5. Պատվերի Քանակ (Order Quantity)</span>
                   </div>
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <input
@@ -4405,9 +4227,9 @@ export default function App() {
                         min="30"
                         value={boxQty}
                         onChange={(e) => setBoxQty(Math.max(1, parseInt(e.target.value) || 0))}
-                        className="w-24 bg-capsule-surf border border-capsule-accent/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-capsule-accent"
+                        className="w-24 bg-[#f0f2f5] border border-white shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-[#FF2300]"
                       />
-                      <span className="text-xs text-capsule-text-secondary font-bold">հատ</span>
+                      <span className="text-xs text-[#414753] font-bold">հատ</span>
                     </div>
                   </div>
 
@@ -4417,7 +4239,7 @@ export default function App() {
                         key={bqVal}
                         onClick={() => setBoxQty(bqVal)}
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                          boxQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent font-bold" : "bg-capsule-surf border-capsule-accent/15 text-capsule-text-secondary hover:border-capsule-accent/30"
+                          boxQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 font-bold" : "bg-[#f0f2f5] border-white/40 shadow-[2px_2px_5px_#d1d9e6,-2px_-2px_5px_#ffffff] text-[#414753] hover:border-gray-300"
                         }`}
                       >
                         {bqVal.toLocaleString()} հատ
@@ -4429,7 +4251,7 @@ export default function App() {
               </div>
 
               {/* Right Column: Calculations Outputs Card for Boxes */}
-              <div className="lg:col-span-4 sticky top-6 space-y-6">
+              <div className="lg:col-span-5 sticky top-6 space-y-6">
 
                 {/* Dynamic 3D Box interactive model */}
                 {(() => {
@@ -4497,13 +4319,13 @@ export default function App() {
 
                   if (validationErrorMsg) {
                     return (
-                      <div className="w-full aspect-square md:aspect-auto md:h-[420px] bg-capsule-surf border border-dashed border-red-500/30 rounded-3xl p-6 flex flex-col items-center justify-center text-center space-y-4 shadow-sm">
+                      <div className="w-full aspect-square md:aspect-auto md:h-[420px] bg-[#f0f2f5] border border-dashed border-red-500/30 rounded-3xl p-6 flex flex-col items-center justify-center text-center space-y-4 shadow-sm">
                         <div className="p-4 rounded-full bg-red-500/10 text-red-500 animate-pulse">
                           <AlertTriangle size={36} />
                         </div>
                         <div>
                           <h4 className="font-serif text-sm font-bold text-red-600">Անհամատեղելի Չափսեր</h4>
-                          <p className="text-xs text-capsule-text-muted max-w-[280px] mt-2 leading-relaxed">
+                          <p className="text-xs text-[#727784] max-w-[280px] mt-2 leading-relaxed">
                             {validationErrorMsg}
                           </p>
                         </div>
@@ -4525,17 +4347,10 @@ export default function App() {
                   );
                 })()}
 
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 shadow-md space-y-5">
-                  <div>
-                    <span className="bg-capsule-accent/10 px-2 py-0.5 rounded text-[8px] font-bold text-capsule-accent tracking-widest uppercase">
-                      ՀԱՇՎԱՐԿՎԱԾ (Տուփեր)
-                    </span>
-                    <h3 className="font-serif text-lg text-capsule-accent font-semibold mt-3">
-                      {calcResult ? calcResult.itemName : "Տուփի Հաշվարկ"}
-                    </h3>
-                    <p className="text-[10px] text-capsule-text-muted mt-0.5">
-                      Չափս: {calcResult ? calcResult.dimensionsText : `${boxLength}×${boxWidth}×${boxHeight}`} սմ | Քանակ: {boxQty} հատ
-                    </p>
+                <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] space-y-5">
+                  <div className="text-[11px] tracking-widest font-extrabold uppercase text-[#1a1c1d] border-b border-gray-100 pb-3 flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF2300]" />
+                    <span>{t("calc.title", "Գնային Հաշվարկ (Տուփեր)")}</span>
                   </div>
 
                   {calcError ? (
@@ -4543,16 +4358,16 @@ export default function App() {
                       {calcError}
                     </div>
                   ) : !calcResult ? (
-                    <div className="py-8 px-4 text-center text-capsule-text-muted space-y-3 select-none">
-                      <HelpCircle className="mx-auto text-capsule-accent/40" size={24} />
-                      <div className="text-[11px] font-bold text-capsule-accent/80 uppercase tracking-wider">Ընտրեք Բոլոր Պարամետրերը</div>
-                      <p className="text-[10px] sm:text-xs leading-relaxed max-w-xs mx-auto text-capsule-text-secondary">
+                    <div className="py-8 px-4 text-center text-[#727784] space-y-3 select-none">
+                      <HelpCircle className="mx-auto text-[#FF2300]/40" size={24} />
+                      <div className="text-[11px] font-bold text-[#FF2300]/80 uppercase tracking-wider">Ընտրեք Բոլոր Պարամետրերը</div>
+                      <p className="text-[10px] sm:text-xs leading-relaxed max-w-xs mx-auto text-[#414753]">
                         Արժեքը և 3D նախադիտումը տեսնելու համար խնդրում ենք ընտրել բոլոր պարտադիր դաշտերը՝
                       </p>
                       {getMissingOptions().length > 0 && (
                         <div className="flex flex-wrap justify-center gap-1 mt-2">
                           {getMissingOptions().map((opt) => (
-                            <span key={opt} className="px-2 py-0.5 rounded bg-capsule-accent/5 border border-capsule-accent/15 text-capsule-accent text-[9px] font-bold whitespace-nowrap">
+                            <span key={opt} className="px-2 py-0.5 rounded bg-[#FF2300]/5 border border-[#FF2300]/25/15 text-[#FF2300] text-[9px] font-bold whitespace-nowrap">
                               ● {opt}
                             </span>
                           ))}
@@ -4560,12 +4375,12 @@ export default function App() {
                       )}
                     </div>
                   ) : (
-                    <div className="space-y-4 text-xs text-capsule-text-secondary">
+                    <div className="space-y-4 text-xs text-[#414753]">
                       
-                      <div className="space-y-2 border-b border-capsule-accent/10 pb-4">
-                        <div className="flex justify-between items-center py-1">
-                          <span>Տուփի Տեսակ</span>
-                          <span className="font-bold text-capsule-dark uppercase">
+                      <div className="space-y-2 border-b border-gray-100 pb-4">
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Տուփի Տեսակ</span>
+                          <span className="font-bold text-[#1a1c1d] uppercase">
                             {boxStyle === "magnetic_flap" 
                               ? "Մագնիսական (Luxury Magnetic)" 
                               : boxStyle === "lid_base" 
@@ -4579,60 +4394,59 @@ export default function App() {
                               : "Սահող Տուփ (Drawer Box)"}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>Չափսեր</span>
-                          <span className="font-bold text-capsule-dark font-mono">{calcResult.dimensionsText} սմ</span>
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Չափսեր</span>
+                          <span className="font-bold text-[#1a1c1d] font-mono">{calcResult.dimensionsText} սմ</span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>Պատվերի Քանակ</span>
-                          <span className="font-bold text-capsule-dark font-mono">{boxQty} հատ</span>
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Պատվերի Քանակ</span>
+                          <span className="font-bold text-[#1a1c1d] font-mono">{boxQty} հատ</span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>Նյութ / Թուղթ</span>
-                          <span className="font-bold text-capsule-dark uppercase">
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Նյութ / Թուղթ</span>
+                          <span className="font-bold text-[#1a1c1d] uppercase">
                             {papers.find(p => p.id === boxPaperId)?.name || (calcResult.materialType === "rigid" ? "Պրեմիում Կոշտ (Rigid Core)" : calcResult.materialType === "kraft" ? "Էկո Կրաֆտ" : "Ստվարաթուղթ")}
                           </span>
                         </div>
                         {calcResult.wallThickness !== undefined && (
-                          <div className="flex justify-between items-center py-1">
-                            <span>Պատերի Հաստություն</span>
-                            <span className="font-bold text-capsule-dark font-mono">
+                          <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                            <span className="text-[#727784] font-medium">Պատերի Հաստություն</span>
+                            <span className="font-bold text-[#1a1c1d] font-mono">
                               {calcResult.wallThickness} մմ
                             </span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center py-1">
-                          <span>Լամինացիա</span>
-                          <span className="font-bold text-capsule-dark">
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Լամինացիա</span>
+                          <span className="font-bold text-[#1a1c1d]">
                             {calcResult.lamination === "matte" ? "Փայլատ (Matte)" : calcResult.lamination === "gloss" ? "Փայլուն (Gloss)" : calcResult.lamination === "soft_touch" ? "Soft-touch (Թավշյա)" : "Առանց լամինացիայի"}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>Գունայնություն</span>
-                          <span className="font-bold text-capsule-dark">{formatColorsLabel(calcResult.colors)}</span>
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Գունայնություն</span>
+                          <span className="font-bold text-[#1a1c1d]">{formatColorsLabel(calcResult.colors)}</span>
                         </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span>Տպագրության մեթոդ</span>
-                          <span className="bg-[#3a2010]/10 px-2 py-0.5 rounded text-[9px] font-bold text-[#3a2010] tracking-wider uppercase">
-                            {calcResult.printingMethodUsed}
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-100/80">
+                          <span className="text-[#727784] font-medium">Տպագրության մեթոդ</span>
+                          <span className="font-bold text-[#FF2300] uppercase font-sans">
+                            {calcResult.printingMethodUsed === "offset" || calcResult.printingMethodUsed?.toLowerCase() === "offset"
+                              ? "ՕՖՍԵԹ ՏՊԱԳՐՈՒԹՅՈՒՆ (OFFSET)"
+                              : calcResult.printingMethodUsed === "digital" || calcResult.printingMethodUsed?.toLowerCase() === "digital"
+                                ? "ԹՎԱՅԻՆ ՏՊԱԳՐՈՒԹՅՈՒՆ (DIGITAL)"
+                                : `${t(`options.print_method_${calcResult.printingMethodUsed?.toLowerCase()}`, calcResult.printingMethodUsed)} ՏՊԱԳՐՈՒԹՅՈՒՆ`}
                           </span>
                         </div>
                       </div>
 
                       {boxFinishes.length > 0 && (
-                        <div className="flex justify-between items-start py-1 pb-2 border-b border-capsule-accent/10">
-                          <span className="shrink-0 mr-2">Լրացուցիչ Մշակումներ</span>
-                          <span className="font-bold text-capsule-dark text-right">
+                        <div className="flex justify-between items-start py-1.5 pb-2 border-b border-gray-100/80">
+                          <span className="shrink-0 mr-2 text-[#727784] font-medium">Լրացուցիչ Մշակումներ</span>
+                          <span className="font-bold text-[#1a1c1d] text-right">
                             {boxFinishes.map(k => finishes.find(f => f.key === k)?.label).filter(Boolean).join(", ")}
                           </span>
                         </div>
                       )}
                       
-                      <div className="flex justify-between items-center py-1">
-                        <span>Միավորի Գին</span>
-                        <span className="font-bold font-mono text-capsule-accent text-sm">{calcResult.unitPrice?.toLocaleString()} ֏</span>
-                      </div>
-
                       {boxQty >= 300 && (
                         <div className="bg-green-100/50 border border-green-800/10 text-green-800 rounded-xl p-3 flex justify-between items-center text-xs select-none">
                           <div>
@@ -4644,8 +4458,8 @@ export default function App() {
                       )}
 
                       {/* Coupon interface */}
-                      <div className="space-y-1 border-t border-capsule-accent/10 pt-4">
-                        <label className="block text-[9px] font-bold text-capsule-text-muted uppercase">Պրոմո Կոդ</label>
+                      <div className="space-y-1 border-t border-gray-100 pt-4">
+                        <label className="block text-[9px] font-bold text-[#727784] uppercase">Պրոմո Կոդ</label>
                         <div className="flex gap-2">
                           <input
                             type="text"
@@ -4653,7 +4467,7 @@ export default function App() {
                             onChange={(e) => setPromoInput(e.target.value.toUpperCase().replace(/\s/g, ""))}
                             disabled={!!appliedPromo}
                             placeholder="EX: WELCOME10"
-                            className="flex-1 bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1 px-2.5 text-xs text-capsule-dark font-bold font-mono outline-none"
+                            className="flex-1 bg-[#f0f2f5] border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] rounded-lg py-2 px-3 text-xs text-[#1a1c1d] font-bold font-mono outline-none"
                           />
                           {appliedPromo ? (
                             <button
@@ -4671,7 +4485,7 @@ export default function App() {
                           ) : (
                             <button
                               onClick={handleApplyCoupon}
-                              className="bg-capsule-accent text-capsule-surf text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-lg cursor-pointer"
+                              className="bg-[#FF2300] text-white text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-lg cursor-pointer"
                             >
                               Կիրառել
                             </button>
@@ -4682,9 +4496,24 @@ export default function App() {
                       </div>
 
                       {/* Pricing view */}
-                      <div className="border-t border-capsule-accent/10 pt-4 flex justify-between items-baseline">
-                        <span className="text-[10px] font-bold uppercase block text-capsule-text-muted">Ընդամենը</span>
-                        <h3 className="text-2xl font-extrabold text-capsule-accent font-sans">{calcResult.totalPrice?.toLocaleString()} ֏</h3>
+                      <div className="border-t border-gray-100 pt-4 flex flex-col">
+                        <span className="text-[10px] uppercase text-[#727784] font-bold block tracking-wider">{t("calc.total_price", "Ընդհանուր Արժեք")}</span>
+                        <div className="flex items-center gap-4 mt-2">
+                          <div className="text-4xl font-extrabold text-[#1a1c1d] font-sans flex items-baseline gap-1">
+                            <span>{calcResult.totalPrice?.toLocaleString()}</span>
+                            <span className="text-2xl font-bold text-[#1a1c1d] font-sans">֏</span>
+                          </div>
+                          {calcResult.unitPrice && (
+                            <>
+                              <div className="h-8 w-[1.5px] bg-gray-200" />
+                              <div className="text-xs font-bold text-[#414753] flex items-center gap-1">
+                                <span className="text-gray-300">/</span>
+                                <span className="text-sm font-extrabold text-[#1a1c1d]">{calcResult.unitPrice?.toLocaleString()} ֏</span>
+                                <span className="text-[#727784] text-[10px] font-medium font-sans">({t("common.per_unit", "֏/հատ")})</span>
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
 
                       <div className="space-y-2 mt-2">
@@ -4701,23 +4530,22 @@ export default function App() {
                             setInquiryPrice(calcResult.totalPrice);
                             setIsInquiryOpen(true);
                           }}
-                          className="w-full bg-[#3a2010] hover:bg-[#4d2b16] text-white text-xs py-3.5 rounded-full font-bold uppercase cursor-pointer text-center select-none shadow flex justify-center items-center gap-1.5 transition-all duration-250"
+                          className="w-full bg-[#FF2300] hover:bg-opacity-90 text-white text-xs py-3.5 rounded-full font-bold uppercase cursor-pointer text-center select-none shadow-[0_4px_14px_rgba(255,35,0,0.3)] flex justify-center items-center gap-2 transition-all duration-200"
                         >
-                          <ShoppingBag size={14} />
-                          <span>Հաստատել Պատվերը / Send Quote</span>
+                          <Check size={14} />
+                          <span>{t("buttons.submit_order", "Հաստատել Պատվերը")}</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => handleAddItemToBundle(activeCategory)}
-                          className="w-full bg-capsule-surf hover:bg-capsule-accent/5 text-capsule-accent border border-capsule-accent/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250"
+                          className="w-full bg-[#f0f2f5] border border-white/60 shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] text-[#FF2300] hover:bg-white text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-2 transition-all duration-200"
                         >
                           <ShoppingCart size={14} />
-                          <span>Ավելացնել Զամբյուղին / Add to Cart</span>
+                          <span>{t("buttons.add_to_cart", "Ավելացնել Զամբյուղին")}</span>
                         </button>
                       </div>
 
-                    </div>
                   )}
                 </div>
               </div>
@@ -4727,22 +4555,22 @@ export default function App() {
           {activeTemplate !== "bags" && activeTemplate !== "boxes" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-16">
               {/* Left Column: Options Selection Card */}
-              <div className="lg:col-span-8 bg-capsule-surf border border-capsule-accent/10 rounded-3xl p-6 md:p-8 space-y-6">
+              <div className="lg:col-span-7 bg-[#f0f2f5] border border-white/40 rounded-3xl p-6 space-y-6 lg:pr-2 shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]">
                 
                 {activeTemplate === "ribbons" && (
                   <div className="space-y-6">
                     {/* CARD 1: Ribbon Specs */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Palette size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Palette size={14} className="text-[#FF2300]" />
                         <span>Քարտ 1. Ժապավենի Պարամետրեր</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք ժապավենի տեսակը, լայնությունը և լոգոտիպի տպագրության եղանակը</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Ընտրեք ժապավենի տեսակը, լայնությունը և լոգոտիպի տպագրության եղանակը</p>
 
                       <div className="space-y-4">
                         {/* Ribbon Width */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Լայնություն (Width)</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Լայնություն (Width)</label>
                           <div className="grid grid-cols-4 gap-2">
                             {[
                               { val: "2", label: "2 սմ" },
@@ -4759,8 +4587,8 @@ export default function App() {
                                 }}
                                 className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   ribbonWidth === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
@@ -4771,7 +4599,7 @@ export default function App() {
 
                         {/* Ribbon Type */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Ժապավենի Տեսակ (Material)</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Ժապավենի Տեսակ (Material)</label>
                           <div className="grid grid-cols-2 gap-3">
                             {[
                               { val: "satin", label: "Սատինե (Satin)", desc: "Նուրբ, փայլուն, հարթ մակերեսով ամենահանրաճանաչ տեսակը" },
@@ -4785,11 +4613,11 @@ export default function App() {
                                   setCalcResult(null);
                                 }}
                                 className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                                  ribbonType === item.val ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm" : "bg-capsule-surf2/40 border-capsule-accent/10 hover:border-capsule-accent/20"
+                                  ribbonType === item.val ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm" : "bg-[#f0f2f5]/40 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20"
                                 }`}
                               >
                                 <span className={`block text-xs font-bold ${ribbonType === item.val ? "text-white" : ""}`}>{item.label}</span>
-                                <span className={`block text-[9px] mt-0.5 ${ribbonType === item.val ? "text-white/85" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`block text-[9px] mt-0.5 ${ribbonType === item.val ? "text-white/85" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -4797,7 +4625,7 @@ export default function App() {
 
                         {/* Printing Option */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Տպագրության Տեսակ / Գույն (Print Foil)</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Տպագրության Տեսակ / Գույն (Print Foil)</label>
                           <div className="grid grid-cols-3 gap-2">
                             {[
                               { val: "foil_gold", label: "Ոսկեփայլ", desc: "Foil Gold" },
@@ -4813,12 +4641,12 @@ export default function App() {
                                 }}
                                 className={`py-2 px-1.5 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   ribbonPrintColor === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className="text-[8px] text-capsule-text-muted leading-none opacity-80 select-none text-center">{item.desc}</span>
+                                <span className="text-[8px] text-[#727784] leading-none opacity-80 select-none text-center">{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -4827,25 +4655,25 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Print & Quantity */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>Քարտ 2. Երկարություն (Մետր)</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Սահմանեք ժապավենի անհրաժեշտ երկարությունը մետրերով (նվազագույն պատվերը 100 մետր է)</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Սահմանեք ժապավենի անհրաժեշտ երկարությունը մետրերով (նվազագույն պատվերը 100 մետր է)</p>
 
                       <div className="space-y-3">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">Ժապավենի Երկարություն</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">Ժապավենի Երկարություն</label>
                           <div className="flex items-center gap-2 shrink-0">
                             <input
                               type="number"
                               min="100"
                               value={ribbonMeters || ""}
                               onChange={(e) => setRibbonMeters(Math.max(0, parseInt(e.target.value) || 0))}
-                              className="w-20 bg-capsule-surf2 border border-capsule-accent/15 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-capsule-dark outline-none focus:border-capsule-accent"
+                              className="w-20 bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-[#1a1c1d] outline-none focus:border-[#FF2300]/25"
                             />
-                            <span className="text-xs text-capsule-text-secondary font-bold">հատ</span>
+                            <span className="text-xs text-[#414753] font-bold">հատ</span>
                           </div>
                         </div>
 
@@ -4861,7 +4689,7 @@ export default function App() {
                               className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                                 ribbonMeters === bqVal 
                                   ? "bg-[#ff2300] text-white border-[#ff2300] shadow-sm font-bold" 
-                                  : "bg-capsule-surf border-capsule-accent/15 text-capsule-text-secondary hover:border-capsule-accent/30"
+                                  : "bg-[#f0f2f5] border-[#FF2300]/25/15 text-[#414753] hover:border-[#FF2300]/25/30"
                               }`}
                             >
                               {bqVal} մետր
@@ -4876,17 +4704,17 @@ export default function App() {
                 {activeTemplate === "stickers" && (
                   <div className="space-y-6 animate-fade-in">
                     {/* CARD 1: Sticker Parameters */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Palette size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Palette size={14} className="text-[#FF2300]" />
                         <span>{t("stickers_specs_title", "Քարտ 1. Սթիքերի Պարամետրեր")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("stickers_specs_desc", "Ընտրեք սթիքերի ձևը, նյութը և չափերը")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("stickers_specs_desc", "Ընտրեք սթիքերի ձևը, նյութը և չափերը")}</p>
 
                       <div className="space-y-4">
                         {/* Shape selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.sticker_shape", "Ֆորմատ / Ձև")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.sticker_shape", "Ֆորմատ / Ձև")}</label>
                           <div className="grid grid-cols-3 gap-2">
                             {[
                               { val: "circle", label: t("options.shape_circle", "Կլոր"), desc: "Circle" },
@@ -4902,12 +4730,12 @@ export default function App() {
                                 }}
                                 className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   stickerShape === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-80 ${stickerShape === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-80 ${stickerShape === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -4915,10 +4743,10 @@ export default function App() {
 
                         {/* Dimensions Input */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.dimensions", "Չափսեր (սմ)")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.dimensions", "Չափսեր (սմ)")}</label>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <span className="block text-[9px] text-capsule-text-muted mb-1 font-mono">ԼԱՅՆՈՒԹՅՈՒՆ (W)</span>
+                              <span className="block text-[9px] text-[#727784] mb-1 font-mono">ԼԱՅՆՈՒԹՅՈՒՆ (W)</span>
                               <div className="flex items-center gap-2">
                                 <input
                                   type="number"
@@ -4930,13 +4758,13 @@ export default function App() {
                                     setStickerWidth(e.target.value);
                                     setCalcResult(null);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/35 rounded-xl py-1 px-3 text-xs font-bold text-capsule-accent text-center focus:outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/35 rounded-xl py-1 px-3 text-xs font-bold text-[#FF2300] text-center focus:outline-none"
                                 />
-                                <span className="text-xs text-capsule-text-secondary">սմ</span>
+                                <span className="text-xs text-[#414753]">սմ</span>
                               </div>
                             </div>
                             <div>
-                              <span className="block text-[9px] text-capsule-text-muted mb-1 font-mono">ԲԱՐՁՐՈՒԹՅՈՒՆ (H)</span>
+                              <span className="block text-[9px] text-[#727784] mb-1 font-mono">ԲԱՐՁՐՈՒԹՅՈՒՆ (H)</span>
                               <div className="flex items-center gap-2">
                                 <input
                                   type="number"
@@ -4948,9 +4776,9 @@ export default function App() {
                                     setStickerHeight(e.target.value);
                                     setCalcResult(null);
                                   }}
-                                  className="w-full bg-capsule-surf border border-capsule-accent/35 rounded-xl py-1 px-3 text-xs font-bold text-capsule-accent text-center focus:outline-none"
+                                  className="w-full bg-[#f0f2f5] border border-[#FF2300]/25/35 rounded-xl py-1 px-3 text-xs font-bold text-[#FF2300] text-center focus:outline-none"
                                 />
-                                <span className="text-xs text-capsule-text-secondary">սմ</span>
+                                <span className="text-xs text-[#414753]">սմ</span>
                               </div>
                             </div>
                           </div>
@@ -4958,7 +4786,7 @@ export default function App() {
 
                         {/* Material selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.material", "Տպագրական Նյութ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.material", "Տպագրական Նյութ")}</label>
                           <div className="grid grid-cols-2 gap-2">
                             {[
                               { val: "paper_gloss", label: "Թղթե Փայլուն", desc: "Gloss Paper" },
@@ -4975,12 +4803,12 @@ export default function App() {
                                 }}
                                 className={`p-2.5 rounded-xl border text-left cursor-pointer transition-all ${
                                   stickerMaterial === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf border border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5] border border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="block text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`block text-[8px] opacity-80 mt-0.5 ${stickerMaterial === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`block text-[8px] opacity-80 mt-0.5 ${stickerMaterial === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -4988,7 +4816,7 @@ export default function App() {
 
                         {/* Color selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
                           <div className="grid grid-cols-4 gap-2">
                             {[
                               { val: 1, label: "Մոնոքրոմ", desc: "1+0" },
@@ -5005,12 +4833,12 @@ export default function App() {
                                 }}
                                 className={`py-1.5 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   stickerColors === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-85 ${stickerColors === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-85 ${stickerColors === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5019,16 +4847,16 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Sticker Quantity */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>{t("sticker_qty_title", "Քարտ 2. Պատվերի Քանակ")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("sticker_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("sticker_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
 
                       <div className="space-y-3">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
                           <div className="flex items-center gap-2 shrink-0">
                             <input
                               type="number"
@@ -5038,9 +4866,9 @@ export default function App() {
                                 setStickerQty(Math.max(0, parseInt(e.target.value) || 0));
                                 setCalcResult(null);
                               }}
-                              className="w-24 bg-capsule-surf border border-capsule-accent/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-capsule-accent"
+                              className="w-24 bg-[#f0f2f5] border border-[#FF2300]/25/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-[#FF2300]"
                             />
-                            <span className="text-xs text-capsule-text-secondary font-bold">հատ</span>
+                            <span className="text-xs text-[#414753] font-bold">հատ</span>
                           </div>
                         </div>
 
@@ -5054,7 +4882,7 @@ export default function App() {
                                 setCalcResult(null);
                               }}
                               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                                stickerQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" : "bg-capsule-surf border-capsule-accent/15 text-capsule-text-secondary hover:border-capsule-accent/30"
+                                stickerQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" : "bg-[#f0f2f5] border-[#FF2300]/25/15 text-[#414753] hover:border-[#FF2300]/25/30"
                               }`}
                             >
                               {bqVal.toLocaleString()} հատ
@@ -5069,17 +4897,17 @@ export default function App() {
                 {activeTemplate === "giftcards" && (
                   <div className="space-y-6 animate-fade-in">
                     {/* CARD 1: Gift Cards Options */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Palette size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Palette size={14} className="text-[#FF2300]" />
                         <span>{t("giftcards_specs_title", "Քարտ 1. Նվեր Քարտի Պարամետրեր")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("giftcards_specs_desc", "Ընտրեք չափսը, ծրարը և դիզայներական թղթի տեսակը")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("giftcards_specs_desc", "Ընտրեք չափսը, ծրարը և դիզայներական թղթի տեսակը")}</p>
 
                       <div className="space-y-4">
                         {/* Size Selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.size", "Չափս")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.size", "Չափս")}</label>
                           <div className="grid grid-cols-3 gap-2">
                             {[
                               { val: "standard", label: "A6 (10x15սմ)", desc: "Standard" },
@@ -5095,12 +4923,12 @@ export default function App() {
                                 }}
                                 className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   giftCardSize === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-80 ${giftCardSize === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-80 ${giftCardSize === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5108,7 +4936,7 @@ export default function App() {
 
                         {/* Envelope Selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.envelope", "Ծրարի Տեսակ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.envelope", "Ծրարի Տեսակ")}</label>
                           <div className="grid grid-cols-2 gap-2">
                             {[
                               { val: "none", label: "Առանց ծրարի", desc: "No Envelope" },
@@ -5125,12 +4953,12 @@ export default function App() {
                                 }}
                                 className={`p-2.5 rounded-xl border text-left cursor-pointer transition-all ${
                                   giftCardEnvelope === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf border border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5] border border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="block text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`block text-[8px] opacity-80 mt-0.5 ${giftCardEnvelope === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`block text-[8px] opacity-80 mt-0.5 ${giftCardEnvelope === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5138,7 +4966,7 @@ export default function App() {
 
                         {/* Design Paper Selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.paper", "Թուղթ / Նյութ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.paper", "Թուղթ / Նյութ")}</label>
                           <div className="grid grid-cols-3 gap-2">
                             {[
                               { val: "silk_350", label: "Մետաքսե 350գ", desc: "Silk Cardboard" },
@@ -5154,12 +4982,12 @@ export default function App() {
                                 }}
                                 className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   giftCardPaper === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-80 ${giftCardPaper === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-80 ${giftCardPaper === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5167,7 +4995,7 @@ export default function App() {
 
                         {/* Printing Colors Selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
                           <div className="grid grid-cols-4 gap-2">
                             {[
                               { val: 1, label: "Մոնոքրոմ", desc: "1+0" },
@@ -5184,12 +5012,12 @@ export default function App() {
                                 }}
                                 className={`py-1.5 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   giftCardColors === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-85 ${giftCardColors === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-85 ${giftCardColors === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5197,7 +5025,7 @@ export default function App() {
 
                         {/* Premium Finishes Checkbox Grid */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.finishes", "Լրացուցիչ Մշակումներ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.finishes", "Լրացուցիչ Մշակումներ")}</label>
                           <div className="grid grid-cols-2 gap-2">
                             {[
                               { key: "foil", label: "✨ Ոսկեփայլ Տպագրություն", desc: "+ Foil Setup" },
@@ -5218,12 +5046,12 @@ export default function App() {
                                   }}
                                   className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-center ${
                                     isSel
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                      : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                      : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                                   }`}
                                 >
                                   <span className="text-xs font-bold leading-none">{fin.label}</span>
-                                  <span className={`text-[8px] mt-1 ${isSel ? "text-white/80" : "text-capsule-text-muted"}`}>{fin.desc}</span>
+                                  <span className={`text-[8px] mt-1 ${isSel ? "text-white/80" : "text-[#727784]"}`}>{fin.desc}</span>
                                 </button>
                               );
                             })}
@@ -5233,16 +5061,16 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Gift Cards Quantity */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>{t("giftcards_qty_title", "Քարտ 2. Պատվերի Քանակ")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("giftcards_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("giftcards_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
 
                       <div className="space-y-3">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
                           <div className="flex items-center gap-2 shrink-0">
                             <input
                               type="number"
@@ -5252,9 +5080,9 @@ export default function App() {
                                 setGiftCardQty(Math.max(0, parseInt(e.target.value) || 0));
                                 setCalcResult(null);
                               }}
-                              className="w-24 bg-capsule-surf border border-capsule-accent/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-capsule-accent"
+                              className="w-24 bg-[#f0f2f5] border border-[#FF2300]/25/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-[#FF2300]"
                             />
-                            <span className="text-xs text-capsule-text-secondary font-bold">հատ</span>
+                            <span className="text-xs text-[#414753] font-bold">հատ</span>
                           </div>
                         </div>
 
@@ -5268,7 +5096,7 @@ export default function App() {
                                 setCalcResult(null);
                               }}
                               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                                giftCardQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" : "bg-capsule-surf border-capsule-accent/15 text-capsule-text-secondary hover:border-capsule-accent/30"
+                                giftCardQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" : "bg-[#f0f2f5] border-[#FF2300]/25/15 text-[#414753] hover:border-[#FF2300]/25/30"
                               }`}
                             >
                               {bqVal.toLocaleString()} հատ
@@ -5283,18 +5111,18 @@ export default function App() {
                 {activeTemplate === "businesscards" && (
                   <div className="space-y-6 animate-fade-in">
                     {/* CARD 1: Business Cards Specs */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Palette size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Palette size={14} className="text-[#FF2300]" />
                         <span>{t("businesscards_specs_title", "Քարտ 1. Այցեքարտի Պարամետրեր")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("businesscards_specs_desc", "Ընտրեք այցեքարտի չափսը, թղթի տեսակը, կողմերը և անկյունները")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("businesscards_specs_desc", "Ընտրեք այցեքարտի չափսը, թղթի տեսակը, կողմերը և անկյունները")}</p>
 
                       <div className="space-y-4">
                         {/* Size Selection */}
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.size", "Չափս")}</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.size", "Չափս")}</label>
                             <div className="grid grid-cols-2 gap-2">
                               {[
                                 { val: "standard", label: "9x5 սմ" },
@@ -5309,12 +5137,12 @@ export default function App() {
                                   }}
                                   className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                     businessCardSize === item.val 
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                      : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                      : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                   }`}
                                 >
                                   <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardSize === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.val === "standard" ? "Standard" : "Euro"}</span>
+                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardSize === item.val ? "text-white" : "text-[#727784]"}`}>{item.val === "standard" ? "Standard" : "Euro"}</span>
                                 </button>
                               ))}
                             </div>
@@ -5322,7 +5150,7 @@ export default function App() {
 
                           {/* Corners Selection */}
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.corners", "Անկյուններ")}</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.corners", "Անկյուններ")}</label>
                             <div className="grid grid-cols-2 gap-2">
                               {[
                                 { val: "straight", label: "Ուղիղ", desc: "Straight" },
@@ -5337,12 +5165,12 @@ export default function App() {
                                   }}
                                   className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                     businessCardCorners === item.val 
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                      : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                      : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                   }`}
                                 >
                                   <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardCorners === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardCorners === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                                 </button>
                               ))}
                             </div>
@@ -5353,7 +5181,7 @@ export default function App() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {/* Printing Sides Selection */}
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.sides", "Կիրառում / Կողմեր")}</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.sides", "Կիրառում / Կողմեր")}</label>
                             <div className="grid grid-cols-2 gap-2">
                               {[
                                 { val: 1, label: "Միակողմանի", desc: "1 Side" },
@@ -5368,12 +5196,12 @@ export default function App() {
                                   }}
                                   className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                     businessCardSides === item.val 
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                      : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                      : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                   }`}
                                 >
                                   <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardSides === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                  <span className={`text-[8px] leading-none opacity-80 ${businessCardSides === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                                 </button>
                               ))}
                             </div>
@@ -5381,7 +5209,7 @@ export default function App() {
 
                           {/* Design Paper Selection */}
                           <div>
-                            <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.paper", "Թուղթ / Նյութ")}</label>
+                            <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.paper", "Թուղթ / Նյութ")}</label>
                             <div className="grid grid-cols-3 gap-1.5">
                               {[
                                 { val: "silk_350", label: "Մետաքսե 350գ", desc: "Silk" },
@@ -5397,12 +5225,12 @@ export default function App() {
                                   }}
                                   className={`py-2 px-1 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                     businessCardPaper === item.val 
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                      : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                      : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                   }`}
                                 >
                                   <span className="text-[10px] font-bold tracking-tight leading-none">{item.label}</span>
-                                  <span className={`text-[8px] leading-none opacity-80 mt-0.5 ${businessCardPaper === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                  <span className={`text-[8px] leading-none opacity-80 mt-0.5 ${businessCardPaper === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                                 </button>
                               ))}
                             </div>
@@ -5411,7 +5239,7 @@ export default function App() {
 
                         {/* Printing Colors Selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.colors", "Գունայնություն / Տպագրություն")}</label>
                           <div className="grid grid-cols-4 gap-2">
                             {[
                               { val: 1, label: "Մոնոքրոմ", desc: "1+0 / 1+1" },
@@ -5428,12 +5256,12 @@ export default function App() {
                                 }}
                                 className={`py-1.5 px-0.5 rounded-xl text-center border cursor-pointer transition-all flex flex-col justify-center items-center gap-0.5 min-h-[46px] ${
                                   businessCardColors === item.val 
-                                    ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" 
-                                    : "bg-capsule-surf2/30 border-capsule-accent/10 hover:border-capsule-accent/20 text-capsule-text-secondary"
+                                    ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" 
+                                    : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20 text-[#414753]"
                                 }`}
                               >
                                 <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
-                                <span className={`text-[8px] leading-none opacity-85 ${businessCardColors === item.val ? "text-white" : "text-capsule-text-muted"}`}>{item.desc}</span>
+                                <span className={`text-[8px] leading-none opacity-85 ${businessCardColors === item.val ? "text-white" : "text-[#727784]"}`}>{item.desc}</span>
                               </button>
                             ))}
                           </div>
@@ -5441,7 +5269,7 @@ export default function App() {
 
                         {/* Premium Finishes Checkbox Grid */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">{t("common.finishes", "Լրացուցիչ Մշակումներ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">{t("common.finishes", "Լրացուցիչ Մշակումներ")}</label>
                           <div className="grid grid-cols-2 gap-2">
                             {[
                               { key: "foil", label: "✨ Ոսկեփայլ Տպագրություն", desc: "+ Foil Setup" },
@@ -5462,12 +5290,12 @@ export default function App() {
                                   }}
                                   className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-center ${
                                     isSel
-                                      ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold"
-                                      : "bg-capsule-surf border-capsule-accent/10 text-capsule-text-secondary hover:border-capsule-accent/20"
+                                      ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold"
+                                      : "bg-[#f0f2f5] border-[#FF2300]/25/10 text-[#414753] hover:border-[#FF2300]/25/20"
                                   }`}
                                 >
                                   <span className="text-xs font-bold leading-none">{fin.label}</span>
-                                  <span className={`text-[8px] mt-1 ${isSel ? "text-white/80" : "text-capsule-text-muted"}`}>{fin.desc}</span>
+                                  <span className={`text-[8px] mt-1 ${isSel ? "text-white/80" : "text-[#727784]"}`}>{fin.desc}</span>
                                 </button>
                               );
                             })}
@@ -5477,16 +5305,16 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Business Cards Quantity */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>{t("businesscards_qty_title", "Քարտ 2. Պատվերի Քանակ")}</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">{t("businesscards_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">{t("businesscards_qty_desc", "Մեծաքանակ պատվերների դեպքում գործում են զգալի զեղչեր")}</p>
 
                       <div className="space-y-3">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider font-mono">{t("common.qty_label", "Քանակ")}</label>
                           <div className="flex items-center gap-2 shrink-0">
                             <input
                               type="number"
@@ -5496,9 +5324,9 @@ export default function App() {
                                 setBusinessCardQty(Math.max(0, parseInt(e.target.value) || 0));
                                 setCalcResult(null);
                               }}
-                              className="w-24 bg-capsule-surf border border-capsule-accent/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-capsule-accent"
+                              className="w-24 bg-[#f0f2f5] border border-[#FF2300]/25/35 rounded-lg py-1 px-2.5 text-center font-mono text-xs font-bold text-[#FF2300]"
                             />
-                            <span className="text-xs text-capsule-text-secondary font-bold">հատ</span>
+                            <span className="text-xs text-[#414753] font-bold">հատ</span>
                           </div>
                         </div>
 
@@ -5512,7 +5340,7 @@ export default function App() {
                                 setCalcResult(null);
                               }}
                               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                                businessCardQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent shadow-sm font-bold" : "bg-capsule-surf border-capsule-accent/15 text-capsule-text-secondary hover:border-capsule-accent/30"
+                                businessCardQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25 shadow-sm font-bold" : "bg-[#f0f2f5] border-[#FF2300]/25/15 text-[#414753] hover:border-[#FF2300]/25/30"
                               }`}
                             >
                               {bqVal.toLocaleString()} հատ
@@ -5527,12 +5355,12 @@ export default function App() {
                 {activeTemplate === "other_products" && (
                   <div className="space-y-6">
                     {/* CARD 1: Choice of extra print material */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Layers size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Layers size={14} className="text-[#FF2300]" />
                         <span>Քարտ 1. Ապրանքի Տեսակ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք ցանկալի տպագրական արտադրանքի տեսակը կամ բրենդավորման նյութը</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Ընտրեք ցանկալի տպագրական արտադրանքի տեսակը կամ բրենդավորման նյութը</p>
 
                       <div className="space-y-4">
                         {/* Select other product items */}
@@ -5550,16 +5378,16 @@ export default function App() {
                                   if (otherProductQty === 0) setOtherProductQty(100);
                                 }}
                                 className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex justify-between items-center ${
-                                  selectedOtherProductId === item.id ? "bg-capsule-accent/10 border-capsule-accent text-capsule-accent shadow-sm" : "bg-capsule-surf2/40 border-capsule-accent/10 hover:border-capsule-accent/20"
+                                  selectedOtherProductId === item.id ? "bg-[#FF2300]/10 border-[#FF2300]/25 text-[#FF2300] shadow-sm" : "bg-[#f0f2f5]/40 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20"
                                 }`}
                               >
                                 <div>
                                   <span className="block text-xs font-bold">{item.name}</span>
-                                  {item.desc && <span className="block text-[10px] text-capsule-text-muted mt-1">{item.desc}</span>}
+                                  {item.desc && <span className="block text-[10px] text-[#727784] mt-1">{item.desc}</span>}
                                 </div>
                                 <div className="text-right font-mono">
-                                  <span className="block text-xs font-bold text-capsule-accent">{item.price} ֏</span>
-                                  <span className="block text-[8px] text-capsule-text-muted uppercase">մեկ {item.unit || "հատի"} համար</span>
+                                  <span className="block text-xs font-bold text-[#FF2300]">{item.price} ֏</span>
+                                  <span className="block text-[8px] text-[#727784] uppercase">մեկ {item.unit || "հատի"} համար</span>
                                 </div>
                               </button>
                             ))}
@@ -5568,17 +5396,17 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Other Product Quantity */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>Քարտ 2. Քանակ և Հատուկ Պահանջներ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները՝ անհատականացման համար</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները՝ անհատականացման համար</p>
 
                       <div className="space-y-4">
                         {/* Other Product Quantity selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Քանակ</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Քանակ</label>
                           <div className="flex flex-wrap gap-2 font-mono mb-3">
                             {[50, 100, 250, 500, 1000, 2500, 5000].map((bqVal) => (
                               <button
@@ -5586,7 +5414,7 @@ export default function App() {
                                 type="button"
                                 onClick={() => setOtherProductQty(bqVal)}
                                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                                  otherProductQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent" : "bg-capsule-surf2/30 border-capsule-accent/10"
+                                  otherProductQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25" : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10"
                                 }`}
                               >
                                 {bqVal} հատ
@@ -5598,18 +5426,18 @@ export default function App() {
                             placeholder="Այլ քանակ..."
                             value={otherProductQty || ""}
                             onChange={(e) => setOtherProductQty(Math.max(0, parseInt(e.target.value) || 0))}
-                            className="w-full bg-capsule-surf2/40 border border-capsule-accent/10 focus:border-capsule-accent rounded-xl px-4 py-2 text-xs focus:outline-none font-bold"
+                            className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 focus:border-[#FF2300]/25 rounded-xl px-4 py-2 text-xs focus:outline-none font-bold"
                           />
                         </div>
 
                         {/* Extra Notes */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Հավելյալ պահանջներ / Նշումներ</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Հավելյալ պահանջներ / Նշումներ</label>
                           <textarea
                             placeholder="Օրինակ՝ չափսեր, լամինացիայի տիպ, այլ նախընտրություններ..."
                             value={otherProductNotes}
                             onChange={(e) => setOtherProductNotes(e.target.value)}
-                            className="w-full h-24 bg-capsule-surf2/40 border border-capsule-accent/10 focus:border-capsule-accent rounded-xl px-4 py-3 text-xs focus:outline-none resize-none font-sans"
+                            className="w-full h-24 bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 focus:border-[#FF2300]/25 rounded-xl px-4 py-3 text-xs focus:outline-none resize-none font-sans"
                           />
                         </div>
                       </div>
@@ -5620,12 +5448,12 @@ export default function App() {
                 {activeTemplate === "qr_matrix" && (
                   <div className="space-y-6">
                     {/* CARD 1: Choose Code Label Type */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <QrCode size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <QrCode size={14} className="text-[#FF2300]" />
                         <span>Քարտ 1. Կոդի Տեսակ / Պիտակ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Ընտրեք անհրաժեշտ ինտեգրվող կոդի տիպը, նյութը կամ պիտակը</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Ընտրեք անհրաժեշտ ինտեգրվող կոդի տիպը, նյութը կամ պիտակը</p>
 
                       <div className="space-y-4">
                         {/* Select QR items */}
@@ -5643,16 +5471,16 @@ export default function App() {
                                   if (qrMatrixQty === 0) setQrMatrixQty(100);
                                 }}
                                 className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex justify-between items-center ${
-                                  selectedQrMatrixId === item.id ? "bg-capsule-accent/10 border-capsule-accent text-capsule-accent shadow-sm" : "bg-capsule-surf2/40 border-capsule-accent/10 hover:border-capsule-accent/20"
+                                  selectedQrMatrixId === item.id ? "bg-[#FF2300]/10 border-[#FF2300]/25 text-[#FF2300] shadow-sm" : "bg-[#f0f2f5]/40 border-[#FF2300]/25/10 hover:border-[#FF2300]/25/20"
                                 }`}
                               >
                                 <div>
                                   <span className="block text-xs font-bold">{item.name}</span>
-                                  {item.desc && <span className="block text-[10px] text-capsule-text-muted mt-1">{item.desc}</span>}
+                                  {item.desc && <span className="block text-[10px] text-[#727784] mt-1">{item.desc}</span>}
                                 </div>
                                 <div className="text-right font-mono">
-                                  <span className="block text-xs font-bold text-capsule-accent">{item.price} ֏</span>
-                                  <span className="block text-[8px] text-capsule-text-muted uppercase">մեկ {item.unit || "հատի"} համար</span>
+                                  <span className="block text-xs font-bold text-[#FF2300]">{item.price} ֏</span>
+                                  <span className="block text-[8px] text-[#727784] uppercase">մեկ {item.unit || "հատի"} համար</span>
                                 </div>
                               </button>
                             ))}
@@ -5661,17 +5489,17 @@ export default function App() {
                     </div>
 
                     {/* CARD 2: Quantity & Technical Requirements */}
-                    <div className="bg-capsule-surf border border-capsule-accent/15 rounded-2xl p-6 shadow-sm space-y-4">
-                      <div className="text-[11px] tracking-wider font-bold uppercase text-capsule-accent flex items-center gap-2 border-b border-capsule-accent/10 pb-2">
-                        <Sliders size={14} className="text-capsule-accent" />
+                    <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-2xl p-6 shadow-sm space-y-4">
+                      <div className="text-[11px] tracking-wider font-bold uppercase text-[#FF2300] flex items-center gap-2 border-b border-[#FF2300]/25/10 pb-2">
+                        <Sliders size={14} className="text-[#FF2300]" />
                         <span>Քարտ 2. Քանակ և Հատուկ Պահանջներ</span>
                       </div>
-                      <p className="text-[10px] text-capsule-text-muted uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները՝ անհատականացման համար</p>
+                      <p className="text-[10px] text-[#727784] uppercase font-bold">Նշեք պահանջվող տպաքանակը և լրացրեք տեխնիկական պահանջները՝ անհատականացման համար</p>
 
                       <div className="space-y-4">
                         {/* QR Matrix Quantity selection */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Քանակ</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Քանակ</label>
                           <div className="flex flex-wrap gap-2 font-mono mb-3">
                             {[50, 100, 250, 500, 1000, 2500, 5000].map((bqVal) => (
                               <button
@@ -5679,7 +5507,7 @@ export default function App() {
                                 type="button"
                                 onClick={() => setQrMatrixQty(bqVal)}
                                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                                  qrMatrixQty === bqVal ? "bg-capsule-accent text-capsule-surf border-capsule-accent" : "bg-capsule-surf2/30 border-capsule-accent/10"
+                                  qrMatrixQty === bqVal ? "bg-[#FF2300] text-capsule-surf border-[#FF2300]/25" : "bg-[#f0f2f5]/30 border-[#FF2300]/25/10"
                                 }`}
                               >
                                 {bqVal} հատ
@@ -5691,18 +5519,18 @@ export default function App() {
                             placeholder="Այլ քանակ..."
                             value={qrMatrixQty || ""}
                             onChange={(e) => setQrMatrixQty(Math.max(0, parseInt(e.target.value) || 0))}
-                            className="w-full bg-capsule-surf2/40 border border-capsule-accent/10 focus:border-capsule-accent rounded-xl px-4 py-2 text-xs focus:outline-none font-bold"
+                            className="w-full bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 focus:border-[#FF2300]/25 rounded-xl px-4 py-2 text-xs focus:outline-none font-bold"
                           />
                         </div>
 
                         {/* Extra Notes */}
                         <div>
-                          <label className="block text-[10px] font-bold text-capsule-text-muted uppercase tracking-wider mb-2 font-mono">Հավելյալ պահանջներ / Նշումներ</label>
+                          <label className="block text-[10px] font-bold text-[#727784] uppercase tracking-wider mb-2 font-mono">Հավելյալ պահանջներ / Նշումներ</label>
                           <textarea
                             placeholder="Օրինակ՝ չափսեր, լամինացիայի տիպ, այլ նախընտրություններ..."
                             value={qrMatrixNotes}
                             onChange={(e) => setQrMatrixNotes(e.target.value)}
-                            className="w-full h-24 bg-capsule-surf2/40 border border-capsule-accent/10 focus:border-capsule-accent rounded-xl px-4 py-3 text-xs focus:outline-none resize-none font-sans"
+                            className="w-full h-24 bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 focus:border-[#FF2300]/25 rounded-xl px-4 py-3 text-xs focus:outline-none resize-none font-sans"
                           />
                         </div>
                       </div>
@@ -6047,7 +5875,7 @@ export default function App() {
 
                             {/* Back: FACE of card */}
                             <div 
-                              className="absolute inset-0 rounded-xl p-3 flex flex-col justify-between items-center bg-[#F4F2EE] border-2"
+                              className="absolute inset-0 rounded-xl p-3 flex flex-col justify-between items-center bg-[#f0f2f5] border-2"
                               style={{ 
                                 backfaceVisibility: "hidden",
                                 transform: "rotateY(180deg)",
@@ -6170,18 +5998,18 @@ export default function App() {
               </div>
 
               {/* Right Column: Calculations Outputs Card for Simpler Channels */}
-              <div className="lg:col-span-4 sticky top-6 space-y-6">
-                <div className="bg-capsule-surf border border-capsule-accent/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm select-none">
+              <div className="lg:col-span-5 sticky top-6 space-y-6">
+                <div className="bg-[#f0f2f5] border border-[#FF2300]/25/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm select-none">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-capsule-accent/5 text-capsule-accent flex items-center justify-center border border-capsule-accent/10 shadow-inner">
-                        <Sliders size={18} className="text-capsule-accent" />
+                      <div className="w-12 h-12 rounded-2xl bg-[#FF2300]/5 text-[#FF2300] flex items-center justify-center border border-[#FF2300]/25/10 shadow-inner">
+                        <Sliders size={18} className="text-[#FF2300]" />
                       </div>
                       <div>
-                        <span className="text-[9px] uppercase tracking-widest font-mono font-bold text-capsule-accent block leading-none">
+                        <span className="text-[9px] uppercase tracking-widest font-mono font-bold text-[#FF2300] block leading-none">
                           {locale === "hy" ? "ՊՐԵՄԻՈՒՄ ՀԱՇՎԻՉ" : locale === "ru" ? "ПРЕМИУМ КАЛЬКУЛЯТОР" : "PREMIUM SERVICE"}
                         </span>
-                        <h3 className="font-serif text-base text-capsule-dark uppercase tracking-wider mt-1 font-bold leading-none">
+                        <h3 className="font-serif text-base text-[#1a1c1d] uppercase tracking-wider mt-1 font-bold leading-none">
                           {t(`db.category.${activeCategory}.name`, categories.find(c => c.id === activeCategory)?.name || activeCategory)}
                         </h3>
                       </div>
@@ -6195,38 +6023,38 @@ export default function App() {
                           : "Пожалуйста, заполните все параметры для расчёта окончательной стоимости."}
                       </div>
                     ) : (
-                      <div className="space-y-3.5 pt-3.5 border-t border-capsule-accent/10 text-xs text-left">
-                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
-                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Արտադրանք" : "Продукт / Тип"}</span>
-                          <span className="font-bold text-capsule-dark font-sans max-w-[160px] truncate block text-right">
+                      <div className="space-y-3.5 pt-3.5 border-t border-[#FF2300]/25/10 text-xs text-left">
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-[#FF2300]/25/5">
+                          <span className="text-[#414753]">{locale === "hy" ? "Արտադրանք" : "Продукт / Тип"}</span>
+                          <span className="font-bold text-[#1a1c1d] font-sans max-w-[160px] truncate block text-right">
                             {calcResult.itemName}
                           </span>
                         </div>
 
-                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
-                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Չափս" : "Размеры"}</span>
-                          <span className="font-bold text-capsule-dark font-mono">{calcResult.dimensionsText}</span>
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-[#FF2300]/25/5">
+                          <span className="text-[#414753]">{locale === "hy" ? "Չափս" : "Размеры"}</span>
+                          <span className="font-bold text-[#1a1c1d] font-mono">{calcResult.dimensionsText}</span>
                         </div>
 
-                        <div className="flex justify-between items-center py-1 border-b border-dashed border-capsule-accent/5">
-                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Քանակ" : "Количество"}</span>
-                          <span className="font-bold text-capsule-dark font-mono">
+                        <div className="flex justify-between items-center py-1 border-b border-dashed border-[#FF2300]/25/5">
+                          <span className="text-[#414753]">{locale === "hy" ? "Քանակ" : "Количество"}</span>
+                          <span className="font-bold text-[#1a1c1d] font-mono">
                             {calcResult.qty?.toLocaleString()} {activeCategory === "ribbons" ? (locale === "hy" ? "մետր" : "м.") : (locale === "hy" ? "հատ" : "шт.")}
                           </span>
                         </div>
 
                         <div className="flex justify-between items-center py-1">
-                          <span className="text-capsule-text-secondary">{locale === "hy" ? "Միավորի Գին" : "Цена за ед."}</span>
-                          <span className="font-bold font-mono text-capsule-accent text-sm">
+                          <span className="text-[#414753]">{locale === "hy" ? "Միավորի Գին" : "Цена за ед."}</span>
+                          <span className="font-bold font-mono text-[#FF2300] text-sm">
                             {formatPrice(calcResult.unitPrice)}
                           </span>
                         </div>
 
-                        <div className="border-t border-capsule-accent/10 pt-4 flex justify-between items-baseline">
-                          <span className="text-[10px] font-bold uppercase block text-capsule-text-muted">
+                        <div className="border-t border-[#FF2300]/25/10 pt-4 flex justify-between items-baseline">
+                          <span className="text-[10px] font-bold uppercase block text-[#727784]">
                             {locale === "hy" ? "Ընդամենը" : "Итого"}
                           </span>
-                          <h3 className="text-2xl font-black text-capsule-accent font-sans">
+                          <h3 className="text-2xl font-black text-[#FF2300] font-sans">
                             {formatPrice(calcResult.totalPrice)}
                           </h3>
                         </div>
@@ -6252,7 +6080,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={() => handleAddItemToBundle(activeCategory)}
-                            className="w-full bg-capsule-surf hover:bg-capsule-accent/10 text-capsule-accent border border-capsule-accent/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250 outline-none"
+                            className="w-full bg-[#f0f2f5] hover:bg-[#FF2300]/10 text-[#FF2300] border border-[#FF2300]/25/20 text-xs py-3 rounded-full font-bold uppercase cursor-pointer text-center select-none flex justify-center items-center gap-1.5 transition-all duration-250 outline-none"
                           >
                             <ShoppingCart size={14} />
                             <span>{locale === "hy" ? "Ավելացնել Զամբյուղին" : "Добавить в корзину"}</span>
@@ -6263,36 +6091,35 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
             </div>
           )}
 
           {/* Method A: The Beautiful e-commerce footer operates outside of nested max-width wrappers to span edge-to-edge. It now features an elegant top-rounded, high-contrast grid design that adapts phenomenally to mobile and tablet layouts. */}
-          <footer className="relative z-20 w-full bg-[#FAFAF8] text-[#1C1B19] border-t border-[#E5DDD1] mt-28 pt-16 pb-12 px-0 mx-0 max-w-none animate-[fadeIn_0.5s_ease_out]" id="app-footer">
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 text-left">
-                {/* Left Side: Brand Logo, Contact & Premium Newsletter (Nietzsche style) */}
+          <footer className="relative z-20 w-full bg-[#f0f2f5] text-[#1a1c1d] border-t border-white/40 shadow-[0_-8px_24px_rgba(209,217,230,0.3)] mt-28 pt-16 pb-12 px-0 mx-0 max-w-none animate-[fadeIn_0.5s_ease_out]" id="app-footer">
+                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 text-left">
+                    {/* Left Side: Brand Logo, Contact & Premium Newsletter (Nietzsche style) */}
                 <div className="col-span-1 lg:col-span-5 space-y-6">
                   <div className="space-y-3.5">
                     <div className="flex items-center gap-2">
-                      <span className="font-serif text-xl font-black tracking-wider text-[#1A3F25]">thecapsulelab</span>
+                      <span className="font-serif text-xl font-black tracking-wider text-[#FF2300]">thecapsulelab</span>
                     </div>
-                    <p className="text-[12.5px] text-[#6E695F] leading-relaxed font-sans max-w-md">
+                    <p className="text-[12.5px] text-[#414753] leading-relaxed font-sans max-w-md font-medium">
                       {locale === "hy" 
                         ? "Բարձրակարգ փաթեթավորման և տպագրական լուծումներ բիզնեսի և անհատների համար։" 
                         : locale === "ru" 
                         ? "Премиальные упаковочные и печатные решения для бизнеса и частных клиентов." 
                         : "Premium packaging and print solutions for business and retail."}
                     </p>
-                    <div className="flex flex-wrap gap-[#E5DDD1] gap-x-4 gap-y-2 text-[11.5px] text-[#8C8475] font-sans">
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-[11.5px] text-[#727784] font-sans font-medium">
                       <span className="inline-flex items-center gap-1.5">📍 Yerevan, Armenia</span>
                       <span className="inline-flex items-center gap-1.5">📞 +374 99 999999</span>
                       <span className="inline-flex items-center gap-1.5">✉️ support@thecapsulelab.com</span>
                     </div>
                   </div>
 
-                  <div className="border-t border-[#E5DDD1]/60 pt-6 space-y-3.5">
-                    <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#1C1B19]">
+                  <div className="border-t border-white/40 pt-6 space-y-3.5">
+                    <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#1a1c1d]">
                       {locale === "hy" 
                         ? "Բաժանորդագրվեք նորություններին և ստացեք 15% զեղչ" 
                         : locale === "ru" 
@@ -6311,19 +6138,19 @@ export default function App() {
                           }, 5000);
                         }
                       }} 
-                      className="flex items-center justify-between border border-[#D5D0C8] hover:border-[#1C1B19] focus-within:border-[#1A3F25] w-full max-w-sm rounded-full p-1 pl-4 bg-white shadow-xs transition-all duration-250"
+                      className="flex items-center justify-between border border-white/50 w-full max-w-sm rounded-full p-1 pl-4 bg-[#f0f2f5] shadow-[inset_3px_3px_6px_#d1d9e6,inset_-3px_-3px_6px_#ffffff] transition-all duration-250"
                     >
                       <input 
                         type="email" 
                         value={newsletterEmail}
                         onChange={(e) => setNewsletterEmail(e.target.value)}
                         placeholder={locale === "hy" ? "Էլ. հասցե" : locale === "ru" ? "Электронная почта" : "E-mail"}
-                        className="flex-1 text-xs text-[#1C1B19] outline-none border-none bg-transparent placeholder-neutral-400 font-sans min-w-0 pr-2 focus:ring-0"
+                        className="flex-1 text-xs text-[#1a1c1d] outline-none border-none bg-transparent placeholder-[#727784]/60 font-sans min-w-0 pr-2 focus:ring-0 font-bold"
                         required
                       />
                       <button
                         type="submit"
-                        className="bg-[#1C1B19] hover:bg-[#1A3F25] text-white font-sans text-xs font-bold py-2.5 px-5 rounded-full transition-colors shrink-0 cursor-pointer border-none outline-none"
+                        className="bg-[#FF2300] hover:bg-[#e61f00] text-white font-sans text-xs font-bold py-2.5 px-5 rounded-full transition-all shrink-0 cursor-pointer border-none outline-none shadow-sm"
                       >
                         {locale === "hy" ? "Բաժանորդագրվել" : locale === "ru" ? "Подписаться" : "Subscribe"}
                       </button>
@@ -6334,7 +6161,7 @@ export default function App() {
                         🌱 {locale === "hy" ? "Դուք հաջողությամբ բաժանորդագրվել եք:" : locale === "ru" ? "Вы успешно подписались на рассылку!" : "Successfully subscribed to our newsletter!"}
                       </p>
                     ) : (
-                      <p className="text-[10.5px] text-[#A39B8E] leading-relaxed max-w-sm font-sans">
+                      <p className="text-[10.5px] text-[#727784] leading-relaxed max-w-sm font-sans font-medium">
                         {locale === "hy"
                           ? "Բաժանորդագրվելով դուք համաձայնվում եք մեր Գաղտնիության Քաղաքականությանը և տալիս եք ձեր համաձայնությունը նորություններ ստանալու համար։"
                           : locale === "ru"
@@ -6348,7 +6175,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => setIsAdminOpen(true)}
-                        className="text-[11px] text-[#A39B8E] hover:text-[#1A3F25] transition-colors font-semibold inline-flex items-center gap-1.5 cursor-pointer font-sans bg-transparent border-none p-0 select-none opacity-85 hover:opacity-100"
+                        className="text-[11px] text-[#727784] hover:text-[#FF2300] transition-colors font-bold inline-flex items-center gap-1.5 cursor-pointer font-sans bg-transparent border-none p-0 select-none opacity-85 hover:opacity-100"
                       >
                         🔑 {locale === "hy" ? "Ադմին" : locale === "ru" ? "Админ" : "Admin Panel"}
                       </button>
@@ -6360,10 +6187,10 @@ export default function App() {
                 <div className="col-span-1 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-4 lg:pt-0">
                   {/* Col 2: Quick Links */}
                   <div className="space-y-4">
-                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1a1c1d] border-b border-white/40 pb-2 sm:border-none sm:pb-0">
                       {locale === "hy" ? "Արտադրանք" : locale === "ru" ? "Продукты" : "Products"}
                     </h4>
-                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                    <ul className="space-y-2.5 text-[12.5px] text-[#414753] font-sans font-medium">
                       {categories.map((cat) => (
                         <li key={cat.id}>
                           <button
@@ -6373,7 +6200,7 @@ export default function App() {
                               setCurrentView("calculator");
                               window.scrollTo({ top: 0, behavior: "smooth" });
                             }}
-                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                            className="hover:text-[#FF2300] hover:font-bold transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
                           >
                             {locale === "hy" ? cat.name : cat.name}
                           </button>
@@ -6384,10 +6211,10 @@ export default function App() {
 
                   {/* Col 3: Sustainability */}
                   <div className="space-y-4">
-                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1a1c1d] border-b border-white/40 pb-2 sm:border-none sm:pb-0">
                       {locale === "hy" ? "Էկոլոգիա" : locale === "ru" ? "Экологичность" : "Sustainability"}
                     </h4>
-                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                    <ul className="space-y-2.5 text-[12.5px] text-[#414753] font-sans font-medium">
                       {[
                         { 
                           hy: "Էկո-պորտալ", 
@@ -6430,7 +6257,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={item.action}
-                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                            className="hover:text-[#FF2300] hover:font-bold transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
                           >
                             {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
                           </button>
@@ -6441,10 +6268,10 @@ export default function App() {
 
                   {/* Col 4: Resources */}
                   <div className="space-y-4">
-                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1C1B19] border-b border-[#E5DDD1] pb-2 sm:border-none sm:pb-0">
+                    <h4 className="font-sans text-xs font-extrabold uppercase tracking-wider text-[#1a1c1d] border-b border-white/40 pb-2 sm:border-none sm:pb-0">
                       {locale === "hy" ? "Ռեսուրսներ" : locale === "ru" ? "Ресурсы" : "Resources"}
                     </h4>
-                    <ul className="space-y-2.5 text-[12.5px] text-[#6E695F] font-sans">
+                    <ul className="space-y-2.5 text-[12.5px] text-[#414753] font-sans font-medium">
                       {[
                         { 
                           hy: "Բլոգ", 
@@ -6493,7 +6320,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={item.action}
-                            className="hover:text-[#1A3F25] hover:font-medium transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
+                            className="hover:text-[#FF2300] hover:font-bold transition-all text-left bg-transparent border-none p-0 cursor-pointer block"
                           >
                             {locale === "hy" ? item.hy : locale === "ru" ? item.ru : item.en}
                           </button>
@@ -6505,7 +6332,7 @@ export default function App() {
               </div>
 
               {/* Secure Payment Methods Row */}
-              <div className="pt-6 border-t border-[#E5DDD1]/50 pb-4 mt-8">
+              <div className="pt-6 border-t border-white/40 pb-4 mt-8">
                 <PaymentMethods locale={locale} paymentMethods={paymentMethods} />
               </div>
 
@@ -6536,7 +6363,7 @@ export default function App() {
                       href={soc.href} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-[#094F31] hover:text-white text-zinc-600 flex items-center justify-center transition-all duration-300 outline-none hover:shadow-sm"
+                      className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-[#FF2300] hover:text-white text-[#727784] flex items-center justify-center transition-all duration-300 outline-none hover:shadow-sm"
                       aria-label={soc.label}
                     >
                       {soc.icon}
@@ -6604,12 +6431,12 @@ export default function App() {
               animate={{ x: 0 }}
               exit={{ x: isRtl ? "-100%" : "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="relative w-full max-w-[24rem] h-full bg-[#F8F6F1] shadow-[-16px_0_36px_#C4BDB1] flex flex-col border-l-2 border-white/60 z-10 overflow-hidden"
+              className="relative w-full max-w-[24rem] h-full bg-[#f0f2f5] shadow-[-16px_0_36px_#C4BDB1] flex flex-col border-l-2 border-white/60 z-10 overflow-hidden"
             >
               {/* Drawer Header */}
-              <div className="flex items-center justify-between p-5 border-b border-white/40 bg-[#F8F6F1] select-none shadow-[0_4px_10px_-4px_rgba(211,205,191,0.5)] z-10">
+              <div className="flex items-center justify-between p-5 border-b border-white/40 bg-[#f0f2f5] select-none shadow-[0_4px_10px_-4px_rgba(211,205,191,0.5)] z-10">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-2xl bg-[#F8F6F1] text-[#1A3F25] font-serif font-black flex items-center justify-center shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/30 text-sm">
+                  <div className="h-9 w-9 rounded-2xl bg-[#f0f2f5] text-[#1A3F25] font-serif font-black flex items-center justify-center shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/30 text-sm">
                     C
                   </div>
                   <div>
@@ -6625,7 +6452,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setIsDrawerMenuOpen(false)}
-                  className="cursor-pointer h-9 w-9 rounded-full bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] flex items-center justify-center transition-all border-none outline-none select-none"
+                  className="cursor-pointer h-9 w-9 rounded-full bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] flex items-center justify-center transition-all border-none outline-none select-none"
                   title="Close Menu"
                 >
                   <X size={13} className="stroke-[2.5]" />
@@ -6633,7 +6460,7 @@ export default function App() {
               </div>
 
               {/* Centralized Language Selector */}
-              <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/30 bg-[#F8F6F1] select-none z-10 shadow-[0_2px_6px_-2px_rgba(211,205,191,0.3)]">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/30 bg-[#f0f2f5] select-none z-10 shadow-[0_2px_6px_-2px_rgba(211,205,191,0.3)]">
                 <span className="text-[9px] font-black uppercase tracking-widest text-[#7C8797]/80 block">
                   {locale === "hy" ? "Ընտրել Լեզուն" : locale === "ru" ? "Выбрать Язык" : "Select Language"}
                 </span>
@@ -6645,8 +6472,8 @@ export default function App() {
                       onClick={() => setLocale(lang)}
                       className={`cursor-pointer px-3.5 py-1.5 rounded-xl transition-all duration-200 border text-[9px] font-black ${
                         locale === lang 
-                          ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] border-white/10" 
-                          : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[2px_2px_4px_#D3CDBF,_-2px_-2px_4px_#FFFFFF] border-transparent"
+                          ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] border-white/10" 
+                          : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[2px_2px_4px_#d1d9e6,_-2px_-2px_4px_#FFFFFF] border-transparent"
                       }`}
                     >
                       {lang.toUpperCase()}
@@ -6675,14 +6502,14 @@ export default function App() {
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
                       (currentView as any) === "home"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
                   >
                     <span className="text-xs font-sans">
                       {locale === "hy" ? "Գլխավոր" : locale === "ru" ? "Главная" : "Home"}
                     </span>
-                    <ChevronRight size={11} className={(currentView as any) === "home" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={(currentView as any) === "home" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
 
                   {/* Calculator/Configurator Link */}
@@ -6697,14 +6524,14 @@ export default function App() {
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
                       currentView === "calculator"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
                   >
                     <span className="text-xs font-sans">
                       {locale === "hy" ? "Հաշվիչ" : locale === "ru" ? "Калькулятор" : "Calculator"}
                     </span>
-                    <ChevronRight size={11} className={currentView === "calculator" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={currentView === "calculator" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
 
                   {/* Shop E-commerce Link */}
@@ -6718,14 +6545,14 @@ export default function App() {
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
                       (currentView as any) === "ecommerce"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
                   >
                     <span className="text-xs font-sans">
                       {locale === "hy" ? "Խանութ" : locale === "ru" ? "Магазин" : "Shop"}
                     </span>
-                    <ChevronRight size={11} className={(currentView as any) === "ecommerce" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={(currentView as any) === "ecommerce" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
 
                   {/* Order Track Portal Link */}
@@ -6739,14 +6566,78 @@ export default function App() {
                     }}
                     className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
                       (currentView as any) === "track"
-                        ? "bg-[#F8F6F1] text-capsule-accent shadow-[inset_3px_3px_6px_#D3CDBF,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
-                        : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
                     }`}
                   >
                     <span className="text-xs font-sans">
                       {locale === "hy" ? "Հետևել Պատվերին" : locale === "ru" ? "Отследить Заказ" : "Track Order"}
                     </span>
-                    <ChevronRight size={11} className={(currentView as any) === "track" ? "text-capsule-accent stroke-[2.5]" : "text-[#7C8797]"} />
+                    <ChevronRight size={11} className={(currentView as any) === "track" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
+                  </button>
+
+                  {/* AI Assistant Chat Link */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentView("ai-chat");
+                      setIsInTrackPortal(false);
+                      setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/chat");
+                    }}
+                    className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
+                      (currentView as any) === "ai-chat"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                    }`}
+                  >
+                    <span className="text-xs font-sans flex items-center gap-2">
+                      <Sparkles size={13} className={(currentView as any) === "ai-chat" ? "text-[#0d0d0d]" : "text-[#7C8797]"} />
+                      {locale === "hy" ? "AI Զրույց" : locale === "ru" ? "AI Консультант" : "AI Assistant Chat"}
+                    </span>
+                    <ChevronRight size={11} className={(currentView as any) === "ai-chat" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
+                  </button>
+
+                  {/* About Us Link */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentView("about");
+                      setIsInTrackPortal(false);
+                      setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/about");
+                    }}
+                    className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
+                      (currentView as any) === "about"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                    }`}
+                  >
+                    <span className="text-xs font-sans flex items-center gap-2">
+                      {locale === "hy" ? "Մեր Մասին" : locale === "ru" ? "О Нас" : "About Us"}
+                    </span>
+                    <ChevronRight size={11} className={(currentView as any) === "about" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
+                  </button>
+
+                  {/* Contact Link */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCurrentView("contact");
+                      setIsInTrackPortal(false);
+                      setIsDrawerMenuOpen(false);
+                      window.history.pushState({}, "", "/contact");
+                    }}
+                    className={`w-full cursor-pointer flex items-center justify-between p-4 rounded-2xl border text-left transition-all duration-300 ${
+                      (currentView as any) === "contact"
+                        ? "bg-[#f0f2f5] text-[#FF2300] shadow-[inset_3px_3px_6px_#d1d9e6,_inset_-3px_-3px_6px_#FFFFFF] border-white/10 font-black"
+                        : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] font-extrabold"
+                    }`}
+                  >
+                    <span className="text-xs font-sans flex items-center gap-2">
+                      {locale === "hy" ? "Կապ" : locale === "ru" ? "Контакты" : "Contact"}
+                    </span>
+                    <ChevronRight size={11} className={(currentView as any) === "contact" ? "text-[#FF2300] stroke-[2.5]" : "text-[#7C8797]"} />
                   </button>
                 </div>
 
@@ -6781,8 +6672,8 @@ export default function App() {
                               }}
                               className={`w-full cursor-pointer flex items-center justify-between p-3.5 rounded-2xl border transition-all duration-300 ${
                                 isCatSelected
-                                  ? "bg-[#F8F6F1] text-capsule-accent border-white/10 shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
-                                  : "bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] border-transparent shadow-[2px_2px_4px_#D3CDBF,_-2px_-2px_4px_#FFFFFF] font-extrabold"
+                                  ? "bg-[#f0f2f5] text-[#FF2300] border-white/10 shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black"
+                                  : "bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] border-transparent shadow-[2px_2px_4px_#d1d9e6,_-2px_-2px_4px_#FFFFFF] font-extrabold"
                               }`}
                             >
                               <span className="text-xs font-sans">
@@ -6808,10 +6699,10 @@ export default function App() {
                               setActiveCategory(cat.id);
                               setIsDrawerMenuOpen(false);
                             }}
-                            className={`cursor-pointer p-4 rounded-2xl border text-center transition-all duration-300 bg-[#F8F6F1] ${
+                            className={`cursor-pointer p-4 rounded-2xl border text-center transition-all duration-300 bg-[#f0f2f5] ${
                               activeCategory === cat.id 
-                                ? "text-capsule-accent border-white/10 shadow-[inset_2.5px_2.5px_5px_#D3CDBF,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black" 
-                                : "text-[#7C8797] hover:text-[#1A3F25] border-transparent shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] font-extrabold"
+                                ? "text-[#FF2300] border-white/10 shadow-[inset_2.5px_2.5px_5px_#d1d9e6,_inset_-2.5px_-2.5px_5px_#FFFFFF] font-black" 
+                                : "text-[#7C8797] hover:text-[#1A3F25] border-transparent shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] font-extrabold"
                             }`}
                           >
                             <div className="text-[11px] font-black truncate font-sans">
@@ -6831,13 +6722,13 @@ export default function App() {
                   </span>
 
                   {userEmail ? (
-                    <div className="bg-[#F8F6F1] border-2 border-white/40 p-5 rounded-[2rem] shadow-[inset_4px_4px_8px_#D3CDBF,_inset_-4px_-4px_8px_#FFFFFF] space-y-4">
+                    <div className="bg-[#f0f2f5] border-2 border-white/40 p-5 rounded-[2rem] shadow-[inset_4px_4px_8px_#d1d9e6,_inset_-4px_-4px_8px_#FFFFFF] space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="min-w-0 flex-1">
                           <p className="text-[9px] text-[#C59B6D] uppercase font-black tracking-wider leading-none">
                             {partnerDiscount > 0 ? "PARTNER PRO" : "CLIENT"}
                           </p>
-                          <p className="text-xs font-black text-capsule-dark truncate font-sans mt-1">
+                          <p className="text-xs font-black text-[#1a1c1d] truncate font-sans mt-1">
                             {userEmail}
                           </p>
                         </div>
@@ -6856,7 +6747,7 @@ export default function App() {
                             setIsDrawerMenuOpen(false);
                             openClientCabinetWithTab("overview");
                           }}
-                          className="p-2.5 text-center rounded-xl bg-[#F8F6F1] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
+                          className="p-2.5 text-center rounded-xl bg-[#f0f2f5] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
                         >
                           Overview
                         </button>
@@ -6866,7 +6757,7 @@ export default function App() {
                             setIsDrawerMenuOpen(false);
                             openClientCabinetWithTab("orders");
                           }}
-                          className="p-2.5 text-center rounded-xl bg-[#F8F6F1] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
+                          className="p-2.5 text-center rounded-xl bg-[#f0f2f5] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
                         >
                           My Orders
                         </button>
@@ -6876,7 +6767,7 @@ export default function App() {
                             setIsDrawerMenuOpen(false);
                             openClientCabinetWithTab("calculations");
                           }}
-                          className="p-2.5 text-center rounded-xl bg-[#F8F6F1] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
+                          className="p-2.5 text-center rounded-xl bg-[#f0f2f5] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
                         >
                           Saved Calcs
                         </button>
@@ -6886,7 +6777,7 @@ export default function App() {
                             setIsDrawerMenuOpen(false);
                             openClientCabinetWithTab("profile");
                           }}
-                          className="p-2.5 text-center rounded-xl bg-[#F8F6F1] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
+                          className="p-2.5 text-center rounded-xl bg-[#f0f2f5] text-[10px] font-black text-[#7C8797] hover:text-[#1A3F25] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all cursor-pointer font-sans border-none outline-none select-none"
                         >
                           Settings
                         </button>
@@ -6900,7 +6791,7 @@ export default function App() {
                           setPartnerDiscount(0);
                           setIsDrawerMenuOpen(false);
                         }}
-                        className="w-full text-center py-2.5 text-[10px] uppercase tracking-wider font-black bg-[#F8F6F1] text-[#D11A2A] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-red-800 active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] rounded-xl transition-all cursor-pointer font-sans border-none outline-none select-none"
+                        className="w-full text-center py-2.5 text-[10px] uppercase tracking-wider font-black bg-[#f0f2f5] text-[#D11A2A] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-red-800 active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] rounded-xl transition-all cursor-pointer font-sans border-none outline-none select-none"
                       >
                         {locale === "hy" ? "Դուրս գալ" : locale === "ru" ? "Выйти из Кабинета" : "Log Out"}
                       </button>
@@ -6913,7 +6804,7 @@ export default function App() {
                           setIsDrawerMenuOpen(false);
                           openClientCabinetWithAuth("login");
                         }}
-                        className="cursor-pointer bg-[#F8F6F1] text-capsule-accent hover:text-[#1A3F25] p-4 rounded-2xl flex flex-col items-center justify-center font-black text-[11px] shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] transition-all font-sans border-none outline-none select-none"
+                        className="cursor-pointer bg-[#f0f2f5] text-[#FF2300] hover:text-[#1A3F25] p-4 rounded-2xl flex flex-col items-center justify-center font-black text-[11px] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] transition-all font-sans border-none outline-none select-none"
                       >
                         <span className="text-[10px] uppercase tracking-widest font-black">
                           {locale === "hy" ? "Մուտք" : locale === "ru" ? "Войти" : "Log In"}
@@ -6926,7 +6817,7 @@ export default function App() {
                           setIsDrawerMenuOpen(false);
                           openClientCabinetWithAuth("register");
                         }}
-                        className="cursor-pointer bg-[#F8F6F1] text-[#7C8797] hover:text-[#1A3F25] p-4 rounded-2xl flex flex-col items-center justify-center font-black text-[11px] shadow-[3px_3px_6px_#D3CDBF,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#D3CDBF,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D3CDBF,_inset_-2px_-2px_4px_#FFFFFF] transition-all font-sans border-none outline-none select-none"
+                        className="cursor-pointer bg-[#f0f2f5] text-[#7C8797] hover:text-[#1A3F25] p-4 rounded-2xl flex flex-col items-center justify-center font-black text-[11px] shadow-[3px_3px_6px_#d1d9e6,_-3px_-3px_6px_#FFFFFF] hover:shadow-[4px_4px_8px_#d1d9e6,_-4px_-4px_8px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#d1d9e6,_inset_-2px_-2px_4px_#FFFFFF] transition-all font-sans border-none outline-none select-none"
                       >
                         <span className="text-[10px] uppercase tracking-widest font-black">
                           {locale === "hy" ? "Գրանցում" : locale === "ru" ? "Регистрация" : "Register"}
@@ -6947,13 +6838,13 @@ export default function App() {
                       href={`https://wa.me/${contactSettings.whatsapp}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 p-3 rounded-xl text-[10px] font-black uppercase tracking-wider bg-[#F8F6F1] text-emerald-800 shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-[#1A3F25] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all duration-200 font-sans select-none"
+                      className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 p-3 rounded-xl text-[10px] font-black uppercase tracking-wider bg-[#f0f2f5] text-emerald-800 shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-[#1A3F25] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all duration-200 font-sans select-none"
                     >
                       <span>WhatsApp</span>
                     </a>
                     <a
                       href={`mailto:${contactSettings.email}`}
-                      className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 p-3 rounded-xl text-[10px] font-black uppercase tracking-wider bg-[#F8F6F1] text-[#D11A2A] shadow-[2.5px_2.5px_5px_#D3CDBF,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-[#1A3F25] active:shadow-[inset_1.5px_1.5px_3px_#D3CDBF,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all duration-200 font-sans select-none"
+                      className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 p-3 rounded-xl text-[10px] font-black uppercase tracking-wider bg-[#f0f2f5] text-[#D11A2A] shadow-[2.5px_2.5px_5px_#d1d9e6,_-2.5px_-2.5px_5px_#FFFFFF] hover:text-[#1A3F25] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all duration-200 font-sans select-none"
                     >
                       <span>Email</span>
                     </a>
@@ -6963,8 +6854,8 @@ export default function App() {
               </div>
 
               {/* Drawer Footer */}
-              <div className="p-5 bg-[#F8F6F1] border-t border-white/30 text-center select-text">
-                <p className="text-[9px] font-mono text-capsule-accent/80 font-semibold uppercase tracking-wider">
+              <div className="p-5 bg-[#f0f2f5] border-t border-white/30 text-center select-text">
+                <p className="text-[9px] font-mono text-[#FF2300]/80 font-semibold uppercase tracking-wider">
                   The Capsule Lab © {new Date().getFullYear()}
                 </p>
                 <p className="text-[8px] font-mono font-black uppercase tracking-widest text-[#7C8797] mt-1">
@@ -7015,17 +6906,17 @@ export default function App() {
 
       {/* Floating Sticky Mobile Summary/Order Bar */}
       {calcResult && (
-        <div className="fixed bottom-0 left-0 right-0 z-45 lg:hidden bg-[#FAFAF8] border-t border-capsule-accent/15 px-4 py-3 shadow-2xl flex items-center justify-between gap-4 select-none">
+        <div className="fixed bottom-0 left-0 right-0 z-45 lg:hidden bg-[#f0f2f5] border-t border-white/40 px-4 py-3 shadow-2xl flex items-center justify-between gap-4 select-none">
           <div className="flex flex-col min-w-0">
-            <span className="text-[9px] font-extrabold text-capsule-text-muted uppercase tracking-wider truncate">
+            <span className="text-[9px] font-extrabold text-[#727784] uppercase tracking-wider truncate">
               {t(`db.category.${activeCategory}.name`, categories.find(c => c.id === activeCategory)?.name || "Արժեք")} (x{calcResult.qty})
             </span>
             <div className="flex items-baseline gap-1.5 mt-0.5">
-              <span className="text-sm font-extrabold text-capsule-accent font-mono leading-none">
+              <span className="text-sm font-extrabold text-[#FF2300] font-mono leading-none">
                 {formatPrice(calcResult.totalPrice)}
               </span>
               {calcResult.unitPrice > 0 && (
-                <span className="text-[10px] font-bold text-capsule-text-secondary font-mono">
+                <span className="text-[10px] font-bold text-[#414753] font-mono">
                   ({formatPrice(calcResult.unitPrice)} / {activeCategory === "ribbons" ? t("common.units.meters_short", "մ.") : t("common.units.pcs_short", "հ.")})
                 </span>
               )}
@@ -7034,7 +6925,7 @@ export default function App() {
           <button
             type="button"
             onClick={handleLaunchOrderInquiry}
-            className="bg-[#ff2300] hover:bg-[#e61f00] text-white text-[11px] font-extrabold uppercase px-4.5 py-2.5 rounded-full shadow-lg tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5 shrink-0"
+            className="bg-[#FF2300] hover:bg-[#e61f00] text-white text-[11px] font-extrabold uppercase px-4.5 py-2.5 rounded-full shadow-md tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5 shrink-0 border-none outline-none"
           >
             <ShoppingBag size={12} />
             <span>{t("buttons.order", "Պատվիրել")}</span>
@@ -7048,24 +6939,24 @@ export default function App() {
           {/* Premium Sharp Backdrop */}
           <div 
             onClick={() => setIsCartOpen(false)}
-            className="fixed inset-0 bg-[#3a2010]/35 backdrop-blur-[4px] animate-fade-in-quick transition-all"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-[4px] animate-fade-in-quick transition-all"
           />
           
           {/* Slide Over Panel - Ultra Premium Neumorphic Styling */}
-          <div className="relative w-full sm:w-[500px] h-full bg-[#FAFAF8] shadow-[0_0_50px_rgba(58,32,16,0.12)] flex flex-col z-10 border-l border-[#E5E1D8] animate-slide-left overflow-hidden">
+          <div className="relative w-full sm:w-[500px] h-full bg-[#f0f2f5] shadow-[0_0_50px_rgba(0,0,0,0.08)] flex flex-col z-10 border-l border-white/40 animate-slide-left overflow-hidden">
             {/* Drawer Header (Neumorphic Integrated Style) */}
-            <div className="bg-[#FAFAF8] px-5 py-6 sm:px-7 sm:py-7 flex items-center justify-between border-b border-[#E5E1D8]/80 select-none">
+            <div className="bg-[#f0f2f5] px-5 py-6 sm:px-7 sm:py-7 flex items-center justify-between border-b border-[#d1d9e6]/80 select-none">
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-sans tracking-[0.2em] text-capsule-accent font-black block">
+                <span className="text-[10px] uppercase font-sans tracking-[0.2em] text-[#FF2300] font-black block">
                   {t("cart.sub_title", "🛒 Պատվերի Զամբյուղ")}
                 </span>
-                <h3 className="font-serif text-lg sm:text-xl text-[#3D271B] tracking-wider uppercase font-extrabold">
+                <h3 className="font-serif text-lg sm:text-xl text-[#1a1c1d] tracking-wider uppercase font-extrabold">
                   {t("cart.title", "Պատվերի Զամբյուղ")}
                 </h3>
               </div>
               <button 
                 onClick={() => setIsCartOpen(false)}
-                className="cursor-pointer p-2.5 rounded-full bg-[#FAFAF8] text-[#3D271B] shadow-[2.5px_2.5px_5px_#DFD9CD,_-2.5px_-2.5px_5px_#FFFFFF] hover:shadow-[3.5px_3.5px_7px_#DFD9CD,_-3.5px_-3.5px_7px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#DFD9CD,_inset_-1.5px_-1.5px_3px_#FFFFFF] hover:scale-105 active:scale-95 transition-all outline-none border-none select-none flex items-center justify-center"
+                className="cursor-pointer p-2.5 rounded-full bg-[#f0f2f5] text-[#1a1c1d] shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] hover:shadow-[4px_4px_8px_#d1d9e6,-4px_-4px_8px_#ffffff] active:shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] hover:scale-105 active:scale-95 transition-all outline-none border-none select-none flex items-center justify-center"
                 title={t("common.close", "Փակել")}
               >
                 <X size={18} className="stroke-[2.5]" />
@@ -7073,15 +6964,15 @@ export default function App() {
             </div>
  
             {/* Drawer Contents Area */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar bg-[#FAFAF8]">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar bg-[#f0f2f5]">
               {bundleItems.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-5">
-                  <div className="w-16 h-16 rounded-full bg-[#FAFAF8] shadow-[4px_4px_8px_#DFD9CD,_-4px_-4px_8px_#FFFFFF] flex items-center justify-center text-rose-500 font-sans text-2xl border border-white/60">
+                  <div className="w-16 h-16 rounded-full bg-[#f0f2f5] shadow-[4px_4px_8px_#d1d9e6,-4px_-4px_8px_#ffffff] flex items-center justify-center text-rose-500 font-sans text-2xl border border-white/60">
                     🛒
                   </div>
                   <div className="space-y-2">
-                    <p className="font-serif text-base text-[#3D271B] font-bold tracking-wide uppercase">{t("cart.empty_title", "Ձեր զամբյուղը դատարկ է")}</p>
-                    <p className="text-xs text-[#3D271B]/60 leading-relaxed max-w-xs mx-auto">
+                    <p className="font-serif text-base text-[#1a1c1d] font-bold tracking-wide uppercase">{t("cart.empty_title", "Ձեր զամբյուղը դատարկ է")}</p>
+                    <p className="text-xs text-[#727784] leading-relaxed max-w-xs mx-auto font-medium">
                       {t("cart.empty_desc", "Ավելացրեք ապրանքներ ձեր պատվերին, որպեսզի հաշվարկեք վերջնական արժեքը և սկսեք պատվերը:")}
                     </p>
                   </div>
@@ -7090,7 +6981,7 @@ export default function App() {
                       setIsCartOpen(false);
                       setActiveCategory("bags");
                     }}
-                    className="cursor-pointer bg-[#FAFAF8] text-[#3D271B] font-sans text-[10px] sm:text-[11px] font-black uppercase tracking-widest px-7 py-3.5 rounded-full shadow-[4px_4px_8px_#DFD9CD,_-4px_-4px_8px_#FFFFFF] hover:shadow-[5px_5px_10px_#DFD9CD,_-5px_-5px_10px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#DFD9CD,_inset_-2px_-2px_4px_#FFFFFF] hover:text-capsule-accent transition-all border-none outline-none select-none"
+                    className="cursor-pointer bg-[#f0f2f5] text-[#1a1c1d] font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-widest px-7 py-3.5 rounded-full shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] hover:shadow-[4px_4px_8px_#d1d9e6,-4px_-4px_8px_#ffffff] active:shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] hover:text-[#FF2300] transition-all border-none outline-none select-none"
                   >
                     {t("cart.explore", "Դիտել Արտադրանքը")}
                   </button>
@@ -7098,9 +6989,9 @@ export default function App() {
               ) : (
                 <>
                   {/* Cart Promo Apply Field - Neumorphic Outer Card */}
-                  <div className="bg-[#FAFAF8] shadow-[4px_4px_10px_#DFD9CD,_-4px_-4px_10px_#FFFFFF] border border-white/80 rounded-3xl p-5 space-y-3.5">
+                  <div className="bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] border border-white/60 rounded-3xl p-5 space-y-3.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-sans tracking-wide text-[#3D271B]/70 font-black">
+                      <span className="text-[10px] uppercase font-sans tracking-wide text-[#1a1c1d]/85 font-bold">
                         {t("cart.promo_ask", "🎟️ Ունե՞ք պրոմո-կոդ")}
                       </span>
                       {appliedPromo && (
@@ -7126,17 +7017,17 @@ export default function App() {
                         name="promo-code"
                         placeholder={t("cart.promo_placeholder", "Օրինակ՝ CAPSULE10")} 
                         defaultValue={appliedPromo || ""}
-                        className="flex-1 bg-[#FAFAF8] shadow-[inset_2px_2px_5px_#DFD9CD,_inset_-2px_-2px_5px_#FFFFFF] border border-transparent px-4 py-2.5 rounded-xl text-xs focus:ring-1 focus:ring-capsule-accent/20 text-[#3D271B] focus:border-[#E5E1D8] outline-none font-mono"
+                        className="flex-1 bg-[#f0f2f5] shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] border border-transparent px-4 py-2.5 rounded-xl text-xs focus:ring-1 focus:ring-[#FF2300]/20 text-[#1a1c1d] focus:border-white/40 outline-none font-mono font-bold"
                       />
                       <button 
                         type="submit"
-                        className="cursor-pointer bg-[#FAFAF8] text-capsule-accent hover:text-[#1A3F25] px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider shadow-[2.5px_2.5px_5px_#DFD9CD,_-2.5px_-2.5px_5px_#FFFFFF] hover:shadow-[3.5px_3.5px_7px_#DFD9CD,_-3.5px_-3.5px_7px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#DFD9CD,_inset_-1.5px_-1.5px_3px_#FFFFFF] transition-all border-none outline-none select-none"
+                        className="cursor-pointer bg-[#f0f2f5] text-[#FF2300] hover:text-[#e61f00] px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-[2.5px_2.5px_5px_#d1d9e6,-2.5px_-2.5px_5px_#ffffff] hover:shadow-[3.5px_3.5px_7px_#d1d9e6,-3.5px_-3.5px_7px_#ffffff] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,inset_-1.5px_-1.5px_3px_#ffffff] transition-all border-none outline-none select-none font-sans"
                       >
                         {t("common.apply", "Կիրառել")}
                       </button>
                     </form>
                     {appliedPromo && (
-                      <p className="text-[10px] text-green-700 font-bold">
+                      <p className="text-[10px] text-green-700 font-bold font-sans">
                         {t("cart.promo_success_prefix", "✓ Պրոմո-կոդ")} <strong>{appliedPromo}</strong> {t("cart.promo_success_suffix", "ն հաջողությամբ կիրառվել է բոլոր հարմար ապրանքների վրա։")}
                       </p>
                     )}
@@ -7147,24 +7038,24 @@ export default function App() {
                     {bundleItems.map((item, idx) => {
                       const minRequiredQty = categories.find(c => c.id === item.catId)?.minQty || 100;
                       return (
-                        <div key={item.id} className="bg-[#FAFAF8] shadow-[4px_4px_10px_#DFD9CD,_-4px_-4px_10px_#FFFFFF] border border-white/60 p-5 rounded-3xl flex flex-col gap-4 animate-[fadeIn_0.3s_ease_out]">
+                        <div key={item.id} className="bg-[#f0f2f5] shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] border border-white/60 p-5 rounded-3xl flex flex-col gap-4 animate-[fadeIn_0.3s_ease_out]">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex items-start gap-3.5">
-                              <div className="w-11 h-11 rounded-2xl bg-[#FAFAF8] text-[#3D271B] shadow-[inset_2px_2px_5px_#DFD9CD,_inset_-2px_-2px_5px_#FFFFFF] flex items-center justify-center shrink-0 border border-white/40">
+                              <div className="w-11 h-11 rounded-2xl bg-[#f0f2f5] text-[#1a1c1d] shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] flex items-center justify-center shrink-0 border border-white/40">
                                 {renderCategoryIcon(item.icon, item.catId)}
                               </div>
                               <div className="space-y-0.5 text-left">
                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-[8px] uppercase font-sans tracking-[0.08em] bg-[#1A3F25]/5 text-[#1A3F25] px-1.5 py-0.5 rounded-md font-black">
+                                  <span className="text-[8px] uppercase font-sans tracking-[0.08em] bg-[#FF2300]/5 text-[#FF2300] px-1.5 py-0.5 rounded-md font-bold">
                                     {t(`db.category.${item.catId}.name`, item.catName)}
                                   </span>
-                                  <h4 className="font-sans text-[11px] font-black uppercase tracking-wider text-[#3D271B]">
+                                  <h4 className="font-sans text-[11px] font-bold uppercase tracking-wider text-[#1a1c1d]">
                                     {item.payload?.itemId && item.payload.itemId !== "custom" 
                                       ? t(`db.product_item.${item.payload.itemId}`, item.itemName) 
                                       : t(`db.product.${item.catId}`, item.itemName)}
                                   </h4>
                                 </div>
-                                <p className="text-[10px] text-[#3D271B]/65 whitespace-pre-line leading-relaxed select-text mt-1.5">
+                                <p className="text-[10px] text-[#414753] whitespace-pre-line leading-relaxed select-text font-sans font-medium mt-1.5">
                                   {getSingleItemDetails(item.catId, item.calcResult || item, item.payload)}
                                 </p>
                               </div>
@@ -7172,7 +7063,7 @@ export default function App() {
  
                             <button
                               onClick={() => handleRemoveBundleItem(item.id)}
-                              className="cursor-pointer p-2.5 rounded-full bg-[#FAFAF8] text-[#3D271B]/60 hover:text-red-700 shadow-[2.5px_2.5px_5px_#DFD9CD,_-2.5px_-2.5px_5px_#FFFFFF] hover:shadow-[3.5px_3.5px_7px_#DFD9CD,_-3.5px_-3.5px_7px_#FFFFFF] active:shadow-[inset_1.5px_1.5px_3px_#DFD9CD,_inset_-1.5px_-1.5px_3px_#FFFFFF] hover:scale-105 active:scale-95 transition-all outline-none border-none select-none flex items-center justify-center shrink-0"
+                              className="cursor-pointer p-2.5 rounded-full bg-[#f0f2f5] text-[#727784] hover:text-[#FF2300] shadow-[2.5px_2.5px_5px_#d1d9e6,-2.5px_-2.5px_5px_#ffffff] hover:shadow-[3.5px_3.5px_7px_#d1d9e6,-3.5px_-3.5px_7px_#ffffff] active:shadow-[inset_1.5px_1.5px_3px_#d1d9e6,inset_-1.5px_-1.5px_3px_#ffffff] hover:scale-105 active:scale-95 transition-all outline-none border-none select-none flex items-center justify-center shrink-0"
                               title={t("common.remove", "Հեռացնել")}
                             >
                               <Trash2 size={13} className="stroke-[2.2]" />
@@ -7180,13 +7071,13 @@ export default function App() {
                           </div>
  
                           {/* Controls & Price Summary block inside item */}
-                          <div className="flex items-center justify-between bg-[#FAFAF8] shadow-[inset_2.5px_2.5px_5px_#DFD9CD,_inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/20 p-3.5 rounded-2xl gap-4">
+                          <div className="flex items-center justify-between bg-[#f0f2f5] shadow-[inset_2.5px_2.5px_5px_#d1d9e6,inset_-2.5px_-2.5px_5px_#ffffff] border border-white/20 p-3.5 rounded-2xl gap-4">
                             {/* Quantity buttons */}
                             <div className="space-y-1 text-left">
-                              <span className="text-[8px] uppercase tracking-wider text-[#3D271B]/60 font-black block font-sans">
+                              <span className="text-[8px] uppercase tracking-wider text-[#727784] font-bold block font-sans">
                                 {t("common.qty_label", "Քանակ")} ({item.isMeters ? t("common.units.meters", "Մետր") : t("common.units.pcs", "Հատ")})
                               </span>
-                              <div className="flex items-center bg-[#FAFAF8] shadow-[2px_2px_4px_#DFD9CD,_-2px_-2px_4px_#FFFFFF] rounded-xl p-0.5 select-none border border-white/40">
+                              <div className="flex items-center bg-[#f0f2f5] shadow-[2px_2px_4px_#d1d9e6,-2px_-2px_4px_#ffffff] rounded-xl p-0.5 select-none border border-white/40">
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -7197,11 +7088,11 @@ export default function App() {
                                     }
                                   }}
                                   disabled={item.qty <= minRequiredQty}
-                                  className={`w-7 h-7 flex items-center justify-center font-black text-xs rounded-lg transition-transform active:scale-95 ${item.qty <= minRequiredQty ? 'text-[#3D271B]/20 cursor-not-allowed' : 'text-[#3D271B] hover:text-capsule-accent cursor-pointer'}`}
+                                  className={`w-7 h-7 flex items-center justify-center font-bold text-xs rounded-lg transition-transform active:scale-95 ${item.qty <= minRequiredQty ? 'text-[#1a1c1d]/20 cursor-not-allowed' : 'text-[#1a1c1d] hover:text-[#FF2300] cursor-pointer'}`}
                                 >
                                   -
                                 </button>
-                                <span className="w-12 text-center text-[10.5px] font-black text-[#3D271B] font-mono">
+                                <span className="w-12 text-center text-[10.5px] font-bold text-[#1a1c1d] font-mono">
                                   {item.qty.toLocaleString()}
                                 </span>
                                 <button
@@ -7210,13 +7101,13 @@ export default function App() {
                                     const step = item.isMeters ? 100 : (item.catId === "stickers" || item.catId === "giftcards" || item.catId === "businesscards") ? 50 : 100;
                                     handleUpdateCartItemQty(item.id, item.qty + step);
                                   }}
-                                  className="w-7 h-7 flex items-center justify-center font-black text-xs text-[#3D271B] hover:text-[#1A3F25] rounded-lg cursor-pointer transition-transform active:scale-95"
+                                  className="w-7 h-7 flex items-center justify-center font-bold text-xs text-[#1a1c1d] hover:text-[#FF2300] rounded-lg cursor-pointer transition-transform active:scale-95"
                                 >
                                   +
                                 </button>
                               </div>
                               {item.qty <= minRequiredQty && (
-                                <span className="text-[8px] text-rose-700/80 font-black block font-sans mt-0.5">
+                                <span className="text-[8px] text-rose-700/80 font-bold block font-sans mt-0.5">
                                   {t("cart.min_qty", "✓ Նվազագույն քանակ:")} {minRequiredQty}
                                 </span>
                               )}
@@ -7224,13 +7115,13 @@ export default function App() {
  
                             {/* Cost overview */}
                             <div className="text-right">
-                              <span className="text-[8px] uppercase tracking-wider text-[#3D271B]/60 font-black block font-sans">
+                              <span className="text-[8px] uppercase tracking-wider text-[#727784] font-bold block font-sans">
                                 {t("common.price", "Արժեքը")}
                               </span>
-                              <div className="text-[12px] font-mono font-black text-[#3D271B]">
+                              <div className="text-[12px] font-mono font-bold text-[#1a1c1d]">
                                 {formatPrice(item.totalPrice)}
                               </div>
-                              <div className="text-[8.5px] text-[#3D271B]/65 font-mono">
+                              <div className="text-[8.5px] text-[#414753] font-mono font-medium">
                                 ({formatPrice(item.unitPrice)} / {item.isMeters ? t("common.units.meters_short", "մ.") : t("common.units.pcs_short", "հ.")})
                               </div>
                             </div>
@@ -7245,11 +7136,11 @@ export default function App() {
  
             {/* Drawer Footer controls */}
             {bundleItems.length > 0 && (
-              <div className="bg-[#FAFAF8] shadow-[0_-8px_30px_rgba(58,32,16,0.06)] border-t border-[#E5E1D8]/80 p-5 sm:p-7 space-y-4 select-none">
+              <div className="bg-[#f0f2f5] shadow-[0_-8px_30px_rgba(0,0,0,0.05)] border-t border-white/40 p-5 sm:p-7 space-y-4 select-none">
                 <div className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs text-[#3D271B]/70 font-sans font-bold">
+                  <div className="flex justify-between items-center text-xs text-[#727784] font-sans font-bold">
                     <span>{t("cart.items_count_label", "Տեսակներ:")}</span>
-                    <span className="font-mono text-[#3D271B]">{bundleItems.length} {t("cart.items_count_unit", "տեսակ")}</span>
+                    <span className="font-mono text-[#1a1c1d]">{bundleItems.length} {t("cart.items_count_unit", "տեսակ")}</span>
                   </div>
                   {appliedPromo && (
                     <div className="flex justify-between items-center text-xs text-green-700 font-bold">
@@ -7257,9 +7148,9 @@ export default function App() {
                       <span className="font-mono text-green-700">-{appliedPromo}</span>
                     </div>
                   )}
-                  <div className="flex justify-between items-baseline pt-3 border-t border-[#E5E1D8]/60">
-                    <span className="text-xs sm:text-[13px] font-sans text-[#3D271B]/80 font-black uppercase tracking-[0.1em]">{t("common.total_price", "Ընդհանուր գումար")}</span>
-                    <span className="text-xl sm:text-2xl font-black text-[#3D271B] font-sans">
+                  <div className="flex justify-between items-baseline pt-3 border-t border-[#d1d9e6]/60">
+                    <span className="text-xs sm:text-[13px] font-sans text-[#414753] font-bold uppercase tracking-[0.1em]">{t("common.total_price", "Ընդհանուր գումար")}</span>
+                    <span className="text-xl sm:text-2xl font-bold text-[#1a1c1d] font-sans">
                       {formatPrice(totalBundlePrice)}
                     </span>
                   </div>
@@ -7271,14 +7162,14 @@ export default function App() {
                       setIsCartOpen(false);
                       handleLaunchBundleInquiry();
                     }}
-                    className="w-full bg-[#1A3F25] hover:bg-[#112d19] text-white py-3.5 sm:py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-[10.5px] sm:text-[11px] shadow-[4px_4px_10px_#D3CDBF,_-4px_-4px_10px_#FFFFFF] hover:shadow-[5px_5px_12px_#D3CDBF,_-5px_-5px_12px_#FFFFFF] active:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.3)] transition-all cursor-pointer flex items-center justify-center gap-2 outline-none border-none select-none"
+                    className="w-full bg-[#FF2300] hover:bg-[#e61f00] text-white py-3.5 sm:py-4 rounded-2xl font-bold uppercase tracking-[0.15em] text-[10.5px] sm:text-[11px] shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[5px_5px_12px_#d1d9e6,-5px_-5px_12px_#ffffff] active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.2)] transition-all cursor-pointer flex items-center justify-center gap-2 outline-none border-none select-none"
                   >
                     <ShoppingBag size={14} className="stroke-[2.5]" />
                     {t("buttons.send_cart_quote", "Հաստատել Պատվերը")}
                   </button>
                   <button
                     onClick={handleClearTray}
-                    className="w-full py-3 rounded-xl font-black uppercase tracking-[0.1em] text-[9.5px] text-[#A63A3A] bg-[#FAFAF8] border border-[#E5E1D8]/40 shadow-[2px_2px_5px_#DFD9CD,_-2px_-2px_5px_#FFFFFF] hover:shadow-[3px_3px_6px_#DFD9CD,_-3px_-3px_6px_#FFFFFF] hover:bg-red-500/5 active:shadow-[inset_1px_1px_3px_#DFD9CD,_inset_-1px_-1px_3px_#FFFFFF] transition-all cursor-pointer shrink-0 outline-none select-none flex items-center justify-center gap-1.5"
+                    className="w-full py-3 rounded-xl font-bold uppercase tracking-[0.1em] text-[9.5px] text-[#A63A3A] bg-[#f0f2f5] border border-white/40 shadow-[2px_2px_5px_#d1d9e6,-2px_-2px_5px_#ffffff] hover:shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] hover:bg-red-500/5 active:shadow-[inset_1px_1px_3px_#d1d9e6,inset_-1px_-1px_3px_#ffffff] transition-all cursor-pointer shrink-0 outline-none select-none flex items-center justify-center gap-1.5"
                   >
                     {t("buttons.clear_cart", "Մաքրել Զամբյուղը")}
                   </button>
@@ -7302,19 +7193,19 @@ export default function App() {
           />
           
           {/* Modal Card */}
-          <div className="relative bg-[#FFFFFF] border border-capsule-border rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 animate-[scaleIn_0.2s_ease_out] z-10">
+          <div className="relative bg-[#FFFFFF] border border-white/40 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 animate-[scaleIn_0.2s_ease_out] z-10">
             <div className="w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center mx-auto text-xl font-bold">
               ⚠️
             </div>
             
             <div className="space-y-2">
-              <h4 className="font-serif text-lg font-bold text-capsule-accent uppercase tracking-wide">
+              <h4 className="font-serif text-lg font-bold text-[#FF2300] uppercase tracking-wide">
                 {t("cart.clear_confirm_title", "Մաքրե՞լ Զամբյուղը")}
               </h4>
-              <p className="text-xs text-capsule-text-secondary leading-relaxed">
+              <p className="text-xs text-[#414753] leading-relaxed">
                 {t("cart.clear_confirm_desc", "Վստա՞հ եք, որ ցանկանում եք հեռացնել բոլոր ապրանքները զամբյուղից: Այս գործողությունը պատվերի պատմությունը չի պահպանում։")}
               </p>
-              <p className="text-[10px] text-capsule-text-muted italic leading-relaxed pt-1">
+              <p className="text-[10px] text-[#727784] italic leading-relaxed pt-1">
                 {t("cart.clear_confirm_sub", "Բոլոր հաշվարկված ապրանքները կջնջվեն:")}
               </p>
             </div>
@@ -7322,7 +7213,7 @@ export default function App() {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowClearConfirm(false)}
-                className="flex-1 py-2.5 rounded-full font-sans font-bold text-xs uppercase text-capsule-accent hover:bg-capsule-bg/20 border border-capsule-accent/15 tracking-wide transition-colors duration-200 cursor-pointer"
+                className="flex-1 py-2.5 rounded-full font-sans font-bold text-xs uppercase text-[#FF2300] hover:bg-[#f0f2f5]/20 border border-[#FF2300]/25/15 tracking-wide transition-colors duration-200 cursor-pointer"
               >
                 {t("common.cancel", "Չեղարկել")}
               </button>
@@ -7346,7 +7237,7 @@ export default function App() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative bg-white border border-capsule-border rounded-[2.5rem] max-w-lg w-full p-8 shadow-2xl text-center space-y-6 mx-4 overflow-hidden"
+              className="relative bg-white border border-white/40 rounded-[2.5rem] max-w-lg w-full p-8 shadow-2xl text-center space-y-6 mx-4 overflow-hidden"
             >
               {/* Decorative top vector asset */}
               <div className="absolute top-0 left-0 right-0 h-2 bg-[#ff2300] pointer-events-none" />
@@ -7359,13 +7250,13 @@ export default function App() {
                 <span className="text-[10px] tracking-widest font-mono font-bold text-green-700 uppercase block select-text">
                   SUCCESSFULLY REGISTERED IN POSTGRESQL
                 </span>
-                <h3 className="font-serif text-2xl lg:text-3xl text-capsule-accent uppercase tracking-wider">
+                <h3 className="font-serif text-2xl lg:text-3xl text-[#FF2300] uppercase tracking-wider">
                   {locale === "hy" ? "Պատվերը Ընդունված է" : 
                    locale === "ru" ? "Заказ успешно оформлен" : 
                    locale === "ar" ? "تم تسجيل الطلب بنجاح" : 
                    "Order Created Successfully!"}
                 </h3>
-                <p className="text-xs text-capsule-text-secondary leading-relaxed max-w-sm mx-auto font-sans">
+                <p className="text-xs text-[#414753] leading-relaxed max-w-sm mx-auto font-sans">
                   {locale === "hy" ? "Ձեր պատվերն ուղարկված է արտադրության բաժին: Օգտագործեք ստորև նշված տվյալները իրական ժամանակում հետևելու համար:" : 
                    locale === "ru" ? "Ваш заказ передан на производство! Используйте полученный код ниже для отслеживания стадий печати и постобработки в любое время." : 
                    locale === "ar" ? "تم إرسال طلبك إلى قسم الإنتاج بنجاح! استخدم رمز التتبع أدناه للتحقق من حالة طلبك في أي وقت." : 
@@ -7374,10 +7265,10 @@ export default function App() {
               </div>
 
               {/* Box info inside the modal container */}
-              <div className="bg-[#FAFAF9] border border-[#EBEBE8] rounded-2xl p-5 space-y-3.5 text-left select-text relative">
+              <div className="bg-[#f0f2f5] border border-[#EBEBE8] rounded-2xl p-5 space-y-3.5 text-left select-text relative">
                 {/* Unified Single Order Code display */}
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-mono text-[10px] text-capsule-text-muted font-bold uppercase tracking-wider">
+                  <span className="font-mono text-[10px] text-[#727784] font-bold uppercase tracking-wider">
                     {locale === "hy" ? "Պատվերի Կոդ" : locale === "ru" ? "Код заказа" : "Order Code"}
                   </span>
                   <span className="font-mono font-black text-green-800 text-sm tracking-widest uppercase">
@@ -7395,7 +7286,7 @@ export default function App() {
                     setSuccessMessage("Կոդը պատճենվեց / Copied!");
                     setTimeout(() => setSuccessMessage(null), 2500);
                   }}
-                  className="flex-1 bg-white hover:bg-[#FAFAF9] text-capsule-accent border border-[#E0DCD4] transition-all py-3 px-4 rounded-full font-bold text-xs uppercase tracking-wider cursor-pointer flex items-center justify-center gap-1.5"
+                  className="flex-1 bg-white hover:bg-[#f0f2f5] text-[#FF2300] border border-[#d1d9e6] transition-all py-3 px-4 rounded-full font-bold text-xs uppercase tracking-wider cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Copy size={13} />
                   <span>{locale === "hy" ? "Պատճենել կոդը" : locale === "ru" ? "Копировать կոդը" : "Copy Code"}</span>

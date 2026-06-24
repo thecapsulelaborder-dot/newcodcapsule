@@ -93,7 +93,7 @@ export const PricingSettings: React.FC<PricingSettingsProps> = ({
         </div>
 
         {/* Real-time simulation feedback cabinet */}
-        <div className="bg-[#FAF9F6] p-6 rounded-[2rem] border border-gray-150 space-y-4">
+        <div className="bg-[#f0f2f5] p-6 rounded-[2rem] border border-gray-150 space-y-4">
           <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider">Live Calculations Preview</h3>
           
           <div className="space-y-3.5 text-xs">

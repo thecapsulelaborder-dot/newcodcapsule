@@ -103,7 +103,7 @@ export default function OrderInquiryModal({
           finalUrl = `https://wa.me/${securePhone}?text=${encodeURIComponent(textMessage)}`;
         } else {
           const recipient = contactSettings.email || "order@capsule.am";
-          const subject = `Capsule Concept ${t("inquiry_modal.msg_subject", "Պատվերի Հայտ")} - ${realPhone}`;
+          const subject = `CAPSULE PACK ${t("inquiry_modal.msg_subject", "Պատվերի Հայտ")} - ${realPhone}`;
           const body = `${t("inquiry_modal.msg_whatsapp_hello", "Բարև Ձեզ, ցանկանում եմ պատվիրել։")}\n\n👤 ${t("inquiry_modal.msg_contact_info", "Կոնտակտային տվյալներ")}:\n- ${t("inquiry_modal.msg_name", "Անուն")}: ${realName}\n- ${t("inquiry_modal.msg_phone", "Հեռախոսահամար")}: ${realPhone}\n- ${t("inquiry_modal.msg_email", "Էլ-փոստ")}: ${realEmail}\n\n📦 ${t("inquiry_modal.msg_order_details", "Պատվերի մանրամասներ")}:\n${inquiryDetails}${promoLine}\n\n💰 ${t("inquiry_modal.msg_total_price", "Ընդհանուր արժեք")}: ${formatPrice(inquiryPrice)}`;
           finalUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
@@ -128,11 +128,11 @@ export default function OrderInquiryModal({
       className="fixed inset-0 bg-capsule-dark/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" 
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="bg-capsule-surf border border-capsule-accent/20 rounded-3xl w-full max-w-md p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] scrollbar-thin">
+      <div className="bg-[#f0f2f5] border border-[#FF2300]/25/20 rounded-3xl w-full max-w-md p-6 relative shadow-2xl overflow-y-auto max-h-[95vh] scrollbar-thin">
         
         <button 
           onClick={onClose}
-          className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} text-capsule-text-muted hover:text-capsule-dark cursor-pointer py-1 px-2 hover:bg-capsule-accent/5 rounded-xl transition-all`}
+          className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} text-[#727784] hover:text-[#1a1c1d] cursor-pointer py-1 px-2 hover:bg-[#FF2300]/5 rounded-xl transition-all`}
         >
           <X size={18} />
         </button>
@@ -144,27 +144,27 @@ export default function OrderInquiryModal({
             </div>
             
             <div className="space-y-1">
-              <h3 className="font-serif font-semibold text-2xl text-capsule-accent">
+              <h3 className="font-serif font-semibold text-2xl text-[#FF2300]">
                 {t("inquiry_modal.success_title", "Հայտը Գրանցված է")}
               </h3>
-              <p className="text-xs text-capsule-text-secondary leading-relaxed max-w-xs mx-auto">
+              <p className="text-xs text-[#414753] leading-relaxed max-w-xs mx-auto">
                 {t("inquiry_modal.success_desc", "Ձեր պատվերի հայտը հաջողությամբ գրանցվել է համակարգում։ Սեղմեք կոճակը՝ պատվերը մեզ ուղարկելու համար։")}
               </p>
             </div>
 
-            <div className={`bg-capsule-surf2/40 border border-capsule-accent/10 rounded-2xl p-4 text-start text-xs space-y-1.5`}>
-              <div className="font-bold text-[10px] text-capsule-text-muted uppercase border-b border-capsule-accent/5 pb-1 flex justify-between">
+            <div className={`bg-[#f0f2f5]/40 border border-[#FF2300]/25/10 rounded-2xl p-4 text-start text-xs space-y-1.5`}>
+              <div className="font-bold text-[10px] text-[#727784] uppercase border-b border-[#FF2300]/25/5 pb-1 flex justify-between">
                 <span>{t("inquiry_modal.order_desc_label", "Պատվերի մանրամասներ")}</span>
-                <span className="font-mono text-capsule-accent">#{Date.now().toString().slice(-6)}</span>
+                <span className="font-mono text-[#FF2300]">#{Date.now().toString().slice(-6)}</span>
               </div>
-              <div className="text-capsule-text-secondary leading-snug">
+              <div className="text-[#414753] leading-snug">
                 {custName && <div>{t("inquiry_modal.msg_name", "Անուն")}: <strong>{custName}</strong></div>}
                 {custPhone && <div>{t("inquiry_modal.msg_phone", "Հեռախոս")}: <strong>{custPhone}</strong></div>}
-                <div className={`p-2 rounded border border-capsule-accent/5 mt-1 font-mono text-[10px] bg-white ${isRtl ? 'text-right' : 'text-left'}`}>
+                <div className={`p-2 rounded border border-[#FF2300]/25/5 mt-1 font-mono text-[10px] bg-white ${isRtl ? 'text-right' : 'text-left'}`}>
                   {inquiryDetails}
                 </div>
               </div>
-              <div className={`pt-2 border-t border-capsule-accent/5 font-bold text-capsule-accent ${isRtl ? 'text-left' : 'text-right'}`}>
+              <div className={`pt-2 border-t border-[#FF2300]/25/5 font-bold text-[#FF2300] ${isRtl ? 'text-left' : 'text-right'}`}>
                 {t("inquiry_modal.price_label", "Գին:")} {formatPrice(inquiryPrice)}
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function OrderInquiryModal({
             <div className="flex flex-col gap-3 pt-2">
               <button
                 onClick={() => window.open(finalActionUrl, "_blank")}
-                className="w-full bg-gradient-to-r from-[#ff2300] to-[#cc1c00] hover:from-[#e61f00] hover:to-[#b31900] text-white text-xs py-3.5 px-6 rounded-full font-bold uppercase shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] shadow-inner tracking-widest transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#ff2300] to-[#cc1c00] hover:from-[#e61f00] hover:to-[#b31900] text-white text-xs py-3.5 px-6 rounded-full font-bold uppercase shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] shadow-inner tracking-widest transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
               >
                 {orderMethod === "whatsapp" ? (
                   <>
@@ -189,7 +189,7 @@ export default function OrderInquiryModal({
               
               <button
                 onClick={onClose}
-                className="w-full bg-transparent border border-capsule-accent/20 hover:bg-capsule-accent/5 text-[#3D271B]/60 hover:text-capsule-accent text-xs py-3 px-6 rounded-full font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer active:scale-[0.98]"
+                className="w-full bg-transparent border border-[#FF2300]/25/20 hover:bg-[#FF2300]/5 text-[#1a1c1d]/60 hover:text-[#FF2300] text-xs py-3 px-6 rounded-full font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer active:scale-[0.98]"
               >
                 {t("inquiry_modal.close", "Փակել")}
               </button>
@@ -197,11 +197,11 @@ export default function OrderInquiryModal({
           </div>
         ) : (
           <>
-            <h3 className="font-serif font-light text-2xl text-capsule-accent mb-1 text-center">
+            <h3 className="font-serif font-light text-2xl text-[#FF2300] mb-1 text-center">
               {t("inquiry_modal.form_title", "Հայտի Ձևակերպում")}
             </h3>
-            <p className="text-[11px] text-capsule-text-muted mb-4 leading-relaxed text-center">
-              {t("inquiry_modal.form_desc", "Խնդրում ենք լրացնել Ձեր տվյալները և ուղարկել պատվերը Capsule Concept-ին։")}
+            <p className="text-[11px] text-[#727784] mb-4 leading-relaxed text-center">
+              {t("inquiry_modal.form_desc", "Խնդրում ենք լրացնել Ձեր տվյալները և ուղարկել պատվերը CAPSULE PACK-ին։")}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -215,8 +215,8 @@ export default function OrderInquiryModal({
                     onClick={() => setOrderMethod("whatsapp")}
                     className={`py-3 px-5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold cursor-pointer transition-all duration-300 active:scale-95 ${
                       orderMethod === "whatsapp" 
-                        ? "bg-capsule-accent/5 border-[#ff2300] text-[#ff2300] shadow-[0_4px_12px_rgba(255,35,0,0.1)]"
-                        : "bg-[#FAFAF8] border-[#D5D0C8] text-[#3D271B] hover:border-[#3D271B]/40"
+                        ? "bg-[#FF2300]/5 border-[#ff2300] text-[#ff2300] shadow-[0_4px_12px_rgba(255,35,0,0.1)]"
+                        : "bg-[#f0f2f5] border-[#d1d9e6] text-[#1a1c1d] hover:border-[#1a1c1d]/40"
                     }`}
                   >
                     <MessageSquare size={13} />
@@ -227,8 +227,8 @@ export default function OrderInquiryModal({
                     onClick={() => setOrderMethod("email")}
                     className={`py-3 px-5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold cursor-pointer transition-all duration-300 active:scale-95 ${
                       orderMethod === "email" 
-                        ? "bg-capsule-accent/5 border-[#ff2300] text-[#ff2300] shadow-[0_4px_12px_rgba(255,35,0,0.1)]"
-                        : "bg-[#FAFAF8] border-[#D5D0C8] text-[#3D271B] hover:border-[#3D271B]/40"
+                        ? "bg-[#FF2300]/5 border-[#ff2300] text-[#ff2300] shadow-[0_4px_12px_rgba(255,35,0,0.1)]"
+                        : "bg-[#f0f2f5] border-[#d1d9e6] text-[#1a1c1d] hover:border-[#1a1c1d]/40"
                     }`}
                   >
                     <Mail size={13} />
@@ -257,7 +257,7 @@ export default function OrderInquiryModal({
                         ? t("inquiry_modal.name_placeholder_wa", "Անուն Ազգանուն (կամ կարող եք թողնել դատարկ)") 
                         : t("inquiry_modal.name_placeholder_email", "Անուն Ազգանուն")
                     }
-                    className={`w-full bg-[#FAFAF8] border border-white/60 shadow-[inset_2px_2px_5px_#D5D0C8,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-capsule-accent/40 text-gray-800 ${isRtl ? 'text-right' : 'text-left'} transition-all`}
+                    className={`w-full bg-[#f0f2f5] border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-[#FF2300]/25/40 text-gray-800 ${isRtl ? 'text-right' : 'text-left'} transition-all`}
                   />
                 </div>
                 <div>
@@ -281,7 +281,7 @@ export default function OrderInquiryModal({
                         ? t("inquiry_modal.phone_placeholder_wa", "+374 99 218 090 (կամ կարող եք թողնել դատարկ)") 
                         : t("inquiry_modal.phone_placeholder_email", "+374 99 218 090")
                     }
-                    className={`w-full bg-[#FAFAF8] border border-white/60 shadow-[inset_2px_2px_5px_#D5D0C8,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-capsule-accent/40 text-gray-800 font-mono ${isRtl ? 'text-right' : 'text-left'} transition-all`}
+                    className={`w-full bg-[#f0f2f5] border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-[#FF2300]/25/40 text-gray-800 font-mono ${isRtl ? 'text-right' : 'text-left'} transition-all`}
                   />
                 </div>
                 {orderMethod === "email" && (
@@ -294,16 +294,16 @@ export default function OrderInquiryModal({
                       value={custEmail}
                       onChange={(e) => setCustEmail(e.target.value)}
                       placeholder="name@example.com"
-                      className={`w-full bg-[#FAFAF8] border border-white/60 shadow-[inset_2px_2px_5px_#D5D0C8,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-capsule-accent/40 text-gray-800 font-mono ${isRtl ? 'text-right' : 'text-left'} transition-all`}
+                      className={`w-full bg-[#f0f2f5] border border-white/60 shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] rounded-xl py-2.5 px-4 text-xs font-semibold outline-none focus:border-[#FF2300]/25/40 text-gray-800 font-mono ${isRtl ? 'text-right' : 'text-left'} transition-all`}
                     />
                   </div>
                 )}
               </div>
 
-              <div className={`bg-[#FAFAF8] p-4 rounded-2xl border border-white/60 space-y-1.5 mt-5 text-xs select-text shadow-[inset_2px_2px_5px_#D5D0C8,_inset_-2px_-2px_5px_#FFFFFF] ${isRtl ? 'text-right' : 'text-left'}`}>
+              <div className={`bg-[#f0f2f5] p-4 rounded-2xl border border-white/60 space-y-1.5 mt-5 text-xs select-text shadow-[inset_2px_2px_5px_#d1d9e6,_inset_-2px_-2px_5px_#FFFFFF] ${isRtl ? 'text-right' : 'text-left'}`}>
                 <p className={`font-bold text-[10px] uppercase tracking-widest text-[#ff2300] mb-1.5 border-b border-gray-200/80 pb-1 flex items-center justify-between ${isRtl ? 'text-right' : 'text-left'}`}>
                   <span>{t("inquiry_modal.summary_title", "Պատվերի Ամփոփում")}</span>
-                  <span className="font-mono text-[#3D271B]/60">#{(Date.now() % 1000000).toString()}</span>
+                  <span className="font-mono text-[#1a1c1d]/60">#{(Date.now() % 1000000).toString()}</span>
                 </p>
                 <div className={`whitespace-pre-line leading-relaxed text-[10px] font-semibold text-gray-700 max-h-[100px] overflow-y-auto scrollbar-thin ${isRtl ? 'text-right' : 'text-left'}`}>
                   {inquiryDetails}
@@ -317,7 +317,7 @@ export default function OrderInquiryModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-[#ff2300] to-[#cc1c00] hover:from-[#e61f00] hover:to-[#b31900] text-white text-xs py-3.5 px-6 rounded-full font-bold uppercase transition-all duration-300 tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-[4px_4px_10px_#D5D0C8,_-4px_-4px_10px_#FFFFFF] shadow-inner mt-5 active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#ff2300] to-[#cc1c00] hover:from-[#e61f00] hover:to-[#b31900] text-white text-xs py-3.5 px-6 rounded-full font-bold uppercase transition-all duration-300 tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-[4px_4px_10px_#d1d9e6,_-4px_-4px_10px_#FFFFFF] shadow-inner mt-5 active:scale-[0.98]"
               >
                 {isSubmitting ? t("inquiry_modal.submitting", "Ուղարկվում է...") : t("inquiry_modal.submit", "Հաստատել Պատվերը")}
               </button>
